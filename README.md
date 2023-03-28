@@ -1,9 +1,11 @@
-# Your Project's Title...
-Your project's description...
+# AEM Franklin - Zemax
+
+Zemax.com on AEM Fanklin
 
 ## Environments
-- Preview: https://main--{repo}--{owner}.hlx.page/
-- Live: https://main--{repo}--{owner}.hlx.live/
+
+- Preview: https://main--zemax--hlxsites.hlx.page/
+- Live: https://main--zemax--hlxsites.hlx.live/
 
 ## Installation
 
