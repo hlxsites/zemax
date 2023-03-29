@@ -31,7 +31,6 @@ function buildHeroBlock(main) {
   }
 }
 
-
 /**
  * Helper function to create DOM elements
  * @param {string} tag DOM element to be created
