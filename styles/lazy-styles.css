@@ -1,1 +1,18 @@
 /* below the fold CSS goes here */
+
+/* || MyradPro Font Family  */
+@font-face{
+    font-family: MyriadPro-Semibold;
+    src:url("../fonts/MyriadPro-SemiBold.woff");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 500;
+  }
+  
+  @font-face {
+    font-family: MyriadPro-Regular;
+    src: url("../fonts/MyriadPro-Regular.woff");
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+  }
