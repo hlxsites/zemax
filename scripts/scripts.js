@@ -55,7 +55,7 @@ export function createTag(tag, attributes, html) {
 }
 
 /**
- * Retrieves the content of a metadata tag.
+ * Retrieves the content of a metadata tag
  * @param {string} name The metadata name (or property)
  * @returns {string} The metadata value
  */
