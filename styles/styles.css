@@ -26,14 +26,9 @@
 
  :root {
   /* section widths */
-  --section-width-mobile: 440px;
-  --section-width-tablet: 738px;
-  --section-width-desktop: 960px;
-
+  --section-width: 440px;
   /* nav height */
-  --nav-height-mobile: 50.5px; 
-  --nav-height-tablet: 74px;
-  --nav-height-desktop: 118px;
+  --nav-height: 50.5px; 
 
   /* fonts */
   --ff-myradpro-regular: "MyriadPro-Regular", "MyriadPro-Regular Fallback", sans-serif;
@@ -95,7 +90,7 @@
 }
 
 header {
-  height: var(--nav-height-mobile);
+  height: var(--nav-height);
 }
 
 body {
@@ -280,8 +275,8 @@ main img {
 
 .icon {
   display: inline-block;
-  height: 24px;
-  width: 24px;
+  /* height: 24px;
+  width: 24px; */
 }
 
 .icon svg {
@@ -291,13 +286,13 @@ main img {
 
 main .section > div {
   margin: 0 auto;
+  width: var(--section-width);
 }
 
 
 /* Mobile */
 @media only screen and (min-width: 480px) {
   main .section > div {
-    width: var(--section-width-mobile);
     padding: 0 20px;
   }
 
@@ -317,8 +312,12 @@ main .section > div {
 
 /* Tablet */
 @media only screen and (min-width: 768px) {
+  :root{
+    --nav-height : 74px;
+    --section-width: 738px;
+  }
+  
   main .section>div {
-    width: var(--section-width-tablet);
     padding: 0 15px;
   }
 
@@ -334,23 +333,14 @@ main .section > div {
     border-radius: 12px;
     font-size: var(--body-font-size-l);
   }
-
-  header {
-    height: var(--nav-height-tablet);
-  }
-
 }
 
 
 /* Desktop */
 @media only screen and (min-width: 1030px) {
-  main .section>div {
-    width: var(--section-width-desktop);
-    padding: 0 15px;
-  }
-
-  header {
-    height: var(--nav-height-desktop);
+  :root{
+  --nav-height: 118px;
+  --section-width: 960px;
   }
 
   p { 
