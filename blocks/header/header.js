@@ -1,6 +1,19 @@
 import { getMetadata, decorateIcons } from '../../scripts/lib-franklin.js';
 import { createTag } from '../../scripts/scripts.js';
 
+let elementsWithEventListener = [];
+const mql = window.matchMedia('only screen and (min-width: 1024px)');
+
+function collapseAllSubmenus(menu) {
+  menu.querySelectorAll('*[aria-expanded="true"]').forEach((el) => el.setAttribute('aria-expanded', 'false'));
+}
+
+function clearAllTabIndex() {
+  document.querySelectorAll('.nav-menu *[tabindex]').forEach((element) => {
+    element.removeAttribute('tabindex');
+  });
+}
+
 function isExapndable(ele) {
   let result = false; 
   const adjacentElement = ele.nextElementSibling;  
@@ -50,25 +63,25 @@ function addEventListenersMobile() {
     });
   });
 
-  elementsWithEventListener.push(document.querySelector('form .search-button'));
-  document.querySelector('form .search-button').addEventListener('click', (e) => {
-    const form = e.target.closest('form');
-    if (!form.hasAttribute('aria-expanded')) {
-      e.preventDefault();
-      e.stopPropagation();
-      form.setAttribute('aria-expanded', 'true');
-    }
-  });
+  // elementsWithEventListener.push(document.querySelector('form .search-button'));
+  // document.querySelector('form .search-button').addEventListener('click', (e) => {
+  //   const form = e.target.closest('form');
+  //   if (!form.hasAttribute('aria-expanded')) {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     form.setAttribute('aria-expanded', 'true');
+  //   }
+  // });
 
-  elementsWithEventListener.push(document.querySelector('form .close-button'));
-  document.querySelector('form .close-button').addEventListener('click', (e) => {
-    const form = e.target.closest('form');
-    if (form.hasAttribute('aria-expanded')) {
-      e.preventDefault();
-      e.stopPropagation();
-      form.removeAttribute('aria-expanded');
-    }
-  });
+  // elementsWithEventListener.push(document.querySelector('form .close-button'));
+  // document.querySelector('form .close-button').addEventListener('click', (e) => {
+  //   const form = e.target.closest('form');
+  //   if (form.hasAttribute('aria-expanded')) {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     form.removeAttribute('aria-expanded');
+  //   }
+  // });
 }
 
 function addEventListenersDesktop() {
@@ -83,7 +96,7 @@ function addEventListenersDesktop() {
   document.querySelectorAll('.menu-expandable').forEach((linkElement) => {
     elementsWithEventListener.push(linkElement);
     linkElement.setAttribute('tabindex', '0');
-    linkElement.setAttribute('aria-label', `Expand the submenu for ${linkElement.querySelector('a').innerText}`);
+    linkElement.setAttribute('aria-label', `Expand the submenu for ${linkElement.querySelector('div').innerText}`);
 
     linkElement.addEventListener('keydown', (e) => {
       if (e.key === ' ' && e.target === linkElement) {
@@ -180,8 +193,30 @@ export default async function decorate(block) {
     li.classList.add('menu-expandable');
     menuDropdownList.classList.add('menu-nav-dropdown');
     addDropdownIcon(menuTitle);
+
+    // Add class name for each column in dropdown
+    ['m-col-1', 'm-col-2'].forEach((category, j) => {
+      const node = menuDropdownList.querySelector(`:scope > div:nth-child(${j + 1})`);
+      node?.classList.add(category, 'column');
+      if (node?.children.length === 0) {
+        node?.classList.add('empty');
+      }
+
+      // Add second-level expansion even listener
+      li.querySelectorAll('p + ul').forEach((subDropdown) => {
+        const subDropdownTitle = subDropdown.previousElementSibling;
+        subDropdownTitle.setAttribute('aria-expanded', 'false');
+        subDropdownTitle.classList.add('m-expandable-title');
+        wrapChildren(subDropdownTitle, 'span');
+        subDropdown.classList.add('m-expandable-list');
+        addDropdownIcon(subDropdownTitle);
+      });
+
+    });
+
     li.append(menuDropdownList);
    }
+
      navMenuUl.append(li);
   }
   nav.querySelector('.nav-menu').innerHTML = navMenuUl.outerHTML;
