@@ -5,6 +5,7 @@ footer {
   font-size: var(--body-font-size-s);
   width: 100%;
   padding: 20px;
+  margin: 0 auto;
 }
 
 footer .footer {
