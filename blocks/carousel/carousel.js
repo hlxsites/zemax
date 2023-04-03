@@ -191,9 +191,4 @@ export default function decorate(block) {
     const nextBtn = buildNav('next');
     block.append(nextBtn);
   }
-
-  // window.addEventListener('resize', () => {
-  //   clearTimeout(resizeTimeout);
-  //   resizeTimeout = setTimeout(() => calculateSlideHeight(carousel, slides[curSlide]), 500);
-  // });
 }
