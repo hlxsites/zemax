@@ -35,6 +35,10 @@ footer .footer-main-links > div{
   flex-direction: column;
 } 
 
+footer .footer-main-links h5{
+  font-size: var(--heading-font-size-s);
+}
+
 footer .footer-main-links > div > div{
   flex: 1 1 auto;
   margin-bottom: 20px;
@@ -78,7 +82,9 @@ footer .footer-sub-links > div > div{
 
 /* footer copyright */
 footer .footer-copyright{
-  margin-top:5px
+  font-size: 12px;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 
 footer .footer-main-links > div > div:last-of-type{
@@ -120,8 +126,7 @@ footer .footer-main-links > div > div:last-of-type > p:not(:first-child){
 
   footer .footer-main-links > div > div:last-of-type{
     order: -1;
-    max-width: 172px;
-    padding-right: 30px;
+
   }
 
   footer .footer-main-links > div > div:last-of-type > p:not(:first-child){
