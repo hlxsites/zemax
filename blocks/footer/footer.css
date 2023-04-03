@@ -126,7 +126,8 @@ footer .footer-main-links > div > div:last-of-type > p:not(:first-child){
 
   footer .footer-main-links > div > div:last-of-type{
     order: -1;
-
+    max-width: 172px;
+    padding-right: 30px;
   }
 
   footer .footer-main-links > div > div:last-of-type > p:not(:first-child){
@@ -146,6 +147,11 @@ footer .footer-sub-links > div{
 @media only screen and (min-width: 1030px) {
   footer {
     width: var(--section-width-desktop);
+  }
+
+  footer .footer-main-links > div > div:last-of-type{
+    max-width: unset;
+    padding-right: unset;
   }
 
 }
