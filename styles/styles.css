@@ -293,6 +293,13 @@ main .section > div {
   margin: 0 auto;
 }
 
+main .divider{
+  display:block;
+  width: auto;
+  margin: 20px 0;
+  border: 1px solid var(--link-hover-color);
+  padding:unset
+  }
 
 /* Mobile */
 @media only screen and (min-width: 480px) {

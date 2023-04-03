@@ -73,6 +73,19 @@ export function getMetadata(name) {
   return $meta && $meta.content;
 }
 
+function buildPageDivider(main) {
+  const allPageDivider = main.querySelectorAll('code');
+
+  allPageDivider.forEach((el) => {
+    const alt = el.innerText.trim();
+    const lower = alt.toLowerCase();
+    if (lower === 'divider') {
+      el.innerText = '';
+      el.classList.add('divider');
+    }
+  });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -80,6 +93,7 @@ export function getMetadata(name) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+    buildPageDivider(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
