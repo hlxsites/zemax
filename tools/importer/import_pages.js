@@ -12,38 +12,37 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
-
 const createMetadata = (main, document) => {
-    const meta = {};
-  
-    // add title
-    const title = document.querySelector('title');
-    if (title) {
-      meta.Title = title.innerHTML.replace(/[\n\t]/gm, '');
-    }
+  const meta = {};
 
-    // add description
-    const desc = document.querySelector('[property="og:description"]');
-    if (desc) {
-      meta.Description = desc.content;
-    }
-  
-    //add image
-    const img = document.querySelector('[property="og:image"]');
-    if (img && img.content) {
-      const el = document.createElement('img');
-      el.src = img.content;
-      meta.Image = el;
-    }
-  
-    const block = WebImporter.Blocks.getMetadataBlock(document, meta);
-    main.append(block);
-  
-    return meta;
-  };
-  
-  export default {
-    /**
+  // add title
+  const title = document.querySelector('title');
+  if (title) {
+    meta.Title = title.innerHTML.replace(/[\n\t]/gm, '');
+  }
+
+  // add description
+  const desc = document.querySelector('[property="og:description"]');
+  if (desc) {
+    meta.Description = desc.content;
+  }
+
+  // add image
+  const img = document.querySelector('[property="og:image"]');
+  if (img && img.content) {
+    const el = document.createElement('img');
+    el.src = img.content;
+    meta.Image = el;
+  }
+
+  const block = WebImporter.Blocks.getMetadataBlock(document, meta);
+  main.append(block);
+
+  return meta;
+};
+
+export default {
+  /**
      * Apply DOM operations to the provided document and return
      * the root element to be then transformed to Markdown.
      * @param {HTMLDocument} document The document
@@ -52,36 +51,36 @@ const createMetadata = (main, document) => {
      * @param {object} params Object containing some parameters given by the import process.
      * @returns {HTMLElement} The root element to be transformed
      */
-    transformDOM: ({
-      // eslint-disable-next-line no-unused-vars
-      document, url, html, params,
-    }) => {
-      // define the main element: the one that will be transformed to Markdown
-      const main = document.body;
-  
-      // use helper method to remove header, footer, etc.
-      WebImporter.DOMUtils.remove(main, [
-        '.cart-popup-wrapper',
-        '.icon__fallback-text',
-        'header',
-        '.mobile-nav__item',
-        'footer',
-        '.newsletter-background',
-        '.visually-hidden',
-        '.social-sharing-post',
-        'a11y-refresh-page-message',
-        'a11y-selection-message',
-        'ul[hidden=\'\']',
-        'onetrust-consent-sdk',
-      ]);
-  
-      // create the metadata block and append it to the main element
-      createMetadata(main, document);
-  
-      return main;
-    },
-  
-    /**
+  transformDOM: ({
+    // eslint-disable-next-line no-unused-vars
+    document, url, html, params,
+  }) => {
+    // define the main element: the one that will be transformed to Markdown
+    const main = document.body;
+
+    // use helper method to remove header, footer, etc.
+    WebImporter.DOMUtils.remove(main, [
+      '.cart-popup-wrapper',
+      '.icon__fallback-text',
+      'header',
+      '.mobile-nav__item',
+      'footer',
+      '.newsletter-background',
+      '.visually-hidden',
+      '.social-sharing-post',
+      'a11y-refresh-page-message',
+      'a11y-selection-message',
+      'ul[hidden=\'\']',
+      'onetrust-consent-sdk',
+    ]);
+
+    // create the metadata block and append it to the main element
+    createMetadata(main, document);
+
+    return main;
+  },
+
+  /**
      * Return a path that describes the document being transformed (file name, nesting...).
      * The path is then used to create the corresponding Word document.
      * @param {HTMLDocument} document The document
@@ -90,8 +89,8 @@ const createMetadata = (main, document) => {
      * @param {object} params Object containing some parameters given by the import process.
      * @return {string} The path
      */
-    generateDocumentPath: ({
-      // eslint-disable-next-line no-unused-vars
-      document, url, html, params,
-    }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '')),
-  };
+  generateDocumentPath: ({
+    // eslint-disable-next-line no-unused-vars
+    document, url, html, params,
+  }) => WebImporter.FileUtils.sanitizePath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '')),
+};
