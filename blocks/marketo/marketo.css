@@ -1,7 +1,7 @@
 /* stylelint-disable selector-class-pattern */
 
 .marketo-container{
-    background-color: #0070c0;
+    background-color: var(--clr-blue);
     border-top-right-radius: 50%;
     border-top-left-radius: 50%;
     overflow: hidden;
@@ -12,17 +12,17 @@
 }
 
 .marketo-container .default-content-wrapper p{
-    line-height: 1.45;
-    font-size: 20px;
-    color: #fff;
-    letter-spacing: 1.04px;
+    line-height: var(--line-height-14);
+    font-size: var(--body-font-size-l);
+    color: var(--clr-white);
+    letter-spacing: var(  --letter-spacing-96);
     text-align: center;    
 }
 
 .marketo{
     margin: 0 auto;
     width: 100%;
-    background-color: #0070c0;
+    background-color: var(--clr-blue);
     padding-bottom: 55px;
 }
 
