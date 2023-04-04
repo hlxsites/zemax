@@ -100,6 +100,26 @@ footer .footer-main-links > div > div:last-of-type > p:not(:first-child){
   padding-right: 12px;
 }
 
+
+footer .footer-sub-links div:nth-child(5)::before {
+  content:'';
+  width: 21px;
+  height: 21px;
+  background: url('../../icons/globe.svg') left 1px/20px no-repeat;
+  display: inline-block;
+}
+
+footer .footer-sub-links select.locale {
+  font-size: 16px;
+  cursor: pointer;
+  color: #0070c0;
+  border:none;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+
+
 /* Mobile */
 @media only screen and (min-width: 480px) {
   footer {
@@ -139,6 +159,11 @@ footer .footer-sub-links > div{
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  justify-content: space-between;
+}
+
+footer .footer-sub-links div:nth-child(5) {
+  margin-left: auto;
 }
 
 }
@@ -154,4 +179,6 @@ footer .footer-sub-links > div{
     padding-right: unset;
   }
 
+  
 }
+
