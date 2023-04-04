@@ -28,9 +28,17 @@
 
 .mktoForm, .marketo-form form {
     margin: 0 auto !important;
-    width: var(--section-width-desktop) !important;
+    width: 100% !important;
   }
   
+  .mktoFieldWrap input{
+    margin: 0 auto !important;
+  }
+
+  .mktoFieldWrap, .mktoHtmlText{
+    margin: 0 auto !important;
+  }
+
   .marketo-form form .mktoOffset {
     height: 1.2em !important;
     display: none;
@@ -76,3 +84,26 @@
         margin-bottom: 2px !important;
     }
     
+/* Mobile */
+@media only screen and (min-width: 480px) {
+    main .section > div {
+      width: var(--section-width-mobile);
+    }
+  
+  }
+  
+  /* Tablet */
+  @media only screen and (min-width: 768px) {
+    main .section>div {
+      width: var(--section-width-tablet);
+    }
+  }
+  
+  
+  /* Desktop */
+  @media only screen and (min-width: 1030px) {
+    main .section>div {
+      width: var(--section-width-desktop);
+    }    
+  }
+  
