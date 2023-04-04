@@ -31,79 +31,25 @@
     width: 100% !important;
   }
   
-  .mktoFieldWrap input{
-    margin: 0 auto !important;
-  }
-
-  .mktoFieldWrap, .mktoHtmlText{
-    margin: 0 auto !important;
-  }
-
-  .marketo-form form .mktoOffset {
-    height: 1.2em !important;
-    display: none;
-  }
-  
-  .mktoFormCol {
-    width: 100%;
-  }
-  
-  .mktoFieldWrap {
-    width: 100%;
-  }
-
-  .mktoForm .mktoButtonWrap.mktoPaperMashup .mktoButton{
-    border:none;
-    background: #222;
-    display: inline-block;
-    padding: 5px 10px 6px;
-    color: #fff;
-    text-decoration: none;
-    position: relative;
-    cursor: pointer;
-    font-size: var(--body-font-size-xs);
-    font-weight: bold;
-    line-height: 1;
-    background-color: #ff5c00;
-    }
-
-    .mktoForm .mktoButtonWrap.mktoPaperMashup .mktoButton:hover {
-    background-color: #111;
-    color: #fff;
-    }
-
-    .mktoForm .mktoButtonWrap.mktoPaperMashup .mktoButton:active {
-    top: 1px;
-    }
-    
-    .mktoForm .mktoButtonWrap.mktoPaperMashup button.mktoButton {background:#002f6d;}
-
-    
-    .mktoForm .mktoFormRow {
-        clear: both !important;
-        margin-bottom: 2px !important;
-    }
-    
 /* Mobile */
 @media only screen and (min-width: 480px) {
-    main .section > div {
-      width: var(--section-width-mobile);
-    }
-  
+    .marketo form  {
+        width: 440px !important;
+      }   
   }
   
   /* Tablet */
   @media only screen and (min-width: 768px) {
-    main .section>div {
-      width: var(--section-width-tablet);
-    }
+    .marketo form  {
+        width: 700px !important;
+      }   
   }
   
   
   /* Desktop */
   @media only screen and (min-width: 1030px) {
-    main .section>div {
-      width: var(--section-width-desktop);
-    }    
+    .marketo form  {
+        width: 711px !important;
+      }   
   }
   
