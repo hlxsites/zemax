@@ -14,9 +14,9 @@ function clearAllTabIndex() {
   });
 }
 
-function isExapndable(ele) {
+function isExapndable(element) {
   let result = false; 
-  const adjacentElement = ele.nextElementSibling;  
+  const adjacentElement = element.nextElementSibling;  
   if(adjacentElement && (
     adjacentElement.querySelector('ul') || 
     adjacentElement.querySelector('p') )){
@@ -32,6 +32,18 @@ function addDropdownIcon(element) {
   dropdownButton.append(dropdownArrow);
   dropdownButton.classList.add('dropdown-button');
   element.append(dropdownButton);
+}
+
+function addSearchForm (breakpoint) {
+    const cssclass = (breakpoint === 'mobile' ? 'mobile-search-container' : 'search-container')
+
+    let searchHTML = '<div class="search-form"><form action="/search" method="get"><input type="text" name="q" class="search-input"/><input type="hidden" name="options[prefix]" value="last" aria-hidden="true" /><button class="search-button"><span class="icon icon-search" ></span></button></form> </div><div class="search-close"> <button type="button" class="close-button"> <span  class="icon icon-search-close"></span></button></div>';
+   if(breakpoint === 'mobile' )
+   {
+    searchHTML = '<div class="search-form"><form action="/search" method="get"><button class="search-button"><span class="icon icon-search" ></span></button><input type="text" name="q" class="search-input"/><input type="hidden" name="options[prefix]" value="last" aria-hidden="true" /></form> </div><div class="search-close"> <button type="button" class="close-button"> <span  class="icon icon-search-close"></span></button></div>'
+   }
+    const searchContainer = createTag('div',{class:cssclass}, searchHTML);
+    return searchContainer;
 }
 
 function addEventListenersMobile() {
@@ -63,25 +75,25 @@ function addEventListenersMobile() {
     });
   });
 
-  // elementsWithEventListener.push(document.querySelector('form .search-button'));
-  // document.querySelector('form .search-button').addEventListener('click', (e) => {
-  //   const form = e.target.closest('form');
-  //   if (!form.hasAttribute('aria-expanded')) {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     form.setAttribute('aria-expanded', 'true');
-  //   }
-  // });
+  elementsWithEventListener.push(document.querySelector('form .search-button'));
+  document.querySelector('form .search-button').addEventListener('click', (e) => {
+    const form = e.target.closest('form');
+    if (!form.hasAttribute('aria-expanded')) {
+      e.preventDefault();
+      e.stopPropagation();
+      form.setAttribute('aria-expanded', 'true');
+    }
+  });
 
-  // elementsWithEventListener.push(document.querySelector('form .close-button'));
-  // document.querySelector('form .close-button').addEventListener('click', (e) => {
-  //   const form = e.target.closest('form');
-  //   if (form.hasAttribute('aria-expanded')) {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     form.removeAttribute('aria-expanded');
-  //   }
-  // });
+  elementsWithEventListener.push(document.querySelector('form .close-button'));
+  document.querySelector('form .close-button').addEventListener('click', (e) => {
+    const form = e.target.closest('form');
+    if (form.hasAttribute('aria-expanded')) {
+      e.preventDefault();
+      e.stopPropagation();
+      form.removeAttribute('aria-expanded');
+    }
+  });
 }
 
 function addEventListenersDesktop() {
@@ -119,7 +131,7 @@ function addEventListenersDesktop() {
     });
   });
 
-  const searchButton = document.querySelector('.nav-tools form');
+  const searchButton = document.querySelector('.search-container form');
   if (searchButton.hasAttribute('aria-expanded')) searchButton.removeAttribute('aria-expanded');
 
 }
@@ -149,16 +161,22 @@ export default async function decorate(block) {
     const nav = createTag('nav');
     nav.innerHTML = html;
 
-  // hamburger
+// hamburger
   const hamburger = createTag('div');
   hamburger.classList.add('nav-hamburger');
   hamburger.innerHTML = '<span class="icon icon-mobile-menu"></span>';
 
   const expandHamburger = () => {
+
+ 
     const expanded = nav.getAttribute('aria-expanded') === 'true';
     document.body.style.overflowY = expanded ? '' : 'hidden';
     nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
     document.querySelector('main').style.visibility = expanded ? '' : 'hidden';
+    if(!expanded)
+       hamburger.innerHTML = '<span class="icon icon-search-close"><svg viewBox="0 0 40 40"><path d="M23.868 20.015L39.117 4.78c1.11-1.108 1.11-2.77 0-3.877-1.109-1.108-2.773-1.108-3.882 0L19.986 16.137 4.737.904C3.628-.204 1.965-.204.856.904c-1.11 1.108-1.11 2.77 0 3.877l15.249 15.234L.855 35.248c-1.108 1.108-1.108 2.77 0 3.877.555.554 1.248.831 1.942.831s1.386-.277 1.94-.83l15.25-15.234 15.248 15.233c.555.554 1.248.831 1.941.831s1.387-.277 1.941-.83c1.11-1.109 1.11-2.77 0-3.878L23.868 20.015z" class="layer"></path></svg></span>';
+       else
+       hamburger.innerHTML = '<span class="icon icon-mobile-menu"><svg aria-hidden="true" focusable="false"  viewBox="0 0 37 40"><path d="M33.5 25h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2zm0-11.5h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2zm0 23h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2z"></path></svg></span>';
   };
 
   hamburger.setAttribute('tabindex', '0');
@@ -179,6 +197,11 @@ export default async function decorate(block) {
   const navMenuUl = createTag('ul');
   const menus = [...nav.querySelectorAll('.nav-menu > div')];
   
+  // search form
+  const searchli = createTag('li',{class:'mobile-search'});
+  searchli.append(addSearchForm('mobile'));
+  navMenuUl.append(searchli);
+
   for (let i = 0; i < menus.length ;i=i+2) {
     const li = createTag('li');
     const menuTitle = menus[i];
@@ -222,7 +245,9 @@ export default async function decorate(block) {
   nav.querySelector('.nav-menu').innerHTML = navMenuUl.outerHTML;
 
   decorateIcons(nav);
+  block.append(addSearchForm());
   block.append(nav);
+
 
   // Handle different event listeners for mobile/desktop on window resize
     const removeAllEventListeners = () => {

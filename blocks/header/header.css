@@ -6,6 +6,10 @@ header .header.block {
   width: 100%;
 }
 
+header .search-container {
+  display: none;
+}
+
 header nav {
   max-width: 1240px;
   margin: 0 auto;
@@ -16,13 +20,13 @@ header nav {
 header nav > div {
   box-sizing: border-box;
   display: grid;
-  grid-template: 'logo .  hamburger' / auto 1fr  50px;
-  height: 100%;
+  grid-template: 'logo .  hamburger' / 1fr 1fr  22px;
+
 }
 
 header nav .nav-logo {
   grid-area: logo;
-  align-self: center;
+  /* align-self: center; */
   /* justify-self: center; */
 }
 
@@ -47,18 +51,86 @@ header nav .nav-menu ul {
   /* margin: 0; */
 }
 
-/* header nav .nav-menu ul .menu-nav-category {
+header nav .nav-menu ul .menu-nav-category  > div > a{
+ height: 56px;
+}
+
+header nav .nav-menu ul .menu-nav-dropdown li {
+
+  font-family: var(--ff-myradpro-semibold);
+  padding-top: 1px;
+  padding-bottom: 15px;
+
+}
+
+header nav .nav-menu > ul > li {
+  border-bottom: 1px solid #dad9d7;
+}
+
+header nav .nav-menu > ul > .mobile-search {
+  border-bottom: none;
+}
+
+header nav .nav-menu ul .mobile-search-container {
   display: flex;
-  justify-content: space-between;
-} */
+  justify-content: space-between; 
+  align-items: center;
+  cursor: pointer;
+}
+
+header nav .nav-menu ul .mobile-search-container .search-form form {
+  display:flex;
+}
+
+header nav .nav-menu ul .mobile-search-container button {
+  background: none;
+  /* margin: 0 auto; */
+  /* padding-right: 2px; */
+  border:none;
+  padding: 0;
+}
+
+
+
+header nav .nav-menu ul .mobile-search-container .icon {
+  width: 20px;
+  height: 20px;
+}
+
+header nav .nav-menu ul .mobile-search-container .search-input{
+
+    margin-left: 15px;
+    width: 90vw;
+    box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.2);
+    border-color: #909196;
+    border-radius: 4px;
+    /* padding-right: 45px; */
+    height: 44px;
+    border: 1px solid #ccc;
+    /* padding: 8px 15px; */
+}
+
+header nav .nav-menu ul .mobile-search-container .search-close{
+
+  position: relative;
+  left: -40px;
+ 
+}
+
+header nav .nav-menu .mobile-search-container .close-button svg {
+  display:block;
+  width: 20px;
+  height: 20px;
+  margin: 1px;
+}
 
 header nav .nav-menu ul .menu-nav-category, header nav p.m-expandable-title {
   display: flex;
   /* justify-content: space-between; */
   align-items: center;
   cursor: pointer;
-  border-bottom: 1px solid #dad9d7;
-  padding: 11px 0 10px;
+  /* border-bottom: 1px solid #dad9d7; */
+  /* padding: 11px 0 10px; */
   font-size: 20px;
   font-family: var(--ff-myradpro-semibold);
   color: var(--link-color);
@@ -71,7 +143,8 @@ header nav .nav-menu .menu-nav-dropdown {
 header nav[aria-expanded="true"] .nav-menu {
   display: initial;
   position: fixed;
-  top: var(--nav-height);
+  margin-top: 25px;
+  top:  var(--nav-height)  ; 
   left: 0;
   right: 0;
   bottom: 0;
@@ -81,9 +154,17 @@ header nav[aria-expanded="true"] .nav-menu {
 
 header nav .nav-hamburger {
   grid-area: hamburger;
-  align-self: center;
   justify-self: center;
+  padding: 5px;
 }
+
+/* header nav  .icon-mobile-menu > svg {
+  border : 2px solid green;
+  padding: 0;
+  top: 0;
+  position: relative;
+  width: 20px;
+} */
 
 header .dropdown-button {
   background: none;
@@ -117,9 +198,17 @@ header nav .nav-menu ul > li.menu-expandable[aria-expanded='true'] > .menu-nav-c
   transform: rotate(90deg);
 }
 
-header nav div:is(.nav-tools, .nav-hamburger) svg {
-  width: 30px;
-  height: auto;
+header nav  .nav-hamburger svg {
+  width: 12px;
+  height: 13px;
+  max-height: var(--nav-height); 
+  cursor: pointer;
+}
+
+header nav[aria-expanded='true'] .nav-hamburger svg {
+  width: 10px;
+  height: 10px;
+  max-height: var(--nav-height); 
   cursor: pointer;
 }
 
@@ -141,6 +230,24 @@ header nav .nav-tools {
     height: 46.8px;
   }
 
+  header nav  .nav-hamburger svg  {
+    width: 22px;
+    height: 24px;
+    max-height: var(--nav-height); 
+    cursor: pointer;
+    margin-top: -4px;
+    vertical-align: middle;
+  }
+
+  header nav[aria-expanded='true'] .nav-hamburger svg {
+    width: 20px;
+    height: 20px;
+    max-height: var(--nav-height); 
+    cursor: pointer;
+    margin-top: -4px;
+    vertical-align: middle;
+  }
+
 }
 
 /* Desktop styles */
@@ -157,7 +264,7 @@ header nav .nav-tools {
 
   header nav .nav-hamburger {
     display: none;
-}
+  }
   header nav .nav-menu {
     display: flex;
     align-items: flex-end;
@@ -166,7 +273,11 @@ header nav .nav-tools {
 
   header nav .nav-menu ul {
     display: flex;
-}
+  }
+
+header nav .nav-menu ul .mobile-search-container {
+  display: none;
+  }
 
 header nav .nav-menu > ul > li {
   padding-left: 16px;
