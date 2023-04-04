@@ -42,6 +42,8 @@
   --body-font-family: var(--ff-myradpro-regular);
   
   /* colors */
+  --clr-blue:#0070c0;
+  --clr-white:#fff;
   --text-color: #54565b;
   --link-color: #002f6d;
   --link-hover-color: #0070c0;
