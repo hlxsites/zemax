@@ -1,0 +1,78 @@
+/* stylelint-disable selector-class-pattern */
+
+.marketo-container{
+    background-color: #0070c0;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    overflow: hidden;
+}
+
+.marketo-container .default-content-wrapper{
+    padding-top: 82px;
+}
+
+.marketo-container .default-content-wrapper p{
+    line-height: 1.45;
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 1.04px;
+    text-align: center;    
+}
+
+.marketo{
+    margin: 0 auto;
+    width: 100%;
+    background-color: #0070c0;
+    padding-bottom: 55px;
+}
+
+.mktoForm, .marketo-form form {
+    margin: 0 auto !important;
+    width: var(--section-width-desktop) !important;
+  }
+  
+  .marketo-form form .mktoOffset {
+    height: 1.2em !important;
+    display: none;
+  }
+  
+  .mktoFormCol {
+    width: 100%;
+  }
+  
+  .mktoFieldWrap {
+    width: 100%;
+  }
+
+  .mktoForm .mktoButtonWrap.mktoPaperMashup .mktoButton{
+    border:none;
+    background: #222;
+    display: inline-block;
+    padding: 5px 10px 6px;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    font-size: var(--body-font-size-xs);
+    font-weight: bold;
+    line-height: 1;
+    background-color: #ff5c00;
+    }
+
+    .mktoForm .mktoButtonWrap.mktoPaperMashup .mktoButton:hover {
+    background-color: #111;
+    color: #fff;
+    }
+
+    .mktoForm .mktoButtonWrap.mktoPaperMashup .mktoButton:active {
+    top: 1px;
+    }
+    
+    .mktoForm .mktoButtonWrap.mktoPaperMashup button.mktoButton {background:#002f6d;}
+
+    
+    .mktoForm .mktoFormRow {
+        clear: both !important;
+        margin-bottom: 2px !important;
+    }
+    
