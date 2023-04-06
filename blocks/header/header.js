@@ -14,6 +14,13 @@ function clearAllTabIndex() {
   });
 }
 
+function wrapChildren(element, newType) {
+  const wrapper = createTag(newType);
+  wrapper.innerHTML = element.innerHTML;
+  element.innerHTML = '';
+  element.append(wrapper);
+}
+
 function isExapndable(element) {
   let result = false; 
   const adjacentElement = element.nextElementSibling;  
@@ -75,25 +82,25 @@ function addEventListenersMobile() {
     });
   });
 
-  elementsWithEventListener.push(document.querySelector('form .search-button'));
-  document.querySelector('form .search-button').addEventListener('click', (e) => {
-    const form = e.target.closest('form');
-    if (!form.hasAttribute('aria-expanded')) {
-      e.preventDefault();
-      e.stopPropagation();
-      form.setAttribute('aria-expanded', 'true');
-    }
-  });
+  // elementsWithEventListener.push(document.querySelector('form .search-button'));
+  // document.querySelector('form .search-button').addEventListener('click', (e) => {
+  //   const form = e.target.closest('form');
+  //   if (!form.hasAttribute('aria-expanded')) {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     form.setAttribute('aria-expanded', 'true');
+  //   }
+  // });
 
-  elementsWithEventListener.push(document.querySelector('form .close-button'));
-  document.querySelector('form .close-button').addEventListener('click', (e) => {
-    const form = e.target.closest('form');
-    if (form.hasAttribute('aria-expanded')) {
-      e.preventDefault();
-      e.stopPropagation();
-      form.removeAttribute('aria-expanded');
-    }
-  });
+  // elementsWithEventListener.push(document.querySelector('form .close-button'));
+  // document.querySelector('form .close-button').addEventListener('click', (e) => {
+  //   const form = e.target.closest('form');
+  //   if (form.hasAttribute('aria-expanded')) {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     form.removeAttribute('aria-expanded');
+  //   }
+  // });
 }
 
 function addEventListenersDesktop() {
@@ -224,24 +231,24 @@ export default async function decorate(block) {
       if (node?.children.length === 0) {
         node?.classList.add('empty');
       }
-
+      li.append(menuDropdownList);
       // Add second-level expansion even listener
       li.querySelectorAll('p + ul').forEach((subDropdown) => {
         const subDropdownTitle = subDropdown.previousElementSibling;
+        addDropdownIcon(subDropdownTitle);
         subDropdownTitle.setAttribute('aria-expanded', 'false');
         subDropdownTitle.classList.add('m-expandable-title');
         wrapChildren(subDropdownTitle, 'span');
         subDropdown.classList.add('m-expandable-list');
-        addDropdownIcon(subDropdownTitle);
+       // addDropdownIcon(subDropdownTitle);
       });
 
     });
 
-    li.append(menuDropdownList);
    }
-
      navMenuUl.append(li);
   }
+ 
   nav.querySelector('.nav-menu').innerHTML = navMenuUl.outerHTML;
 
   decorateIcons(nav);
