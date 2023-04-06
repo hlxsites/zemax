@@ -1,3 +1,30 @@
+/** card markup
+* <div class="cards-wrapper">
+*   <div class="cards block" data-block-name="cards" data-block-status="loaded">
+*     <ul>
+*       <li>
+*         <div class="cards-card-body"></div>
+*         <div class="cards-card-image"></div>
+*       </li>
+*       <li>
+*         <div class="cards-card-body"></div>
+*         <div class="cards-card-image"></div>
+*       </li>
+*     </ul>
+*   </div>
+* </div>
+*/
+
+.cards>h1, h2, h3, h4, h5, h6, a {
+  font-family: MyriadPro-Semibold, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.cards>p {
+  font-family: MyriadPro-Regular, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 .cards>ul {
   list-style: none;
   margin: 0;
@@ -27,10 +54,29 @@
 /***************************************************************
 * product variants: ul > li
 ***************************************************************/
+
+.cards-wrapper:has(.cards.badge) {
+  width: 100%;
+  max-width: 1248px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
+}
+
 .cards.product ul {
   display: inline-flex;
   justify-content: space-between;
   margin-bottom: 30px;
+}
+
+.cards.badge ul {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1151px;
+  margin: 0 auto;
+  padding-top: 43px;
+  padding-bottom: 69px;
 }
 
 .cards.product li {
@@ -41,6 +87,46 @@
   overflow: hidden;
   transition: all 0.3s linear 0s;
   margin-bottom: 0 !important;
+}
+
+.cards.badge li {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 275px;
+  width: calc(25% - 16px);
+  border: solid 1px #dad9d7;
+  border-radius: 15px;
+  overflow: hidden;
+  padding-bottom: 28px;
+  background-color: #fff;
+  transition: all 0.3s linear 0s;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 992px) {
+  .cards.badge ul {
+    flex-wrap: wrap;
+    max-width: 582px;
+  }
+
+  .cards.badge li {
+    width: calc(50% - 16px);
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cards.badge ul {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8px;
+    padding-bottom: 24px;
+  }
+
+  .cards.badge li {
+    width: 100%;
+  }
 }
 
 .cards.product.variant2 li {
@@ -61,7 +147,7 @@
   }
 }
 
-@media screen and (max-width: 767px)  {
+@media screen and (max-width: 767px) {
   .cards.product.variant1 li:nth-of-type(1) {
     max-width: 480px;
     flex-direction: column;
@@ -91,10 +177,46 @@
   }
 }
 
-
 /***************************************************************
 * cards-card-body
 ***************************************************************/
+
+/* for badge variant, the h3 is the badge */
+.cards.badge .cards-card-body {
+  margin: 0;
+}
+
+.cards.badge .cards-card-body h3 {
+  background-color: #0070c0;
+  overflow: hidden;
+  display: inline-block;
+  border-bottom-right-radius: 15px;
+  max-width: calc(100% - 21px);
+  font-size: 18px;
+  line-height: 36px;
+  letter-spacing: 0.72px;
+  padding: 0 26px 0 22px;
+  color: #fff;
+}
+
+.cards.badge .cards-card-body h4 {
+  font-size: 22px;
+  padding: 8px 21px 0;
+  margin: 0;
+  letter-spacing: 0.3px;
+  line-height: 1.5;
+  color: #54565b;
+}
+
+.cards.badge .cards-card-body p {
+  font-size: 16px;
+  padding: 0 21px;
+  line-height: 1.5;
+  color: #54565b;
+  letter-spacing: normal;
+}
+
+/* for product variant */
 .cards.product .cards-card-body {
   display: flex;
   flex-direction: column;
@@ -115,7 +237,7 @@
   width: 50%;
 }
 
-@media screen and (max-width: 767px)  {
+@media screen and (max-width: 767px) {
   .cards.product.variant1 li:nth-of-type(1) .cards-card-body {
     width: 100%;
   }
@@ -146,7 +268,6 @@
   font-size: 38px;
   margin: 5px 0;
   font-weight: 400;
-  -webkit-font-smoothing: antialiased;
 }
 
 .cards.product .cards-card-body p {
@@ -154,7 +275,6 @@
   font-weight: 400;
   line-height: 30px;
   letter-spacing: normal;
-  -webkit-font-smoothing: antialiased;
   margin: 5px 0;
 }
 
@@ -162,7 +282,6 @@
   display: inline;
   padding: 0;
   border: none;
-  font-family: MyriadPro-Semibold, sans-serif;
   font-size: 20px;
   line-height: 1.5;
   letter-spacing: 0.8px;
@@ -208,15 +327,24 @@
   background: url("/icons/icon-right-arrow-red.svg") bottom right/contain no-repeat;
 }
 
-
 /***************************************************************
 * cards-card-image
 ***************************************************************/
+.cards.badge .cards-card-image {
+  margin: 8px auto 0;
+  display: flex;
+  align-items: center;
+  height: 104px;
+  text-align: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
 .cards.product.variant1 .cards-card-image {
   width: 50%;
 }
 
-@media screen and (max-width: 767px)  {
+@media screen and (max-width: 767px) {
   .cards.product.variant1 .cards-card-image {
     height: 79px;
     position: relative;
@@ -239,5 +367,80 @@
     border: 0;
     overflow-clip-margin: content-box;
     overflow: clip;
+  }
+}
+
+/***************************************************************
+* section: "Products"
+***************************************************************/
+.section.products h1 {
+  font-family: MyriadPro-Regular, sans-serif;
+  text-align: center;
+  margin-bottom: 59px;
+  letter-spacing: 0.18px;
+  line-height: 1.36;
+  color: #54565b;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 480px) {
+  .section.products h1 {
+    font-size: calc(0.0352 * 100vw + 7.125px);
+  }
+}
+
+@media (min-width: 992px) {
+  .section.products h1 {
+    font-size: 42px;
+  }
+}
+
+/***************************************************************
+* section: "Customer Success Stories"
+***************************************************************/
+.section.customer-success-stories h1 {
+  font-family: MyriadPro-Regular, sans-serif;
+  text-align: center;
+  letter-spacing: 0.14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 480px) {
+  .section.customer-success-stories h1 {
+    font-size: calc(0.0195 * 100vw + 14.625px);
+  }
+}
+
+@media (min-width: 992px) {
+  .section.customer-success-stories h1 {
+    font-size: 34px;
+  }
+}
+
+.section.customer-success-stories .button {
+  padding: 0;
+  border-radius: 12px;
+  font-family: MyriadPro-Semibold, sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.8px;
+  text-transform: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s linear 0s;
+  border: solid 2.5px #0070c0;
+  color: #0070c0;
+  background-color: white;
+  margin: 0 auto;
+  width: 182px;
+  height: 54px;
+}
+
+@media screen and (max-width: 767px) {
+  .section.customer-success-stories .button {
+    font-size: 16px;
+    width: 152px;
+    height: 42px;
   }
 }
