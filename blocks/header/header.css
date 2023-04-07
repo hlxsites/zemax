@@ -1,13 +1,9 @@
 /* header and nav layout */
-
 header .header.block {
   position: fixed;
-  z-index: 99;
+  z-index: 22;
   width: 100%;
-}
-
-header .search-container {
-  display: none;
+  background: var(--background-color);
 }
 
 header nav {
@@ -15,13 +11,13 @@ header nav {
   margin: 0 auto;
   padding: 16px 20px;
   height: var(--nav-height);
+  border-bottom: none;
 }
 
 header nav > div {
   box-sizing: border-box;
   display: grid;
   grid-template: 'logo .  hamburger' / 1fr 1fr  22px;
-
 }
 
 header nav .nav-logo {
@@ -36,6 +32,10 @@ header nav .nav-logo svg {
 header nav .nav-logo picture img {
   width: 71px;
   height: 28px;
+}
+
+header  .search-container {
+  display: none;
 }
 
 header nav  .nav-hamburger svg {
@@ -56,13 +56,24 @@ header nav .nav-menu {
   display: none;
 }
 
-header  .menu-nav-dropdown  ul {
+header nav .nav-menu ul {
+  list-style: none;
+}
+
+header nav .nav-menu .dropdown-button {
+  background: none;
+  border:none;
+}
+
+header nav .menu-nav-dropdown  ul {
   padding:0;
   margin:0; 
 }
 
-header nav .nav-menu ul {
-  list-style: none;
+header nav .nav-menu ul .menu-nav-dropdown li {
+  font-family: var(--ff-myradpro-semibold);
+  padding-top: 1px;
+  padding-bottom: 15px;
 }
 
 header nav p.m-expandable-title a {
@@ -71,22 +82,10 @@ header nav p.m-expandable-title a {
 
 header nav[aria-expanded="true"] .m-expandable-list > li a {
   display: block;
-  
 }
 
 header nav .nav-menu ul .menu-nav-category  > div > a{
   height: 56px;
-}
-
-header nav .nav-menu .dropdown-button {
-  background: none;
-  border:none;
-}
-
-header nav .nav-menu ul .menu-nav-dropdown li {
-  font-family: var(--ff-myradpro-semibold);
-  padding-top: 1px;
-  padding-bottom: 15px;
 }
 
 header nav p.m-expandable-title .icon {
@@ -99,7 +98,6 @@ header nav .nav-menu .dropdown-button > .icon {
   width: 14px;
   height: 14px;
 }
-
 
 header nav .nav-menu ul .mobile-search-container .icon {
   width: 20px;
@@ -134,7 +132,7 @@ header nav .nav-menu ul .menu-nav-category{
   color: var(--link-color);
 }
 
-header nav .m-expandable-list {
+header nav .nav-menu .m-expandable-list {
   display: none;
 }
 
@@ -420,7 +418,7 @@ header nav[aria-expanded='true'] .nav-tools {
     border-radius: 20px;
     box-shadow: 0 4px 11px -1px #262729;
     border: 1px solid #ebebeb;
-    background: #fff;
+    background:var(--background-color);
     display: flex;
   }
 
