@@ -38,6 +38,8 @@
   --body-font-family: var(--ff-myradpro-regular);
   
   /* colors */
+  --clr-blue:#0070c0;
+  --clr-white:#fff;
   --text-color: #54565b;
   --link-color: #002f6d;
   --link-hover-color: #0070c0;
@@ -288,6 +290,13 @@ main .section > div {
   width: var(--section-width);
 }
 
+main .divider{
+  display:block;
+  width: auto;
+  margin: 20px 0;
+  border: 1px solid var(--link-hover-color);
+  padding:unset
+  }
 
 /* Mobile */
 @media only screen and (min-width: 480px) {
