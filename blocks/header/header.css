@@ -106,6 +106,12 @@ header nav .nav-menu ul .mobile-search-container .icon {
   height: 20px;
 }
 
+header nav .nav-menu  .icon-external-link > svg {
+  margin-left:7px;
+  width : 14px;
+  height : 14px;
+}
+
 header nav .nav-menu ul > li .menu-nav-category .icon {
   min-width: 14px;
   transition: transform 200ms;
@@ -168,15 +174,32 @@ header nav[aria-expanded='true'] .nav-menu > ul > li:not(.menu-expandable) > div
   height: 50%;
 }
 
-header nav .nav-menu ul .mobile-search-container {
+header nav[aria-expanded='true'] .nav-menu > ul > .mobile-search > .mobile-search-container  {
   display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  cursor: pointer;
+  
 }
 
-header nav .nav-menu ul .mobile-search-container .search-form form {
-  display:flex;
+header nav[aria-expanded='true'] .nav-menu > ul > .mobile-search > .mobile-search-container > .search-form  {
+  width: 100%;
+  justify-content: flex-start;
+  align-items: unset;
+}
+
+header nav[aria-expanded='true'] .nav-menu > ul > .mobile-search > .mobile-search-container > .search-form > form {
+  width: 100%;
+  display: flex;
+}
+
+header nav[aria-expanded='true'] .nav-menu > ul > .mobile-search > .mobile-search-container > .search-form > form > .search-input { 
+  /* flex-basis: 700px; */
+  display: inline-block;
+  margin-left: 15px;
+  width: 100%;
+  box-shadow: inset 0 1px 3px 0 #000;
+  border-color: #909196;
+  border-radius: 4px;
+  height: 44px;
+  border: 1px solid #ccc;
 }
 
 header nav .nav-menu ul .mobile-search-container button {
@@ -185,19 +208,9 @@ header nav .nav-menu ul .mobile-search-container button {
   padding: 0;
 }
 
-header nav .nav-menu ul .mobile-search-container .search-input{
-  margin-left: 15px;
-  width: 90vw;
-  box-shadow: inset 0 1px 3px 0 #000;
-  border-color: #909196;
-  border-radius: 4px;
-  height: 44px;
-  border: 1px solid #ccc;
-}
-
 header nav .nav-menu ul .mobile-search-container .search-close{
   position: relative;
-  left: -40px;
+  left: -31px;
 }
 
 header nav .nav-menu .mobile-search-container .close-button svg {
@@ -279,12 +292,6 @@ header nav[aria-expanded='true'] .nav-tools {
     cursor: pointer;
     margin-top: -4px;
     vertical-align: middle;
-  }
-
-  header nav .nav-menu  .icon-external-link > svg {
-    margin-left:7px;
-    width : 14px;
-    height : 14px;
   }
 
 }
