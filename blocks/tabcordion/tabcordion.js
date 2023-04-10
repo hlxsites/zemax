@@ -5,15 +5,6 @@ function changeTabs(e) {
   const parent = target.parentNode;
   const grandparent = parent.parentNode.nextElementSibling;
 
-  // Remove any previously selected links
-  const selectedLinks = document.querySelectorAll('.selected');
-  selectedLinks.forEach((selectedLink) => {
-    selectedLink.classList.remove('selected');
-  });
-
-  // Add selected class to clicked link
-  target.classList.add('selected');
-
   grandparent.querySelectorAll('[role="tabpanel"]').forEach((p) => p.setAttribute('hidden', true));
   grandparent.parentNode.querySelectorAll('.tablist-container .tabpanel').forEach((p) => p.remove());
   const targetTabContent = grandparent.parentNode.querySelector(`#${target.getAttribute('aria-controls')}`);
