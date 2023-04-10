@@ -1,0 +1,179 @@
+/* stylelint-disable no-descending-specificity */  
+.tabcordion[data-block-status="loaded"] {
+    position: relative;
+    min-height: unset;
+    margin: 0 auto;
+    width: 100%;;
+  }
+  
+  
+  .tabcordion[data-block-status="loaded"] div[role="tablist"] {
+    position: relative;
+    display: flex;
+    z-index: 2;
+  }
+  
+  .tabcordion div[role="tablist"]::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+  
+  
+  /* Section Metadata */
+  
+
+  .tabcordion div[role="tablist"] .tablist-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .tabcordion div[role="tablist"] .tablist-container > a{
+    border-radius: 6px;
+    border: 1px solid #dad9d7;
+    text-align: left;
+    margin-bottom: 11px;
+  }
+  
+  .tabcordion div[role="tablist"] .tablist-container > a:hover{
+    color: #f77f00;
+    border-radius: 6px;
+    border: 1px solid #dad9d7;
+  
+  }
+
+
+  
+  
+  .tabcordion div[role="tablist"] a {
+    border: 1px solid transparent;
+    cursor: pointer;
+    float: left;
+    font-family: var(--body-font-family);
+    font-weight: 600;
+    margin-left: -1px;
+    margin-top: 0;
+    padding: 14px 10px 12px;
+    text-decoration: none;
+    transition: color 0.1s ease-in-out;
+    white-space: nowrap;
+    width: auto;
+    z-index: 1;
+    color: #54565b;
+    font-size:16px;
+  }
+
+  .tabcordion div[role="tablist"] a::before{
+    content: "";
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    transform: rotate(45deg) translate(-3px, 3px);
+    color: #f77f00;
+  }
+  
+  .tabcordion div[role="tablist"] a:hover {
+    color: #898b8e;
+  }
+  
+  .tabcordion div[role="tablist"] a:active {
+    color: #002f6d;
+  }
+  
+  .tabcordion .tablist-container  div.section > *{
+    padding:unset;
+  }
+  
+  .tabcordion .tabcontent{
+    display:none;
+  }
+  
+  .tabcordion  .tablist-container > .tabpanel{
+    margin-bottom : 11px;
+    transition: all 0.3s linear 0s;
+  }
+  
+  .hidden{
+    display: none;
+  }
+
+  .tabcordion .tabpanel > div > div img{
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 0 5px 0 color(38,39,41,20%);
+}
+
+.tabcordion .tabpanel > div > div:has(picture){
+  margin: 15px auto;
+}
+
+  
+  /* Mobile */
+  
+  /* @media only screen and (min-width: 480px) {
+  } */
+  
+  
+  /* Tablet */
+  @media only screen and (min-width: 768px) {
+    .tabcordion div[role="tablist"] .tablist-container {
+        flex-direction: row;
+        justify-content: space-between;
+        border-bottom: 1px solid #dad9d7;
+        text-align: center;
+      }
+  
+      .tabcordion div[role="tablist"] .tablist-container > a,
+      .tabcordion div[role="tablist"] .tablist-container > a:hover {
+        border : none
+      }
+  
+      .tabcordion div[role="tablist"] .tablist-container > a:hover {
+        color: #898b8e;
+      }
+  
+      .tabcordion div[role="tablist"] a {
+        font-size:18px;
+      }
+  
+        .tabcordion .tabcontent{
+          display:block;
+        }
+  
+        .tabcordion .tablist-container > .tabpanel{
+          display: none;
+        }
+
+        .tabcordion .tabpanel > div{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .tabcordion .tabpanel > div > div{
+          flex: 1;
+      }
+
+
+      .tabcordion .tabpanel > div > div:has(picture){
+        margin: 25px 10px;
+      }    
+
+      .tabcordion div[role="tablist"] a::before{
+        content: unset;
+      }
+      
+
+        .tabcordion div[role="tablist"] .tablist-container > a[aria-selected="true"], .tabcordion div[role="tablist"] .tablist-container > a:hover{
+          border-bottom: 4px solid #f77f00;
+          border-radius: unset;
+          margin: unset;
+  }
+}
+  
+  /* Desktop */
+  
+  /* @media screen and (min-width: 1030px) {
+  } */
