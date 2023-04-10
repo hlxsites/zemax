@@ -51,7 +51,7 @@ function addSearchForm(breakpoint) {
   if (breakpoint === 'mobile') {
     searchHTML = '<div class=\'search-form\'><form action=\'/search\' method=\'get\'><button class=\'search-button\'><span class=\'icon icon-search\' ></span></button><input type=\'text\' name=\'q\' class=\'search-input\'/><input type=\'hidden\' name=\'options[prefix]\' value=\'last\' aria-hidden=\'true\' /></form> </div><div class=\'search-close\'> <button type=\'button\' class=\'close-button\'> <span  class=\'icon icon-search-close\'></span></button></div>';
   }
-  const searchContainer = createTag('div', { class: cssclass }, searchHTML);
+  const searchContainer = createTag('div', { class: cssclass, 'aria-expanded': false }, searchHTML);
   return searchContainer;
 }
 
@@ -184,6 +184,34 @@ export default async function decorate(block) {
       .insertBefore(hamburger, nav.querySelector('.nav-menu'));
     nav.setAttribute('aria-expanded', 'false');
 
+    // add event to open search form
+    const closeSearch = () => {
+      const searchContainer = block.querySelector('.search-container');
+      searchContainer.style.display = 'none';
+    };
+    const showSearchForm = () => {
+      const searchContainer = block.querySelector('.search-container');
+      if (searchContainer.style.display === 'flex') {
+        searchContainer.style.display = 'none';
+        searchContainer.setAttribute('aria-expanded', false);
+      } else {
+        searchContainer.style.display = 'flex';
+        searchContainer.setAttribute('aria-expanded', true);
+        const closeBtn = searchContainer.querySelector(':scope .search-close .close-button');
+        closeBtn.addEventListener('click', closeSearch);
+      }
+    };
+
+    const searchIcon = nav.querySelector(':scope .nav-tools .icon-search');
+    searchIcon.addEventListener('click', showSearchForm);
+    searchIcon.addEventListener('keydown', (e) => {
+      if (e.key === ' ') {
+        e.preventDefault();
+        e.stopPropagation();
+        showSearchForm();
+      }
+    });
+
     // link section
     const navMenuUl = createTag('ul');
     const menus = [...nav.querySelectorAll('.nav-menu > div')];
@@ -251,6 +279,7 @@ export default async function decorate(block) {
       removeAllEventListeners();
       collapseAllSubmenus(block);
       reAttachEventListeners();
+      closeSearch();
     };
 
     reAttachEventListeners();
