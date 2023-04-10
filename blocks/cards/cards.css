@@ -1,11 +1,9 @@
 .cards>h1, h2, h3, h4, h5, h6, a {
   font-family: MyriadPro-Semibold, sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
-.cards>p {
+.cards p {
   font-family: MyriadPro-Regular, sans-serif;
-  -webkit-font-smoothing: antialiased;
 }
 
 .cards>ul {
@@ -34,11 +32,42 @@
   margin-top: 0;
 }
 
-/***************************************************************
-* product variants: ul > li
-***************************************************************/
+.cards .cards-card-body a:hover {
+  text-decoration: underline;
+}
 
-.cards-wrapper:has(.cards.badge) {
+/***************************************************************
+* section: "Products"
+***************************************************************/
+.section.products h1 {
+  font-family: MyriadPro-Regular, sans-serif;
+  text-align: center;
+  margin-bottom: 59px;
+  letter-spacing: 0.18px;
+  line-height: 1.36;
+  color: #54565b;
+}
+
+@media (min-width: 480px) {
+  .section.products h1 {
+    font-size: calc(0.0352 * 100vw + 7.125px);
+  }
+}
+
+@media (min-width: 992px) {
+  .section.products h1 {
+    font-size: 42px;
+  }
+}
+
+/***************************************************************
+* section: "Customer Success Stories"
+***************************************************************/
+.section.customer-success-stories {
+  padding-bottom: 91px;
+}
+
+.section.customer-success-stories .cards-wrapper {
   width: 100%;
   max-width: 1248px;
   padding-left: 15px;
@@ -46,12 +75,213 @@
   margin: 0 auto;
 }
 
-.cards.product ul {
-  display: inline-flex;
-  justify-content: space-between;
-  margin-bottom: 30px;
+.section.customer-success-stories h1 {
+  font-family: MyriadPro-Regular, sans-serif;
+  text-align: center;
+  letter-spacing: 0.14px;
 }
 
+@media (min-width: 480px) {
+  .section.customer-success-stories h1 {
+    font-size: calc(0.0195 * 100vw + 14.625px);
+  }
+}
+
+@media (min-width: 992px) {
+  .section.customer-success-stories h1 {
+    font-size: 34px;
+  }
+}
+
+/***************************************************************
+* section: "Training"
+***************************************************************/
+.section.training {
+  background-image: linear-gradient(to bottom, #005ca6 -28%, #00306f 73%, #002f6d 100%);
+  padding-top: 27px;
+  padding-bottom: 110px;
+}
+
+.section.training .cards-wrapper {
+  width: 100%;
+  max-width: 990px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
+  display: block;
+}
+
+.section.training h1 {
+  font-size: 48px;
+  color: #fff;
+  font-family: MyriadPro-Regular, sans-serif;
+  text-align: center;
+  line-height: 1.36;
+  letter-spacing: 0.18px;
+}
+
+/***************************************************************
+* section: "Events"
+***************************************************************/
+.section.events {
+  padding-top: 99px;
+}
+
+.section.events .cards-wrapper {
+  line-height: 1.5;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 990px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
+}
+
+.section.events h1 {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  font-family: MyriadPro-Regular, sans-serif;
+  line-height: 1.36;
+  letter-spacing: 0.18px;
+  color: #54565b;
+  text-transform: none;
+  font-weight: normal;
+  font-size: 42px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+@media screen and (max-width: 767px) {
+  .section.events h1 {
+    line-height: 1.33;
+    letter-spacing: 0.1px;
+  }
+}
+
+@media (min-width: 480px) {
+  .section.events h1 {
+    font-size: calc(0.0352 * 100vw + 7.125px);
+  }
+}
+
+@media (min-width: 992px) {
+  .section.events h1 {
+    font-size: 42px;
+  }
+}
+
+.section.events h2 {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  font-family: MyriadPro-Regular, sans-serif;
+  font-weight: normal;
+  color: #54565b;
+  line-height: 1.18;
+  letter-spacing: 0.34px;
+  margin-bottom: 28px;
+  font-size: 34px;
+}
+
+@media screen and (max-width: 767px) {
+  .section.events h2 {
+    text-align: center;
+  }
+}
+
+@media (min-width: 480px) {
+  .section.events h2 {
+    font-size: calc(0.0234 * 100vw + 10.75px);
+  }
+}
+
+@media (min-width: 992px) {
+  .section.events h2 {
+    font-size: 34px;
+  }
+}
+
+/***************************************************************
+* section: "News"
+***************************************************************/
+.section.news {
+  padding-top: 58px;
+  padding-bottom: 94px;
+}
+
+.section.news .cards-wrapper {
+  line-height: 1.5;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 990px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
+}
+
+.section.news h2 {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  font-family: MyriadPro-Regular, sans-serif;
+  font-weight: normal;
+  color: #54565b;
+  line-height: 1.18;
+  letter-spacing: 0.34px;
+  margin-bottom: 28px;
+  font-size: 34px;
+}
+
+@media screen and (max-width: 767px) {
+  .section.news h2 {
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .section.news h2 {
+    font-size: calc(0.0234 * 100vw + 10.75px);
+  }
+}
+
+@media (min-width: 992px) {
+  .section.news h2 {
+    font-size: 34px;
+  }
+}
+
+/***************************************************************
+* the bottom button for sections: events, news and customer success stories
+***************************************************************/
+.section>.default-content-wrapper>.button-container>.button {
+  padding: 0;
+  border-radius: 12px;
+  font-family: MyriadPro-Semibold, sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.8px;
+  text-transform: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s linear 0s;
+  border: solid 2.5px #0070c0;
+  color: #0070c0;
+  background-color: white;
+  margin: 0 auto;
+  width: 182px;
+  height: 54px;
+}
+
+@media screen and (max-width: 767px) {
+  .section>.default-content-wrapper>.button-container>.button {
+    font-size: 16px;
+    width: 152px;
+    height: 42px;
+  }
+}
+
+/***************************************************************
+* ul > li: "badge" variant
+***************************************************************/
 .cards.badge ul {
   display: flex;
   justify-content: space-between;
@@ -60,16 +290,6 @@
   margin: 0 auto;
   padding-top: 43px;
   padding-bottom: 69px;
-}
-
-.cards.product li {
-  display: flex;
-  border-radius: 15px;
-  background-color: #fff;
-  border: solid 1px #dad9d7;
-  overflow: hidden;
-  transition: all 0.3s linear 0s;
-  margin-bottom: 0 !important;
 }
 
 .cards.badge li {
@@ -110,6 +330,136 @@
   .cards.badge li {
     width: 100%;
   }
+}
+
+/***************************************************************
+* ul > li: "top-image" variant
+***************************************************************/
+.cards.top-image ul {
+  line-height: 1.5;
+  user-select: none;
+  box-sizing: border-box;
+  position: relative;
+  top: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  opacity: 1;
+  width: 984px;
+  transform: translate3d(0, 0, 0);
+}
+
+.cards.top-image li {
+  text-size-adjust: 100%;
+  float: left;
+  min-height: 1px;
+  margin-left: 12px;
+  margin-right: 12px;
+  height: auto;
+  width: 304px;
+  line-height: 1.5;
+  user-select: none;
+  box-sizing: border-box;
+  text-align: center !important;
+  max-width: 305px;
+  overflow: hidden;
+  border-radius: 15px;
+  background-color: #fff;
+  display: inline-flex !important;
+  flex-direction: column;
+  transition: all 0.3s linear 0s;
+}
+
+/***************************************************************
+* ul > li: "left-image" variant
+***************************************************************/
+.cards.left-image ul {
+  display: flex;
+}
+
+.cards.left-image li {
+  line-height: 1.5;
+  box-sizing: border-box;
+  display: flex;
+  border-radius: 15px;
+  border: solid 1px #dad9d7;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  transition: box-shadow 0.3s linear 0s;
+}
+
+@media screen and (max-width: 767px) {
+  .cards.left-image li {
+    max-width: 467px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cards.left-image li {
+    flex-direction: column;
+    max-width: 467px;
+    margin: 0 auto;
+  }
+}
+
+/***************************************************************
+* ul > li: "no-image" variant
+***************************************************************/
+.cards.no-image ul {
+  display: flex;
+}
+
+@media screen and (max-width: 767px) {
+  .cards.no-image ul {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
+.cards.no-image li {
+  line-height: 1.5;
+  box-sizing: border-box;
+  display: flex;
+  border-radius: 15px;
+  border: solid 1px #dad9d7;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.3s linear 0s;
+  width: calc(50% - 9px);
+  height: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .cards.no-image li {
+    max-width: 469px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+/***************************************************************
+* ul > li: "product" variant
+***************************************************************/
+.cards.product ul {
+  display: inline-flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.cards.product li {
+  display: flex;
+  border-radius: 15px;
+  background-color: #fff;
+  border: solid 1px #dad9d7;
+  overflow: hidden;
+  transition: all 0.3s linear 0s;
+  margin-bottom: 0 !important;
 }
 
 .cards.product.variant2 li {
@@ -161,10 +511,8 @@
 }
 
 /***************************************************************
-* cards-card-body
+* cards-card-body: "badge" variant
 ***************************************************************/
-
-/* for badge variant, the h3 is the badge */
 .cards.badge .cards-card-body {
   margin: 0;
 }
@@ -199,7 +547,196 @@
   letter-spacing: normal;
 }
 
-/* for product variant */
+/***************************************************************
+* cards-card-body: "top-image" variant
+***************************************************************/
+.cards.top-image .cards-card-body h3 {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  margin-bottom: 6px;
+  color: #002f6d;
+  font-weight: normal;
+  font-size: 22px;
+  line-height: 1.4;
+  font-family: MyriadPro-Semibold, sans-serif;
+  text-align: left;
+  letter-spacing: 0.3px;
+  user-select: none;
+}
+
+.cards.top-image .cards-card-body p {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  margin-bottom: 28px;
+  color: #54565b;
+  font-size: 20px;
+  line-height: 1.4;
+  text-align: left;
+  letter-spacing: 0.2px;
+  user-select: none;
+}
+
+.cards.top-image .cards-card-body .button {
+  display: flex;
+  bottom: 38px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 117px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: solid 2.5px #0070c0;
+  border-radius: 8px;
+  color: #0070c0;
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: MyriadPro-Semibold, sans-serif;
+  text-align: center;
+  text-transform: none;
+  vertical-align: middle;
+  letter-spacing: 0.64px;
+  white-space: normal;
+  cursor: pointer;
+  user-select: none;
+  background-color: white;
+  transition: all 0.3s linear 0s;
+  touch-action: manipulation;
+  appearance: none;
+}
+
+/***************************************************************
+* cards-card-body: "no-image" variant
+***************************************************************/
+.cards.no-image .cards-card-body {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 35px 11px 45px 31px;
+  line-height: 1.5;
+}
+
+.cards.no-image .cards-card-body h3 {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  font-family: MyriadPro-Regular, sans-serif;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #54565b;
+  display: inline;
+  font-size: 22px;
+}
+
+.cards.no-image .cards-card-body p {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #54565b;
+  font-size: 16px;
+  display: inline;
+}
+
+.cards.no-image .cards-card-body p.button-container {
+  margin-bottom: 0;
+}
+
+.cards.no-image .cards-card-body a {
+  display: inline;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  color: #f77f00;
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: MyriadPro-Semibold, sans-serif;
+  letter-spacing: 0.8px;
+  background-color: transparent;
+  transition: all 0.3s linear 0s;
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+/***************************************************************
+* cards-card-body: "left-image" variant
+***************************************************************/
+.cards.left-image .cards-card-body {
+  box-sizing: border-box;
+  width: calc(100% - 297px);
+  margin: 0;
+  padding: 32px 40px 33px 33px;
+  line-height: 1.5;
+}
+
+@media screen and (max-width: 767px) {
+  .cards.left-image .cards-card-body {
+    width: 100%;
+    padding: 22px 20px 42px 27px;
+  }
+}
+
+.cards.left-image .cards-card-body h3 {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  font-family: MyriadPro-Semibold, sans-serif;
+  font-weight: normal;
+  line-height: 1.36;
+  letter-spacing: 0.2px;
+  color: #54565b;
+  max-width: 360px;
+  margin-bottom: 20px;
+  font-size: calc(0.0039 * 100vw + 18.125px);
+}
+
+@media (min-width: 992px) {
+  .cards.left-image .cards-card-body h3 {
+    font-size: 22px;
+  }
+}
+
+.cards.left-image .cards-card-body p {
+  box-sizing: border-box;
+  margin: 0 0 19.4444px;
+  font-family: MyriadPro-Regular, sans-serif;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #54565b;
+  font-size: calc(0.0078 * 100vw + 12.25px);
+}
+
+@media (min-width: 992px) {
+  .cards.left-image .cards-card-body p {
+    font-size: 20px;
+  }
+}
+
+.cards.left-image .cards-card-body p.button-container {
+  margin-bottom: 0;
+}
+
+.cards.left-image .cards-card-body .button-container a {
+  display: inline;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  color: #f77f00;
+  font-size: 20px;
+  line-height: 1.5;
+  font-family: MyriadPro-Semibold, sans-serif;
+  text-transform: none;
+  letter-spacing: 0.8px;
+  background-color: transparent;
+  transition: all 0.3s linear 0s;
+  touch-action: manipulation;
+}
+
+/***************************************************************
+* cards-card-body: "product" variant
+***************************************************************/
 .cards.product .cards-card-body {
   display: flex;
   flex-direction: column;
@@ -230,22 +767,6 @@
   padding: 30px;
 }
 
-.cards.product.variant1 .cards-card-image img {
-  height: 100%;
-}
-
-.cards.product.variant2 .cards-card-image img {
-  width: 100%;
-}
-
-.cards.product li:nth-of-type(1) .cards-card-body img {
-  width: 245px;
-}
-
-.cards.product.variant1 li:nth-of-type(2) .cards-card-body img {
-  width: 123px;
-}
-
 .cards.product li:nth-of-type(2) .cards-card-body h3 {
   font-family: MyriadPro-Regular, sans-serif;
   font-size: 38px;
@@ -269,7 +790,6 @@
   line-height: 1.5;
   letter-spacing: 0.8px;
   position: relative;
-  z-index: 0;
   transition: all 0.3s linear 0s;
 }
 
@@ -290,7 +810,7 @@
   color: #871054 !important;
 }
 
-.cards.product .cards-card-body .button-container a::after {
+.cards.product .cards-card-body .button-container a::after, .cards.left-image .cards-card-body .button-container a::after {
   content: "";
   background: url("/icons/icon-right-arrow.svg") bottom right/contain no-repeat;
   display: inline-block;
@@ -323,8 +843,45 @@
   box-sizing: border-box;
 }
 
+.cards.left-image .cards-card-image picture {
+  overflow: hidden;
+  border-top-right-radius: 10% 50%;
+  border-bottom-right-radius: 10% 50%;
+}
+
+.cards.left-image .cards-card-image {
+  display: flex;
+}
+
+.cards.left-image .cards-card-image img {
+  height: 100%;
+}
+
+@media screen and (max-width: 767px) {
+  .cards.left-image .cards-card-image picture {
+    overflow: hidden;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 50% 20%;
+    border-bottom-right-radius: 50% 20%;
+  }
+
+  .cards.left-image .cards-card-image {
+    line-height: 1.5;
+    box-sizing: border-box;
+    height: 260px;
+  }
+}
+
 .cards.product.variant1 .cards-card-image {
   width: 50%;
+}
+
+.cards.product.variant1 .cards-card-image img {
+  height: 100%;
+}
+
+.cards.product.variant2 .cards-card-image img {
+  width: 100%;
 }
 
 @media screen and (max-width: 767px) {
@@ -332,7 +889,6 @@
     height: 79px;
     position: relative;
     left: -8%;
-    z-index: 0;
     width: 124%;
     display: inline-flex;
     align-items: flex-start;
@@ -353,77 +909,14 @@
   }
 }
 
-/***************************************************************
-* section: "Products"
-***************************************************************/
-.section.products h1 {
-  font-family: MyriadPro-Regular, sans-serif;
-  text-align: center;
-  margin-bottom: 59px;
-  letter-spacing: 0.18px;
-  line-height: 1.36;
-  color: #54565b;
-  -webkit-font-smoothing: antialiased;
+.cards.product.variant2 .cards-card-body img {
+  width: 270px;
 }
 
-@media (min-width: 480px) {
-  .section.products h1 {
-    font-size: calc(0.0352 * 100vw + 7.125px);
-  }
+.cards.product.variant1 li:nth-of-type(1) .cards-card-body img {
+  width: 245px;
 }
 
-@media (min-width: 992px) {
-  .section.products h1 {
-    font-size: 42px;
-  }
-}
-
-/***************************************************************
-* section: "Customer Success Stories"
-***************************************************************/
-.section.customer-success-stories h1 {
-  font-family: MyriadPro-Regular, sans-serif;
-  text-align: center;
-  letter-spacing: 0.14px;
-  -webkit-font-smoothing: antialiased;
-}
-
-@media (min-width: 480px) {
-  .section.customer-success-stories h1 {
-    font-size: calc(0.0195 * 100vw + 14.625px);
-  }
-}
-
-@media (min-width: 992px) {
-  .section.customer-success-stories h1 {
-    font-size: 34px;
-  }
-}
-
-.section.customer-success-stories .button {
-  padding: 0;
-  border-radius: 12px;
-  font-family: MyriadPro-Semibold, sans-serif;
-  font-size: 20px;
-  line-height: 1.5;
-  letter-spacing: 0.8px;
-  text-transform: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s linear 0s;
-  border: solid 2.5px #0070c0;
-  color: #0070c0;
-  background-color: white;
-  margin: 0 auto;
-  width: 182px;
-  height: 54px;
-}
-
-@media screen and (max-width: 767px) {
-  .section.customer-success-stories .button {
-    font-size: 16px;
-    width: 152px;
-    height: 42px;
-  }
+.cards.product.variant1 li:nth-of-type(2) .cards-card-body img {
+  width: 123px;
 }
