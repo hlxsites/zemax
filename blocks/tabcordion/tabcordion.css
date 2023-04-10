@@ -40,6 +40,8 @@
     border: 1px solid #dad9d7;
   
   }
+
+
   
   
   .tabcordion div[role="tablist"] a {
@@ -160,16 +162,14 @@
       }    
 
       .tabcordion div[role="tablist"] a::before{
-        content: "";
-        border-style: unset;
-        border-width: unset;
-        display: inline-block;
-        height: auto;
-        width: auto;
-        transform: unset;
-        color: unset;
+        content: unset;
       }
       
+
+        .tabcordion div[role="tablist"] .tablist-container > a[aria-selected="true"], .tabcordion div[role="tablist"] .tablist-container > a:hover{
+          border-bottom: 4px solid #f77f00;
+          border-radius: unset;
+          margin: unset;
   }
   
   /* Desktop */

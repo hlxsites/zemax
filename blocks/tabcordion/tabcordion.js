@@ -1,26 +1,18 @@
 import { createTag } from '../../scripts/scripts.js';
 
-const isElementInContainerView = (targetEl) => {
-  const rect = targetEl.getBoundingClientRect();
-  return (
-    rect.top >= 0
-    && rect.left >= 0
-    && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
-    && rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-  );
-};
-
-const scrollTabIntoView = (e) => {
-  const isElInView = isElementInContainerView(e);
-  /* c8 ignore next */
-  if (!isElInView) e.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-};
-
-
 function changeTabs(e) {
   const { target } = e;
   const parent = target.parentNode;
   const grandparent = parent.parentNode.nextElementSibling;
+
+  // Remove any previously selected links
+  const selectedLinks = document.querySelectorAll('.selected');
+  selectedLinks.forEach((selectedLink) => {
+    selectedLink.classList.remove('selected');
+  });
+
+  // Add selected class to clicked link
+  target.classList.add('selected');
 
   grandparent.querySelectorAll('[role="tabpanel"]').forEach((p) => p.setAttribute('hidden', true));
   grandparent.parentNode.querySelectorAll('.tablist-container .tabpanel').forEach((p) => p.remove());
@@ -40,7 +32,6 @@ function changeTabs(e) {
   } else {
     parent.querySelectorAll('[aria-selected="true"]').forEach((t) => t.setAttribute('aria-selected', false));
     target.setAttribute('aria-selected', true);
-    scrollTabIntoView(target);
     targetTabContent.removeAttribute('hidden');
   }
 }
