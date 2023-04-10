@@ -1,0 +1,55 @@
+/* stylelint-disable selector-class-pattern */
+
+.marketo-container{
+    background-color: var(--clr-blue);
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    overflow: hidden;
+}
+
+.marketo-container .default-content-wrapper{
+    padding-top: 82px;
+}
+
+.marketo-container .default-content-wrapper p{
+    line-height: var(--line-height-14);
+    font-size: var(--body-font-size-l);
+    color: var(--clr-white);
+    letter-spacing: var(  --letter-spacing-96);
+    text-align: center;    
+}
+
+.marketo{
+    margin: 0 auto;
+    width: 100%;
+    background-color: var(--clr-blue);
+    padding-bottom: 55px;
+}
+
+.mktoForm, .marketo-form form {
+    margin: 0 auto !important;
+    width: 100% !important;
+  }
+  
+/* Mobile */
+@media only screen and (min-width: 480px) {
+    .marketo form  {
+        width: 440px !important;
+      }   
+  }
+  
+  /* Tablet */
+  @media only screen and (min-width: 768px) {
+    .marketo form  {
+        width: 700px !important;
+      }   
+  }
+  
+  
+  /* Desktop */
+  @media only screen and (min-width: 1030px) {
+    .marketo form  {
+        width: 711px !important;
+      }   
+  }
+  

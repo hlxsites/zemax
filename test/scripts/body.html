@@ -1,59 +1,574 @@
-<header></header>
+<header class="header-wrapper">
+  <div class="header block" data-block-name="header" data-block-status="loaded">
+    <div class="search-container">
+      <div class="search-form">
+        <form action="/search" method="get">
+          <input type="text" name="q" class="search-input" /><input
+            type="hidden"
+            name="options[prefix]"
+            value="last"
+            aria-hidden="true"
+          /><button class="search-button">
+            <span class="icon icon-search"></span>
+          </button>
+        </form>
+      </div>
+      <div class="search-close">
+        <button type="button" class="close-button">
+          <span class="icon icon-search-close"></span>
+        </button>
+      </div>
+    </div>
+    <nav aria-expanded="false">
+      <div>
+        <div class="nav-logo">
+          <div>
+            <div>
+              <picture>
+                <source
+                  type="image/webp"
+                  srcset="
+                    ./media_1bf3ff18a533705f37e93facbba4bbcbce7f06f7d.jpeg?width=2000&amp;format=webply&amp;optimize=medium
+                  "
+                  media="(min-width: 600px)"
+                />
+                <source
+                  type="image/webp"
+                  srcset="
+                    ./media_1bf3ff18a533705f37e93facbba4bbcbce7f06f7d.jpeg?width=750&amp;format=webply&amp;optimize=medium
+                  "
+                />
+                <source
+                  type="image/jpeg"
+                  srcset="
+                    ./media_1bf3ff18a533705f37e93facbba4bbcbce7f06f7d.jpeg?width=2000&amp;format=jpeg&amp;optimize=medium
+                  "
+                  media="(min-width: 600px)"
+                />
+                <img
+                  loading="lazy"
+                  alt=""
+                  type="image/jpeg"
+                  src="./media_1bf3ff18a533705f37e93facbba4bbcbce7f06f7d.jpeg?width=750&amp;format=jpeg&amp;optimize=medium"
+                  width="141"
+                  height="55"
+                />
+              </picture>
+            </div>
+          </div>
+        </div>
+        <div class="nav-hamburger" tabindex="0">
+          <span class="icon icon-mobile-menu"
+            ><svg xmlns="http://www.w3.org/2000/svg">
+              <use href="#mobile-menu"></use></svg
+          ></span>
+        </div>
+        <div class="nav-menu">
+          <ul>
+            <li class="mobile-search">
+              <div class="mobile-search-container">
+                <div class="search-form">
+                  <form action="/search" method="get">
+                    <button class="search-button">
+                      <span class="icon icon-search"
+                        ><svg xmlns="http://www.w3.org/2000/svg">
+                          <use href="#search"></use></svg
+                      ></span></button
+                    ><input type="text" name="q" class="search-input" /><input
+                      type="hidden"
+                      name="options[prefix]"
+                      value="last"
+                      aria-hidden="true"
+                    />
+                  </form>
+                </div>
+                <div class="search-close">
+                  <button type="button" class="close-button">
+                    <span class="icon icon-search-close"
+                      ><svg viewBox="0 0 40 40">
+                        <path
+                          d="M23.868 20.015L39.117 4.78c1.11-1.108 1.11-2.77 0-3.877-1.109-1.108-2.773-1.108-3.882 0L19.986 16.137 4.737.904C3.628-.204 1.965-.204.856.904c-1.11 1.108-1.11 2.77 0 3.877l15.249 15.234L.855 35.248c-1.108 1.108-1.108 2.77 0 3.877.555.554 1.248.831 1.942.831s1.386-.277 1.94-.83l15.25-15.234 15.248 15.233c.555.554 1.248.831 1.941.831s1.387-.277 1.941-.83c1.11-1.109 1.11-2.77 0-3.878L23.868 20.015z"
+                          class="layer"
+                        ></path></svg
+                    ></span>
+                  </button>
+                </div>
+              </div>
+            </li>
+            <li class="menu-expandable">
+              <div class="menu-nav-category">
+                <div>Product</div>
+                <button class="dropdown-button">
+                  <span class="icon icon-dropdown" aria-label="Open section"
+                    ><svg
+                      aria-hidden="true"
+                      focusable="false"
+                      role="presentation"
+                      class="icon icon-chevron-down"
+                      viewBox="0 0 9 9"
+                    >
+                      <path
+                        d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                        fill="#002f6d"
+                      ></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <div class="menu-nav-dropdown">
+                <div class="m-col-1 column">
+                  <ul>
+                    <li>
+                      <a href="https://www.zemax.com/pages/opticstudio"
+                        >OpticStudio</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/opticstudio-star-module"
+                        >OpticStudio STAR Module</a
+                      >
+                    </li>
+                    <li>
+                      <a href="https://www.zemax.com/pages/opticsbuilder"
+                        >OpticsBuilder</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li class="menu-expandable">
+              <div class="menu-nav-category">
+                <div>Solutions</div>
+                <button class="dropdown-button">
+                  <span class="icon icon-dropdown" aria-label="Open section"
+                    ><svg
+                      aria-hidden="true"
+                      focusable="false"
+                      role="presentation"
+                      class="icon icon-chevron-down"
+                      viewBox="0 0 9 9"
+                    >
+                      <path
+                        d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                        fill="#002f6d"
+                      ></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <div class="menu-nav-dropdown">
+                <div class="m-col-1 column">
+                  <p aria-expanded="false" class="m-expandable-title">
+                    <span
+                      ><span
+                        >By Application<button class="dropdown-button">
+                          <span
+                            class="icon icon-dropdown"
+                            aria-label="Open section"
+                            ><svg
+                              aria-hidden="true"
+                              focusable="false"
+                              role="presentation"
+                              class="icon icon-chevron-down"
+                              viewBox="0 0 9 9"
+                            >
+                              <path
+                                d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                                fill="#002f6d"
+                              ></path>
+                            </svg>
+                          </span></button></span
+                      ><button class="dropdown-button">
+                        <span
+                          class="icon icon-dropdown"
+                          aria-label="Open section"
+                          ><svg
+                            aria-hidden="true"
+                            focusable="false"
+                            role="presentation"
+                            class="icon icon-chevron-down"
+                            viewBox="0 0 9 9"
+                          >
+                            <path
+                              d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                              fill="#002f6d"
+                            ></path>
+                          </svg>
+                        </span></button
+                    ></span>
+                  </p>
+                  <ul class="m-expandable-list">
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/applications#imaging-optics"
+                        >Imaging Optics</a
+                      ><u></u>
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/applications#lighting-and-illumination"
+                        >Lighting &amp; Illumination</a
+                      ><u></u>
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/applications#lasers-and-fibers"
+                        >Lasers &amp; Fibers</a
+                      ><u></u>
+                    </li>
+                  </ul>
+                  <!---->
+                  <ul>
+                    <li>
+                      <a href="https://www.zemax.com/pages/why-zemax"
+                        >Why Zemax?</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="m-col-2 column">
+                  <p aria-expanded="false" class="m-expandable-title">
+                    <span
+                      ><span
+                        >By Industry<button class="dropdown-button">
+                          <span
+                            class="icon icon-dropdown"
+                            aria-label="Open section"
+                            ><svg
+                              aria-hidden="true"
+                              focusable="false"
+                              role="presentation"
+                              class="icon icon-chevron-down"
+                              viewBox="0 0 9 9"
+                            >
+                              <path
+                                d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                                fill="#002f6d"
+                              ></path>
+                            </svg>
+                          </span></button></span
+                      ><button class="dropdown-button">
+                        <span
+                          class="icon icon-dropdown"
+                          aria-label="Open section"
+                          ><svg
+                            aria-hidden="true"
+                            focusable="false"
+                            role="presentation"
+                            class="icon icon-chevron-down"
+                            viewBox="0 0 9 9"
+                          >
+                            <path
+                              d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                              fill="#002f6d"
+                            ></path>
+                          </svg>
+                        </span></button
+                    ></span>
+                  </p>
+                  <ul class="m-expandable-list">
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/industries#life-sciences-research"
+                        >Life Sciences &amp; Research</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/industries#sensors-displays-autonomy"
+                        >Sensors, Displays &amp; Autonomy</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/industries#aerospace-defense"
+                        >Aerospace &amp; Defense</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/industries#consumer-electronics-communication"
+                        >Consumer Electronics &amp; Communication</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/industries#manufacturing"
+                        >Manufacturing</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="menu-nav-category">
+                <div>
+                  <a href="https://www.zemax.com/pages/training">Training</a>
+                </div>
+              </div>
+            </li>
+            <li class="menu-expandable">
+              <div class="menu-nav-category">
+                <div>Support</div>
+                <button class="dropdown-button">
+                  <span class="icon icon-dropdown" aria-label="Open section"
+                    ><svg
+                      aria-hidden="true"
+                      focusable="false"
+                      role="presentation"
+                      class="icon icon-chevron-down"
+                      viewBox="0 0 9 9"
+                    >
+                      <path
+                        d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                        fill="#002f6d"
+                      ></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <div class="menu-nav-dropdown">
+                <div class="m-col-1 column">
+                  <ul>
+                    <li>
+                      <a href="https://support.zemax.com/"
+                        >Knowledgebase<span class="icon icon-external-link"
+                          ><svg xmlns="http://www.w3.org/2000/svg">
+                            <use href="#external-link"></use></svg></span
+                      ></a>
+                    </li>
+                    <li>
+                      <a href="https://community.zemax.com/"
+                        >Community<span class="icon icon-external-link"
+                          ><svg xmlns="http://www.w3.org/2000/svg">
+                            <use href="#external-link"></use></svg></span
+                      ></a>
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/profile#software-downloads"
+                        >Software Downloads</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="https://www.zemax.com/pages/zemax-software-onboarding-plan"
+                        >Zemax Software Onboarding Plan</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li class="menu-expandable">
+              <div class="menu-nav-category">
+                <div>Resources</div>
+                <button class="dropdown-button">
+                  <span class="icon icon-dropdown" aria-label="Open section"
+                    ><svg
+                      aria-hidden="true"
+                      focusable="false"
+                      role="presentation"
+                      class="icon icon-chevron-down"
+                      viewBox="0 0 9 9"
+                    >
+                      <path
+                        d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                        fill="#002f6d"
+                      ></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+              <div class="menu-nav-dropdown">
+                <div class="m-col-1 column">
+                  <ul>
+                    <li>
+                      <a href="https://www.zemax.com/blogs/success-stories"
+                        >Success Stories</a
+                      >
+                    </li>
+                    <li>
+                      <a href="https://www.zemax.com/pages/events">Events</a>
+                    </li>
+                    <li>
+                      <a href="https://www.zemax.com/blogs/news/tagged/all"
+                        >Blog</a
+                      >
+                    </li>
+                  </ul>
+                  <p aria-expanded="false" class="m-expandable-title">
+                    <span
+                      ><span
+                        >Resource Center<button class="dropdown-button">
+                          <span
+                            class="icon icon-dropdown"
+                            aria-label="Open section"
+                            ><svg
+                              aria-hidden="true"
+                              focusable="false"
+                              role="presentation"
+                              class="icon icon-chevron-down"
+                              viewBox="0 0 9 9"
+                            >
+                              <path
+                                d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                                fill="#002f6d"
+                              ></path>
+                            </svg>
+                          </span></button></span
+                      ><button class="dropdown-button">
+                        <span
+                          class="icon icon-dropdown"
+                          aria-label="Open section"
+                          ><svg
+                            aria-hidden="true"
+                            focusable="false"
+                            role="presentation"
+                            class="icon icon-chevron-down"
+                            viewBox="0 0 9 9"
+                          >
+                            <path
+                              d="M8.542 2.558a.625.625 0 0 1 0 .884l-3.6 3.6a.626.626 0 0 1-.884 0l-3.6-3.6a.625.625 0 1 1 .884-.884L4.5 5.716l3.158-3.158a.625.625 0 0 1 .884 0z"
+                              fill="#002f6d"
+                            ></path>
+                          </svg>
+                        </span></button
+                    ></span>
+                  </p>
+                  <ul class="m-expandable-list">
+                    <li>
+                      <a href="https://www.zemax.com/blogs/webinars"
+                        >Webinars</a
+                      >
+                    </li>
+                    <li>
+                      <a href="https://www.zemax.com/blogs/videos">Videos</a>
+                    </li>
+                    <li>
+                      <a href="https://www.zemax.com/blogs/eguides">eGuides</a>
+                    </li>
+                    <li>
+                      <a href="https://www.zemax.com/blogs/product-overviews"
+                        >Product Overviews</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="nav-tools">
+          <div>
+            <div>
+              <span class="icon icon-search"
+                ><svg xmlns="http://www.w3.org/2000/svg">
+                  <use href="#search"></use></svg
+              ></span>
+            </div>
+            <div><a href="/pages/profile">Login</a></div>
+            <div><a href="/pages/get-started">Get Started</a></div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
 <main>
-    <div>
-        <p>
-            <picture>
-                <source media="(max-width: 400px)" srcset="./media_mock.png?width=750&amp;format=webply&amp;optimize=medium">
-                <img src="/test/scripts/media_mock.png?width=2000&amp;format=webply&amp;optimize=medium" alt="" loading="eager">
-            </picture>
-        </p>
-        <h1 id="this-is-a-heading-1">This is a Heading 1</h1>
-        <h2 id="this-is-a-heading-2">This is a Heading 2</h2>
-        <h3 id="this-is-a-heading-3">This is a Heading 3</h3>
-        <h4 id="this-is-a-heading-4">This is a Heading 4</h4>
-        <h5 id="this-is-a-heading-5">This is a Heading 5</h5>
-        <h6 id="this-is-a-heading-6">This is a Heading 6</h6>
-        <ul>
-            <li>Red</li>
-            <li>Green</li>
-            <li>Blue</li>
-        </ul>
-        <ol>
-            <li>First</li>
-            <li>Second</li>
-            <li>Third</li>
-        </ol>
-        <p>Lorem ipsum dolor sit amet, <strong>consectetur</strong> adipiscing elit, sed do eiusmod tempor incididunt ut
-            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo <em>consequat</em>. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat <code>nulla</code> pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est <a href="https://www.hlx.live/">laborum</a>.</p>
-        <p>
-            <picture>
-                <source media="(max-width: 400px)"
-                    srcset="/test/scripts/media_mock.png?width=750&amp;format=webply&amp;optimize=medium">
-                <img src="/test/scripts/media_mock.png?width=2000&amp;format=webply&amp;optimize=medium"
-                    alt="" loading="eager">
-            </picture>
-        </p>
-        <p><a href="https://www.hlx.live/">Button</a></p>
-        <p><strong><a href="https://www.hlx.live/">Button Bold</a></strong></p>
-        <p><em><a href="https://www.hlx.live/">Button Italic</a></em></p>
-        <p><strong><em><a href="https://www.hlx.live/">Button Italic Bold</a></em></strong></p>
-        <h3 id="testing-a-code-block">Testing a code block</h3>
-        <pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"/&gt;
+  <div>
+    <p>
+      <picture>
+        <source
+          media="(max-width: 400px)"
+          srcset="
+            ./media_mock.png?width=750&amp;format=webply&amp;optimize=medium
+          "
+        />
+        <img
+          src="/test/scripts/media_mock.png?width=2000&amp;format=webply&amp;optimize=medium"
+          alt=""
+          loading="eager"
+        />
+      </picture>
+    </p>
+    <h1 id="this-is-a-heading-1">This is a Heading 1</h1>
+    <h2 id="this-is-a-heading-2">This is a Heading 2</h2>
+    <h3 id="this-is-a-heading-3">This is a Heading 3</h3>
+    <h4 id="this-is-a-heading-4">This is a Heading 4</h4>
+    <h5 id="this-is-a-heading-5">This is a Heading 5</h5>
+    <h6 id="this-is-a-heading-6">This is a Heading 6</h6>
+    <ul>
+      <li>Red</li>
+      <li>Green</li>
+      <li>Blue</li>
+    </ul>
+    <ol>
+      <li>First</li>
+      <li>Second</li>
+      <li>Third</li>
+    </ol>
+    <p>
+      Lorem ipsum dolor sit amet, <strong>consectetur</strong> adipiscing elit,
+      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+      ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+      ex ea commodo <em>consequat</em>. Duis aute irure dolor in reprehenderit
+      in voluptate velit esse cillum dolore eu fugiat
+      <code>nulla</code> pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est
+      <a href="https://www.hlx.live/">laborum</a>.
+    </p>
+    <p>
+      <picture>
+        <source
+          media="(max-width: 400px)"
+          srcset="
+            /test/scripts/media_mock.png?width=750&amp;format=webply&amp;optimize=medium
+          "
+        />
+        <img
+          src="/test/scripts/media_mock.png?width=2000&amp;format=webply&amp;optimize=medium"
+          alt=""
+          loading="eager"
+        />
+      </picture>
+    </p>
+    <p><a href="https://www.hlx.live/">Button</a></p>
+    <p>
+      <strong><a href="https://www.hlx.live/">Button Bold</a></strong>
+    </p>
+    <p>
+      <em><a href="https://www.hlx.live/">Button Italic</a></em>
+    </p>
+    <p>
+      <strong
+        ><em><a href="https://www.hlx.live/">Button Italic Bold</a></em></strong
+      >
+    </p>
+    <h3 id="testing-a-code-block">Testing a code block</h3>
+    <pre><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1"/&gt;
 &lt;script src="/scripts.js" type="module"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="/styles.css"/&gt;
         </code></pre>
-        <div class="hero">
-            <p>Lorem ipsum dolor sit amet, <strong>consectetur</strong> adipiscing elit, sed do eiusmod tempor incididunt ut
-                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo <em>consequat</em>. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                cillum dolore eu fugiat <code>nulla</code> pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                culpa qui officia deserunt mollit anim id est <a href="https://www.hlx.live/">laborum</a>.</p>
-        </div>
-        <div></div><!-- test block without name -->
+    <div class="hero">
+      <p>
+        Lorem ipsum dolor sit amet, <strong>consectetur</strong> adipiscing
+        elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+        ut aliquip ex ea commodo <em>consequat</em>. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum dolore eu fugiat
+        <code>nulla</code> pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est
+        <a href="https://www.hlx.live/">laborum</a>.
+      </p>
     </div>
-    <div></div><!-- test removal of empty sections -->
+    <div></div>
+    <!-- test block without name -->
+  </div>
+  <div></div>
+  <!-- test removal of empty sections -->
 </main>
 <footer></footer>

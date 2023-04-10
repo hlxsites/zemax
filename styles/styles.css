@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
- @font-face {
+@font-face {
   font-family: 'MyriadPro-Semibold Fallback';
   font-style: normal;
   font-weight: 500;
@@ -24,16 +24,12 @@
   src: local('Arial');
 }
 
- :root {
+:root {
   /* section widths */
-  --section-width-mobile: 440px;
-  --section-width-tablet: 738px;
-  --section-width-desktop: 960px;
-
+  --section-width: 440px;
+  
   /* nav height */
-  --nav-height-mobile: 50.5px; 
-  --nav-height-tablet: 74px;
-  --nav-height-desktop: 118px;
+  --nav-height: 50.5px; 
 
   /* fonts */
   --ff-myradpro-regular: "MyriadPro-Regular", "MyriadPro-Regular Fallback", sans-serif;
@@ -42,6 +38,8 @@
   --body-font-family: var(--ff-myradpro-regular);
   
   /* colors */
+  --clr-blue:#0070c0;
+  --clr-white:#fff;
   --text-color: #54565b;
   --link-color: #002f6d;
   --link-hover-color: #0070c0;
@@ -75,7 +73,7 @@
   /* line height */
   --line-height-1: 1;
   --line-height-12: 1.2;
-  --line-height-13: 1.3
+  --line-height-13: 1.3;
   --line-height-14: 1.4;
   --line-height-15: 1.5;
   --line-height-16: 1.6;
@@ -95,7 +93,7 @@
 }
 
 header {
-  height: var(--nav-height-mobile);
+  height: var(--nav-height);
 }
 
 body {
@@ -280,8 +278,6 @@ main img {
 
 .icon {
   display: inline-block;
-  height: 24px;
-  width: 24px;
 }
 
 .icon svg {
@@ -291,6 +287,7 @@ main img {
 
 main .section > div {
   margin: 0 auto;
+  width: var(--section-width);
 }
 
 main .divider{
@@ -304,7 +301,6 @@ main .divider{
 /* Mobile */
 @media only screen and (min-width: 480px) {
   main .section > div {
-    width: var(--section-width-mobile);
     padding: 0 20px;
   }
 
@@ -324,8 +320,12 @@ main .divider{
 
 /* Tablet */
 @media only screen and (min-width: 768px) {
+  :root{
+    --nav-height : 74px;
+    --section-width: 738px;
+  }
+  
   main .section>div {
-    width: var(--section-width-tablet);
     padding: 0 15px;
   }
 
@@ -335,29 +335,20 @@ main .divider{
 
   h4, h5 { 
     font-size: var(--heading-font-size-xs)
-   }
+  }
 
-   a.button:any-link, button {
+  a.button:any-link, button {
     border-radius: 12px;
     font-size: var(--body-font-size-l);
   }
-
-  header {
-    height: var(--nav-height-tablet);
-  }
-
 }
 
 
 /* Desktop */
 @media only screen and (min-width: 1030px) {
-  main .section>div {
-    width: var(--section-width-desktop);
-    padding: 0 15px;
-  }
-
-  header {
-    height: var(--nav-height-desktop);
+  :root{
+    --nav-height: 118px;
+    --section-width: 960px;
   }
 
   p { 
