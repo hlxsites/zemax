@@ -59,6 +59,17 @@
     color: #54565b;
     font-size:16px;
   }
+
+  .tabcordion div[role="tablist"] a::before{
+    content: "";
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    transform: rotate(45deg) translate(-3px, 3px);
+    color: #f77f00;
+  }
   
   .tabcordion div[role="tablist"] a:hover {
     color: #898b8e;
@@ -81,14 +92,20 @@
     transition: all 0.3s linear 0s;
   }
   
-  .tabcordion .tablist-container .columns.block > div{
-  display: flex;
-  flex-direction: column-reverse;
-  }
-  
   .hidden{
     display: none;
   }
+
+  .tabcordion .tabpanel > div > div img{
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 0 5px 0 color(38,39,41,20%);
+}
+
+.tabcordion .tabpanel > div > div:has(picture){
+  margin: 15px auto;
+}
+
   
   /* Mobile */
   
@@ -118,12 +135,6 @@
         font-size:18px;
       }
   
-      .tabcordion .tablist-container .columns.block > div{
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        }
-  
         .tabcordion .tabcontent{
           display:block;
         }
@@ -131,14 +142,37 @@
         .tabcordion .tablist-container > .tabpanel{
           display: none;
         }
+
+        .tabcordion .tabpanel > div{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .tabcordion .tabpanel > div > div{
+          flex: 1;
+      }
+
+
+      .tabcordion .tabpanel > div > div:has(picture){
+        margin: 25px 10px;
+      }    
+
+      .tabcordion div[role="tablist"] a::before{
+        content: "";
+        border-style: unset;
+        border-width: unset;
+        display: inline-block;
+        height: auto;
+        width: auto;
+        transform: unset;
+        color: unset;
+      }
       
   }
   
   /* Desktop */
-  @media screen and (min-width: 1030px) {
-    .tabcordion .tablist-container .columns.block > div{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      }
-  }
+  
+  /* @media screen and (min-width: 1030px) {
+  } */

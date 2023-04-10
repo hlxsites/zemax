@@ -16,31 +16,39 @@ const scrollTabIntoView = (e) => {
   if (!isElInView) e.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 };
 
+
 function changeTabs(e) {
   const { target } = e;
   const parent = target.parentNode;
   const grandparent = parent.parentNode.nextElementSibling;
 
-  parent.querySelectorAll('[aria-selected="true"]').forEach((t) => t.setAttribute('aria-selected', false));
-  target.setAttribute('aria-selected', true);
-  scrollTabIntoView(target);
-
   grandparent.querySelectorAll('[role="tabpanel"]').forEach((p) => p.setAttribute('hidden', true));
   grandparent.parentNode.querySelectorAll('.tablist-container .tabpanel').forEach((p) => p.remove());
-
   const targetTabContent = grandparent.parentNode.querySelector(`#${target.getAttribute('aria-controls')}`);
 
   const mediaQuery = window.matchMedia('(max-width: 767px)');
   if (mediaQuery.matches) {
     const targetTabContentClone = targetTabContent.cloneNode(true);
     const allTabPanels = grandparent.parentNode.querySelectorAll('[role="tabpanel"]');
+
+    parent.querySelectorAll('[aria-selected="true"]').forEach((t) => t.setAttribute('aria-selected', false));
+    target.setAttribute('aria-selected', true);
     allTabPanels.forEach((p) => p.setAttribute('hidden', true));
 
     target.after(targetTabContentClone);
     targetTabContentClone.removeAttribute('hidden');
   } else {
+    parent.querySelectorAll('[aria-selected="true"]').forEach((t) => t.setAttribute('aria-selected', false));
+    target.setAttribute('aria-selected', true);
+    scrollTabIntoView(target);
     targetTabContent.removeAttribute('hidden');
   }
+}
+
+function openTabDirect(block) {
+  const { hash } = window.location;
+  const tab = block.querySelector(`a[href="${hash}"]`);
+  if (tab) tab.click();
 }
 
 function initTabs(e) {
@@ -48,13 +56,22 @@ function initTabs(e) {
   tabs.forEach((tab) => {
     tab.addEventListener('click', changeTabs);
   });
+
+  if (window.location.hash !== '') {
+    openTabDirect(e);
+  }
+}
+
+function adjustView(e) {
+  const mediaQuery = window.matchMedia('(min-width: 768px)');
+  if (mediaQuery.matches) {
+    initTabs(e);
+  }
 }
 
 let initCount = 0;
 const init = (e) => {
   const rows = e.querySelectorAll(':scope > div');
-
-  /* c8 ignore next */
   if (!rows.length) return;
 
   // Tab List
@@ -80,11 +97,7 @@ const init = (e) => {
       item.setAttribute('tabindex', `${tabNames[i]}`);
       item.setAttribute('aria-selected', (i === 0) ? 'true' : 'false');
       item.setAttribute('aria-controls', `tab-panel-${initCount}-${tabNames[i]}`);
-
-      // const tabListContent = createTag('div', tabContentAttributes);
-      // console.log(tabListContent);
-      // tabListContent.setAttribute('aria-labelledby', `tab-${initCount}-${tabNames[i]}`);
-      // if (i > 0) tabListContent.setAttribute('hidden', 'true');
+      item.setAttribute('href', `#${tabNames[i]}`);
     });
 
     if (tabPanelItems) {
@@ -95,6 +108,7 @@ const init = (e) => {
         item.setAttribute('class', 'tabpanel');
         item.setAttribute('tabindex', '0');
         item.setAttribute('aria-labelledby', `tab-${initCount}-${tabNames[i]}`);
+        if (i > 0) item.setAttribute('hidden', 'true');
       });
     }
 
@@ -112,7 +126,7 @@ const init = (e) => {
 
 export default function decorate(block) {
   const tabTitles = block.querySelectorAll('.tabcordion > div:nth-child(odd)');
-  const tabContents = block.querySelectorAll('.tabcordion > div:nth-child(even) > div');
+  const tabContents = block.querySelectorAll('.tabcordion > div:nth-child(even)');
 
   // DOM structure for tab buttons
   const tabList = createTag('div', { class: 'tabList' });
@@ -140,4 +154,12 @@ export default function decorate(block) {
 
   block.append(tabList, tabContent);
   init(block);
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      adjustView(block);
+    }, 250);
+  });
 }
