@@ -1,20 +1,3 @@
-/** card markup
-* <div class="cards-wrapper">
-*   <div class="cards block" data-block-name="cards" data-block-status="loaded">
-*     <ul>
-*       <li>
-*         <div class="cards-card-body"></div>
-*         <div class="cards-card-image"></div>
-*       </li>
-*       <li>
-*         <div class="cards-card-body"></div>
-*         <div class="cards-card-image"></div>
-*       </li>
-*     </ul>
-*   </div>
-* </div>
-*/
-
 .cards>h1, h2, h3, h4, h5, h6, a {
   font-family: MyriadPro-Semibold, sans-serif;
   -webkit-font-smoothing: antialiased;
