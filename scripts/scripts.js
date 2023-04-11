@@ -92,7 +92,7 @@ function buildPageDivider(main) {
  */
 function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
+    // buildHeroBlock(main);
     buildPageDivider(main);
   } catch (error) {
     // eslint-disable-next-line no-console
