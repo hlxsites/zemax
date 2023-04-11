@@ -1,0 +1,44 @@
+.teaser-container {
+    background-color: #002f6d;
+    background-image: linear-gradient(to left, #002F6D, #005898 100%);
+}
+
+.teaser-wrapper {
+    width: 100% !important;
+    background-image: linear-gradient(to left, #002F6D, #005898 100%);
+    background-color: #002f6d;
+}
+
+.teaser {
+    display: grid;
+    grid-template-columns: 10fr 1fr;
+    font-family: var(--ff-myradpro-regular);
+    -webkit-font-smoothing: antialiased;
+    line-height: var(--line-height-18);
+    color: #ffffff;
+    padding: 1em 0em;
+}
+
+.teaser > div > div {
+    text-align: center;
+    padding-left: 1em;
+}
+
+.teaser a {
+    font-family: var(--ff-myradpro-semibold);
+    color: #ffffff;
+    padding: 1em;
+}
+
+.hidden {
+    display: none;
+}
+
+.teaser img {
+    height: 1.08em;
+}
+
+.close {
+    padding-top: 0.3em;
+    text-align: left;
+}
