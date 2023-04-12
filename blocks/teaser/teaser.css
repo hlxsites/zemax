@@ -15,14 +15,14 @@
 
 .teaser {
     display: grid;
-    grid-template-columns: 10fr 1fr;
+    grid-template-columns: 6fr 1fr;
     font-family: var(--ff-myradpro-regular);
     -webkit-font-smoothing: antialiased;
     line-height: var(--line-height-18);
     color: #fff;
     text-align: center;
     padding-left: 0.4em;
-    gap: 1em;
+    gap: 0.5em;
 }
 
 .teaser a {

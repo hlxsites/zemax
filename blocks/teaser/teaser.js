@@ -9,6 +9,8 @@ export default function decorateTeaser(block) {
   divElem.appendChild(spanElem);
   const imgElement = document.createElement('img');
   imgElement.src = '/icons/icon-close.png';
+  imgElement.width = '17';
+  imgElement.height = '17';
   imgElement.alt = 'close icon';
   spanElem.append(imgElement);
   spanElem.addEventListener('click', () => {
