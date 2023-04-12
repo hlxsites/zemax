@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
 import {
   sampleRUM,
   buildBlock,
@@ -28,16 +30,16 @@ export function isBlockLibrary() {
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
-    main.prepend(section);
-  }
-}
+// function buildHeroBlock(main) {
+//   const h1 = main.querySelector('h1');
+//   const picture = main.querySelector('picture');
+//   // eslint-disable-next-line no-bitwise
+//   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+//     const section = document.createElement('div');
+//     section.append(buildBlock('hero', { elems: [picture, h1] }));
+//     main.prepend(section);
+//   }
+// }
 
 /**
  * Helper function to create DOM elements
@@ -87,12 +89,31 @@ function buildPageDivider(main) {
 }
 
 /**
+ * Loads the script in the head section
+ * @param {string} url and other attrs
+ * @returns script
+ */
+export function loadScript(url, attrs) {
+  const head = document.querySelector('head');
+  const script = document.createElement('script');
+  script.src = url;
+  if (attrs) {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const attr in attrs) {
+      script.setAttribute(attr, attrs[attr]);
+    }
+  }
+  head.append(script);
+  return script;
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
+    // buildHeroBlock(main);
     buildPageDivider(main);
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -163,7 +184,7 @@ async function loadLazy(doc) {
   }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
+  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.ico`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));

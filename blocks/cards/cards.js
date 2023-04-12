@@ -1,3 +1,20 @@
+/** card markup
+* <div class="cards-wrapper">
+*   <div class="cards block" data-block-name="cards" data-block-status="loaded">
+*     <ul>
+*       <li>
+*         <div class="cards-card-body"></div>
+*         <div class="cards-card-image"></div>
+*       </li>
+*       <li>
+*         <div class="cards-card-body"></div>
+*         <div class="cards-card-image"></div>
+*       </li>
+*     </ul>
+*   </div>
+* </div>
+*/
+
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {

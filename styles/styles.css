@@ -77,6 +77,7 @@
   --line-height-14: 1.4;
   --line-height-15: 1.5;
   --line-height-16: 1.6;
+  --line-height-18: 1.8;
 
   /* letter spacing */
   --letter-spacing-normal: normal;
@@ -103,6 +104,7 @@ body {
   line-height: var(--line-height-160);
   color: var(--text-color);
   background-color: var(--background-color);
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3,
@@ -223,6 +225,7 @@ a.button:any-link, button {
   text-overflow: ellipsis;
   border-radius: 10.6px;
   transition: all 0.3s linear 0s;
+  -webkit-font-smoothing: antialiased;
 }
 
 a.button:hover, a.button:focus, button:hover, button:focus  {
