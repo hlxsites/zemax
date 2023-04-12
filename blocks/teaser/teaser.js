@@ -13,6 +13,7 @@ export default function decorateTeaser(block) {
   spanElem.append(imgElement);
   spanElem.addEventListener('click', () => {
     block.classList.add('hidden');
+    block.closest('.teaser-container').classList.add('hidden');
     return false;
   });
   block.append(divElem);

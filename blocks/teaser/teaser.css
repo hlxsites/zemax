@@ -1,7 +1,7 @@
 .teaser-container {
     background-color: #002f6d;
     background-image: linear-gradient(to left, #002F6D, #005898 100%);
-    display: block !important;
+    display: block;
     width: 100% !important;
     padding-top: 1em;
     padding-bottom: 1em;
