@@ -89,6 +89,25 @@ function buildPageDivider(main) {
 }
 
 /**
+ * Loads the script in the head section
+ * @param {string} url and other attrs
+ * @returns script
+ */
+export function loadScript(url, attrs) {
+  const head = document.querySelector('head');
+  const script = document.createElement('script');
+  script.src = url;
+  if (attrs) {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const attr in attrs) {
+      script.setAttribute(attr, attrs[attr]);
+    }
+  }
+  head.append(script);
+  return script;
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */

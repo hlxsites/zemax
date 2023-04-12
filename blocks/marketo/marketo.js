@@ -1,19 +1,5 @@
-import { createTag } from '../../scripts/scripts.js';
+import { createTag, loadScript } from '../../scripts/scripts.js';
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
-
-const loadScript = (url, attrs) => {
-  const head = document.querySelector('head');
-  const script = document.createElement('script');
-  script.src = url;
-  if (attrs) {
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const attr in attrs) {
-      script.setAttribute(attr, attrs[attr]);
-    }
-  }
-  head.append(script);
-  return script;
-};
 
 const embedMarketoForm = (formId, divId) => {
   // PDF Viewer for doc pages
