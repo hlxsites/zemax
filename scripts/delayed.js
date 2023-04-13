@@ -30,4 +30,3 @@ allButtons.forEach((button) => {
     });
   }
 });
-// OneTrust Cookies Consent Notice end
