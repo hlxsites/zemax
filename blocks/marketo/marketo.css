@@ -1,28 +1,12 @@
 /* stylelint-disable selector-class-pattern */
 
 .marketo-container{
-    background-color: var(--clr-blue);
-    border-top-right-radius: 50%;
-    border-top-left-radius: 50%;
     overflow: hidden;
-}
-
-.marketo-container .default-content-wrapper{
-    padding-top: 82px;
-}
-
-.marketo-container .default-content-wrapper p{
-    line-height: var(--line-height-14);
-    font-size: var(--body-font-size-l);
-    color: var(--clr-white);
-    letter-spacing: var(  --letter-spacing-96);
-    text-align: center;    
 }
 
 .marketo{
     margin: 0 auto;
     width: 100%;
-    background-color: var(--clr-blue);
     padding-bottom: 55px;
 }
 
@@ -30,17 +14,82 @@
     margin: 0 auto !important;
     width: 100% !important;
   }
+
+  .marketo-container .default-content-wrapper a:any-link,
+  .marketo-container .default-content-wrapper a:hover{
+    border:none;
+    background-color: unset;
+    color : var(--clr-orange);
+    padding: unset;
+    border-radius: unset;
+}
+
+.marketo-container .default-content-wrapper a:any-link::after{
+    content: "";
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    display: inline-block;
+    height: 7px;
+    width: 7px;
+    transform: rotate(45deg) translate(-3px);
+    color: #f77f00;
+    margin-left : 5px
+}
+
+.marketo-container .default-content-wrapper a:hover{
+    text-decoration: underline;
+}
+
+/* Marketo form styling for newsletter subscription */
+
+.marketo-container.newsletter{
+    display: block;
+    background-color: var(--clr-blue);
+    border-top-right-radius: 50% 20%;
+    border-top-left-radius: 50% 20%;
+    overflow: hidden;
+}
+
+
+.marketo-container.newsletter .default-content-wrapper{
+    padding-top: 82px;
+}
+
+.marketo-container.newsletter .marketo{
+    margin: 0 auto;
+    width: 100%;
+    background-color: var(--clr-blue);
+    padding-bottom: 55px;
+}
+
+.marketo-container.newsletter .default-content-wrapper p{
+    line-height: var(--line-height-14);
+    font-size: var(--body-font-size-l);
+    color: var(--clr-white);
+    letter-spacing: var(  --letter-spacing-96);
+    text-align: center;    
+}
+
+
   
 /* Mobile */
 @media only screen and (min-width: 480px) {
-    .marketo form  {
+    .marketo-container.newsletter .marketo form  {
         width: 440px !important;
       }   
   }
   
   /* Tablet */
   @media only screen and (min-width: 768px) {
-    .marketo form  {
+    .marketo-container{
+        overflow: hidden;
+        display: flex;
+        flex-direction: row;
+        width: var(--section-width);
+        margin: 0 auto;
+    }
+    
+    .marketo-container.newsletter .marketo form  {
         width: 700px !important;
       }   
   }
@@ -48,7 +97,7 @@
   
   /* Desktop */
   @media only screen and (min-width: 1030px) {
-    .marketo form  {
+    .marketo-container.newsletter .marketo form  {
         width: 711px !important;
       }   
   }
