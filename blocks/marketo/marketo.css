@@ -15,6 +15,31 @@
     width: 100% !important;
   }
 
+  .marketo-container .default-content-wrapper a:any-link,
+  .marketo-container .default-content-wrapper a:hover{
+    border:none;
+    background-color: unset;
+    color : var(--clr-orange);
+    padding: unset;
+    border-radius: unset;
+}
+
+.marketo-container .default-content-wrapper a:any-link::after{
+    content: "";
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    display: inline-block;
+    height: 7px;
+    width: 7px;
+    transform: rotate(45deg) translate(-3px);
+    color: #f77f00;
+    margin-left : 5px
+}
+
+.marketo-container .default-content-wrapper a:hover{
+    text-decoration: underline;
+}
+
 /* Marketo form styling for newsletter subscription */
 
 .marketo-container.newsletter{
