@@ -52,6 +52,7 @@
   --secondary-button-color:#002f6d;
   --secondary-button-hover-color :#264E83;
   --secondary-button-bg-color:#002f6d;
+  --color-border: #ebebeb;
 
   /* gradients */
   --linear-gradient : linear-gradient(to left, #871054, #78be20 53%, #f77f00 100%);
@@ -297,7 +298,7 @@ main .divider{
   display:block;
   width: auto;
   margin: 20px 0;
-  border: 1px solid var(--link-hover-color);
+  border: 1px solid var(  --color-border);
   padding:unset
   }
 
