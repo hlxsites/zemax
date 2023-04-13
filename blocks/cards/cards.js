@@ -22,11 +22,24 @@ export default function decorate(block) {
   const ul = document.createElement('ul');
   [...block.children].forEach((row) => {
     const li = document.createElement('li');
-    li.innerHTML = row.innerHTML;
-    [...li.children].forEach((div) => {
-      if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
-      else div.className = 'cards-card-body';
-    });
+
+    const href = row.querySelector('a')?.href;
+    if (href) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.innerHTML = row.innerHTML;
+      [...a.children].forEach((div) => {
+        if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
+        else div.className = 'cards-card-body';
+      });
+      li.append(a);
+    } else {
+      li.innerHTML = row.innerHTML;
+      [...li.children].forEach((div) => {
+        if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
+        else div.className = 'cards-card-body';
+      });
+    }
     ul.append(li);
   });
   ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
