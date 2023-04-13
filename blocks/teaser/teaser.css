@@ -1,16 +1,9 @@
 .teaser-container {
-    background-color: #002f6d;
-    background-image: linear-gradient(to left, #002F6D, #005898 100%);
+    background: linear-gradient(to left, #002F6D, #005898 100%);
     display: block;
-    width: 100% !important;
+    width: 100% ;
     padding-top: 1em;
     padding-bottom: 1em;
-}
-
-.teaser-wrapper {
-    width: 100% !important;
-    background-image: linear-gradient(to left, #002F6D, #005898 100%);
-    background-color: #002f6d;
 }
 
 .teaser {
@@ -19,7 +12,7 @@
     font-family: var(--ff-myradpro-regular);
     -webkit-font-smoothing: antialiased;
     line-height: var(--line-height-18);
-    color: #fff;
+    color: var(--background-color);
     text-align: center;
     padding-left: 0.4em;
     gap: 0.5em;
@@ -27,7 +20,7 @@
 
 .teaser a {
     font-family: var(--ff-myradpro-semibold);
-    color: #fff;
+    color:var(--background-color);
     padding: 1em;
 }
 
