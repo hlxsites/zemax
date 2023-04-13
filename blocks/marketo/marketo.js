@@ -1,5 +1,4 @@
-import { createTag } from '../../scripts/scripts.js';
-import { embedMarketoForm } from '../../scripts/delayed.js';
+import { createTag, loadScript } from '../../scripts/scripts.js';
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
@@ -11,6 +10,15 @@ export default async function decorate(block) {
     const formDiv = createTag('form', { id: `mktoForm_${divId}` });
     block.textContent = '';
     block.append(formDiv);
-    embedMarketoForm(formId, divId);
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        observer.disconnect();
+        const mktoScriptTag = loadScript('//go.zemax.com/js/forms2/js/forms2.min.js');
+        mktoScriptTag.onload = () => {
+          window.MktoForms2.loadForm('//go.zemax.com', `${formId}`, divId);
+        };
+      }
+    });
+    observer.observe(block);
   }
 }
