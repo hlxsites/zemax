@@ -30,4 +30,12 @@ allButtons.forEach((button) => {
     });
   }
 });
-// OneTrust Cookies Consent Notice end
+
+// Marketo form embed
+// eslint-disable-next-line import/prefer-default-export
+export function embedMarketoForm(formId, divId) {
+  const mktoScriptTag = loadScript('//go.zemax.com/js/forms2/js/forms2.min.js');
+  mktoScriptTag.onload = () => {
+    window.MktoForms2.loadForm('//go.zemax.com', `${formId}`, divId);
+  };
+}
