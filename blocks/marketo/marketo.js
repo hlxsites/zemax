@@ -21,6 +21,6 @@ export default async function decorate(block) {
     block.textContent = '';
     block.append(formDiv);
 
-    window.setTimeout(() => embedMarketoForm(formId, divId), 2000);
+    window.setTimeout(() => embedMarketoForm(formId, divId), 3000);
   }
 }
