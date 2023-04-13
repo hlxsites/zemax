@@ -1,9 +1,10 @@
 import { createTag, loadScript } from '../../scripts/scripts.js';
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { readBlockConfig, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
   const blockConfig = readBlockConfig(block);
-  const formId = blockConfig['form-id'];
+  const placeholders = await fetchPlaceholders();
+  const formId = placeholders.marketoformid;
   const divId = blockConfig['div-id'];
 
   if (formId && divId) {
