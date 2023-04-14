@@ -1,3 +1,6 @@
+/***************************************************************
+* global style for all cards
+***************************************************************/
 .cards h1,
 .cards h2,
 .cards h3,
@@ -6,10 +9,6 @@
 .cards h6,
 .cards a {
   font-family: var(--ff-myradpro-semibold);
-}
-
-.cards a {
-  text-decoration: none;
 }
 
 .cards p {
@@ -23,12 +22,13 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 16px;
+  box-sizing: border-box;
 }
 
 .cards>ul>li {
   border: 1px solid var(--highlight-background-color);
   background-color: var(--background-color);
-  cursor: pointer;
+  box-sizing: border-box;
 }
 
 .cards .cards-card-body {
@@ -47,247 +47,10 @@
   text-decoration: underline;
 }
 
-/***************************************************************
-* section: "Products"
-***************************************************************/
-.section.products h1 {
-  font-family: var(--ff-myradpro-regular);
-  text-align: center;
-  margin-bottom: 59px;
-  letter-spacing: var(--letter-spacing-18);
-  line-height: var(--line-height-14);
-  color: #54565b;
-}
-
-@media (min-width: 480px) {
-  .section.products h1 {
-    font-size: calc(0.0352 * 100vw + 7.125px);
-  }
-}
-
-@media (min-width: 992px) {
-  .section.products h1 {
-    font-size: var(--heading-font-size-xl);
-  }
-}
-
-/***************************************************************
-* section: "Customer Success Stories"
-***************************************************************/
-.section.customer-success-stories {
-  padding-bottom: 91px;
-}
-
-.section.customer-success-stories .cards-wrapper {
-  width: 100%;
-  max-width: 1248px;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin: 0 auto;
-}
-
-.section.customer-success-stories h1 {
-  font-family: var(--ff-myradpro-regular);
-  text-align: center;
-  letter-spacing: 0.14px;
-}
-
-@media (min-width: 480px) {
-  .section.customer-success-stories h1 {
-    font-size: calc(0.0195 * 100vw + 14.625px);
-  }
-}
-
-@media (min-width: 992px) {
-  .section.customer-success-stories h1 {
-    font-size: 34px;
-  }
-}
-
-/***************************************************************
-* section: "Training"
-***************************************************************/
-.section.training {
-  background-image: linear-gradient(to bottom, #005ca6 -28%, #00306f 73%, #002f6d 100%);
-  padding-top: 27px;
-  padding-bottom: 110px;
-}
-
-.section.training .cards-wrapper {
-  width: 100%;
-  max-width: 990px;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin: 0 auto;
-  display: block;
-}
-
-.section.training h1 {
-  font-size: var(--heading-font-size-xxl);
-  color: #fff;
-  font-family: var(--ff-myradpro-regular);
-  text-align: center;
-  line-height: var(--line-height-14);
-  letter-spacing: var(--letter-spacing-18);
-}
-
-/***************************************************************
-* section: "Events"
-***************************************************************/
-.section.events {
-  padding-top: 99px;
-}
-
-.section.events .cards-wrapper {
-  line-height: var(--line-height-15);
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 990px;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin: 0 auto;
-}
-
-.section.events h1 {
-  box-sizing: border-box;
-  margin: 0 0 19.4444px;
-  font-family: var(--ff-myradpro-regular);
-  line-height: var(--line-height-14);
-  letter-spacing: var(--letter-spacing-18);
-  color: #54565b;
-  text-transform: none;
-  font-weight: normal;
-  font-size: var(--heading-font-size-xl);
-  text-align: center;
-  margin-bottom: 25px;
-}
-
-@media screen and (max-width: 767px) {
-  .section.events h1 {
-    line-height: 1.33;
-    letter-spacing: var(--letter-spacing-1);
-  }
-}
-
-@media (min-width: 480px) {
-  .section.events h1 {
-    font-size: calc(0.0352 * 100vw + 7.125px);
-  }
-}
-
-@media (min-width: 992px) {
-  .section.events h1 {
-    font-size: var(--heading-font-size-xl);
-  }
-}
-
-.section.events h2 {
-  box-sizing: border-box;
-  margin: 0 0 19.4444px;
-  font-family: var(--ff-myradpro-regular);
-  font-weight: normal;
-  color: #54565b;
-  line-height: var(--line-height-12);
-  letter-spacing: 0.34px;
-  margin-bottom: 28px;
-  font-size: 34px;
-}
-
-@media screen and (max-width: 767px) {
-  .section.events h2 {
-    text-align: center;
-  }
-}
-
-@media (min-width: 480px) {
-  .section.events h2 {
-    font-size: calc(0.0234 * 100vw + 10.75px);
-  }
-}
-
-@media (min-width: 992px) {
-  .section.events h2 {
-    font-size: 34px;
-  }
-}
-
-/***************************************************************
-* section: "News"
-***************************************************************/
-.section.news {
-  padding-top: 58px;
-  padding-bottom: 94px;
-}
-
-.section.news .cards-wrapper {
-  line-height: var(--line-height-15);
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 990px;
-  padding-left: 15px;
-  padding-right: 15px;
-  margin: 0 auto;
-}
-
-.section.news h2 {
-  box-sizing: border-box;
-  margin: 0 0 19.4444px;
-  font-family: var(--ff-myradpro-regular);
-  font-weight: normal;
-  color: #54565b;
-  line-height: var(--line-height-12);
-  letter-spacing: 0.34px;
-  margin-bottom: 28px;
-  font-size: 34px;
-}
-
-@media screen and (max-width: 767px) {
-  .section.news h2 {
-    text-align: center;
-  }
-}
-
-@media screen and (min-width: 480px) {
-  .section.news h2 {
-    font-size: calc(0.0234 * 100vw + 10.75px);
-  }
-}
-
-@media (min-width: 992px) {
-  .section.news h2 {
-    font-size: 34px;
-  }
-}
-
-/***************************************************************
-* the bottom button for sections: events, news and customer success stories
-***************************************************************/
-.section>.default-content-wrapper>.button-container>.button {
-  padding: 0;
-  border-radius: 12px;
-  font-family: var(--ff-myradpro-semibold);
-  font-size: var(--body-font-size-l);
-  line-height: var(--line-height-15);
-  letter-spacing: var(--letter-spacing-8);
-  text-transform: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+li.card-with-link:hover {
+  box-shadow: 0 2px 3px 0 rgb(0 47 109 / 21%), 0 2px 15px 0 rgb(0 47 109 / 15%);
+  cursor: pointer;
   transition: all 0.3s linear 0s;
-  border: solid 2.5px #0070c0;
-  color: #0070c0;
-  background-color: white;
-  margin: 0 auto;
-  width: 182px;
-  height: 54px;
-}
-
-@media screen and (max-width: 767px) {
-  .section>.default-content-wrapper>.button-container>.button {
-    font-size: var(--body-font-size-m);
-    width: 152px;
-    height: 42px;
-  }
 }
 
 /***************************************************************
@@ -310,7 +73,7 @@
   border-radius: 15px;
   overflow: hidden;
   padding-bottom: 28px;
-  background-color: #fff;
+  background-color: var(--clr-white);
   transition: all 0.3s linear 0s;
   display: inline-flex;
   flex-direction: column;
@@ -346,40 +109,22 @@
 * ul > li: "top-image" variant
 ***************************************************************/
 .cards.top-image ul {
-  line-height: var(--line-height-15);
-  user-select: none;
-  box-sizing: border-box;
-  position: relative;
-  top: 0;
-  left: 0;
-  margin-left: auto;
-  margin-right: auto;
   display: flex;
   justify-content: space-between;
-  opacity: 1;
-  width: 984px;
-  transform: translate3d(0, 0, 0);
+  max-width: 984px;
 }
 
 .cards.top-image li {
-  text-size-adjust: 100%;
-  float: left;
-  min-height: 1px;
   margin-left: 12px;
   margin-right: 12px;
-  height: auto;
   width: 304px;
-  line-height: var(--line-height-15);
-  user-select: none;
-  box-sizing: border-box;
   text-align: center !important;
   max-width: 305px;
   overflow: hidden;
   border-radius: 15px;
-  background-color: #fff;
-  display: inline-flex !important;
+  background-color: var(--clr-white);
+  display: inline-flex;
   flex-direction: column;
-  transition: all 0.3s linear 0s;
 }
 
 @media screen and (max-width: 992px) {
@@ -390,11 +135,7 @@
     padding-top: 8px;
     padding-bottom: 24px;
   }
-  .cards.top-image li {
-    width: 100%;
-  }
 }
-
 
 /***************************************************************
 * ul > li: "left-image" variant
@@ -405,11 +146,10 @@
 
 .cards.left-image li {
   line-height: var(--line-height-15);
-  box-sizing: border-box;
   display: flex;
   border-radius: 15px;
   border: solid 1px #dad9d7;
-  background-color: #fff;
+  background-color: var(--clr-white);
   overflow: hidden;
   position: relative;
   height: 100%;
@@ -441,11 +181,10 @@
 
 .cards.no-image li {
   line-height: var(--line-height-15);
-  box-sizing: border-box;
   display: flex;
   border-radius: 15px;
   border: solid 1px #dad9d7;
-  background-color: #fff;
+  background-color: var(--clr-white);
   overflow: hidden;
   position: relative;
   transition: box-shadow 0.3s linear 0s;
@@ -475,10 +214,9 @@
 .cards.bottom-image li {
   display: flex;
   border-radius: 15px;
-  background-color: #fff;
+  background-color: var(--clr-white);
   border: solid 1px #dad9d7;
   overflow: hidden;
-  transition: all 0.3s linear 0s;
   margin-bottom: 0 !important;
 }
 
@@ -551,32 +289,32 @@
 }
 
 .cards.badge .cards-card-body h3 {
-  background-color: #0070c0;
+  background-color: var(--clr-blue);
   overflow: hidden;
   display: inline-block;
   border-bottom-right-radius: 15px;
   max-width: calc(100% - 21px);
-  font-size: 18px;
+  font-size: var(--heading-font-size-s);
   line-height: 36px;
-  letter-spacing: 0.72px;
+  letter-spacing: var(--letter-spacing-72);
   padding: 0 26px 0 22px;
-  color: #fff;
+  color: var(--clr-white);
 }
 
 .cards.badge .cards-card-body h4 {
   font-size: var(--body-font-size-xl);
   padding: 8px 21px 0;
   margin: 0;
-  letter-spacing: 0.3px;
+  letter-spacing: var(--letter-spacing-3);
   line-height: var(--line-height-15);
-  color: #54565b;
+  color: var(--text-color);
 }
 
 .cards.badge .cards-card-body p {
   font-size: var(--body-font-size-m);
   padding: 0 21px;
   line-height: var(--line-height-15);
-  color: #54565b;
+  color: var(--text-color);
   letter-spacing: normal;
 }
 
@@ -584,8 +322,6 @@
 * cards-card-body: "top-image" variant
 ***************************************************************/
 .cards.top-image .cards-card-body h3 {
-  box-sizing: border-box;
-  margin: 0 0 19.4444px;
   margin-bottom: 6px;
   color: #002f6d;
   font-weight: normal;
@@ -593,20 +329,16 @@
   line-height: var(--line-height-14);
   font-family: var(--ff-myradpro-semibold);
   text-align: left;
-  letter-spacing: 0.3px;
-  user-select: none;
+  letter-spacing: var(--letter-spacing-3);
 }
 
 .cards.top-image .cards-card-body p {
-  box-sizing: border-box;
   margin: 0 0 19.4444px;
   margin-bottom: 28px;
-  color: #54565b;
+  color: var(--text-color);
   font-size: var(--body-font-size-l);
   line-height: var(--line-height-14);
   text-align: left;
-  letter-spacing: var(--letter-spacing-2);
-  user-select: none;
 }
 
 .cards.top-image .cards-card-body .button {
@@ -614,27 +346,27 @@
   bottom: 38px;
   justify-content: center;
   align-items: center;
-  box-sizing: border-box;
   width: 117px;
   height: 40px;
-  margin: 0;
   padding: 0;
-  border: solid 2.5px #0070c0;
+  border: solid 2.5px var(--clr-blue);
   border-radius: 8px;
-  color: #0070c0;
+  color: var(--clr-blue);
   font-size: var(--body-font-size-m);
   line-height: var(--line-height-15);
   font-family: var(--ff-myradpro-semibold);
   text-align: center;
-  text-transform: none;
-  vertical-align: middle;
   letter-spacing: var(--letter-spacing-64);
-  white-space: normal;
-  user-select: none;
   background-color: white;
   transition: all 0.3s linear 0s;
   touch-action: manipulation;
-  appearance: none;
+  text-decoration: none;
+}
+
+.cards.top-image .cards-card-body .button:hover {
+  border-color: transparent;
+  color: var(--clr-white);
+  background-color: var(--clr-blue) !important;
 }
 
 /***************************************************************
@@ -656,7 +388,7 @@
   font-family: var(--ff-myradpro-regular);
   line-height: var(--line-height-15);
   letter-spacing: normal;
-  color: #54565b;
+  color: var(--text-color);
   display: inline;
   font-size: var(--body-font-size-xl);
 }
@@ -666,7 +398,7 @@
   margin: 0 0 19.4444px;
   line-height: var(--line-height-15);
   letter-spacing: normal;
-  color: #54565b;
+  color: var(--text-color);
   font-size: var(--body-font-size-m);
   display: inline;
 }
@@ -716,7 +448,7 @@
   font-weight: normal;
   line-height: var(--line-height-14);
   letter-spacing: var(--letter-spacing-2);
-  color: #54565b;
+  color: var(--text-color);
   max-width: 360px;
   margin-bottom: 20px;
   font-size: calc(0.0039 * 100vw + 18.125px);
@@ -734,7 +466,7 @@
   font-family: var(--ff-myradpro-regular);
   line-height: var(--line-height-15);
   letter-spacing: normal;
-  color: #54565b;
+  color: var(--text-color);
   font-size: calc(0.0078 * 100vw + 12.25px);
 }
 
@@ -797,7 +529,7 @@
 
 .cards.image-70-30 li:nth-of-type(2) .cards-card-body h3 {
   font-family: var(--ff-myradpro-regular);
-  font-size: 38px;
+  font-size: var(--heading-font-size-xl);
   margin: 5px 0;
   font-weight: 400;
 }

@@ -29,6 +29,7 @@ export default function decorate(block) {
     });
     const href = row.querySelector('a')?.href;
     if (href) {
+      li.className = 'card-with-link';
       li.addEventListener('click', () => {
         document.location.href = href;
       });
