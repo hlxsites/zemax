@@ -301,7 +301,7 @@ main .divider{
   margin: 20px 0;
   border: 1px solid var(  --color-border);
   padding:unset
-  }
+}
 
 /* Mobile */
 @media only screen and (min-width: 480px) {
@@ -354,6 +354,7 @@ main .divider{
   :root{
     --nav-height: 118px;
     --section-width: 960px;
+    --nav-width: 1240px;
   }
 
   p { 

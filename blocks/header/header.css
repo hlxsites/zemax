@@ -1,4 +1,5 @@
 /* header and nav layout */
+
 header .header.block {
   position: fixed;
   z-index: 22;
@@ -7,7 +8,6 @@ header .header.block {
 }
 
 header nav {
-  max-width: 1240px;
   margin: 0 auto;
   padding: 5px 20px;
   max-height: var(--nav-height);
@@ -304,6 +304,8 @@ header nav[aria-expanded='true'] .nav-tools {
   header nav {
     padding:0;
     margin-top: 25px;
+    max-width: var(--nav-width);
+    width: 100%;
   }
 
   header nav > div {
