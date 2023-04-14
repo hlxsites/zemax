@@ -294,6 +294,7 @@ main .section > div {
   margin: 0 auto;
   width: var(--section-width);
 }
+
 /* center aligned sections */
 main .section.center-aligned.section.center-aligned {
   text-align:center;
