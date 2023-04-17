@@ -295,6 +295,17 @@ main .section > div {
   width: var(--section-width);
 }
 
+/* center aligned sections */
+main .section.center-aligned {
+  text-align:center;
+}
+
+main .section.larger-paragraph-text p {
+  max-width: 690px;
+  margin: 0 auto;
+  font-size: var(--body-font-size-xxl);
+}
+
 main .divider{
   display:block;
   width: auto;
