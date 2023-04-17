@@ -13,6 +13,16 @@ footer .footer {
   
 }
 
+main .section.center-aligned.section.center-aligned {
+  text-align:center;
+}
+
+main .section.center-aligned.larger-paragraph-text p {
+  max-width: 690px;
+  margin: 0 auto;
+  font-size: 24px;
+}
+
 footer span.icon{
   width: 36px;
   height: 36px;
