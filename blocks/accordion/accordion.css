@@ -1,0 +1,97 @@
+main .accordion.faq-accordion{
+    padding: 10px 0 46px;
+}
+
+main .accordion.faq-accordion > div {
+    font-family: var(--ff-myradpro-regular);
+  }
+  
+
+  main .accordion.faq-accordion .faq-question {
+      cursor: pointer;
+      border-top: 1px solid #dad9d7;
+      padding: 20px 0 11px 6px;
+      font-size: var(  --body-font-size-l);
+  }
+
+  main .accordion.faq-accordion .faq-question::before {
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    content: '';
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin-top: 11px;
+    transform: rotate(135deg) translate(-3px, 6px);
+    margin-right: 10px;
+  }
+
+  main .accordion.faq-accordion .faq-question.active::before {
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    content: '';
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin-top: 11px;
+    margin-right: 10px;
+    transform: rotate(315deg) translate(-4px, 1px);
+  }
+
+
+  main .section.orange .accordion.faq-accordion .faq-question::before,
+  main .section.orange .accordion.faq-accordion .faq-question.active::before,
+  main .section.orange .accordion.faq-accordion a  {
+    color: #f77f00;
+  }
+  
+
+  main .section.green .accordion.faq-accordion .faq-question::before,
+  main .section.green .accordion.faq-accordion .faq-question.active::before,
+  main .section.green .accordion.faq-accordion a    {
+    color: #78be20;
+  }
+  
+  main .accordion.faq-accordion .faq-answer {
+    padding: 0 18px;
+    margin: 8px 20px;
+    display: none;
+    overflow: hidden;
+    font-size: var(--body-font-size-s);
+    max-height: 0;
+    transition: max-height 0.2s ease-out;
+
+  }
+
+  main .accordion.faq-accordion .faq-answer p {
+    font-size: var(--body-font-size-s);
+  }
+  
+  main .accordion.faq-accordion .faq-answer.active {
+    display:block;
+  }
+
+
+
+
+ /* Tablet */
+ @media only screen and (min-width: 768px) {
+    main .accordion.faq-accordion{
+        padding: 76px 0 97px;
+    }
+    
+    main .accordion.faq-accordion .faq-question {
+        cursor: pointer;
+        border-top: 1px solid #dad9d7;
+        padding: 20px 0 11px 6px;
+        font-size: var(  --body-font-size-xxl);
+    }
+
+ }
+
+  /* Desktop */
+@media only screen and (min-width: 1030) {
+    main .accordion.faq-accordion .faq-question {
+        font-size: var(  --body-font-size-xl);
+    }
+}
