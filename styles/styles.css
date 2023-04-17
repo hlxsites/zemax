@@ -295,13 +295,24 @@ main .section > div {
   width: var(--section-width);
 }
 
+/* center aligned sections */
+main .section.center-aligned {
+  text-align:center;
+}
+
+main .section.larger-paragraph-text p {
+  max-width: 690px;
+  margin: 0 auto;
+  font-size: var(--body-font-size-xxl);
+}
+
 main .divider{
   display:block;
   width: auto;
   margin: 20px 0;
   border: 1px solid var(  --color-border);
   padding:unset
-  }
+}
 
 /* Mobile */
 @media only screen and (min-width: 480px) {
@@ -354,6 +365,7 @@ main .divider{
   :root{
     --nav-height: 118px;
     --section-width: 960px;
+    --nav-width: 1240px;
   }
 
   p { 
