@@ -15,6 +15,9 @@
 const createMetadata = (main, document) => {
   const meta = {};
 
+  // set template as news
+  meta.Template = 'news';
+
   // add title
   const title = document.querySelector('title');
   if (title) {
@@ -33,6 +36,20 @@ const createMetadata = (main, document) => {
     const el = document.createElement('img');
     el.src = img.content;
     meta.Image = el;
+  }
+
+  // add publish date
+  const publishDate = main.querySelector('main .section-article-post .article-resources-caption');
+  if (publishDate && publishDate.innerHTML) {
+    meta.PublishDate = publishDate.innerHTML.replace(/[\n\t]/gm, '');
+  }
+
+  // add category
+  const categoryLink = document.querySelector('main .section-article-post  .category-name > a');
+  if (categoryLink && categoryLink.innerHTML && categoryLink.href) {
+    categoryLink.href = `https://main--zemax--hlxsites.hlx.page${categoryLink.pathname}`;
+    console.log(categoryLink.href);
+    meta.Category = categoryLink;
   }
 
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
@@ -58,6 +75,9 @@ export default {
     // define the main element: the one that will be transformed to Markdown
     const main = document.body;
 
+    // generate metadata block
+    createMetadata(main, document);
+
     // use helper method to remove header, footer, etc.
     WebImporter.DOMUtils.remove(main, [
       'is_authenticated',
@@ -77,10 +97,6 @@ export default {
       'ul[hidden=\'\']',
       'onetrust-consent-sdk',
     ]);
-
-    // create the metadata block and append it to the main element
-    createMetadata(main, document);
-
     return main;
   },
 
