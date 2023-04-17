@@ -3,10 +3,6 @@ indices:
   blogs_news:
     include:
       - /blogs/news/**
-    exclude:
-      - "/drafts/**"
-      - "/fragments/**"
-      - "/sites/default/files/**"
     target: /blogs/news/query-index.json
     properties:
       lastModified:
@@ -30,6 +26,9 @@ indices:
   default:
     include:
       - /**
+    exclude:
+      - /drafts/**
+      - /blogs/news/**
     target: /query-index.json
     properties:
       lastModified:
