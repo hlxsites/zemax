@@ -56,10 +56,8 @@ main .accordion.faq-accordion > div {
     display: none;
     overflow: hidden;
     font-size: var(--body-font-size-s);
-    transition: width 2s;
-    transition-timing-function: ease-out;
-    height: auto;
-    width: auto;
+    max-height: 0;
+    transition: max-height 0.2s ease-out;
 
   }
 
