@@ -6,6 +6,7 @@ main .accordion.faq-accordion > div {
     font-family: var(--ff-myradpro-regular);
   }
   
+
   main .accordion.faq-accordion .faq-question {
       cursor: pointer;
       border-top: 1px solid #dad9d7;
@@ -36,6 +37,7 @@ main .accordion.faq-accordion > div {
     margin-right: 10px;
     transform: rotate(315deg) translate(-4px, 1px);
   }
+
 
   main .section.orange .accordion.faq-accordion .faq-question::before,
   main .section.orange .accordion.faq-accordion .faq-question.active::before,
