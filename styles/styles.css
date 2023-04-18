@@ -421,23 +421,21 @@ main .divider {
 
 .larger-paragraph-text > div > p {
   display: flex;
-  margin: 0em;
+  margin: 0;
 }
 
 #design-for-manufacturability {
   font-size: var(--heading-font-size-xl);
   font-family: var(--ff-myradpro-regular);
   padding: 0.2em;
-  margin: 0em;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
 }
 
 .optical-design {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   justify-content: center;
   padding-left: 1.5em;
   padding-right: 1.5em;
