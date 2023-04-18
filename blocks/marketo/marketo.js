@@ -6,10 +6,17 @@ export default async function decorate(block) {
   const placeholders = await fetchPlaceholders();
   const formId = placeholders.marketoformid;
   const divId = blockConfig['div-id'];
+  const formTitle = blockConfig['form-title'];
 
   if (formId && divId) {
-    const formDiv = createTag('form', { id: `mktoForm_${divId}` });
     block.textContent = '';
+    if (formTitle) {
+      const h4 = createTag('h4', { class: 'form-heading' });
+      h4.innerText = formTitle;
+      block.append(h4);
+    }
+
+    const formDiv = createTag('form', { id: `mktoForm_${divId}` });
     block.append(formDiv);
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {
