@@ -13,7 +13,13 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  toClassName,
 } from './lib-franklin.js';
+
+/**
+ * manage the list of templates
+ */
+const TEMPLATE_LIST = ['news'];
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'Zemax'; // add your RUM generation information here
@@ -89,6 +95,25 @@ function buildPageDivider(main) {
 }
 
 /**
+ * Loads the script in the head section
+ * @param {string} url and other attrs
+ * @returns script
+ */
+export function loadScript(url, attrs) {
+  const head = document.querySelector('head');
+  const script = document.createElement('script');
+  script.src = url;
+  if (attrs) {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const attr in attrs) {
+      script.setAttribute(attr, attrs[attr]);
+    }
+  }
+  head.append(script);
+  return script;
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -99,6 +124,27 @@ function buildAutoBlocks(main) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
+  }
+}
+
+/**
+ * Run template specific decoration code.
+ * @param {Element} main The container element
+ */
+async function decorateTemplates(main) {
+  try {
+    const template = toClassName(getMetadata('template'));
+    const templates = TEMPLATE_LIST;
+    if (templates.includes(template)) {
+      const mod = await import(`../templates/${template}/${template}.js`);
+      loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
+      if (mod.default) {
+        await mod.default(main);
+      }
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('template loading failed', error);
   }
 }
 
@@ -125,6 +171,7 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    await decorateTemplates(main);
     decorateMain(main);
     await waitForLCP(LCP_BLOCKS);
   }
@@ -147,6 +194,21 @@ export function addFavIcon(href) {
   }
 }
 
+export function formatDate(dateStr, options = {}) {
+  const parts = dateStr.split('/');
+  const date = new Date(parts[2], parts[0] - 1, parts[1]);
+
+  if (date) {
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+      ...options,
+    });
+  }
+  return dateStr;
+}
+
 /**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
@@ -165,7 +227,7 @@ async function loadLazy(doc) {
   }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
+  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.ico`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));

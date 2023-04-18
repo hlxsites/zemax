@@ -1,40 +1,32 @@
-import { createTag } from '../../scripts/scripts.js';
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
-
-const loadScript = (url, attrs) => {
-  const head = document.querySelector('head');
-  const script = document.createElement('script');
-  script.src = url;
-  if (attrs) {
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const attr in attrs) {
-      script.setAttribute(attr, attrs[attr]);
-    }
-  }
-  head.append(script);
-  return script;
-};
-
-const embedMarketoForm = (formId, divId) => {
-  // PDF Viewer for doc pages
-  if (formId && divId) {
-    const mktoScriptTag = loadScript('//go.zemax.com/js/forms2/js/forms2.min.js');
-    mktoScriptTag.onload = () => {
-      window.MktoForms2.loadForm('//go.zemax.com', `${formId}`, divId);
-    };
-  }
-};
+import { createTag, loadScript } from '../../scripts/scripts.js';
+import { readBlockConfig, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
   const blockConfig = readBlockConfig(block);
-  const formId = blockConfig['form-id'];
+  const placeholders = await fetchPlaceholders();
+  const formId = placeholders.marketoformid;
   const divId = blockConfig['div-id'];
+  const formTitle = blockConfig['form-title'];
 
   if (formId && divId) {
-    const formDiv = createTag('form', { id: `mktoForm_${divId}` });
     block.textContent = '';
-    block.append(formDiv);
+    if (formTitle) {
+      const h4 = createTag('h4', { class: 'form-heading' });
+      h4.innerText = formTitle;
+      block.append(h4);
+    }
 
-    window.setTimeout(() => embedMarketoForm(formId, divId), 2000);
+    const formDiv = createTag('form', { id: `mktoForm_${divId}` });
+    block.append(formDiv);
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        observer.disconnect();
+        const mktoScriptTag = loadScript('//go.zemax.com/js/forms2/js/forms2.min.js');
+        mktoScriptTag.onload = () => {
+          window.MktoForms2.loadForm('//go.zemax.com', `${formId}`, divId);
+        };
+      }
+    });
+    observer.observe(block);
   }
 }

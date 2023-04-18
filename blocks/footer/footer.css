@@ -4,7 +4,7 @@ footer {
   flex-wrap: wrap;
   font-size: var(--body-font-size-s);
   width: var(--section-width);
-  padding: 20px;
+  padding-top:24px;
   margin: 0 auto;
 }
 
@@ -26,7 +26,6 @@ footer .footer-main-links{
   width: 100%;
   max-width: 100%;
   flex-direction: column;
-  border-bottom: 1px solid #e6e6e6;
   margin-bottom : 15px;
 }
 
@@ -35,13 +34,17 @@ footer .footer-main-links > div{
   flex-direction: column;
 } 
 
+footer .footer-main-links div > div:nth-child(3){
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
 footer .footer-main-links h5{
   font-size: var(--heading-font-size-s);
 }
 
 footer .footer-main-links > div > div{
   flex: 1 1 auto;
-  margin-bottom: 20px;
   width: auto;
 } 
 
@@ -90,10 +93,12 @@ footer .footer-copyright{
 footer .footer-main-links > div > div:last-of-type{
   display: flex;
   flex-flow: row wrap;
+  margin-top: 41px;
 }
 
 footer .footer-main-links > div > div:last-of-type > p:first-child{
   width: 100%;
+  margin: unset;
 }
 
 footer .footer-main-links > div > div:last-of-type > p:not(:first-child){
@@ -115,12 +120,18 @@ footer .footer-sub-links select.locale {
   color: #0070c0;
   border:none;
   border-radius: 5px;
-  overflow: hidden;
+  font-family: var( --ff-myradpro-semibold);
 }
 
 
 /* Tablet */
 @media only screen and (min-width: 768px) {
+  footer .footer-main-links{
+    padding-bottom: 64px;
+    border-bottom: 1px solid #e6e6e6;
+  }
+
+
   footer .footer-main-links > div > p:first-of-type{
     order: 1;
   }
@@ -136,11 +147,18 @@ footer .footer-sub-links select.locale {
     order: -1;
     max-width: 172px;
     padding-right: 30px;
+    margin-top: unset; 
   }
 
   footer .footer-main-links > div > div:last-of-type > p:not(:first-child){
     padding-right: 7px;
   }
+
+  footer .footer-main-links div > div:nth-child(3){
+    padding-bottom: unset;
+    border-bottom: unset;
+  }
+  
 
   /* footer sub links */
   footer .footer-sub-links > div{
@@ -152,6 +170,11 @@ footer .footer-sub-links select.locale {
 
   footer .footer-sub-links div:nth-child(5) {
     margin-left: auto;
+  }
+
+  footer .footer-sub-links > div > div{
+    margin: 0 36px 12px 0;
+  
   }
 
 }
