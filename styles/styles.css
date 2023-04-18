@@ -318,23 +318,23 @@ main .default-content-wrapper img {
 }
 
 
-main ol{
-margin-left: 16px;
-padding-left: unset;
+main ol {
+  margin-left: 16px;
+  padding-left: unset;
 }
 
-main li{
-list-style-type: decimal;
-line-height: 1.5;
+main li {
+  list-style-type: decimal;
+  line-height: 1.5;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-main li > a{
-padding-left:5px;
+main li>a {
+  padding-left: 5px;
 }
 
-main .default-content-wrapper li > a{
-color : var(--clr-blue) !important;
+main .default-content-wrapper li>a {
+  color: var(--clr-blue) !important;
 }
 
 /* center aligned sections */
@@ -349,16 +349,16 @@ main .section.larger-paragraph-text p {
 }
 
 main .section.background-blue {
-    background-color: var(--clr-blue);
+  background-color: var(--clr-blue);
 }
 
-main .section.curved-top{
-    border-top-right-radius: 100% 15%;
-    border-top-left-radius: 100% 15%;
+main .section.curved-top {
+  border-top-right-radius: 100% 15%;
+  border-top-left-radius: 100% 15%;
 }
 
-main .divider{
-  display:block;
+main .divider {
+  display: block;
   width: auto;
   margin: 20px 0;
   border: 1px solid var(--color-border);
@@ -411,7 +411,7 @@ main .divider{
     font-size: var(--heading-font-size-xs)
   }
 
-  p, body,a.button:any-link, button  {
+  p, body, a.button:any-link, button {
     font-size: var(--body-font-size-m);
   }
 
@@ -419,14 +419,14 @@ main .divider{
     border-radius: 12px;
   }
 
-  main ol{
+  main ol {
     margin-left: 20px;
   }
 
-  main .section.curved-top{
+  main .section.curved-top {
     border-top-right-radius: 50% 20%;
     border-top-left-radius: 50% 20%;
-}
+  }
 }
 
 
@@ -438,7 +438,7 @@ main .divider{
     --nav-width: 1240px;
   }
 
-  p, body,a.button:any-link, button  {
+  p, body, a.button:any-link, button {
     font-size: var(--body-font-size-l);
   }
 
@@ -701,9 +701,9 @@ main .divider{
 /***************************************************************
 * the bottom button for sections: events, news and customer success stories
 ***************************************************************/
-.section>.default-content-wrapper>.button-container>.button {
-  padding: 0;
-  border-radius: 12px;
+.section.customer-success-stories>.default-content-wrapper>.button-container>.button,
+.section.news>.default-content-wrapper>.button-container>.button,
+.section.events>.default-content-wrapper>.button-container>.button {
   font-family: var(--ff-myradpro-semibold);
   font-size: var(--body-font-size-l);
   line-height: var(--line-height-15);
@@ -721,14 +721,18 @@ main .divider{
   height: 54px;
 }
 
-.section>.default-content-wrapper>.button-container>.button:hover {
+.section.customer-success-stories>.default-content-wrapper>.button-container>.button:hover,
+.section.news>.default-content-wrapper>.button-container>.button:hover,
+.section.events>.default-content-wrapper>.button-container>.button:hover {
   border-color: transparent;
   color: var(--clr-white);
   background-color: #0070c0 !important;
 }
 
 @media screen and (max-width: 767px) {
-  .section>.default-content-wrapper>.button-container>.button {
+  .section.customer-success-stories>.default-content-wrapper>.button-container>.button,
+  .section.news>.default-content-wrapper>.button-container>.button,
+  .section.events>.default-content-wrapper>.button-container>.button {
     font-size: var(--body-font-size-m);
     width: 152px;
     height: 42px;
