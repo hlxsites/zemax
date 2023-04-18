@@ -1,6 +1,6 @@
 # AEM Franklin - Zemax
 
-Zemax.com on AEM Fanklin
+Zemax.com on AEM Franklin
 
 ## Environments
 
