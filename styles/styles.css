@@ -62,7 +62,7 @@
   --heading-font-size-xxl: 48px;
   --heading-font-size-xl: 42px;
   --heading-font-size-l: 30px;
-  --heading-font-size-m: 24px;
+  --heading-font-size-m: 22px;
   --heading-font-size-s: 16px;
   --heading-font-size-xs: 14px;
   --body-font-size-xxl: 24px;
@@ -120,30 +120,20 @@ h4, h5, h6 {
   scroll-margin: calc(var(--nav-height) + 1em);
 }
 
-h1 {
-  font-size: var(--heading-font-size-xxl)
-}
+h1 {font-size: var(--heading-font-size-xxl)}
 
 h2 {
   font-size: var(--heading-font-size-xl);
   font-family: var(--ff-myradpro-regular);
 }
 
-h3 {
-  font-size: var(--heading-font-size-m)
-}
+h3 {font-size: var(--heading-font-size-m)}
 
-h4 {
-  font-size: var(--heading-font-size-m)
-}
+h4 {font-size: var(--heading-font-size-m)}
 
-h5 {
-  font-size: var(--heading-font-size-s)
-}
+h5 {font-size: var(--heading-font-size-s)}
 
-h6 {
-  font-size: var(--heading-font-size-xs)
-}
+h6 {font-size: var(--heading-font-size-xs)}
 
 
 p, dl, ol, ul, pre, blockquote {
@@ -342,31 +332,6 @@ main .divider{
   padding: unset
 }
 
-  /* Blog Styling */
-    main .default-content-wrapper img {
-      border-radius: 16px;
-    }
-  
-
-  main ol{
-    margin-left: 16px;
-    padding-left: unset;
-  }
-
-  main li{
-    list-style-type: decimal;
-    line-height: 1.5;
-  }
-
-  /* stylelint-disable-next-line no-descending-specificity */
-  main li > a{
-    padding-left:5px;
-  }
-
-  main .default-content-wrapper li > a{
-    color : var(--clr-blue) !important;
-  }
-
 
 /* Mobile */
 @media only screen and (min-width: 480px) {
@@ -422,10 +387,6 @@ main .divider{
     border-radius: 12px;
   }
 
-  main ol{
-    margin-left: 20px;
-  }
-
   main .section.curved-top{
     border-top-right-radius: 50% 20%;
     border-top-left-radius: 50% 20%;
@@ -440,6 +401,17 @@ main .divider{
     --section-width: 960px;
     --nav-width: 1240px;
   }
+
+
+  h1 {font-size: var(--heading-font-size-xxl)}
+
+  h2 {font-size: var(--heading-font-size-xl)}
+
+  h3 {font-size: var(--heading-font-size-l)}
+
+  h4 {font-size: var(--heading-font-size-m)}
+
+  h5 {font-size: var(--heading-font-size-s)}
 
   p, body,a.button:any-link, button  {
     font-size: var(--body-font-size-l);
