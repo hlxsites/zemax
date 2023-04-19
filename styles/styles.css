@@ -104,7 +104,7 @@ body {
   font-size: var(--body-font-size-m);
   margin: 0;
   font-family: var(--body-font-family);
-  line-height: var(--line-height-160);
+  line-height: var(--line-height-16);
   color: var(--text-color);
   background-color: var(--background-color);
   -webkit-font-smoothing: antialiased;
@@ -490,10 +490,11 @@ main .divider {
 #design-for-manufacturability {
   font-size: var(--heading-font-size-xl);
   font-family: var(--ff-myradpro-regular);
-  padding: 0.2em;
   margin: 0;
   display: flex;
   flex-direction: column;
+  padding-top: 1.5em;
+  padding-bottom: 0.5em;
 }
 
 .optical-design {
@@ -532,9 +533,21 @@ main .divider {
   padding-left: 0.5em
 }
 
-.optical-design .columns > div > div > p > span {
+.icon-microscope {
   width: 45px;
   height: 60px;
+  padding-inline-start: 0.5em;
+}
+
+.icon-lamp {
+  width: 32px;
+  height: 63px;
+  padding-inline-start: 0.5em;
+}
+
+.icon-laser {
+  width: 47px;
+  height: 63px;
   padding-inline-start: 0.5em;
 }
 
