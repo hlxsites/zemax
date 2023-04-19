@@ -125,7 +125,8 @@ h1 {
 }
 
 h2 {
-  font-size: var(--heading-font-size-xl)
+  font-size: var(--heading-font-size-xl);
+  font-family: var(--ff-myradpro-regular);
 }
 
 h3 {
@@ -398,19 +399,19 @@ main .divider{
   }
 
   h1 {
-    font-size: var(--heading-font-size-xl)
+    font-size: var(--heading-font-size-xxl)
   }
 
   h2 {
-    font-size: var(--heading-font-size-l)
+    font-size: var(--heading-font-size-xl)
   }
 
   h3 {
-    font-size: var(--heading-font-size-s)
+    font-size: var(--heading-font-size-l)
   }
 
   h4, h5 {
-    font-size: var(--heading-font-size-xs)
+    font-size: var(--heading-font-size-s)
   }
 
   p, body,a.button:any-link, button  {

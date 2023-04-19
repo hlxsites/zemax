@@ -13,7 +13,13 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  toClassName,
 } from './lib-franklin.js';
+
+/**
+ * manage the list of templates
+ */
+const TEMPLATE_LIST = ['news'];
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'Zemax'; // add your RUM generation information here
@@ -122,6 +128,27 @@ function buildAutoBlocks(main) {
 }
 
 /**
+ * Run template specific decoration code.
+ * @param {Element} main The container element
+ */
+async function decorateTemplates(main) {
+  try {
+    const template = toClassName(getMetadata('template'));
+    const templates = TEMPLATE_LIST;
+    if (templates.includes(template)) {
+      const mod = await import(`../templates/${template}/${template}.js`);
+      loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
+      if (mod.default) {
+        await mod.default(main);
+      }
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('template loading failed', error);
+  }
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -144,6 +171,7 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    await decorateTemplates(main);
     decorateMain(main);
     await waitForLCP(LCP_BLOCKS);
   }
@@ -164,6 +192,21 @@ export function addFavIcon(href) {
   } else {
     document.getElementsByTagName('head')[0].appendChild(link);
   }
+}
+
+export function formatDate(dateStr, options = {}) {
+  const parts = dateStr.split('/');
+  const date = new Date(parts[2], parts[0] - 1, parts[1]);
+
+  if (date) {
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+      ...options,
+    });
+  }
+  return dateStr;
 }
 
 /**

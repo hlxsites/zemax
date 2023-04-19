@@ -19,7 +19,8 @@
   .marketo-container .default-content-wrapper a:hover{
     border:none;
     background-color: unset;
-    color : var(--clr-orange);
+
+    /* color : var(--clr-orange); */
     padding: unset;
     border-radius: unset;
 }
@@ -32,7 +33,8 @@
     height: 7px;
     width: 7px;
     transform: rotate(45deg) translate(-3px);
-    color: #f77f00;
+    
+    /* color: #f77f00; */
     margin-left : 5px
 }
 
@@ -63,6 +65,14 @@
     letter-spacing: var(  --letter-spacing-96);
 }
 
+.marketo-wrapper h4{
+    font-size: 26px;
+    padding-bottom: 16px;
+}
+
+.marketo-container.newsletter .marketo-wrapper h4{
+    color:white;
+}
 
   
 /* Mobile */
@@ -93,6 +103,7 @@
       .marketo-container.newsletter .default-content-wrapper{
         padding-top: 100px;
     }
+
   }
   
   
