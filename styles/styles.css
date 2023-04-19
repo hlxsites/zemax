@@ -319,6 +319,10 @@ main .section.background-blue {
     background-color: var(--clr-blue);
 }
 
+main .section.spacing-60 {
+  padding:60px 0;
+}
+
 main .section.curved-top{
     border-top-right-radius: 100% 15%;
     border-top-left-radius: 100% 15%;
