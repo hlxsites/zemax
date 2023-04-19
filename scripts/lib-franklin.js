@@ -535,8 +535,7 @@ export function decorateTemplateAndTheme() {
 export function decorateButtons(element) {
   element.querySelectorAll('a').forEach((a) => {
     a.title = a.title || a.textContent;
-    // skip buttons for 'Learn More'
-    if (a.textContent.startsWith('Learn More') === false && a.href !== a.textContent) {
+    if (a.href !== a.textContent) {
       const up = a.parentElement;
       const twoup = a.parentElement.parentElement;
       if (!a.querySelector('img')) {

@@ -276,6 +276,10 @@ button:disabled:hover {
   cursor: unset;
 }
 
+.no-button-decoration .button {
+  border: none !important;
+}
+
 main input {
   font-size: 1.25rem;
   width: 100%;
