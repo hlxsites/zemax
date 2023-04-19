@@ -389,6 +389,7 @@ main .divider {
   padding: unset
 }
 
+
 /* Mobile */
 @media only screen and (min-width: 480px) {
   main .section > div {
