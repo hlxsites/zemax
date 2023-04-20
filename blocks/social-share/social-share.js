@@ -15,7 +15,7 @@ function onSocialShareClick(event) {
   event.preventDefault();
   const href = event.currentTarget.getAttribute('href');
   if (!href) return;
-  window.open(href, 'popup', 'width=800,height=700,scrollbars=no,resizable=no');
+  window.open(href);
 }
 
 function decorateLink(social, type, icon, url) {
@@ -43,7 +43,6 @@ function decorateIcons(element) {
   element.querySelectorAll('li').forEach((social) => {
     const type = social.getAttribute('data-type');
     const icon = social.querySelector('span');
-
     switch (type) {
       case 'facebook':
         decorateLink(social, 'Facebook', icon, `https://www.facebook.com/sharer/sharer.php?u=${url}`);
@@ -55,7 +54,7 @@ function decorateIcons(element) {
         decorateLink(social, 'Twitter', icon, `https://www.twitter.com/share?&url=${url}&text=${title}`);
         break;
       case 'email':
-        decorateLink(social, 'Email', icon, `mailto:subject=${title}&body=${title}`);
+        decorateLink(social, 'Email', icon, `mailto:?subject=${title}&body=${title}`);
         break;
       default:
         break;
