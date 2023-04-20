@@ -306,17 +306,21 @@ main .section>div {
 
 /* center aligned sections */
 main .section.center-aligned {
-  text-align: center;
+  text-align: center; margin: 0 auto;
 }
 
 main .section.larger-paragraph-text p {
   max-width: 690px;
-  margin: 0 auto;
   font-size: var(--body-font-size-xxl);
 }
 
+
+main .section.center-aligned .default-content-wrapper > p{
+  margin: inherit;
+}
+
 main .section.background-blue {
-    background-color: var(--clr-blue);
+  background-color: var(--clr-blue);
 }
 
 main .section.spacing-60 {
@@ -324,8 +328,8 @@ main .section.spacing-60 {
 }
 
 main .section.curved-top{
-    border-top-right-radius: 100% 15%;
-    border-top-left-radius: 100% 15%;
+  border-top-right-radius: 100% 15%;
+  border-top-left-radius: 100% 15%;
 }
 
 main .divider{
@@ -394,7 +398,7 @@ main .divider{
   main .section.curved-top{
     border-top-right-radius: 50% 20%;
     border-top-left-radius: 50% 20%;
-}
+  }
 }
 
 
