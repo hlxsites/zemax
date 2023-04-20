@@ -376,6 +376,11 @@ main .section.background-blue {
   background-color: var(--clr-blue);
 }
 
+
+main .section.spacing-60 {
+  padding: 60px 0;
+}
+
 main .section.curved-top {
   border-top-right-radius: 100% 15%;
   border-top-left-radius: 100% 15%;
@@ -481,6 +486,13 @@ main .divider {
   button {
     border-radius: 12px;
   }
+
+  /*
+   * Text exceeds section-width we need a little more space
+  */
+  .optical-design .columns-wrapper {
+    width: 1000px;
+  }
 }
 
 /***************************************************************
@@ -517,11 +529,6 @@ main .divider {
   margin-bottom: 0;
   padding-right: 2em;
   padding-top: 2em;
-}
-
-.optical-design .columns-wrapper {
-  margin: 0 !important;
-  width: 100%;
 }
 
 .optical-design .columns {
