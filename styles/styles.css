@@ -62,7 +62,7 @@
   --heading-font-size-xxl: 48px;
   --heading-font-size-xl: 42px;
   --heading-font-size-l: 30px;
-  --heading-font-size-m: 22px;
+  --heading-font-size-m: 24px;
   --heading-font-size-s: 16px;
   --heading-font-size-xs: 14px;
   --body-font-size-xxl: 24px;
@@ -104,14 +104,18 @@ body {
   font-size: var(--body-font-size-m);
   margin: 0;
   font-family: var(--body-font-family);
-  line-height: var(--line-height-160);
+  line-height: var(--line-height-16);
   color: var(--text-color);
   background-color: var(--background-color);
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3,
-h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--heading-font-family);
   font-weight: var(--font-weight-500);
   line-height: var(--line-height-125);
@@ -121,7 +125,7 @@ h4, h5, h6 {
 }
 
 h1 {
-  font-size: var(--heading-font-size-m)
+  font-size: var(--heading-font-size-m);
 }
 
 h2 {
@@ -146,7 +150,12 @@ h6 {
 }
 
 
-p, dl, ol, ul, pre, blockquote {
+p,
+dl,
+ol,
+ul,
+pre,
+blockquote {
   margin-top: 1em;
   margin-bottom: 1em;
 }
@@ -166,12 +175,15 @@ hr {
   border-bottom: 1px solid var(--overlay-background-color);
 }
 
-code, pre, samp {
+code,
+pre,
+samp {
   font-family: var(--fixed-font-family);
   font-size: var(--body-font-size-s);
 }
 
-code, samp {
+code,
+samp {
   padding: .125em;
 }
 
@@ -198,11 +210,11 @@ a:hover {
 }
 
 /* buttons */
-a.button.primary, button.primary {
+a.button.primary,
+button.primary {
   color: var(--primary-button-color);
   background-color: var(--background-color);
   border: solid 2.5px var(--primary-button-color);
-
 }
 
 a.button.primary:hover,
@@ -229,7 +241,8 @@ button.secondary:focus {
   cursor: pointer;
 }
 
-a.button:any-link, button {
+a.button:any-link,
+button {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   font-style: normal;
@@ -249,14 +262,22 @@ a.button:any-link, button {
   -webkit-font-smoothing: antialiased;
 }
 
-a.button:hover, a.button:focus, button:hover, button:focus {
+a.button:hover,
+a.button:focus,
+button:hover,
+button:focus {
   background-color: var(--link-hover-color);
   cursor: pointer;
 }
 
-button:disabled, button:disabled:hover {
+button:disabled,
+button:disabled:hover {
   background-color: var(--overlay-background-color);
   cursor: unset;
+}
+
+.no-button-decoration .button {
+  border: none !important;
 }
 
 main input {
@@ -309,29 +330,57 @@ main img {
   width: 100%;
 }
 
-main .section>div {
+main .section > div {
   margin: 0 auto;
   width: var(--section-width);
 }
 
+main .default-content-wrapper img {
+  border-radius: 16px;
+}
+
+
+main ol {
+  margin-left: 16px;
+  padding-left: unset;
+}
+
+main li {
+  list-style-type: decimal;
+  line-height: 1.5;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main li > a {
+  padding-left: 5px;
+}
+
+main .default-content-wrapper li > a {
+  color: var(--clr-blue) !important;
+}
+
 /* center aligned sections */
 main .section.center-aligned {
-  text-align: center; margin: 0 auto;
+  text-align: center;
+  margin: 0 auto;
 }
 
 main .section.larger-paragraph-text p {
   max-width: 690px;
   font-size: var(--body-font-size-xxl);
+  font-family: var(--ff-myradpro-regular);
+  display: flex;
 }
 
 
-main .section.center-aligned .default-content-wrapper > p{
+main .section.center-aligned .default-content-wrapper > p {
   margin: inherit;
 }
 
 main .section.background-blue {
   background-color: var(--clr-blue);
 }
+
 
 main .section.spacing-60 {
   padding: 60px 0;
@@ -353,19 +402,22 @@ main .divider {
 
 /* Mobile */
 @media only screen and (min-width: 480px) {
-  main .section>div {
+  main .section > div {
     padding: 0 20px;
   }
+
 
   h1 {
     font-size: var(--heading-font-size-l)
   }
 
-  h2, h3 {
+  h2,
+  h3 {
     font-size: var(--heading-font-size-m)
   }
 
-  h4, h5 {
+  h4,
+  h5 {
     font-size: var(--heading-font-size-s)
   }
 
@@ -381,7 +433,7 @@ main .divider {
     --section-width: 738px;
   }
 
-  main .section>div {
+  main .section > div {
     padding: 0 15px;
   }
 
@@ -397,15 +449,20 @@ main .divider {
     font-size: var(--heading-font-size-l)
   }
 
-  h4, h5 {
+  h4,
+  h5 {
     font-size: var(--heading-font-size-s)
   }
 
-  p, body, a.button:any-link, button {
+  p,
+  body,
+  a.button:any-link,
+  button {
     font-size: var(--body-font-size-m);
   }
 
-  a.button:any-link, button {
+  a.button:any-link,
+  button {
     border-radius: 12px;
   }
 
@@ -414,7 +471,6 @@ main .divider {
     border-top-left-radius: 50% 20%;
   }
 }
-
 
 /* Desktop */
 @media only screen and (min-width: 1030px) {
@@ -445,13 +501,129 @@ main .divider {
     font-size: var(--heading-font-size-s)
   }
 
-  p, body, a.button:any-link, button {
+  p,
+  body,
+  a.button:any-link,
+  button {
     font-size: var(--body-font-size-l);
   }
 
-  a.button:any-link, button {
+  a.button:any-link,
+  button {
     border-radius: 12px;
   }
+
+  /*
+   * Text exceeds section-width we need a little more space
+  */
+  .optical-design .columns-wrapper {
+    width: 1000px;
+  }
+}
+
+/***************************************************************
+* section: "Optical Design Section"
+***************************************************************/
+
+#design-for-manufacturability {
+  font-size: var(--heading-font-size-xl);
+  font-family: var(--ff-myradpro-regular);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1.5em;
+  padding-bottom: 0.5em;
+}
+
+.optical-design {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
+.optical-design .columns > div > div {
+  display: flex;
+  flex-direction: column;
+  padding-left: 3em;
+}
+
+.optical-design div > p:only-child {
+  text-align: center;
+  font-size: var(--heading-font-size-m);
+  margin-bottom: 0;
+  padding-right: 2em;
+  padding-top: 2em;
+}
+
+.optical-design .columns {
+  margin: 0;
+}
+
+.optical-design .columns > div > div > p:first-child {
+  padding-top: 1em;
+  padding-left: 0.5em
+}
+
+.icon-microscope {
+  width: 45px;
+  height: 60px;
+  padding-inline-start: 0.5em;
+}
+
+.icon-lamp {
+  width: 32px;
+  height: 63px;
+  padding-inline-start: 0.5em;
+}
+
+.icon-laser {
+  width: 47px;
+  height: 63px;
+  padding-inline-start: 0.5em;
+}
+
+.optical-design .columns > div > div > p:nth-child(2) {
+  font-size: var(--body-font-size-xl);
+  font-family: var(--ff-myradpro-semibold);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-inline-start: 1em;
+  margin: 0;
+}
+
+#design-for-manufacturability + p {
+  font-family: var(--ff-myradpro-regular);
+  font-size: var(--body-font-size-s);
+}
+
+#optical-design-applications {
+  text-align: center;
+}
+
+.optical-design .columns > div > div > ul {
+  font-size: var(--body-font-size-s);
+}
+
+.optical-design .columns > div > div > ul > li {
+  font-size: var(--body-font-size-s);
+  line-height: var(--line-height-18);
+  list-style-type: disc;
+}
+
+.optical-design .columns > div > div > p:last-child > a {
+  font-size: var(--body-font-size-m);
+  font-family: var(--ff-myradpro-semibold);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-inline-start: 1.5em;
+  margin: 0;
+  color: var(--clr-orange);
 }
 
 /***************************************************************
@@ -482,7 +654,7 @@ main .divider {
 /***************************************************************
 * the bottom button for sections: events, news and customer success stories
 ***************************************************************/
-.section>.default-content-wrapper>.button-container>.button {
+.section > .default-content-wrapper > .button-container > .button {
   padding: 0;
   border-radius: 12px;
   font-family: var(--ff-myradpro-semibold);
@@ -502,14 +674,14 @@ main .divider {
   height: 54px;
 }
 
-.section>.default-content-wrapper>.button-container>.button:hover {
+.section > .default-content-wrapper > .button-container > .button:hover {
   border-color: transparent;
   color: var(--clr-white);
   background-color: #0070c0 !important;
 }
 
 @media screen and (max-width: 767px) {
-  .section>.default-content-wrapper>.button-container>.button {
+  .section > .default-content-wrapper > .button-container > .button {
     font-size: var(--body-font-size-m);
     width: 152px;
     height: 42px;
