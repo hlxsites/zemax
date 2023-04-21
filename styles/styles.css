@@ -656,17 +656,3 @@ main .divider {
   align-items: center;
   justify-content: center;
 }
-
-.section.center-align-titles>.default-content-wrapper>.button-container>.button {
-  font-family: var(--ff-myradpro-semibold);
-  letter-spacing: var(--letter-spacing-8);
-  display: flex;
-  align-items: center;
-  height: 54px;
-}
-
-@media screen and (max-width: 767px) {
-  .section.center-align-titles>.default-content-wrapper>.button-container>.button {
-    height: 42px;
-  }
-}
