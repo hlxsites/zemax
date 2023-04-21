@@ -630,9 +630,9 @@ main .divider {
 * section reusable styles
 ***************************************************************/
 .section.background-bone-grey {
+  padding: 1em 0;
   background-color: #fafafa;
 }
-
 .section.center-align-titles h1 {
   text-align: center;
   font-family: var(--ff-myradpro-regular);
