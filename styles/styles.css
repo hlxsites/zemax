@@ -330,7 +330,7 @@ main img {
   width: 100%;
 }
 
-main .section > div {
+main .section>div {
   margin: 0 auto;
   width: var(--section-width);
 }
@@ -351,11 +351,11 @@ main li {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-main li > a {
+main li>a {
   padding-left: 5px;
 }
 
-main .default-content-wrapper li > a {
+main .default-content-wrapper li>a {
   color: var(--clr-blue) !important;
 }
 
@@ -373,7 +373,7 @@ main .section.larger-paragraph-text p {
 }
 
 
-main .section.center-aligned .default-content-wrapper > p {
+main .section.center-aligned .default-content-wrapper>p {
   margin: inherit;
 }
 
@@ -402,7 +402,7 @@ main .divider {
 
 /* Mobile */
 @media only screen and (min-width: 480px) {
-  main .section > div {
+  main .section>div {
     padding: 0 20px;
   }
 
@@ -433,7 +433,7 @@ main .divider {
     --section-width: 738px;
   }
 
-  main .section > div {
+  main .section>div {
     padding: 0 15px;
   }
 
@@ -543,13 +543,13 @@ main .divider {
   padding-right: 1.5em;
 }
 
-.optical-design .columns > div > div {
+.optical-design .columns>div>div {
   display: flex;
   flex-direction: column;
   padding-left: 3em;
 }
 
-.optical-design div > p:only-child {
+.optical-design div>p:only-child {
   text-align: center;
   font-size: var(--heading-font-size-m);
   margin-bottom: 0;
@@ -561,7 +561,7 @@ main .divider {
   margin: 0;
 }
 
-.optical-design .columns > div > div > p:first-child {
+.optical-design .columns>div>div>p:first-child {
   padding-top: 1em;
   padding-left: 0.5em
 }
@@ -584,7 +584,7 @@ main .divider {
   padding-inline-start: 0.5em;
 }
 
-.optical-design .columns > div > div > p:nth-child(2) {
+.optical-design .columns>div>div>p:nth-child(2) {
   font-size: var(--body-font-size-xl);
   font-family: var(--ff-myradpro-semibold);
   text-align: center;
@@ -595,7 +595,7 @@ main .divider {
   margin: 0;
 }
 
-#design-for-manufacturability + p {
+#design-for-manufacturability+p {
   font-family: var(--ff-myradpro-regular);
   font-size: var(--body-font-size-s);
 }
@@ -604,17 +604,17 @@ main .divider {
   text-align: center;
 }
 
-.optical-design .columns > div > div > ul {
+.optical-design .columns>div>div>ul {
   font-size: var(--body-font-size-s);
 }
 
-.optical-design .columns > div > div > ul > li {
+.optical-design .columns>div>div>ul>li {
   font-size: var(--body-font-size-s);
   line-height: var(--line-height-18);
   list-style-type: disc;
 }
 
-.optical-design .columns > div > div > p:last-child > a {
+.optical-design .columns>div>div>p:last-child>a {
   font-size: var(--body-font-size-m);
   font-family: var(--ff-myradpro-semibold);
   text-align: center;
@@ -651,39 +651,22 @@ main .divider {
   font-family: var(--ff-myradpro-regular);
 }
 
-/***************************************************************
-* the bottom button for sections: events, news and customer success stories
-***************************************************************/
-.section > .default-content-wrapper > .button-container > .button {
-  padding: 0;
-  border-radius: 12px;
-  font-family: var(--ff-myradpro-semibold);
-  font-size: var(--body-font-size-l);
-  line-height: var(--line-height-15);
-  letter-spacing: var(--letter-spacing-8);
-  text-transform: none;
+.section.center-align-titles>.default-content-wrapper>.button-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s linear 0s;
-  border: solid 2.5px #0070c0;
-  color: #0070c0;
-  background-color: white;
-  margin: 0 auto;
-  width: 182px;
+}
+
+.section.center-align-titles>.default-content-wrapper>.button-container>.button {
+  font-family: var(--ff-myradpro-semibold);
+  letter-spacing: var(--letter-spacing-8);
+  display: flex;
+  align-items: center;
   height: 54px;
 }
 
-.section > .default-content-wrapper > .button-container > .button:hover {
-  border-color: transparent;
-  color: var(--clr-white);
-  background-color: #0070c0 !important;
-}
-
 @media screen and (max-width: 767px) {
-  .section > .default-content-wrapper > .button-container > .button {
-    font-size: var(--body-font-size-m);
-    width: 152px;
+  .section.center-align-titles>.default-content-wrapper>.button-container>.button {
     height: 42px;
   }
 }
