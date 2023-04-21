@@ -316,13 +316,17 @@ main .section>div {
 
 /* center aligned sections */
 main .section.center-aligned {
-  text-align: center;
+  text-align: center; margin: 0 auto;
 }
 
 main .section.larger-paragraph-text p {
   max-width: 690px;
-  margin: 0 auto;
   font-size: var(--body-font-size-xxl);
+}
+
+
+main .section.center-aligned .default-content-wrapper > p{
+  margin: inherit;
 }
 
 main .section.background-blue {
