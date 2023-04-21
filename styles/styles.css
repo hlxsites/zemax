@@ -630,6 +630,7 @@ main .divider {
 * section reusable styles
 ***************************************************************/
 .section.background-bone-grey {
+  padding: 1em 0;
   background-color: #fafafa;
 }
 
