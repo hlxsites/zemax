@@ -1,14 +1,15 @@
 import {
   a, div, li, ul, span,
 } from '../../scripts/dom-helpers.js';
+import { getMetadata } from '../../scripts/lib-franklin.js';
 
 function getURL() {
   return encodeURIComponent(window.location.href);
 }
 
 function getTitle() {
-  const h2 = document.querySelector('h2');
-  return h2 ? encodeURIComponent(h2.textContent) : '';
+  const title = getMetadata('title');
+  return title ? encodeURIComponent(title.textContent) : '';
 }
 
 function onSocialShareClick(event) {
@@ -84,6 +85,6 @@ export default function decorate(block) {
   const container = block.querySelector('main .social-links .icon-container');
   document.onscroll = () => {
     const windowTop = window.pageYOffset;
-    if (windowTop > 100) { container.classList.add('sticky'); } else { container.classList.remove('sticky'); }
+    if (windowTop > 120) { container.classList.add('sticky'); } else { container.classList.remove('sticky'); }
   };
 }
