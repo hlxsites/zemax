@@ -53,7 +53,7 @@ main .social-links  .icon-email {
     
     main .news.section .social-share-wrapper {
         position: relative;
-        top: calc(var(--nav-height) + 160px);
+        top: calc(var(--nav-height) + 180px);
     }
 
     main .social-links .icon-container {
