@@ -522,7 +522,7 @@ main .divider {
   .title2-34 h2 {
     font-size: var(--heading-font-size-x);
     padding-left: 2em;
-    padding-top: 3em;
+    padding-top: 1em;
   }
 }
 

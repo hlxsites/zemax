@@ -48,6 +48,7 @@
   justify-content: center;
   padding-left: 1.5em;
   padding-right: 1.5em;
+  margin: 0;
 }
 
 .columns.icon-title > div > div {
@@ -62,10 +63,6 @@
   margin-bottom: 0;
   padding-right: 2em;
   padding-top: 2em;
-}
-
-.columns.icon-title {
-  margin: 0;
 }
 
 .columns.icon-title > div > div > p:first-child {
@@ -108,4 +105,5 @@
   padding-inline-start: 1.5em;
   margin: 0;
   color: var(--clr-orange);
+  padding-left: 1em;
 }
