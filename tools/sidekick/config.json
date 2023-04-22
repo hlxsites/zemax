@@ -1,6 +1,5 @@
 {
     "project": "Zemax",
-    "host": "zemax.com",
     "plugins": [
       {
         "id": "library",
