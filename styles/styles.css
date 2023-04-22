@@ -61,6 +61,7 @@
   /* sizes */
   --heading-font-size-xxl: 48px;
   --heading-font-size-xl: 42px;
+  --heading-font-size-x: 34px;
   --heading-font-size-l: 30px;
   --heading-font-size-m: 24px;
   --heading-font-size-s: 16px;
@@ -424,6 +425,11 @@ main .divider {
   p {
     font-size: var(--body-font-size-m);
   }
+
+  .title2-34 h2 {
+    font-size: var(--heading-font-size-m);
+    padding-left: 2em;
+  }
 }
 
 /* Tablet */
@@ -513,57 +519,23 @@ main .divider {
     border-radius: 12px;
   }
 
-  /*
-   * Text exceeds section-width we need a little more space
-  */
-  .optical-design .columns-wrapper {
-    width: 1000px;
+  .title2-34 h2 {
+    font-size: var(--heading-font-size-x);
+    padding-left: 2em;
+    padding-top: 1em;
   }
 }
 
 /***************************************************************
-* section: "Optical Design Section"
+* section: "Green Icons" Optical Design
 ***************************************************************/
 
-#design-for-manufacturability {
-  font-size: var(--heading-font-size-xl);
-  font-family: var(--ff-myradpro-regular);
-  margin: 0;
+.design-title h2 {
   display: flex;
   flex-direction: column;
   padding-top: 1.5em;
-  padding-bottom: 0.5em;
-}
-
-.optical-design {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 1.5em;
-  padding-right: 1.5em;
-}
-
-.optical-design .columns>div>div {
-  display: flex;
-  flex-direction: column;
-  padding-left: 3em;
-}
-
-.optical-design div>p:only-child {
-  text-align: center;
-  font-size: var(--heading-font-size-m);
-  margin-bottom: 0;
-  padding-right: 2em;
-  padding-top: 2em;
-}
-
-.optical-design .columns {
+  padding-left: 1em;
   margin: 0;
-}
-
-.optical-design .columns>div>div>p:first-child {
-  padding-top: 1em;
-  padding-left: 0.5em
 }
 
 .icon-microscope {
@@ -582,48 +554,6 @@ main .divider {
   width: 47px;
   height: 63px;
   padding-inline-start: 0.5em;
-}
-
-.optical-design .columns>div>div>p:nth-child(2) {
-  font-size: var(--body-font-size-xl);
-  font-family: var(--ff-myradpro-semibold);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-inline-start: 1em;
-  margin: 0;
-}
-
-#design-for-manufacturability+p {
-  font-family: var(--ff-myradpro-regular);
-  font-size: var(--body-font-size-s);
-}
-
-#optical-design-applications {
-  text-align: center;
-}
-
-.optical-design .columns>div>div>ul {
-  font-size: var(--body-font-size-s);
-}
-
-.optical-design .columns>div>div>ul>li {
-  font-size: var(--body-font-size-s);
-  line-height: var(--line-height-18);
-  list-style-type: disc;
-}
-
-.optical-design .columns>div>div>p:last-child>a {
-  font-size: var(--body-font-size-m);
-  font-family: var(--ff-myradpro-semibold);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-inline-start: 1.5em;
-  margin: 0;
-  color: var(--clr-orange);
 }
 
 /***************************************************************
