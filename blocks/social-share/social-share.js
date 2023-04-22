@@ -63,6 +63,16 @@ function decorateIcons(element) {
   });
 }
 
+function stickySocialNav() {
+  const container = document.querySelector('main .social-links .icon-container');
+  const windowTop = window.pageYOffset;
+  const r = document.querySelector(':root');
+  const scrollTop = r ? getComputedStyle(r).getPropertyValue('--nav-height').replace('px', '') : 120;
+  if ((windowTop - scrollTop) > scrollTop) {
+    container.classList.add('sticky');
+  } else { container.classList.remove('sticky'); }
+}
+
 export default function decorate(block) {
   block.innerHTML = '';
   const socials = ['facebook', 'twitter', 'email', 'linkedin'];
@@ -82,9 +92,5 @@ export default function decorate(block) {
     ),
   );
   decorateIcons(block);
-  const container = block.querySelector('main .social-links .icon-container');
-  document.onscroll = () => {
-    const windowTop = window.pageYOffset;
-    if (windowTop > 120) { container.classList.add('sticky'); } else { container.classList.remove('sticky'); }
-  };
+  document.onscroll = stickySocialNav;
 }
