@@ -92,5 +92,5 @@ export default function decorate(block) {
     ),
   );
   decorateIcons(block);
-  document.onscroll = stickySocialNav;
+  if (window.innerWidth > 480) { document.onscroll = stickySocialNav; }
 }
