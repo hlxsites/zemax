@@ -34,15 +34,15 @@
   /*
    * Text exceeds section-width we need a little more space
   */
-  .columns.icon-title {
-    width: 1000px;
+  .columns.applications {
+    width: 1150px;
   }
 }
 
 /***************************************************************
-* columns: "icon-title-list-link"
+* columns: "applications-list-link"
 ***************************************************************/
-.columns.icon-title {
+.columns.applications {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,26 +51,26 @@
   margin: 0;
 }
 
-.columns.icon-title > div > div {
+.columns.applications h4 {
+  text-align: left;
+  font-size: var(--heading-font-size-m);
+  margin-bottom: 0;
+  padding: 0;
+  padding-left: 0.5em;
+}
+
+.columns.applications > div > div {
   display: flex;
   flex-direction: column;
   padding-left: 3em;
 }
 
-.columns.icon-title div > p:only-child {
-  text-align: center;
-  font-size: var(--heading-font-size-m);
-  margin-bottom: 0;
-  padding-right: 2em;
-  padding-top: 2em;
-}
-
-.columns.icon-title > div > div > p:first-child {
+.columns.applications > div > div > p:first-child {
   padding-left: 0.5em;
   display: flex;
 }
 
-.columns.icon-title > div > div > p:nth-child(2) {
+.columns.applications > div > div > p:nth-child(2) {
   font-size: var(--body-font-size-xl);
   font-family: var(--ff-myradpro-semibold);
   text-align: center;
@@ -81,7 +81,7 @@
   margin: 0;
 }
 
-.columns.icon-title > div > div > ul {
+.columns.applications > div > div > ul {
   font-size: var(--body-font-size-s);
   margin: 0;
   padding: 0;
@@ -89,13 +89,13 @@
   padding-left: 2.1em;
 }
 
-.columns.icon-title > div > div > ul > li {
+.columns.applications > div > div > ul > li {
   font-size: var(--body-font-size-s);
   line-height: var(--line-height-18);
   list-style-type: disc;
 }
 
-.columns.icon-title > div > div > p:last-child > a {
+.columns.applications > div > div > p:last-child > a {
   font-size: var(--body-font-size-m);
   font-family: var(--ff-myradpro-semibold);
   text-align: center;
