@@ -67,7 +67,8 @@ function stickySocialNav() {
   const container = document.querySelector('main .social-links .icon-container');
   const windowTop = window.pageYOffset;
   const r = document.querySelector(':root');
-  const scrollTop = r ? getComputedStyle(r).getPropertyValue('--nav-height').replace('px', '') : 120;
+  const scrollTop = parseInt((r ? getComputedStyle(r).getPropertyValue('--nav-height').replace('px', '') : 120), 10) + 50;
+
   if ((windowTop - scrollTop) > scrollTop) {
     container.classList.add('sticky');
   } else { container.classList.remove('sticky'); }
