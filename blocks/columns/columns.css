@@ -116,7 +116,7 @@
   height: 63px;
 }
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 1030px) {
   .columns.applications { 
     padding-right: 20px;
     padding-left: 20px;
@@ -127,4 +127,12 @@
     justify-content: center;
   }
 
+  .columns.applications > div > div {
+    margin: 0 10px 20px;
+    max-width: 243px;
+  }
+
+  .columns.applications > div > div > h4 {
+    font-size: 22px;
+  }
 }
