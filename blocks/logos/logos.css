@@ -10,8 +10,6 @@
 
 .logos {
     position: relative;
-    width: 100%;
-    height: 100%;
     order: 1;
     display: flex;
     align-content: flex-start;
