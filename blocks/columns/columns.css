@@ -19,91 +19,120 @@
   display: block;
 }
 
-@media (min-width: 900px) {
-  .columns > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 32px;
-  }
-
-  .columns > div > div {
-    flex: 1;
-    order: unset;
-  }
-
-  /*
-   * Text exceeds section-width we need a little more space
-  */
-  .columns.icon-title {
-    width: 1000px;
-  }
+.columns.applications {
+  width: 100%;
+  max-width: 990px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
 }
 
-/***************************************************************
-* columns: "icon-title-list-link"
-***************************************************************/
-.columns.icon-title {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 1.5em;
-  padding-right: 1.5em;
-  margin: 0;
-}
-
-.columns.icon-title > div > div {
-  display: flex;
-  flex-direction: column;
-  padding-left: 3em;
-}
-
-.columns.icon-title div > p:only-child {
-  text-align: center;
-  font-size: var(--heading-font-size-m);
-  margin-bottom: 0;
-  padding-right: 2em;
-  padding-top: 2em;
-}
-
-.columns.icon-title > div > div > p:first-child {
-  padding-left: 0.5em;
-  display: flex;
-}
-
-.columns.icon-title > div > div > p:nth-child(2) {
-  font-size: var(--body-font-size-xl);
-  font-family: var(--ff-myradpro-semibold);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-inline-start: 1em;
-  margin: 0;
-}
-
-.columns.icon-title > div > div > ul {
-  font-size: var(--body-font-size-s);
-  margin: 0;
-  padding: 0;
+.columns.applications > div {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
   text-align: left;
-  padding-left: 2.1em;
 }
 
-.columns.icon-title > div > div > ul > li {
-  font-size: var(--body-font-size-s);
-  line-height: var(--line-height-18);
-  list-style-type: disc;
-}
-
-.columns.icon-title > div > div > p:last-child > a {
-  font-size: var(--body-font-size-m);
-  font-family: var(--ff-myradpro-semibold);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding-inline-start: 1.5em;
+.columns.applications > div ul,p {
+  padding: 0;
   margin: 0;
+}
+
+.columns.applications > div h4 {
+  margin: 14px 0 13px;
+}
+
+.columns.applications > div a {
+  font-family: var(--ff-myradpro-semibold);
+  font-size: var(--body-font-size-s);
+  line-height: 1.5;
+  letter-spacing: 0.8px;
   color: var(--clr-orange);
-  padding-left: 1em;
+  position: relative;
+  z-index: 0;
+  transition: all 0.3s linear 0s;
+  border: 0;
+  padding: 0;
+}
+
+.columns.applications > div a:hover { 
+  background: none;
+  color: var(--clr-orange);
+  text-decoration: underline;
+}
+
+.columns.applications > div a::after {
+  content: "";
+  background: url('../../icons/icon-right-arrow-orange.svg') bottom right/contain no-repeat;
+  display: inline-block;
+  margin-left: 3px;
+  height: 0.6em !important;
+  width: 7px !important;
+  transform: translateY(0);
+  position: static !important;
+}
+
+.columns.applications > div ul {
+  margin-bottom: 32px;
+}
+
+.columns.applications li {
+  list-style-type: none;
+  list-style-position: inside;
+  font-family: var(--ff-myradpro-regular);
+  font-size: var(--body-font-size-s);
+  line-height: 1.5;
+  color: #54565b;
+  padding-left: 5px;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 0;
+}
+
+.columns.applications li::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 0;
+  display: inline-block;
+  background-color: #54565b;
+  width: 2px;
+  height: 2px;
+}
+
+.icon-microscope {
+  width: 45px;
+  height: 60px;
+}
+
+.icon-lamp {
+  width: 32px;
+  height: 63px;
+}
+
+.icon-laser {
+  width: 47px;
+  height: 63px;
+}
+
+@media screen and (max-width: 1030px) {
+  .columns.applications { 
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .columns.applications > div {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .columns.applications > div > div {
+    margin: 0 10px 20px;
+    max-width: 243px;
+  }
+
+  .columns.applications > div > div > h4 {
+    font-size: 22px;
+  }
 }

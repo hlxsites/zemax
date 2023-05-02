@@ -538,24 +538,6 @@ main .divider {
   margin: 0;
 }
 
-.icon-microscope {
-  width: 45px;
-  height: 60px;
-  padding-inline-start: 0.5em;
-}
-
-.icon-lamp {
-  width: 32px;
-  height: 63px;
-  padding-inline-start: 0.5em;
-}
-
-.icon-laser {
-  width: 47px;
-  height: 63px;
-  padding-inline-start: 0.5em;
-}
-
 /***************************************************************
 * section reusable styles
 ***************************************************************/
