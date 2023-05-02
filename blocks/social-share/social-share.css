@@ -39,7 +39,7 @@ main .social-links  .icon-email {
 }
 
 /* Mobile */
-@media only screen and (min-width: 767px) { 
+@media only screen and (min-width: 480px) { 
     main .news.section {
         display: grid;
         grid-template: 'blog social' / auto 180px;
@@ -53,7 +53,7 @@ main .social-links  .icon-email {
     
     main .news.section .social-share-wrapper {
         position: relative;
-        top: calc(var(--nav-height) + 140px);
+        top: calc(var(--nav-height) + 180px);
     }
 
     main .social-links .icon-container {
