@@ -70,6 +70,13 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+export async function searchResults(index, category) {
+  const resp = await fetch(index);
+  const json = await resp.json();
+  const filteredData = json.data.filter((e) => e.category.toLowerCase() === category.toLowerCase());
+  return filteredData.length > 0 ? filteredData : undefined;
+}
+
 /**
  * Retrieves the content of a metadata tag
  * @param {string} name The metadata name (or property)
