@@ -3,6 +3,7 @@ import { createTag, loadScript } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
+let webauth;
 
 function collapseAllSubmenus(menu) {
   menu
@@ -137,6 +138,76 @@ function reAttachEventListeners() {
   }
 }
 
+// authentication related functions
+function initializeAuth() {
+  // eslint-disable-next-line no-undef
+  return new auth0.WebAuth({
+    domain: 'zemax.auth0.com',
+    clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
+    redirectUri: `${window.location.origin}`,
+    audience: 'https://zemax.auth0.com/api/v2/',
+    responseType: 'token id_token',
+    scope: 'openid profile email',
+  });
+}
+
+// login call
+function login() {
+  webauth.authorize();
+}
+
+// logout call
+function logout() {
+  webauth.logout({
+    returnTo: `${window.location.origin}`,
+    clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
+  });
+  localStorage.clear();
+}
+
+// utility to attach logout listeners
+function attachLogoutListener(ele) {
+  ele.removeEventListener('click', login);
+  ele.addEventListener('mouseenter', () => { ele.setAttribute('aria-expanded', 'true'); });
+  ele.addEventListener('mouseleave', () => { ele.setAttribute('aria-expanded', 'false'); });
+  const logoutLink = ele.querySelector('ul > li:nth-of-type(2)');
+  logoutLink.addEventListener('click', logout);
+}
+
+// manage user info in local storage and attach events
+function handleAuthentication(ele) {
+  webauth.parseHash((err, authResult) => {
+    if (authResult && authResult.accessToken && authResult.idToken) {
+      // Successful login, store tokens in localStorage
+      localStorage.setItem('accessToken', authResult.accessToken);
+      localStorage.setItem('idToken', authResult.idToken);
+      const base64Url = authResult.idToken.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        window
+          .atob(base64)
+          .split('')
+          .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
+          .join(''),
+      );
+      const userData = JSON.parse(jsonPayload);
+      const logintxt = ele.querySelector('p');
+      const displayname = `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`;
+      logintxt.innerText = displayname;
+      localStorage.setItem('displayname', displayname);
+      attachLogoutListener(ele);
+    } else if (err) {
+      console.log(`Unable to authenticate with error ${err}`);
+    }
+  });
+}
+
+// if user already authenticated
+function handleAuthenticated(ele) {
+  const logintxt = ele.querySelector('p');
+  logintxt.innerText = localStorage.getItem('displayname');
+  attachLogoutListener(ele);
+}
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -213,68 +284,23 @@ export default async function decorate(block) {
     });
 
     // adding login functionality
+    const authtoken = localStorage.getItem('accessToken');
     const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLink.classList.add('login-wrapper');
-    loginLink.setAttribute('aria-expanded', 'false');
     const authScriptTag = loadScript('../../scripts/auth0.min.js');
-    authScriptTag.onload = () => {
-      // load the authorization script
-      // eslint-disable-next-line no-undef
-      const webauth = new auth0.WebAuth({
-        domain: 'zemax.auth0.com',
-        clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
-        redirectUri: `${window.location.origin}/pages/profile`,
-        audience: 'https://zemax.auth0.com/api/v2/',
-        responseType: 'token id_token',
-        scope: 'openid profile email',
-      });
-
-      function login() {
-        webauth.authorize();
-      }
-      function logout() {
-        webauth.logout({
-          returnTo: `${window.location.origin}`,
-          clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
-        });
-      }
-      loginLink.addEventListener('click', login);
-      function handleAuthentication() {
-        webauth.parseHash((err, authResult) => {
-          if (authResult && authResult.accessToken && authResult.idToken) {
-            // Successful login, store tokens in localStorage
-            localStorage.setItem('accessToken', authResult.accessToken);
-            localStorage.setItem('idToken', authResult.idToken);
-            window.location.hash = '';
-            window.location.pathname = '/';
-            const base64Url = authResult.idToken.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(
-              window
-                .atob(base64)
-                .split('')
-                .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
-                .join(''),
-            );
-            const userData = JSON.parse(jsonPayload);
-            loginLink.innerText = userData.name;
-            loginLink.classList.remove('login');
-            loginLink.classList.add('logout');
-            loginLink.removeEventListener('click', login);
-            loginLink.addEventListener('click', logout);
-            loginLink.addEventListener('click', () => {
-              webauth.logout();
-            });
-            console.log(userData.name);
-          } else if (err) {
-            console.log(err);
-          }
-        });
-      }
-
-      handleAuthentication();
-    };
-
+    if (!authtoken) {
+      loginLink.setAttribute('aria-expanded', 'false');
+      authScriptTag.onload = () => {
+        webauth = initializeAuth();
+        loginLink.addEventListener('click', login);
+        handleAuthentication(loginLink);
+      };
+    } else {
+      authScriptTag.onload = () => {
+        webauth = initializeAuth();
+      };
+      handleAuthenticated(loginLink);
+    }
     // link section
     const navMenuUl = createTag('ul');
     const menus = [...nav.querySelectorAll('.nav-menu > div')];
