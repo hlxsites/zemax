@@ -1,5 +1,5 @@
 import { decorateIcons } from '../../scripts/lib-franklin.js';
-import { createTag } from '../../scripts/scripts.js';
+import { createTag, loadScript } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -211,6 +211,69 @@ export default async function decorate(block) {
         showSearchForm();
       }
     });
+
+    // adding login functionality
+    const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
+    loginLink.classList.add('login-wrapper');
+    loginLink.setAttribute('aria-expanded', 'false');
+    const authScriptTag = loadScript('../../scripts/auth0.min.js');
+    authScriptTag.onload = () => {
+      // load the authorization script
+      // eslint-disable-next-line no-undef
+      const webauth = new auth0.WebAuth({
+        domain: 'zemax.auth0.com',
+        clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
+        redirectUri: `${window.location.origin}/pages/profile`,
+        audience: 'https://zemax.auth0.com/api/v2/',
+        responseType: 'token id_token',
+        scope: 'openid profile email',
+      });
+
+      function login() {
+        webauth.authorize();
+      }
+      function logout() {
+        webauth.logout({
+          returnTo: `${window.location.origin}`,
+          clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
+        });
+      }
+      loginLink.addEventListener('click', login);
+      function handleAuthentication() {
+        webauth.parseHash((err, authResult) => {
+          if (authResult && authResult.accessToken && authResult.idToken) {
+            // Successful login, store tokens in localStorage
+            localStorage.setItem('accessToken', authResult.accessToken);
+            localStorage.setItem('idToken', authResult.idToken);
+            window.location.hash = '';
+            window.location.pathname = '/';
+            const base64Url = authResult.idToken.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(
+              window
+                .atob(base64)
+                .split('')
+                .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
+                .join(''),
+            );
+            const userData = JSON.parse(jsonPayload);
+            loginLink.innerText = userData.name;
+            loginLink.classList.remove('login');
+            loginLink.classList.add('logout');
+            loginLink.removeEventListener('click', login);
+            loginLink.addEventListener('click', logout);
+            loginLink.addEventListener('click', () => {
+              webauth.logout();
+            });
+            console.log(userData.name);
+          } else if (err) {
+            console.log(err);
+          }
+        });
+      }
+
+      handleAuthentication();
+    };
 
     // link section
     const navMenuUl = createTag('ul');
