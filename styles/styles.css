@@ -45,6 +45,7 @@
   --link-color: #002f6d;
   --link-hover-color: #0070c0;
   --background-color: #fff;
+  --background-color-cream : #f7f7f7;
   --overlay-background-color: #eee;
   --highlight-background-color: #ccc;
   --primary-button-color: #0070c0;
@@ -126,7 +127,7 @@ h6 {
 }
 
 h1 {
-  font-size: var(--heading-font-size-m);
+  font-size: var(--heading-font-size-xxl)
 }
 
 h2 {
@@ -331,7 +332,7 @@ main img {
   width: 100%;
 }
 
-main .section>div {
+main .section > div {
   margin: 0 auto;
   width: var(--section-width);
 }
@@ -352,11 +353,11 @@ main li {
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-main li>a {
+main li > a {
   padding-left: 5px;
 }
 
-main .default-content-wrapper li>a {
+main .default-content-wrapper li > a {
   color: var(--clr-blue) !important;
 }
 
@@ -374,7 +375,7 @@ main .section.larger-paragraph-text p {
 }
 
 
-main .section.center-aligned .default-content-wrapper>p {
+main .section.center-aligned .default-content-wrapper > p {
   margin: inherit;
 }
 
@@ -401,9 +402,10 @@ main .divider {
 }
 
 
+
 /* Mobile */
 @media only screen and (min-width: 480px) {
-  main .section>div {
+  main .section > div {
     padding: 0 20px;
   }
 
@@ -439,7 +441,7 @@ main .divider {
     --section-width: 738px;
   }
 
-  main .section>div {
+  main .section > div {
     padding: 0 15px;
   }
 
@@ -564,8 +566,57 @@ main .divider {
   font-family: var(--ff-myradpro-regular);
 }
 
-.section.center-align-titles>.default-content-wrapper>.button-container {
+@media screen and (max-width: 767px) {
+  .section.news h2 {
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 480px) {
+  .section.news h2 {
+    font-size: calc(0.0234 * 100vw + 10.75px);
+  }
+}
+
+@media (min-width: 992px) {
+  .section.news h2 {
+    font-size: var(--heading-font-size-l);
+  }
+}
+
+/***************************************************************
+* the bottom button for sections: events, news and customer success stories
+***************************************************************/
+.section > .default-content-wrapper > .button-container > .button {
+  padding: 0;
+  border-radius: 12px;
+  font-family: var(--ff-myradpro-semibold);
+  font-size: var(--body-font-size-l);
+  line-height: var(--line-height-15);
+  letter-spacing: var(--letter-spacing-8);
+  text-transform: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s linear 0s;
+  border: solid 2.5px #0070c0;
+  color: #0070c0;
+  background-color: white;
+  margin: 0 auto;
+  width: 182px;
+  height: 54px;
+}
+
+.section > .default-content-wrapper > .button-container > .button:hover {
+  border-color: transparent;
+  color: var(--clr-white);
+  background-color: #0070c0 !important;
+}
+
+@media screen and (max-width: 767px) {
+  .section > .default-content-wrapper > .button-container > .button {
+    font-size: var(--body-font-size-m);
+    width: 152px;
+    height: 42px;
+  }
 }
