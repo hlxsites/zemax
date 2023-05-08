@@ -247,7 +247,7 @@ li.card-with-link:hover {
 
 .cards.no-image .cards-card-body p {
   box-sizing: border-box;
-  margin: 0 0 19.4444px;
+  margin: 0 0 19.44444px;
   line-height: var(--line-height-15);
   letter-spacing: normal;
   color: var(--text-color);
