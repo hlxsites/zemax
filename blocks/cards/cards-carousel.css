@@ -1,0 +1,174 @@
+/***************************************************************
+* style for wrapper and slide-container
+***************************************************************/
+
+.cards.carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+/* cards-carousel-slide-container */
+.cards.carousel .cards-carousel-slide-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    transition: height 0.2s linear;
+    min-width: 305px;
+}
+
+@media (min-width: 992px) {
+    .cards.carousel .cards-carousel-slide-container {
+        max-width: 984px;
+    }
+}
+
+/***************************************************************
+* style for cards-carousel-slide
+***************************************************************/
+.cards.carousel .cards-carousel-slide {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0 calc(16.7% - 152.5px);
+    transition: all 0.5s;
+    border: 1px solid var(--highlight-background-color);
+    background-color: var(--background-color);
+    width: 305px;
+    min-width: 305px;
+    overflow: hidden;
+    border-radius: 15px;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+@media (max-width: 992px) {
+    .cards.carousel .cards-carousel-slide {
+        margin: 0 calc(25% - 152.5px);
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .cards.carousel .cards-carousel-slide {
+        margin: 0 calc(50% - 152.5px);
+    }
+}
+
+.cards.carousel .cards-carousel-slide.card-with-link:hover {
+    cursor: pointer;
+    transition: all 0.3s linear 0s;
+}
+
+/***************************************************************
+* style for cards-card-body
+***************************************************************/
+.cards.carousel .cards-card-body {
+    margin: 16px;
+    margin-top: 0;
+}
+
+.cards.carousel .cards-card-body h3 {
+    margin-bottom: 6px;
+    color: #002f6d;
+    font-weight: normal;
+    font-size: var(--body-font-size-xl);
+    line-height: var(--line-height-14);
+    font-family: var(--ff-myradpro-semibold);
+    text-align: left;
+    letter-spacing: var(--letter-spacing-3);
+}
+
+.cards.carousel .cards-card-body p {
+    margin: 0 0 19.4444px;
+    margin-bottom: 28px;
+    color: var(--text-color);
+    font-size: var(--body-font-size-l);
+    line-height: var(--line-height-14);
+    text-align: left;
+}
+
+.cards.carousel .cards-card-body .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 117px;
+    height: 40px;
+    border: solid 2.5px var(--clr-blue);
+    border-radius: 8px;
+    font-size: var(--body-font-size-m);
+    line-height: var(--line-height-15);
+    font-family: var(--ff-myradpro-semibold);
+    letter-spacing: var(--letter-spacing-64);
+    transition: all 0.3s linear 0s;
+}
+
+.cards.carousel .cards-carousel-slide:hover .button {
+    border-color: transparent;
+    color: var(--clr-white);
+    background-color: var(--clr-blue) !important;
+}
+
+/***************************************************************
+* style for carousel-dots
+***************************************************************/
+.cards.carousel ul.carousel-dots {
+    display: flex;
+    left: 50%;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    order: 2;
+    width: 100%;
+    max-width: inherit;
+    margin-bottom: 0;
+    padding: 0;
+    list-style: none;
+    gap: 20px;
+}
+
+.cards.carousel .carousel-dots li {
+    width: 12px;
+    height: 12px;
+    box-shadow: inset 0 0 100px 100px var(--neutral-sand);
+    cursor: pointer;
+    border-radius: 50%;
+    list-style-type: none;
+}
+
+.cards.carousel .carousel-dots button {
+    list-style: none;
+    margin: 0;
+    padding: 5px;
+    cursor: pointer;
+    color: transparent;
+    border: 0;
+    background: transparent;
+    border-radius: 0;
+}
+
+.cards.carousel .carousel-dots button::before {
+    content: "";
+    display: block;
+    background-color: #fff;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    opacity: .6;
+    transition: opacity 0.3s linear 0s;
+}
+
+.cards.carousel .carousel-dots .carousel-dots-active button::before {
+    opacity: 1;
+}
