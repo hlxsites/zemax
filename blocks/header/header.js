@@ -144,7 +144,7 @@ function initializeAuth(domain, clientID, audience, responseType, scope) {
   return new auth0.WebAuth({
     domain: `${domain}`,
     clientID: `${clientID}`,
-    redirectUri: `${window.location.origin}/pages/profile`,
+    redirectUri: `${window.location.origin}`,
     audience: `${audience}`,
     responseType: `${responseType}`,
     scope: `${scope}`,
@@ -289,14 +289,16 @@ export default async function decorate(block) {
     const authtoken = localStorage.getItem('accessToken');
     const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLink.classList.add('login-wrapper');
-    const authScriptTag = loadScript('../../scripts/auth0.min.js');
+    const authScriptTag = loadScript('/scripts/auth0.min.js', {
+      type: 'text/javascript',
+      charset: 'UTF-8',
+    });
     const placeholders = await fetchPlaceholders();
     const domain = placeholders.auth0domain;
     const clientID = placeholders.clientid;
     const audienceURI = placeholders.audienceuri;
     const responseType = placeholders.responsetype;
     const scopes = placeholders.scope;
-
     if (!authtoken) {
       loginLink.setAttribute('aria-expanded', 'false');
       authScriptTag.onload = () => {
