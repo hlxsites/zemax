@@ -60,7 +60,7 @@ function createPaginationSelector(currentPage, totalPages, maxVisiblePages = 4) 
   }
 
   // Add page number selectors
-  for (let i = startPage; i <= endPage; i++) {
+  for (let i = startPage; i <= endPage; i += 1) {
     const pageSelector = createPageSelector(i);
     if (i === currentPage) {
       pageSelector.classList.add('current-page');
