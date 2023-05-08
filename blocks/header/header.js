@@ -1,4 +1,4 @@
-import { decorateIcons } from '../../scripts/lib-franklin.js';
+import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { createTag, loadScript } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
@@ -139,15 +139,15 @@ function reAttachEventListeners() {
 }
 
 // authentication related functions
-function initializeAuth() {
+function initializeAuth(domain, clientID, audience, responseType, scope) {
   // eslint-disable-next-line no-undef
   return new auth0.WebAuth({
-    domain: 'zemax.auth0.com',
-    clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
-    redirectUri: `${window.location.origin}`,
-    audience: 'https://zemax.auth0.com/api/v2/',
-    responseType: 'token id_token',
-    scope: 'openid profile email',
+    domain: `${domain}`,
+    clientID: `${clientID}`,
+    redirectUri: `${window.location.origin}/pages/profile`,
+    audience: `${audience}`,
+    responseType: `${responseType}`,
+    scope: `${scope}`,
   });
 }
 
@@ -179,6 +179,8 @@ function handleAuthentication(ele) {
   webauth.parseHash((err, authResult) => {
     if (authResult && authResult.accessToken && authResult.idToken) {
       // Successful login, store tokens in localStorage
+      window.location.hash = '';
+      window.location.pathname = '/';
       localStorage.setItem('accessToken', authResult.accessToken);
       localStorage.setItem('idToken', authResult.idToken);
       const base64Url = authResult.idToken.split('.')[1];
@@ -288,16 +290,23 @@ export default async function decorate(block) {
     const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLink.classList.add('login-wrapper');
     const authScriptTag = loadScript('../../scripts/auth0.min.js');
+    const placeholders = await fetchPlaceholders();
+    const domain = placeholders.auth0domain;
+    const clientID = placeholders.clientid;
+    const audienceURI = placeholders.audienceuri;
+    const responseType = placeholders.responsetype;
+    const scopes = placeholders.scope;
+
     if (!authtoken) {
       loginLink.setAttribute('aria-expanded', 'false');
       authScriptTag.onload = () => {
-        webauth = initializeAuth();
+        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
         loginLink.addEventListener('click', login);
         handleAuthentication(loginLink);
       };
     } else {
       authScriptTag.onload = () => {
-        webauth = initializeAuth();
+        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
       };
       handleAuthenticated(loginLink);
     }
