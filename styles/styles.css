@@ -368,14 +368,11 @@ main .section.center-aligned .default-content-wrapper>p {
 
 main .section.background-blue {
   background-color: var(--clr-blue);
-  padding: 110px 0;
 
 }
 
-
 main .section.background-gray {
   background-color: #fafafa;
-  padding: 110px 0;
 }
 
 main .section.spacing-60 {
@@ -386,6 +383,60 @@ main .section.curved-top {
   border-top-right-radius: 100% 15%;
   border-top-left-radius: 100% 15%;
 }
+
+
+/* Section Layouts */
+main .section.layout-75-25 {
+  width: var(--section-width);
+  display: grid;
+  grid-template-columns: 75% 25%;
+  grid-auto-flow: column;
+  margin: 0 auto;
+}
+
+main .section.layout-75-25 > div {
+  width: 100%;
+  padding:unset;
+}
+
+
+main .section.layout-25-75 {
+  width: var(--section-width);
+  display: grid;
+  grid-template-columns: 25% 75%;
+  grid-auto-flow: column;
+  margin: 0 auto;
+}
+
+main .section.layout-25-75 > div {
+  width: 100%;
+  padding:unset;
+}
+
+main .section-wrapper.layout-50-50 {
+  width: var(--section-width);
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-auto-flow: column;
+  margin: 0 auto;
+}
+
+main .section-wrapper.layout-50-50 > div {
+  width: 100%;
+  padding:unset;
+}
+
+/* main .section.layout-50-50.background-blue::before {
+  background-color: var(--clr-blue);
+  padding: 110px 0;
+  width: 100vw;
+  content: '';
+  z-index: -1;
+  position:absolute;
+  left:0;
+  margin:0;
+} */
+
 
 main .divider {
   display: block;
