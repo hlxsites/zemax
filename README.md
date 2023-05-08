@@ -19,7 +19,7 @@ npm i
 npm test
 ```
 
-## Local development
+## Local development test
 
 1. Create a new repository based on the `helix-project-boilerplate` template and add a mountpoint in the `fstab.yaml`
 1. Add the [helix-bot](https://github.com/apps/helix-bot) to the repository
