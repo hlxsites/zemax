@@ -331,7 +331,7 @@ li.card-with-link:hover {
 
 .cards.left-image .cards-card-body h3 {
   box-sizing: border-box;
-  margin: 0 0 19.4444px;
+  margin: 0 0 19.444px;
   font-family: var(--ff-myradpro-semibold);
   font-weight: normal;
   line-height: var(--line-height-14);
@@ -350,7 +350,7 @@ li.card-with-link:hover {
 
 .cards.left-image .cards-card-body p {
   box-sizing: border-box;
-  margin: 0 0 19.44444px;
+  margin: 0 0 19.444px;
   font-size: 16px;
   font-family: var(--ff-myradpro-regular);
   line-height: var(--line-height-15);
