@@ -1,0 +1,14 @@
+.user-tickets > table {
+    padding: 40px;
+}
+
+.user-tickets > table > th {
+    padding: 40px;
+    border: 1px solid;
+    text-align: center;
+}
+
+.user-tickets > table > tr >td {
+    border: 1px solid;
+    text-align: center;
+}

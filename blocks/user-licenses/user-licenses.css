@@ -1,0 +1,14 @@
+ table {
+    padding: 40px;
+}
+
+th {
+    padding: 40px;
+    border: 1px solid;
+    text-align: center;
+}
+
+ td {
+    border: 1px solid;
+    text-align: center;
+}
