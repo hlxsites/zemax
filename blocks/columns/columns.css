@@ -149,14 +149,19 @@
   overflow: auto;
 }
 
-.columns.tabs>div:has(strong) {
-  border-bottom: 4px solid var(--clr-orange);
-  padding-bottom: 6px;
+.columns.tabs>div {
+  border-bottom: 4px solid var(--clr-white);
 }
 
 .columns.tabs>div:hover {
   border-bottom: 4px solid var(--clr-orange);
 }
+
+.columns.tabs>div:has(strong) {
+  border-bottom: 4px solid var(--clr-orange);
+  padding-bottom: 11px;
+}
+
 
 .columns.tabs a {
   margin-bottom: 0;
