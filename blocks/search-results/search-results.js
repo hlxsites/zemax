@@ -125,6 +125,8 @@ export default async function decorate(block) {
   const indexEndpoint = blockConfig['data-source'] || '/query-index.json';
 
   const filteredCards = await searchResults(indexEndpoint, category);
+  filteredCards.sort((a, b) => new Date(b.publishdate) - new Date(a.publishdate));
+
   block.innerHTML = '';
 
   // default current page to 1 if not specified in params
