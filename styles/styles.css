@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-@font-face {
+ @font-face {
   font-family: 'MyriadPro-Semibold Fallback';
   font-style: normal;
   font-weight: 500;
@@ -368,14 +368,11 @@ main .section.center-aligned .default-content-wrapper>p {
 
 main .section.background-blue {
   background-color: var(--clr-blue);
-  padding: 110px 0;
 
 }
 
-
 main .section.background-gray {
   background-color: #fafafa;
-  padding: 110px 0;
 }
 
 main .section.spacing-60 {
@@ -386,6 +383,27 @@ main .section.curved-top {
   border-top-right-radius: 100% 15%;
   border-top-left-radius: 100% 15%;
 }
+
+
+/* Section Layouts */
+main .section-wrapper.layout-75-25,
+main .section-wrapper.layout-25-75,
+main .section-wrapper.layout-50-50 {
+  width: var(--section-width);
+  display: grid;
+  grid-auto-flow: row;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+main .section-wrapper.layout-75-25 > div,
+main .section-wrapper.layout-25-75 > div,
+main .section-wrapper.layout-50-50 {
+  width: 100%;
+  padding:unset;
+}
+
+
 
 main .divider {
   display: block;
@@ -483,4 +501,30 @@ main .divider {
     padding-left: 2em;
     padding-top: 1em;
   }
+
+  /* Section Layouts */
+main .section-wrapper.layout-75-25,
+main .section-wrapper.layout-25-75, 
+main .section-wrapper.layout-50-50{
+  width: var(--section-width);
+  display: grid;
+  grid-auto-flow: column;
+  margin: 0 auto;
+  padding: 20px;
+  grid-gap: 20px;
+
+}
+
+main .section-wrapper.layout-75-25 {
+  grid-template-columns: 75% 25%;
+}
+
+main .section-wrapper.layout-25-75 {
+  grid-template-columns: 25% 75%;
+}
+
+main .section-wrapper.layout-50-50 {
+  grid-template-columns: 50% 50%;
+}
+
 }
