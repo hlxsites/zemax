@@ -121,7 +121,6 @@ transition: all 0.3s linear 0s;
 
 .cards.layout-featured .cards-card-image img{
   overflow: hidden;
-  border-top-right-radius: 0;
   border-bottom-left-radius: 50% 20%;
   border-bottom-right-radius: 50% 20%;
 } 
@@ -222,6 +221,7 @@ transition: all 0.3s linear 0s;
 .cards.layout-featured .cards-card-image img{
   height: 100%;
   border-bottom-left-radius: 15px;
+  border-top-right-radius: 0;
   border-bottom-right-radius: unset;
 } 
 
