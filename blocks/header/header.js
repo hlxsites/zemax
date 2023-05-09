@@ -1,8 +1,9 @@
-import { decorateIcons } from '../../scripts/lib-franklin.js';
-import { createTag } from '../../scripts/scripts.js';
+import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
+import { createTag, loadScript } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
+let webauth;
 
 function collapseAllSubmenus(menu) {
   menu
@@ -137,6 +138,78 @@ function reAttachEventListeners() {
   }
 }
 
+// authentication related functions
+function initializeAuth(domain, clientID, audience, responseType, scope) {
+  // eslint-disable-next-line no-undef
+  return new auth0.WebAuth({
+    domain: `${domain}`,
+    clientID: `${clientID}`,
+    redirectUri: `${window.location.origin}`,
+    audience: `${audience}`,
+    responseType: `${responseType}`,
+    scope: `${scope}`,
+  });
+}
+
+// login call
+function login() {
+  webauth.authorize();
+}
+
+// logout call
+function logout() {
+  webauth.logout({
+    returnTo: `${window.location.origin}`,
+    clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
+  });
+  localStorage.clear();
+}
+
+// utility to attach logout listeners
+function attachLogoutListener(ele) {
+  ele.removeEventListener('click', login);
+  ele.addEventListener('mouseenter', () => { ele.setAttribute('aria-expanded', 'true'); });
+  ele.addEventListener('mouseleave', () => { ele.setAttribute('aria-expanded', 'false'); });
+  const logoutLink = ele.querySelector('ul > li:nth-of-type(2)');
+  logoutLink.addEventListener('click', logout);
+}
+
+// manage user info in local storage and attach events
+function handleAuthentication(ele) {
+  webauth.parseHash((err, authResult) => {
+    if (authResult && authResult.accessToken && authResult.idToken) {
+      // Successful login, store tokens in localStorage
+      window.location.hash = '';
+      window.location.pathname = '/';
+      localStorage.setItem('accessToken', authResult.accessToken);
+      localStorage.setItem('idToken', authResult.idToken);
+      const base64Url = authResult.idToken.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        window
+          .atob(base64)
+          .split('')
+          .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
+          .join(''),
+      );
+      const userData = JSON.parse(jsonPayload);
+      const logintxt = ele.querySelector('p');
+      const displayname = `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`;
+      logintxt.innerText = displayname;
+      localStorage.setItem('displayname', displayname);
+      attachLogoutListener(ele);
+    } else if (err) {
+      console.log(`Unable to authenticate with error ${err}`);
+    }
+  });
+}
+
+// if user already authenticated
+function handleAuthenticated(ele) {
+  const logintxt = ele.querySelector('p');
+  logintxt.innerText = localStorage.getItem('displayname');
+  attachLogoutListener(ele);
+}
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -212,6 +285,33 @@ export default async function decorate(block) {
       }
     });
 
+    // adding login functionality
+    const authtoken = localStorage.getItem('accessToken');
+    const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
+    loginLink.classList.add('login-wrapper');
+    const authScriptTag = loadScript('/scripts/auth0.min.js', {
+      type: 'text/javascript',
+      charset: 'UTF-8',
+    });
+    const placeholders = await fetchPlaceholders();
+    const domain = placeholders.auth0domain;
+    const clientID = placeholders.clientid;
+    const audienceURI = placeholders.audienceuri;
+    const responseType = placeholders.responsetype;
+    const scopes = placeholders.scope;
+    if (!authtoken) {
+      loginLink.setAttribute('aria-expanded', 'false');
+      authScriptTag.onload = () => {
+        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
+        loginLink.addEventListener('click', login);
+        handleAuthentication(loginLink);
+      };
+    } else {
+      authScriptTag.onload = () => {
+        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
+      };
+      handleAuthenticated(loginLink);
+    }
     // link section
     const navMenuUl = createTag('ul');
     const menus = [...nav.querySelectorAll('.nav-menu > div')];

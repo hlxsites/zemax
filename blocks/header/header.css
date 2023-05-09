@@ -377,6 +377,49 @@ header nav[aria-expanded='true'] .nav-tools {
     padding-right: 15px;
   } 
 
+  header nav .nav-tools .login-wrapper > p {
+    font-family: var(--ff-myradpro-semibold);
+    color: var(--link-color);
+    font-size: 16px;
+    line-height: 1.88;
+    letter-spacing: 0.64px;
+  }
+
+  header nav .nav-tools .login-wrapper[aria-expanded='false'] > p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  header nav .nav-tools .login-wrapper > ul {
+    display: none;
+  }
+
+  header nav .nav-tools .login-wrapper[aria-expanded='true'] > ul {
+    display: block;
+    list-style: none;
+    position: absolute;
+    top: calc(var(--nav-height) - 50px);
+    border-radius: 20px;
+    box-shadow: 0 4px 11px -1px #262729;
+    border: 1px solid #ebebeb;
+    background:var(--background-color);
+    padding:0 15px;
+  }
+
+  header nav .nav-tools .login-wrapper[aria-expanded='true'] > ul > li {
+    font-family: var(--ff-myradpro-semibold);
+    color: var(--link-color);
+    font-size: 16px;
+    line-height: 1.88;
+    letter-spacing: 0.64px;
+    
+  }
+
+  header nav .nav-tools .login-wrapper[aria-expanded='true'] > ul > li:hover { 
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   header nav .nav-menu > ul > .mobile-search {
     display:  none;
   }
