@@ -5,11 +5,12 @@
 /* Default layout-1-card */
 .cards > ul {
   list-style: none;
-  margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(1,1fr);
   grid-gap: 25px;
+  padding-bottom: 25px;
+
 }
 
 .cards > ul  p{
@@ -124,6 +125,14 @@ transition: all 0.3s linear 0s;
   border-bottom-left-radius: 50% 20%;
   border-bottom-right-radius: 50% 20%;
 } 
+
+/* Mobile */
+@media only screen and (max-width: 480px) {
+  .cards > ul > li {
+  max-width: 305px;
+  margin: 0 auto;
+  }
+}
 
 
 /* Tablet */

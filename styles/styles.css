@@ -366,6 +366,10 @@ main .section.center-aligned .default-content-wrapper>p {
   margin: inherit;
 }
 
+main .section.center-aligned-buttons .default-content-wrapper > p {
+  text-align: center;
+}
+
 main .section.background-blue {
   background-color: var(--clr-blue);
 

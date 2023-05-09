@@ -17,17 +17,24 @@
 /* resource-center */
 .cards.resource-center p {font-size: 16px;}
 
-.cards.resource-center .cards-card-body::before{
-  content:"";
-  height: 50px;
-  z-index: 1;
-  border-top-right-radius: 50%;
-  border-top-left-radius: 50%;
-  background-color: blue;
-  width: auto;
-  left: 0;
+/* curved-text */
+.cards.curved-text .cards-card-body{
   position: relative;
+}
 
+.cards.curved-text .cards-card-body::before{
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40px;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  background-color: #fff;
+  z-index: 1;
+  margin-top: -40px;
+  margin-left: -7.7%;
+  width: 116%;
 }
 
 .cards.resource-center .cards-card-body a:any-link{
@@ -50,6 +57,22 @@
     max-width: 275px;
     width: var(--section-width);
     margin: 0 auto;
+}
+
+/* Training */
+.section.training h2 {
+  color: #fff;
+}
+
+.section.training {
+  background-image: linear-gradient(to bottom, #005ca6 -28%, #00306f 73%, #002f6d 100%);
+}
+
+.section.training::before {
+  content: "";
+  display: block;
+  height: 8px;
+  background-image: linear-gradient(to left, #871054, #78be20 53%, #f77f00 100%);
 }
 
 
@@ -157,7 +180,11 @@
 @media only screen and (min-width: 768px) {
 .cards.software p,
 .cards.resource-center p {
-    font-size : 18px;
+  font-size: var(--body-font-size-l);
+  font-weight: 400;
+  line-height: 30px;
+  letter-spacing: normal;
+  margin: 6px 0;
 }
 
 .section.bigger-cards .cards-wrapper,  .section.bigger-cards .cards {
@@ -166,20 +193,25 @@
     margin: 0 auto;
 }
 
+.cards.curved-text .cards-card-body::before{
+  margin-left: -11%;
+  width: 122%;
+}
+
   }
 
 
 /* Desktop */
 @media only screen and (min-width: 1030px) {
-  .cards.software p,
-  .cards.resource-center p {
-    font-size : 22px;
-}
-
 .section.bigger-cards .cards-wrapper,  .section.bigger-cards .cards {
     max-width: 1151px;
     width: calc(var(--section-width) + 72px);
     margin: 0 auto;
+}
+
+.cards.curved-text .cards-card-body::before{
+  margin-left: -8%;
+  width: 116%;
 }
 
   }
