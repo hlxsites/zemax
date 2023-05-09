@@ -147,6 +147,7 @@
   align-items: end;
   border-bottom: 1px solid var(--highlight-background-color);
   overflow: auto;
+  margin: 40px 0;
 }
 
 .columns.tabs>div {
