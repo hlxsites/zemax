@@ -1,20 +1,3 @@
-/** card markup
-* <div class="cards-wrapper">
-*   <div class="cards block" data-block-name="cards" data-block-status="loaded">
-*     <ul>
-*       <li>
-*         <div class="cards-card-body"></div>
-*         <div class="cards-card-image"></div>
-*       </li>
-*       <li>
-*         <div class="cards-card-body"></div>
-*         <div class="cards-card-image"></div>
-*       </li>
-*     </ul>
-*   </div>
-* </div>
-*/
-
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {
@@ -27,16 +10,17 @@ export default function decorate(block) {
       if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
       else div.className = 'cards-card-body';
     });
-    const href = row.querySelector('a')?.href;
-    if (href) {
-      li.className = 'card-with-link';
-      li.addEventListener('click', () => {
-        document.location.href = href;
-      });
-    }
     ul.append(li);
   });
   ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
   block.textContent = '';
   block.append(ul);
+
+  // Full card should be clickable
+  block.querySelectorAll('.cards > ul > li').forEach((card) => {
+    card.addEventListener('click', () => {
+      const alink = card.querySelector('a');
+      document.location.href = alink.href;
+    });
+  });
 }

@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-@font-face {
+ @font-face {
   font-family: 'MyriadPro-Semibold Fallback';
   font-style: normal;
   font-weight: 500;
@@ -41,6 +41,7 @@
   --clr-blue: #0070c0;
   --clr-white: #fff;
   --clr-orange: #f77f00;
+  --clr-green: #78be20;
   --text-color: #54565b;
   --link-color: #002f6d;
   --link-hover-color: #0070c0;
@@ -125,30 +126,17 @@ h6 {
   scroll-margin: calc(var(--nav-height) + 1em);
 }
 
-h1 {
-  font-size: var(--heading-font-size-m);
-}
+h1 {font-size: var(--heading-font-size-m);}
 
 h2 {
   font-size: var(--heading-font-size-m);
   font-family: var(--ff-myradpro-regular);
 }
 
-h3 {
-  font-size: var(--heading-font-size-m)
-}
-
-h4 {
-  font-size: var(--heading-font-size-m)
-}
-
-h5 {
-  font-size: var(--heading-font-size-s)
-}
-
-h6 {
-  font-size: var(--heading-font-size-xs)
-}
+h3 {font-size: var(--heading-font-size-m)}
+h4 {font-size: var(--heading-font-size-m)}
+h5 {font-size: var(--heading-font-size-s)}
+h6 {font-size: var(--heading-font-size-xs)}
 
 
 p,
@@ -378,10 +366,18 @@ main .section.center-aligned .default-content-wrapper>p {
   margin: inherit;
 }
 
-main .section.background-blue {
-  background-color: var(--clr-blue);
+main .section.center-aligned-buttons .default-content-wrapper > p {
+  text-align: center;
 }
 
+main .section.background-blue {
+  background-color: var(--clr-blue);
+
+}
+
+main .section.background-gray {
+  background-color: #fafafa;
+}
 
 main .section.spacing-60 {
   padding: 60px 0;
@@ -391,6 +387,27 @@ main .section.curved-top {
   border-top-right-radius: 100% 15%;
   border-top-left-radius: 100% 15%;
 }
+
+
+/* Section Layouts */
+main .section-wrapper.layout-75-25,
+main .section-wrapper.layout-25-75,
+main .section-wrapper.layout-50-50 {
+  width: var(--section-width);
+  display: grid;
+  grid-auto-flow: row;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+main .section-wrapper.layout-75-25 > div,
+main .section-wrapper.layout-25-75 > div,
+main .section-wrapper.layout-50-50 {
+  width: 100%;
+  padding:unset;
+}
+
+
 
 main .divider {
   display: block;
@@ -407,30 +424,20 @@ main .divider {
     padding: 0 20px;
   }
 
+  h1 {font-size: var(--heading-font-size-l)}
 
-  h1 {
-    font-size: var(--heading-font-size-l)
-  }
+  h2,h3 {font-size: var(--heading-font-size-m)}
 
-  h2,
-  h3 {
-    font-size: var(--heading-font-size-m)
-  }
+  h4,h5 {font-size: var(--heading-font-size-s)}
 
-  h4,
-  h5 {
-    font-size: var(--heading-font-size-s)
-  }
-
-  p {
-    font-size: var(--body-font-size-m);
-  }
+  p {font-size: var(--body-font-size-m);}
 
   .title2-34 h2 {
     font-size: var(--heading-font-size-m);
     padding-left: 2em;
   }
 }
+
 
 /* Tablet */
 @media only screen and (min-width: 768px) {
@@ -443,22 +450,10 @@ main .divider {
     padding: 0 15px;
   }
 
-  h1 {
-    font-size: var(--heading-font-size-xl)
-  }
-
-  h2 {
-    font-size: var(--heading-font-size-l)
-  }
-
-  h3 {
-    font-size: var(--heading-font-size-l)
-  }
-
-  h4,
-  h5 {
-    font-size: var(--heading-font-size-s)
-  }
+  h1 {font-size: var(--heading-font-size-xl)}
+  h2 {font-size: var(--heading-font-size-l)}
+  h3 {font-size: var(--heading-font-size-l)}
+  h4,h5 {font-size: var(--heading-font-size-s)}
 
   p,
   body,
@@ -476,6 +471,7 @@ main .divider {
     border-top-right-radius: 50% 20%;
     border-top-left-radius: 50% 20%;
   }
+
 }
 
 /* Desktop */
@@ -486,26 +482,11 @@ main .divider {
     --nav-width: 1240px;
   }
 
-
-  h1 {
-    font-size: var(--heading-font-size-xxl)
-  }
-
-  h2 {
-    font-size: var(--heading-font-size-xl)
-  }
-
-  h3 {
-    font-size: var(--heading-font-size-l)
-  }
-
-  h4 {
-    font-size: var(--heading-font-size-m)
-  }
-
-  h5 {
-    font-size: var(--heading-font-size-s)
-  }
+  h1 {font-size: var(--heading-font-size-xxl)}
+  h2 {font-size: var(--heading-font-size-xl)}
+  h3 {font-size: var(--heading-font-size-l)}
+  h4 {font-size: var(--heading-font-size-m)}
+  h5 {font-size: var(--heading-font-size-s)}
 
   p,
   body,
@@ -524,48 +505,30 @@ main .divider {
     padding-left: 2em;
     padding-top: 1em;
   }
+
+  /* Section Layouts */
+main .section-wrapper.layout-75-25,
+main .section-wrapper.layout-25-75, 
+main .section-wrapper.layout-50-50{
+  width: var(--section-width);
+  display: grid;
+  grid-auto-flow: column;
+  margin: 0 auto;
+  padding: 20px;
+  grid-gap: 20px;
+
 }
 
-/***************************************************************
-* section: "Green Icons" Optical Design
-***************************************************************/
-
-.design-title h2 {
-  display: flex;
-  flex-direction: column;
-  padding-top: 1.5em;
-  padding-left: 1em;
-  margin: 0;
+main .section-wrapper.layout-75-25 {
+  grid-template-columns: 75% 25%;
 }
 
-/***************************************************************
-* section reusable styles
-***************************************************************/
-.section.background-bone-grey {
-  padding: 1em 0;
-  background-color: #fafafa;
+main .section-wrapper.layout-25-75 {
+  grid-template-columns: 25% 75%;
 }
 
-.section.center-align-titles h1 {
-  text-align: center;
-  font-family: var(--ff-myradpro-regular);
-  letter-spacing: var(--letter-spacing-18);
-  line-height: var(--line-height-14);
-  padding: 1em 0;
+main .section-wrapper.layout-50-50 {
+  grid-template-columns: 50% 50%;
 }
 
-@media screen and (max-width: 767px) {
-  .section.center-align-titles h2 {
-    text-align: center;
-  }
-}
-
-.section.center-align-titles h3 {
-  font-family: var(--ff-myradpro-regular);
-}
-
-.section.center-align-titles>.default-content-wrapper>.button-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
