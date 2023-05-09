@@ -386,56 +386,23 @@ main .section.curved-top {
 
 
 /* Section Layouts */
-main .section.layout-75-25 {
-  width: var(--section-width);
-  display: grid;
-  grid-template-columns: 75% 25%;
-  grid-auto-flow: column;
-  margin: 0 auto;
-}
-
-main .section.layout-75-25 > div {
-  width: 100%;
-  padding:unset;
-}
-
-
-main .section.layout-25-75 {
-  width: var(--section-width);
-  display: grid;
-  grid-template-columns: 25% 75%;
-  grid-auto-flow: column;
-  margin: 0 auto;
-}
-
-main .section.layout-25-75 > div {
-  width: 100%;
-  padding:unset;
-}
-
+main .section-wrapper.layout-75-25,
+main .section-wrapper.layout-25-75,
 main .section-wrapper.layout-50-50 {
   width: var(--section-width);
   display: grid;
-  grid-template-columns: 50% 50%;
-  grid-auto-flow: column;
+  grid-auto-flow: row;
   margin: 0 auto;
+  padding: 20px;
 }
 
-main .section-wrapper.layout-50-50 > div {
+main .section-wrapper.layout-75-25 > div,
+main .section-wrapper.layout-25-75 > div,
+main .section-wrapper.layout-50-50 {
   width: 100%;
   padding:unset;
 }
 
-/* main .section.layout-50-50.background-blue::before {
-  background-color: var(--clr-blue);
-  padding: 110px 0;
-  width: 100vw;
-  content: '';
-  z-index: -1;
-  position:absolute;
-  left:0;
-  margin:0;
-} */
 
 
 main .divider {
@@ -534,4 +501,30 @@ main .divider {
     padding-left: 2em;
     padding-top: 1em;
   }
+
+  /* Section Layouts */
+main .section-wrapper.layout-75-25,
+main .section-wrapper.layout-25-75, 
+main .section-wrapper.layout-50-50{
+  width: var(--section-width);
+  display: grid;
+  grid-auto-flow: column;
+  margin: 0 auto;
+  padding: 20px;
+  grid-gap: 20px;
+
+}
+
+main .section-wrapper.layout-75-25 {
+  grid-template-columns: 75% 25%;
+}
+
+main .section-wrapper.layout-25-75 {
+  grid-template-columns: 25% 75%;
+}
+
+main .section-wrapper.layout-50-50 {
+  grid-template-columns: 50% 50%;
+}
+
 }

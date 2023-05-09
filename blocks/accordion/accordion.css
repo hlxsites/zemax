@@ -76,17 +76,12 @@ main .accordion.faq-accordion > div {
 
  /* Tablet */
  @media only screen and (min-width: 768px) {
-    main .accordion.faq-accordion{
-        padding: 76px 0 97px;
-    }
-    
     main .accordion.faq-accordion .faq-question {
         cursor: pointer;
         border-top: 1px solid #dad9d7;
         padding: 20px 0 11px 6px;
         font-size: var(  --body-font-size-xxl);
     }
-
  }
 
   /* Desktop */

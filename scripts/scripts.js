@@ -133,18 +133,21 @@ function buildAutoBlocks(main) {
  * @param {Element} main The container element
  */
 export function decorateBlocks(main) {
+  const allSections = main.querySelectorAll('div.section');
+  console.log(allSections);
+  allSections.forEach((section) => {
+    main
+      .querySelectorAll('div.section > div > div')
+      .forEach(decorateBlock);
+  });
+
   const sectionWrapperDiv = main.querySelectorAll('div.section > div.section-wrapper');
 
   if (sectionWrapperDiv && sectionWrapperDiv.length >= 0) {
     sectionWrapperDiv.forEach(() => {
-    // console.log(sectionWrapper);
       main.querySelectorAll('div.section > div > div > div')
         .forEach(decorateBlock);
     });
-
-    main
-      .querySelectorAll('div.section > div > div')
-      .forEach(decorateBlock);
   }
 }
 
