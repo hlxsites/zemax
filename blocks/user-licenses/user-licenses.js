@@ -101,45 +101,64 @@ export default async function decorate(block) {
 
   function createLicencesTable(rows){
       let tableElement = document.createElement('table');
+      let thead = document.createElement('thead');
+      let tr = document.createElement('tr');
+
+      //TODO add logic
+      let manageOrViewHeading = document.createElement('th');
+      tr.appendChild(manageOrViewHeading);
 
       let tableHeadingStatus = document.createElement('th');
       tableHeadingStatus.innerHTML = 'Status';
-      tableElement.appendChild(tableHeadingStatus);
+      tr.appendChild(tableHeadingStatus);
 
       let tableHeadingSupportExpiry = document.createElement('th');
       tableHeadingSupportExpiry.innerHTML = 'Support Expiry';
-      tableElement.appendChild(tableHeadingSupportExpiry);
+      tr.appendChild(tableHeadingSupportExpiry);
 
       let tableHeadingLicenseId = document.createElement('th');
       tableHeadingLicenseId.innerHTML = 'License #';
-      tableElement.appendChild(tableHeadingLicenseId);
+      tr.appendChild(tableHeadingLicenseId);
 
       let tableHeadingNickName = document.createElement('th');
       tableHeadingNickName.innerHTML = 'Nickname';
-      tableElement.appendChild(tableHeadingNickName);
+      tr.appendChild(tableHeadingNickName);
 
       let tableHeadingProduct = document.createElement('th');
       tableHeadingProduct.innerHTML = 'Product';
-      tableElement.appendChild(tableHeadingProduct);
+      tr.appendChild(tableHeadingProduct);
 
       let tableHeadingLicenseType = document.createElement('th');
       tableHeadingLicenseType.innerHTML = 'License Type';
-      tableElement.appendChild(tableHeadingLicenseType);
+      tr.appendChild(tableHeadingLicenseType);
 
       let tableHeadingSeatCount = document.createElement('th');
       tableHeadingSeatCount.innerHTML = 'Seat Count';
-      tableElement.appendChild(tableHeadingSeatCount);
+      tr.appendChild(tableHeadingSeatCount);
 
       let tableHeadingEndUserCount = document.createElement('th');
       tableHeadingEndUserCount.innerHTML = 'End User Count';
-      tableElement.appendChild(tableHeadingEndUserCount);
+      tr.appendChild(tableHeadingEndUserCount);
 
       let tableHeadingAdmistrator = document.createElement('th');
       tableHeadingAdmistrator.innerHTML = 'Administrator';
-      tableElement.appendChild(tableHeadingAdmistrator);
+      tr.appendChild(tableHeadingAdmistrator);
+
+      thead.appendChild(tr);
+      tableElement.appendChild(thead);
+
+      let tbody = document.createElement('tbody');
 
       rows.forEach(function(row){
         let tr = document.createElement('tr');
+        let tdManageOrView = document.createElement('td');
+        let manageOrViewButton = document.createElement('button');
+        manageOrViewButton.classList.add('manage-view-license');
+        manageOrViewButton.innerText = 'Manage';
+        manageOrViewButton.setAttribute('type', 'button');
+        tdManageOrView.appendChild(manageOrViewButton);
+        tr.appendChild(tdManageOrView);
+
         let tdLicenseStatus = document.createElement('td');
         
         const date = new Date(row.new_supportexpires);
@@ -198,9 +217,11 @@ export default async function decorate(block) {
         tdLicenseAdministrator.innerText = row['_new_registereduser_value@OData.Community.Display.V1.FormattedValue'];
         tr.appendChild(tdLicenseAdministrator);
 
-        tableElement.appendChild(tr);
+        tbody.appendChild(tr);
        
       });
+
+      tableElement.appendChild(tbody);
 
       return tableElement;
   }

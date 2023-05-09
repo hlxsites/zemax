@@ -1,7 +1,8 @@
 import { getEnvironmentConfig } from '../../scripts/zemax-config.js';
 import {
-  div,li, ul, h3,p,a
+  p,a
 } from '../../scripts/dom-helpers.js';
+import { createTag } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   var userId = localStorage.getItem("auth0_id");
@@ -33,9 +34,10 @@ export default async function decorate(block) {
           return;
         }
       });
-
-      if(allButtonAccess){
-      block.appendChild(
+    
+    let supportLinkDiv = createTag('div', { class: 'support-links' }, '');
+    if(allButtonAccess){
+      supportLinkDiv.appendChild(
         a({ 
             href: 'https://support.zemax.com/hc/requests/new',
             'aria-label': 'Open a New Ticket',
@@ -45,7 +47,7 @@ export default async function decorate(block) {
             )
       );
 
-      block.appendChild(
+      supportLinkDiv.appendChild(
         a({ 
             href: 'https://support.zemax.com/hc/requests/new?scheduled-calls=true',
             'aria-label': 'Schedule a Call',
@@ -56,7 +58,7 @@ export default async function decorate(block) {
       );
      }
 
-      block.appendChild(
+     supportLinkDiv.appendChild(
         a({ 
             href: 'https://community.zemax.com/ssoproxy/login?ssoType=openidconnect',
             'aria-label': 'Ask the Community',
@@ -66,35 +68,44 @@ export default async function decorate(block) {
             )
       );
 
+      block.appendChild(supportLinkDiv);
+     
       if(data.length >0){
       let tableElement = document.createElement('table');
+      let thead = document.createElement('thead');
+      let tr = document.createElement('tr');
 
       let tableHeadingCaseNumber = document.createElement('th');
       tableHeadingCaseNumber.innerHTML = 'Case Number';
-      tableElement.appendChild(tableHeadingCaseNumber);
+      tr.appendChild(tableHeadingCaseNumber);
 
       let tableHeadingCaseTitle = document.createElement('th');
       tableHeadingCaseTitle.innerHTML = 'Case Title';
-      tableElement.appendChild(tableHeadingCaseTitle);
+      tr.appendChild(tableHeadingCaseTitle);
 
       let tableHeadingStatus = document.createElement('th');
       tableHeadingStatus.innerHTML = 'Status';
-      tableElement.appendChild(tableHeadingStatus);
+      tr.appendChild(tableHeadingStatus);
 
       let tableHeadingCreated = document.createElement('th');
       tableHeadingCreated.innerHTML = 'Created';
-      tableElement.appendChild(tableHeadingCreated);
+      tr.appendChild(tableHeadingCreated);
 
       let tableHeadingLastUpdated = document.createElement('th');
       tableHeadingLastUpdated.innerHTML = 'Last Updated';
-      tableElement.appendChild(tableHeadingLastUpdated);
+      tr.appendChild(tableHeadingLastUpdated);
+
+      thead.appendChild(tr);
+      tableElement.appendChild(thead);
+
+      let tbody = document.createElement('tbody');
 
       data.forEach(function(ticket){
         let tr = document.createElement('tr');
         let tdCaseNumber = document.createElement('td');
         let caseLink = document.createElement('a');
         caseLink.setAttribute('href', ticket.url);
-        var caseIdText = document.createTextNode(ticket.id);
+        let caseIdText = document.createTextNode(ticket.id);
         caseLink.appendChild(caseIdText);
         tdCaseNumber.appendChild(caseLink);
         tr.appendChild(tdCaseNumber);
@@ -127,9 +138,10 @@ export default async function decorate(block) {
         let tdCaseLastUpdated = document.createElement('td');
         tdCaseLastUpdated.innerText = formattedDate1;
         tr.appendChild(tdCaseLastUpdated);
-        tableElement.appendChild(tr)
+        tbody.appendChild(tr)
       });
-  
+
+      tableElement.appendChild(tbody);
       
       block.append(tableElement)
     }else{

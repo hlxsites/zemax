@@ -1,6 +1,6 @@
 import { getEnvironmentConfig } from '../../scripts/zemax-config.js';
 import {
-  div,li, ul, h3,p,a
+  li, ul, h4,p,a
 } from '../../scripts/dom-helpers.js';
 
 export default async function decorate(block) {
@@ -85,20 +85,22 @@ export default async function decorate(block) {
           ...webroles.map((webrole) =>
             li(
               { class: `webrole`},
-              h3(dataMapping[webrole.adx_name].heading),
+              h4(dataMapping[webrole.adx_name].heading),
               p({ class: 'webrole-description' }, dataMapping[webrole.adx_name].description),
             )), 
         )
       );
 
       block.appendChild(
+       p (
         a({ 
             href: 'https://support.zemax.com/hc/en-us/sections/1500001481281',
             'aria-label': 'More information about access',
              class: 'more-info-access',
              'target':'_blank'},
             'More information about access'
-            )
+            ),
+      )
       );
 
     }).catch(function(err) {
