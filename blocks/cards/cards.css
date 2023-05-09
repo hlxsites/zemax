@@ -79,6 +79,8 @@ transition: all 0.3s linear 0s;
   margin-right: -6.5%;
   overflow: hidden;
   border-radius: 50% 50% 0 0;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
 /* layout-25-75 */
@@ -88,33 +90,40 @@ transition: all 0.3s linear 0s;
 
 } 
 
-.cards.layout-25-75 > ul > li:nth-child(odd) .cards-card-image{
+.cards.layout-25-75 > ul > li:nth-child(even) .cards-card-image{
   height: 100%;
   width: 124%;
 
 } 
 
-.cards.layout-25-75 > ul > li:nth-child(odd) .cards-card-image img{
+.cards.layout-25-75 > ul > li:nth-child(even) .cards-card-image img{
   width: 81%;
   height: 79px;
   object-fit: cover;
   margin-right: -6.5%;
   overflow: hidden;
   border-radius: 50% 50% 0 0;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
-
-.cards.layout-25-75 > ul > li:nth-child(even) .cards-card-image{
-  height: 100%;
-} 
 
 /* layout-featured */
 .cards.layout-featured > ul > li{
   display: flex;
+    width: 100%;
+    flex-direction: column;
 
 } 
 
 .cards.layout-featured > ul > li .cards-card-image{
   height: 100%;
+} 
+
+.cards.layout-featured .cards-card-image img{
+  overflow: hidden;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 50% 20%;
+  border-bottom-right-radius: 50% 20%;
 } 
 
 
@@ -198,6 +207,23 @@ transition: all 0.3s linear 0s;
 .cards.layout-featured > ul {
   grid-template-columns: repeat(1,1fr);
 }
+
+.cards.layout-featured > ul > li{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  border-bottom-left-radius: 15px;
+}
+
+.cards.layout-featured .cards-card-image{
+  display: flex;
+}
+
+.cards.layout-featured .cards-card-image img{
+  height: 100%;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: unset;
+} 
 
 /* layout-carousel */
 .cards.layout-carousel > ul {

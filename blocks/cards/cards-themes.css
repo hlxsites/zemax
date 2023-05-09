@@ -17,9 +17,24 @@
 /* resource-center */
 .cards.resource-center p {font-size: 16px;}
 
+.cards.resource-center .cards-card-body::before{
+  content:"";
+  height: 50px;
+  z-index: 1;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  background-color: blue;
+  width: auto;
+  left: 0;
+  position: relative;
+
+}
+
 .cards.resource-center .cards-card-body a:any-link{
   font-size : 14px;
 }
+
+
 
 /* stories */
 .cards.stories .cards-card-image {
@@ -43,7 +58,7 @@
 
   
   .cards.badge .cards-card-body > *:first-child {
-    margin-top: 0;
+    margin-top: -16px;
   }
   
   .cards.badge * > code {
@@ -58,7 +73,6 @@
     background-color: var(--clr-blue);
     padding: 0 20px;
     margin-left: -21px;
-    margin-top: -16px;
   }
 
 /* COLOR THEMES */

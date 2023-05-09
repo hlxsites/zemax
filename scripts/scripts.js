@@ -134,7 +134,6 @@ function buildAutoBlocks(main) {
  */
 export function decorateBlocks(main) {
   const allSections = main.querySelectorAll('div.section');
-  console.log(allSections);
   allSections.forEach((section) => {
     main
       .querySelectorAll('div.section > div > div')
