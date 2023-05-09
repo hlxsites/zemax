@@ -1,0 +1,6 @@
+.webroles-container{
+    list-style: none;
+}
+.user-webroles > ul >li{
+    background-color: #F6F6F7;
+}
