@@ -348,6 +348,18 @@ main .default-content-wrapper li>a {
   color: var(--clr-blue) !important;
 }
 
+main .category{
+  width: var(--section-width);
+  margin: 0 auto;
+  font-family: var(--ff-myradpro-semibold);
+  font-size: 18px;
+  line-height: var(--line-height-14);
+  letter-spacing: var(--letter-spacing-64);
+  color: var(--clr-blue);
+  margin-top : 28px;
+  display: block;
+}
+
 /* center aligned sections */
 main .section.center-aligned {
   text-align: center;
@@ -470,6 +482,10 @@ main .divider {
   main .section.curved-top {
     border-top-right-radius: 50% 20%;
     border-top-left-radius: 50% 20%;
+  }
+
+  main .category{
+    margin-top:56px;
   }
 
 }

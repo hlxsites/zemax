@@ -102,6 +102,16 @@ function buildPageDivider(main) {
   });
 }
 
+function builPageCategory(main) {
+  const category = getMetadata('category');
+  const template = getMetadata('template');
+  if (category && template !== 'news') {
+    const categoryDiv = createTag('div', { class: 'category' });
+    categoryDiv.innerText = category;
+    main.prepend(categoryDiv);
+  }
+}
+
 /**
  * Loads the script in the head section
  * @param {string} url and other attrs
@@ -129,6 +139,7 @@ function buildAutoBlocks(main) {
   try {
     // buildHeroBlock(main);
     buildPageDivider(main);
+    builPageCategory(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
