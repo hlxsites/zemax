@@ -159,7 +159,7 @@ ul.tabs-nav li a.active::before {
 .tab-content table tbody tr:hover td {
   background: rgba(246, 246, 247, 1);
 }
-.tab-content table tbody td.active {
+.tab-content table tbody td.active-license {
   color: rgba(0, 128, 96, 1);
 }
 .tab-content table tbody td a {
