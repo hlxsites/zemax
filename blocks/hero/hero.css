@@ -208,6 +208,10 @@ main .hero.white > div::after {
     padding-left: 16vw;
   }
 
+  main .hero.white > div > div > p {
+    padding-left: 16vw;
+  }
+
   .icon-opticsbuilder svg {
     padding-top: 14vw;
     height: 63px;
