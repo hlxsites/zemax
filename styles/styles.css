@@ -127,13 +127,8 @@ h6 {
   scroll-margin: calc(var(--nav-height) + 1em);
 }
 
-<<<<<<< HEAD
-h1 {
-  font-size: var(--heading-font-size-xxl)
-}
-=======
 h1 {font-size: var(--heading-font-size-m);}
->>>>>>> main
+
 
 h2 {
   font-size: var(--heading-font-size-m);
@@ -539,60 +534,6 @@ main .section-wrapper.layout-50-50 {
   grid-template-columns: 50% 50%;
 }
 
-<<<<<<< HEAD
-@media screen and (max-width: 767px) {
-  .section.center-align-titles h2 {
-    text-align: center;
-  }
-}
-
-.section.center-align-titles h3 {
-  font-family: var(--ff-myradpro-regular);
-}
-
-@media screen and (max-width: 767px) {
-  .section.news h2 {
-    text-align: center;
-  }
-}
-
-@media screen and (min-width: 480px) {
-  .section.news h2 {
-    font-size: calc(0.0234 * 100vw + 10.75px);
-  }
-}
-
-@media (min-width: 992px) {
-  .section.news h2 {
-    font-size: var(--heading-font-size-l);
-  }
-}
-
-/***************************************************************
-* the bottom button for sections: events, news and customer success stories
-***************************************************************/
-.section > .default-content-wrapper > .button-container > .button {
-  padding: 0;
-  border-radius: 12px;
-  font-family: var(--ff-myradpro-semibold);
-  font-size: var(--body-font-size-l);
-  line-height: var(--line-height-15);
-  letter-spacing: var(--letter-spacing-8);
-  text-transform: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s linear 0s;
-  border: solid 2.5px #0070c0;
-  color: #0070c0;
-  background-color: white;
-  margin: 0 auto;
-  width: 182px;
-  height: 54px;
-=======
->>>>>>> main
-}
-
 .section > .default-content-wrapper > .button-container > .button:hover {
   border-color: transparent;
   color: var(--clr-white);
@@ -605,4 +546,4 @@ main .section-wrapper.layout-50-50 {
     width: 152px;
     height: 42px;
   }
-}
+}}
