@@ -69,6 +69,10 @@ ul.tabs-nav li a.active::before {
   overflow-x: auto;
 }
 
+.tab-content.show {
+  display: block;
+}
+
 .tab-content table {
   margin-bottom: 0;
   font-size: 14px;
