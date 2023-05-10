@@ -128,9 +128,18 @@ function createLicencesTable(rows) {
       row['_new_registereduser_value@OData.Community.Display.V1.FormattedValue'],
     ];
 
-    headingValueMapping.forEach((headingValue) => {
+    headingValueMapping.forEach((headingValue, index) => {
       const td = document.createElement('td');
-      td.innerText = headingValue !== undefined ? headingValue : '';
+      if (index === 0) {
+        const spanClass = (headingValue === 'Active') ? 'active-license' : 'expired-license';
+        const spanStatus = createTag('span', { class: spanClass }, headingValue);
+        td.appendChild(spanStatus);
+      } else if (index === 2) {
+        const licenseLink = createTag('a', { href: '#' }, headingValue);
+        td.appendChild(licenseLink);
+      } else {
+        td.innerText = headingValue !== undefined ? headingValue : '';
+      }
       trBody.appendChild(td);
     });
 
