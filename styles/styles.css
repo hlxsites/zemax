@@ -378,7 +378,8 @@ main .section.center-aligned .default-content-wrapper>p {
   margin: inherit;
 }
 
-main .section.center-aligned-buttons .default-content-wrapper > p {
+main .section.center-aligned-buttons .default-content-wrapper > p,
+main .center-aligned-buttons p.button-container {
   text-align: center;
 }
 
