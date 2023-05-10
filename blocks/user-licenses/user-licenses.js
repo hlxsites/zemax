@@ -1,4 +1,5 @@
 import { getEnvironmentConfig } from '../../scripts/zemax-config.js';
+import { createTag } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   
@@ -18,22 +19,24 @@ export default async function decorate(block) {
     }).then(async function(response){
       let data = await response.json();
       let licenseTableHeadingMapping = createTableHeaderMapping(data);
+      let tabListUl = createTag('ul', {class: 'tabs-nav', role:'tablist'});
 
       //Render tab headings
       licenseTableHeadingMapping.forEach(function(heading, index){
         if(index === 0){
-           block.append(createTabButton(true, `tab${index + 1}`, 'false', heading.split('|')[0]));
+          tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading.split('|')[0]));
         }else{
-          block.append(createTabButton(false, `tab${index + 1}`, 'true', heading.split('|')[0]));
+          tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading.split('|')[0]));
         }
       });
 
+      block.appendChild(tabListUl);
       //Render tab content
       licenseTableHeadingMapping.forEach(function(heading, index){
         if(index === 0){
-           block.append(createContentDiv(`tab${index + 1}`, `tab${index + 1}-button`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML));
+           block.append(createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML));
         } else{
-          block.append(createContentDiv(`tab${index + 1}`, `tab${index + 1}-button`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML));
+          block.append(createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML));
         }
       });
       
@@ -70,18 +73,13 @@ export default async function decorate(block) {
     return tableHeaderMapping;
   }
 
-  function createTabButton(isActive, ariaControls, isSelected, tabText){
-      let button = document.createElement('button');
-      button.classList.add('tab-link');
-      if(isActive){
-        button.classList.add('active');
-      }
-      button.setAttribute('role', 'tab');
-      button.setAttribute('aria-controls', ariaControls);
-      button.setAttribute('aria-selected', isSelected);
-      button.textContent = tabText;
+  function createTabLi(active, ariaControls, isSelected, tabText){
+      let li = document.createElement('li');
 
-      return button;
+      let tabLink = createTag('a', {href: `#${ariaControls}` , class:`tab-link ${active}`, role:'tab', 'aria-selected':isSelected, 'aria-controls':ariaControls},tabText );
+      li.appendChild(tabLink)
+
+      return li;
   }
 
   function createContentDiv(tabId, ariaLabelBy, isHidden, content){
@@ -100,50 +98,38 @@ export default async function decorate(block) {
   }
 
   function createLicencesTable(rows){
+      
       let tableElement = document.createElement('table');
 
-      let tableHeadingStatus = document.createElement('th');
-      tableHeadingStatus.innerHTML = 'Status';
-      tableElement.appendChild(tableHeadingStatus);
+      let thead = document.createElement('thead');
+      let tr = document.createElement('tr');
 
-      let tableHeadingSupportExpiry = document.createElement('th');
-      tableHeadingSupportExpiry.innerHTML = 'Support Expiry';
-      tableElement.appendChild(tableHeadingSupportExpiry);
+      let tableHeadings = ['','Status', 'Support Expiry', 'License #', 'Nickname', 'Product', 'License Type', 'Seat Count'
+      ,'End User Count', 'Administrator'];
 
-      let tableHeadingLicenseId = document.createElement('th');
-      tableHeadingLicenseId.innerHTML = 'License #';
-      tableElement.appendChild(tableHeadingLicenseId);
+      tableHeadings.forEach((tableHeading) => {
+          let tableHeadingElement = document.createElement('th');
+          tableHeadingElement.innerHTML = tableHeading;
+          tr.appendChild(tableHeadingElement);
+      });
 
-      let tableHeadingNickName = document.createElement('th');
-      tableHeadingNickName.innerHTML = 'Nickname';
-      tableElement.appendChild(tableHeadingNickName);
+      thead.appendChild(tr);
+      tableElement.appendChild(thead);
 
-      let tableHeadingProduct = document.createElement('th');
-      tableHeadingProduct.innerHTML = 'Product';
-      tableElement.appendChild(tableHeadingProduct);
-
-      let tableHeadingLicenseType = document.createElement('th');
-      tableHeadingLicenseType.innerHTML = 'License Type';
-      tableElement.appendChild(tableHeadingLicenseType);
-
-      let tableHeadingSeatCount = document.createElement('th');
-      tableHeadingSeatCount.innerHTML = 'Seat Count';
-      tableElement.appendChild(tableHeadingSeatCount);
-
-      let tableHeadingEndUserCount = document.createElement('th');
-      tableHeadingEndUserCount.innerHTML = 'End User Count';
-      tableElement.appendChild(tableHeadingEndUserCount);
-
-      let tableHeadingAdmistrator = document.createElement('th');
-      tableHeadingAdmistrator.innerHTML = 'Administrator';
-      tableElement.appendChild(tableHeadingAdmistrator);
-
+      let tbody = document.createElement('tbody');
       rows.forEach(function(row){
         let tr = document.createElement('tr');
-        let tdLicenseStatus = document.createElement('td');
-        
-        const date = new Date(row.new_supportexpires);
 
+        //TODO add logic for manage or view
+        let tdManageOrView = document.createElement('td');
+        let manageOrViewButton = document.createElement('button');
+        manageOrViewButton.classList.add('manage-view-license');
+        manageOrViewButton.innerText = 'Manage';
+        manageOrViewButton.setAttribute('type', 'button');
+        tdManageOrView.appendChild(manageOrViewButton);
+        tr.appendChild(tdManageOrView);
+
+        const date = new Date(row.new_supportexpires);
         // subtract one day from the date
         date.setDate(date.getDate() - 1);
 
@@ -155,108 +141,111 @@ export default async function decorate(block) {
         if(date.getTime() > Date.now()){
           licenseActive = 'Active';
         }
-        tdLicenseStatus.innerText = licenseActive;
-        tr.appendChild(tdLicenseStatus)
 
-        let tdLicenseSupportExpiry = document.createElement('td');
-        tdLicenseSupportExpiry.innerText = supportExpiryDate;
-        tr.appendChild(tdLicenseSupportExpiry);
+        let headingValueMapping = [licenseActive, supportExpiryDate, row.new_licenseid, row.zemax_nickname, 
+          row['_new_product_value@OData.Community.Display.V1.FormattedValue'], 
+          row['zemax_seattype@OData.Community.Display.V1.FormattedValue'], row.new_usercount, row.new_endusercount,
+          row['_new_registereduser_value@OData.Community.Display.V1.FormattedValue']
+        ];
 
-        let tdLicenseId = document.createElement('td');
-        tdLicenseId.innerText = row.new_licenseid;
-        tr.appendChild(tdLicenseId);
+        headingValueMapping.forEach((headingValue)=>{
+          let td = document.createElement('td');
+          td.innerText = (headingValue != undefined) ? headingValue : '';
+          tr.appendChild(td);
+        });
 
-        let tdLicenseNickname = document.createElement('td');
-        if(row.zemax_nickname != undefined){
-         tdLicenseNickname.innerText = row.zemax_nickname;
-        } else{
-          tdLicenseNickname.innerText = '';
-        }
-        tr.appendChild(tdLicenseNickname);
-
-        let tdLicenseProduct = document.createElement('td');
-        tdLicenseProduct.innerText = row['_new_product_value@OData.Community.Display.V1.FormattedValue'];
-        tr.appendChild(tdLicenseProduct);
-
-        let tdLicenseType = document.createElement('td');
-        if(row['zemax_seattype@OData.Community.Display.V1.FormattedValue'] != undefined){
-        tdLicenseType.innerText = row['zemax_seattype@OData.Community.Display.V1.FormattedValue'];
-        } else{
-          tdLicenseType.innerText = '';
-        }
-        tr.appendChild(tdLicenseType);
-
-        let tdLicenseSeatCount = document.createElement('td');
-        tdLicenseSeatCount.innerText = row.new_usercount;
-        tr.appendChild(tdLicenseSeatCount);
-
-        let tdLicenseEndUserCount = document.createElement('td');
-        tdLicenseEndUserCount.innerText = row.new_endusercount;
-        tr.appendChild(tdLicenseEndUserCount);
-
-        let tdLicenseAdministrator = document.createElement('td');
-        tdLicenseAdministrator.innerText = row['_new_registereduser_value@OData.Community.Display.V1.FormattedValue'];
-        tr.appendChild(tdLicenseAdministrator);
-
-        tableElement.appendChild(tr);
-       
+        tbody.appendChild(tr);
+        
       });
 
+      tableElement.appendChild(tbody);
       return tableElement;
   }
 
   function addTabFeature()
   {
-    const tabs = document.querySelectorAll('.tab-link');
-    const tabContents = document.querySelectorAll('.tab-content');
+// Get all tab links and tab content elements
+const tabLinks = document.querySelectorAll('.tab-link');
 
-  tabs.forEach(tab => {
-  const tabPanel = document.querySelector('#' + tab.getAttribute('aria-controls'));
+// Handle click event for each tab link
+tabLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
 
-  tab.addEventListener('click', () => {
-    activateTab(tab, tabPanel);
+    // Get the ID of the clicked tab link
+    const tabId = link.getAttribute('href').substring(1);
+
+    activateTab(tabId);
   });
 
-  tab.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      activateTab(tab, tabPanel);
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      const previousTab = tab.previousElementSibling || tabs[tabs.length - 1];
-      const previousTabPanel = document.querySelector('#' + previousTab.getAttribute('aria-controls'));
-      activateTab(previousTab, previousTabPanel);
-      previousTab.focus();
-    } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      e.preventDefault();
-      const nextTab = tab.nextElementSibling || tabs[0];
-      const nextTabPanel = document.querySelector('#' + nextTab.getAttribute('aria-controls'));
-      activateTab(nextTab, nextTabPanel);
-      nextTab.focus();
+  // Handle keydown event for each tab link
+  link.addEventListener('keydown', (e) => {
+    let index = Array.from(tabLinks).indexOf(e.target);
+
+    switch (e.key) {
+      case 'ArrowLeft':
+        e.preventDefault();
+        index = index > 0 ? index - 1 : tabLinks.length - 1;
+        tabLinks[index].focus();
+        break;
+      case 'ArrowRight':
+        e.preventDefault();
+        index = index < tabLinks.length - 1 ? index + 1 : 0;
+        tabLinks[index].focus();
+        break;
+      case 'Home':
+        e.preventDefault();
+        tabLinks[0].focus();
+        break;
+      case 'End':
+        e.preventDefault();
+        tabLinks[tabLinks.length - 1].focus();
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        activateTab(e.target.getAttribute('href').substring(1));
+        break;
     }
   });
 });
 
-function activateTab(tab, tabPanel) {
-  tabs.forEach(tab => {
-    tab.setAttribute('aria-selected', 'false');
-    tab.classList.remove('active');
-  });
-
-  tab.setAttribute('aria-selected', 'true');
-  tab.classList.add('active');
-
-  tabContents.forEach(tabContent => {
-    tabContent.setAttribute('hidden', '');
-    tabContent.setAttribute('aria-hidden', 'true');
-  });
-
-  tabPanel.removeAttribute('hidden');
-  tabPanel.setAttribute('aria-hidden', 'false');
-  tabPanel.focus();
-}
-
   }
+ 
+
+// Activate a tab by ID
+function activateTab(tabId) {
+
+const tabLinks = document.querySelectorAll('.tab-link');
+const tabContents = document.querySelectorAll('.tab-content');
+
+  tabLinks.forEach(link => {
+    link.classList.remove('active');
+    link.setAttribute('aria-selected', 'false');
+    link.setAttribute('tabindex', '-1');
+  });
+
+  // Hide all tab content elements
+  tabContents.forEach(content => {
+    content.classList.remove('active');
+    content.classList.remove('show');
+    content.setAttribute('aria-hidden', 'true');
+    content.setAttribute('hidden', '');
+    debugger;
+  });
+
+  // Activate the selected tab link
+  const tabLink = document.querySelector(`.tab-link[href="#${tabId}"]`);
+  tabLink.classList.add('active');
+  tabLink.setAttribute('aria-selected', 'true');
+  tabLink.setAttribute('tabindex', '0');
+
+  // Show the associated tab content element
+  const tabContent = document.getElementById(tabId);
+  tabContent.classList.add('active');
+  tabContent.classList.add('show');
+  tabContent.setAttribute('aria-hidden', 'false');
+}
 }
 
 
