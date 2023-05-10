@@ -1,14 +1,148 @@
-.user-tickets > table {
-    padding: 40px;
+.user-tickets-container { margin-top: 77px; }
+
+/* Support Tickets - Buttons */
+.user-tickets .support-links {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+.user-tickets .support-links a {
+    height: 36px;
+    margin: 0px 18px 0px 0px;
+    width: auto;
+    padding: 9px 16px;
+    border: 2.5px solid rgb(0, 112, 192);
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 36px;
+    color: rgb(0, 112, 192);
+    letter-spacing: 0.8px;
+    text-transform: none;
+    display: inline-flex;
+    background: white;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s linear 0s;
+    cursor: pointer;
+}
+.user-tickets .support-links a:hover,
+.user-tickets .support-links a:focus {
+    background: rgb(0, 112, 192);
+    color: #FFF;
+}
+.user-tickets .support-links a:last-of-type {
+    margin-right: 0px;
 }
 
-.user-tickets > table > th {
-    padding: 40px;
-    border: 1px solid;
-    text-align: center;
+
+/* Support Tickets - Table */
+.user-tickets table {
+    margin-bottom: 0;
+    font-size: 14px;
+    font-family: var(--ff-myradpro-regular);
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-radius: 0.8rem 3px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 5px rgba(23, 24, 24, 0.05), 0px 1px 2px rgba(0, 0, 0, 0.15); 
+    outline: 0.1rem solid transparent;
+}
+.user-tickets table th,
+.user-tickets table td {
+    border: 1px solid var(--color-border);
+}
+.user-tickets table th {
+    padding: .45rem 0.7rem;
+    font-weight: bold;
+    font-family: var(--ff-myradpro-semibold);
+    font-size: 16px;
+    vertical-align: top;
+    border-bottom: 0.05rem solid rgba(140, 145, 150, 1);
+    border-top: 0;
+    max-height: 40px;
+    text-align: left;
+    white-space: normal;
+}
+.user-tickets table thead button {
+    font-family: var(--ff-myradpro-semibold);
+    font-size: 16px;
+    color: #54565b;
+    appearance: none;
+    margin: 0;
+    padding: 0 20px 0 0;
+    background: none;
+    border: none;
+    line-height: inherit;
+    position: relative;
+    display: inline-flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    transition: color .2s cubic-bezier(.64,0,.35,1);
+    cursor: pointer;
+}
+.user-tickets table thead button:focus {
+    color: #0070c0;
+    outline: none;
+}
+.user-tickets table thead button:after {
+    content: "";
+    position: absolute;
+    top: 55%;
+    right: 5px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 5px solid #54565b;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-bottom: 0;
+}
+.user-tickets table thead button:focus:after {
+    border-top: 5px solid rgba(31, 81, 153, 1);
 }
 
-.user-tickets > table > tr >td {
-    border: 1px solid;
-    text-align: center;
+.user-tickets table thead button:before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: -0.1rem;
+    right: -0.1rem;
+    bottom: -0.1rem;
+    left: -0.1rem;
+    display: block;
+    pointer-events: none;
+    box-shadow: 0 0 0 -0.1rem rgba(69, 143, 255, 1);
+    transition: box-shadow .1s cubic-bezier(0.4, 0.22, 0.28, 1);
+    border-radius: calc(0.4rem + 0.1rem);
+}
+.user-tickets table thead button:focus:not(:active):before {
+    box-shadow: 0 0 0 -0.1rem rgba(69, 143, 255, 1);
+    outline: 0.1rem solid transparent;
+}
+
+.user-tickets table thead tr {
+    background: #f6f6f7;
+}
+.user-tickets table tbody tr:hover td {
+    background: rgba(246, 246, 247, 1);
+}
+.user-tickets table tbody td {
+    padding: .45rem;
+    vertical-align: top;
+    white-space: nowrap;
+    text-align: left;
+    transition: background-color .2s ease-in-out;
+}
+.user-tickets table tbody td:nth-child(3) {
+    text-transform: capitalize;
+    font-family: var(--ff-myradpro-semibold);
+}
+.user-tickets table tbody td > a {
+    font-size: 16px;
+    font-family: var(--ff-myradpro-semibold);
+    color: #0070c0;
+}
+.user-tickets table tbody td > a:hover {
+    text-decoration: underline;
 }
