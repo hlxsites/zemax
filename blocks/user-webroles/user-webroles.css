@@ -3,7 +3,7 @@
 }
 
 .user-webroles h3 {
-  margin: 0.3em 0 0.3em 0;
+  margin: 0.3em 0;
   font-size: 26px;
   line-height: 3.2rem;
   font-weight: 600;
@@ -22,11 +22,11 @@
 
 .user-webroles ul li {
     margin-bottom: 30px;
-    padding: 0.8rem 2rem 2rem 2rem;
+    padding: 0.8rem 2rem;
     list-style: none;
     background-color: #F6F6F7;
     border-radius: .8rem;
-    box-shadow: var(--p-card-shadow, 0 0 0 1px rgba(63, 63, 68, .05), 0 1px 3px 0 rgba(63, 63, 68, .15));
+    box-shadow: var(--p-card-shadow, 0 0 0 1px #3f3f440d, 0 1px 3px 0 #3f3f4480);
     outline: 0.1rem solid transparent;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .user-webroles a.more-info-access {
-    margin: 0.8rem 2rem 2rem 2rem;
+    margin: 0.8rem 2rem 2rem;
     text-decoration: none;
     font-size: 16px;
     color: #0070c0;
