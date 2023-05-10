@@ -79,7 +79,9 @@ export default async function decorate(block) {
       
       tableHeadings.forEach(heading => {
         let tableHeadingElement = document.createElement('th');
-        tableHeadingElement.innerHTML = heading;
+        let button = document.createElement('button');
+        button.innerHTML = heading;
+        tableHeadingElement.appendChild(button);
         tr.appendChild(tableHeadingElement);
       });
     

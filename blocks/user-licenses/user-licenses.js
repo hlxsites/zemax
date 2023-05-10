@@ -19,7 +19,9 @@ export default async function decorate(block) {
     }).then(async function(response){
       let data = await response.json();
       let licenseTableHeadingMapping = createTableHeaderMapping(data);
+      let tabDiv = createTag('div', {class: 'tabs'});
       let tabListUl = createTag('ul', {class: 'tabs-nav', role:'tablist'});
+
 
       //Render tab headings
       licenseTableHeadingMapping.forEach(function(heading, index){
@@ -30,16 +32,17 @@ export default async function decorate(block) {
         }
       });
 
-      block.appendChild(tabListUl);
+      tabDiv.appendChild(tabListUl);
       //Render tab content
       licenseTableHeadingMapping.forEach(function(heading, index){
         if(index === 0){
-           block.append(createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML));
+          tabDiv.append(createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML));
         } else{
-          block.append(createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML));
+          tabDiv.append(createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML));
         }
       });
       
+      block.append(tabDiv);
       addTabFeature();
 
     }).catch(function(err) {
@@ -109,7 +112,9 @@ export default async function decorate(block) {
 
       tableHeadings.forEach((tableHeading) => {
           let tableHeadingElement = document.createElement('th');
-          tableHeadingElement.innerHTML = tableHeading;
+          let button = document.createElement('button');
+          button.innerHTML = tableHeading;
+          tableHeadingElement.appendChild(button);
           tr.appendChild(tableHeadingElement);
       });
 
