@@ -34,7 +34,8 @@
   text-align: left;
 }
 
-.columns.applications > div ul,p {
+.columns.applications > div ul,
+.columns.applications > div ul p {
   padding: 0;
   margin: 0;
 }
@@ -116,6 +117,23 @@
   height: 63px;
 }
 
+.columns.featured{
+  background-color: #fafafa;
+  padding:  20px 20px 0;
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-bottom: 35px;
+}
+
+.columns.featured p{
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #54565b;
+  font-size: 16px;
+  font-family: var(--ff-myradpro-regular);
+}
+
+
 @media screen and (max-width: 1030px) {
   .columns.applications { 
     padding-right: 20px;
@@ -176,4 +194,17 @@
   text-decoration: none;
   color: var(--text-color);
   background: none;
+}
+
+@media screen and (min-width: 1030px) {
+  .columns > div {
+    align-items: center;
+    flex-direction: unset;
+    gap: 32px;
+  }
+  
+  .columns > div > div {
+    flex: 1;
+    order: unset;
+  }
 }
