@@ -14,9 +14,9 @@
     align-content: center;
     align-items: center;
     justify-content: center;
-    padding: 0;
     margin: 0;
     text-align: center;
+    padding-bottom: 25px;
 }
 
 /* cards-carousel-slide-container */

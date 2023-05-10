@@ -5,10 +5,11 @@ import {
   buildBlock,
   loadHeader,
   loadFooter,
+  readBlockConfig,
+  toCamelCase,
   decorateButtons,
   decorateIcons,
-  decorateSections,
-  decorateBlocks,
+  decorateBlock,
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
@@ -70,6 +71,13 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+export async function searchResults(index, category) {
+  const resp = await fetch(index);
+  const json = await resp.json();
+  const filteredData = json.data.filter((e) => e.category.toLowerCase() === category.toLowerCase());
+  return filteredData.length > 0 ? filteredData : undefined;
+}
+
 /**
  * Retrieves the content of a metadata tag
  * @param {string} name The metadata name (or property)
@@ -125,6 +133,75 @@ function buildAutoBlocks(main) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
+}
+
+/**
+ * Decorates all blocks in a container element.
+ * @param {Element} main The container element
+ */
+export function decorateBlocks(main) {
+  const allSections = main.querySelectorAll('div.section');
+  allSections.forEach((section) => {
+    main
+      .querySelectorAll('div.section > div > div')
+      .forEach(decorateBlock);
+  });
+
+  const sectionWrapperDiv = main.querySelectorAll('div.section > div.section-wrapper');
+
+  if (sectionWrapperDiv && sectionWrapperDiv.length >= 0) {
+    sectionWrapperDiv.forEach(() => {
+      main.querySelectorAll('div.section > div > div > div')
+        .forEach(decorateBlock);
+    });
+  }
+}
+
+/**
+ * Decorates all sections in a container element.
+ * @param {Element} main The container element
+ */
+export function decorateSections(main) {
+  main.querySelectorAll(':scope > div').forEach((section) => {
+    const wrappers = [];
+    let defaultContent = false;
+    [...section.children].forEach((e) => {
+      if (e.tagName === 'DIV' || !defaultContent) {
+        const wrapper = document.createElement('div');
+        wrappers.push(wrapper);
+        defaultContent = e.tagName !== 'DIV';
+        if (defaultContent) wrapper.classList.add('default-content-wrapper');
+      }
+      wrappers[wrappers.length - 1].append(e);
+    });
+    wrappers.forEach((wrapper) => section.append(wrapper));
+    section.classList.add('section');
+    section.dataset.sectionStatus = 'initialized';
+    section.style.display = 'none';
+
+    /* process section metadata */
+    const sectionMeta = section.querySelector('div.section-metadata');
+    if (sectionMeta) {
+      const meta = readBlockConfig(sectionMeta);
+      Object.keys(meta).forEach((key) => {
+        if (key === 'style') {
+          const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
+          styles.forEach((style) => section.classList.add(style));
+        } else if (key === 'layout') {
+          const sectionWrapper = document.createElement('div');
+          sectionWrapper.classList.add('section-wrapper');
+          sectionWrapper.classList.add(meta[key].toLowerCase());
+          wrappers.forEach((e) => {
+            sectionWrapper.append(e);
+          });
+          section.append(sectionWrapper);
+        } else {
+          section.dataset[toCamelCase(key)] = meta[key];
+        }
+      });
+      sectionMeta.parentNode.remove();
+    }
+  });
 }
 
 /**
