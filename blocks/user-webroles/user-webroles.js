@@ -76,7 +76,7 @@ export default async function decorate(block) {
         const { webroles } = data;
 
         // TODO handle cases where there is no response on webroles
-        if (localStorage.getItem('contactid') === undefined) {
+        if (localStorage.getItem('contactid') === null || localStorage.getItem('contactid') === undefined) {
           localStorage.setItem('contactid', data.zemax_zendeskid);
         }
         if (webroles !== undefined) {
