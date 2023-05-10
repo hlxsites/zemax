@@ -197,7 +197,7 @@ function handleAuthentication(ele) {
       const displayname = `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`;
       logintxt.innerText = displayname;
       localStorage.setItem('displayname', displayname);
-	  localStorage.setItem('auth0_id', userData.sub);
+      localStorage.setItem('auth0_id', userData.sub);
       localStorage.setItem('email', userData.email);
       localStorage.setItem('fullname', userData.name);
       attachLogoutListener(ele);
