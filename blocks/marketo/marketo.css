@@ -50,6 +50,7 @@
     width: 100%;
     padding-bottom: 20px;
     background-color: var(--clr-blue);
+    min-height: 300px;
 }
 
  
