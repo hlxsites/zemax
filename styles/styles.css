@@ -440,7 +440,7 @@ main .divider {
 }
 
 
-.video-container {
+main .video-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -454,14 +454,14 @@ main .divider {
   justify-content: center;
 }
 
-.video-wrap {
+main .video-wrap {
   position: relative;
   top: 0;
   left: 0;
   z-index: 0;
 }
 
-.video-close {
+main .video-close {
   position: absolute;
   right: -20px;
   top: -20px;
@@ -471,10 +471,12 @@ main .divider {
   background: url('../icons/icon-close-white.png') center/16px no-repeat;
 }
 
-.video-wrap iframe {
-  width: 620px;
-  height: 375px;
+main .video-wrap iframe {
+  width: calc(100vw - 60px);
+  height: calc((100vw - 60px) * 0.605);
 }
+
+
 
 
 /* Mobile */
@@ -535,6 +537,10 @@ main .divider {
     margin-top:56px;
   }
 
+  main .video-wrap iframe {
+    width: 620px;
+    height: 375px;
+  }
 }
 
 /* Desktop */
