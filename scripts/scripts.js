@@ -102,13 +102,14 @@ function buildPageDivider(main) {
   });
 }
 
-function builPageCategory(main) {
+function buildPageCategory(main) {
   const category = getMetadata('category');
   const template = getMetadata('template');
-  if (category && template !== 'news') {
+  const firstDiv = main.querySelector('div:first-of-type');
+  if (category && template !== 'news' && template !== 'category') {
     const categoryDiv = createTag('div', { class: 'category' });
     categoryDiv.innerText = category;
-    main.prepend(categoryDiv);
+    firstDiv.insertBefore(categoryDiv, firstDiv.firstChild);
   }
 }
 
@@ -139,7 +140,6 @@ function buildAutoBlocks(main) {
   try {
     // buildHeroBlock(main);
     buildPageDivider(main);
-    builPageCategory(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -236,6 +236,46 @@ async function decorateTemplates(main) {
   }
 }
 
+export function createYoutubeModal(main, vid) {
+  const videoContainer = createTag('div', { class: 'video-container' });
+  const videoWrap = createTag('div', { class: 'video-wrap' });
+  const close = createTag('div', { class: 'video-close' });
+  const videoIframe = createTag('iframe', { class: 'video-iframe' });
+
+  videoIframe.setAttribute('src', `https://www.youtube.com/embed/${vid}`);
+  videoWrap.append(close, videoIframe);
+  videoContainer.append(videoWrap);
+  main.append(videoContainer);
+
+  const closeButton = main.querySelector('.video-close');
+  const videoContainerDiv = main.querySelector('.video-container');
+  if (closeButton) {
+    closeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      videoContainerDiv.remove();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.keyCode === 27 || event.key === 'Escape') {
+        videoContainerDiv.remove();
+      }
+    });
+  }
+}
+
+export function decorateExternalLinks(main) {
+  main.querySelectorAll('a').forEach((a) => {
+    const url = new URL(a.href);
+    const vid = url.searchParams.get('v');
+    if (a.href.includes('youtube.com')) {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        createYoutubeModal(main, vid);
+      });
+    }
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -244,10 +284,12 @@ async function decorateTemplates(main) {
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
+  decorateExternalLinks(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  buildPageCategory(main);
 }
 
 /**

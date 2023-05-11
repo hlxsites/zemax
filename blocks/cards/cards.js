@@ -1,4 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { createYoutubeModal } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
   /* change to ul, li */
@@ -18,9 +19,17 @@ export default function decorate(block) {
 
   // Full card should be clickable
   block.querySelectorAll('.cards > ul > li').forEach((card) => {
-    card.addEventListener('click', () => {
-      const alink = card.querySelector('a');
-      document.location.href = alink.href;
+    const alink = card.querySelector('a').href;
+
+    card.addEventListener('click', (e) => {
+      if (!alink.includes('youtube.com')) {
+        document.location.href = alink;
+      } else {
+        e.preventDefault();
+        const url = new URL(alink);
+        const vid = url.searchParams.get('v');
+        createYoutubeModal(block, vid);
+      }
     });
   });
 }
