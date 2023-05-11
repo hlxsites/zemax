@@ -236,7 +236,7 @@ async function decorateTemplates(main) {
   }
 }
 
-function createYoutubeModal(main, vid) {
+export function createYoutubeModal(main, vid) {
   const videoContainer = createTag('div', { class: 'video-container' });
   const videoWrap = createTag('div', { class: 'video-wrap' });
   const close = createTag('div', { class: 'video-close' });
