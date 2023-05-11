@@ -49,11 +49,11 @@
     overflow: hidden;
     width: 100%;
     padding-bottom: 20px;
+    background-color: var(--clr-blue);
+    min-height: 300px;
 }
 
  
-
-
 .marketo-container.newsletter .default-content-wrapper{
     padding-top: 82px;
 }
@@ -91,7 +91,7 @@
         width: var(--section-width);
         margin: 0 auto;
     }
-    
+
     .marketo-container.newsletter .marketo form  {
         width: 700px !important;
       }   

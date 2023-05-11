@@ -102,6 +102,17 @@ function buildPageDivider(main) {
   });
 }
 
+function buildPageCategory(main) {
+  const category = getMetadata('category');
+  const template = getMetadata('template');
+  const firstDiv = main.querySelector('div:first-of-type');
+  if (category && template !== 'news' && template !== 'category') {
+    const categoryDiv = createTag('div', { class: 'category' });
+    categoryDiv.innerText = category;
+    firstDiv.insertBefore(categoryDiv, firstDiv.firstChild);
+  }
+}
+
 /**
  * Loads the script in the head section
  * @param {string} url and other attrs
@@ -225,6 +236,67 @@ async function decorateTemplates(main) {
   }
 }
 
+export function createYoutubeModal(main, vid) {
+  const videoContainer = createTag('div', { class: 'video-container' });
+  const videoWrap = createTag('div', { class: 'video-wrap' });
+  const close = createTag('div', { class: 'video-close' });
+  const videoIframe = createTag('iframe', { class: 'video-iframe' });
+
+  videoIframe.setAttribute('src', `https://www.youtube.com/embed/${vid}`);
+  videoWrap.append(close, videoIframe);
+  videoContainer.append(videoWrap);
+  main.append(videoContainer);
+
+  const closeButton = main.querySelector('.video-close');
+  const videoContainerDiv = main.querySelector('.video-container');
+  if (closeButton) {
+    closeButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      videoContainerDiv.remove();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.keyCode === 27 || event.key === 'Escape') {
+        videoContainerDiv.remove();
+      }
+    });
+  }
+}
+
+export function decorateExternalLinks(main) {
+  main.querySelectorAll('a').forEach((a) => {
+    const url = new URL(a.href);
+    const vid = url.searchParams.get('v');
+    if (a.href.includes('youtube.com')) {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        createYoutubeModal(main, vid);
+      });
+    }
+  });
+}
+
+export function linkPicture(picture) {
+  const nextSib = picture.parentNode.nextElementSibling;
+  if (nextSib) {
+    const a = nextSib.querySelector('a');
+    if (a && a.textContent.startsWith('https://')) {
+      a.innerHTML = '';
+      a.className = '';
+      a.appendChild(picture);
+    }
+  }
+}
+
+export function decorateLinkedPictures(main) {
+  /* thanks to word online */
+  main.querySelectorAll('picture').forEach((picture) => {
+    if (!picture.closest('div.block')) {
+      linkPicture(picture);
+    }
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -232,11 +304,14 @@ async function decorateTemplates(main) {
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
+  decorateLinkedPictures(main);
   decorateButtons(main);
+  decorateExternalLinks(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  buildPageCategory(main);
 }
 
 /**

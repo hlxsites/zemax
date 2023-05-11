@@ -1,5 +1,7 @@
-import { searchResults, createTag, getMetadata } from '../../scripts/scripts.js';
-import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, readBlockConfig } from '../../scripts/lib-franklin.js';
+import {
+  createTag, createYoutubeModal, getMetadata, searchResults,
+} from '../../scripts/scripts.js';
 
 const CARDS_PER_PAGE = 12;
 
@@ -82,9 +84,36 @@ function createPaginationSelector(currentPage, totalPages, maxVisiblePages = 4) 
   return paginationDiv;
 }
 
+function getLinkLabelByCategory(category) {
+  const categoryMap = {
+    Webinar: 'Watch now',
+    videos: 'Play now',
+    'Success Story': 'Learn more',
+    'product-overviews': 'Download now',
+    eguides: 'Learn more',
+  };
+  return categoryMap[category] || 'Learn more';
+}
+
+function getLink(item) {
+  if (item.link) {
+    return item.link;
+  }
+  if (item.path) {
+    return item.path;
+  }
+  return '#';
+}
+
+// todo: link or path
+// todo: image or image from youtube
+
 export default async function decorate(block) {
   const category = getMetadata('category');
-  const filteredCards = await searchResults('/query-index.json', category);
+  const blockConfig = readBlockConfig(block);
+  const indexEndpoint = blockConfig['data-source'] || '/query-index.json';
+
+  const filteredCards = await searchResults(indexEndpoint, category);
   block.innerHTML = '';
 
   // default current page to 1 if not specified in params
@@ -102,7 +131,18 @@ export default async function decorate(block) {
 
     // cards-card-image
     const cardImage = createTag('div', { class: 'cards-card-image' });
-    cardImage.innerHTML = createOptimizedPicture(item.image, 'test', false, [{ width: '380', height: '214' }]).outerHTML;
+
+    if (item.image) {
+      cardImage.innerHTML = createOptimizedPicture(item.image, item.title, false, [{ width: '380', height: '214' }]).outerHTML;
+    } else if (item.link && item.link.includes('youtube.com')) {
+      const url = new URL(item.link);
+      const vid = url.searchParams.get('v');
+      const img = document.createElement('img');
+      img.setAttribute('loading', 'lazy');
+      img.setAttribute('alt', item.title);
+      img.setAttribute('src', `https://img.youtube.com/vi/${vid}/mqdefault.jpg`);
+      cardImage.appendChild(img);
+    }
 
     // cards-card-body
     const cardBody = createTag('div', { class: 'cards-card-body' });
@@ -110,7 +150,8 @@ export default async function decorate(block) {
     const cardTitle = createTag('h5', { class: 'card-title' }, category);
     const cardDescription = createTag('p', { class: 'card-description' }, item.title);
 
-    const cardLinkHref = createTag('a', { href: item.path }, 'Watch now');
+    const alink = getLink(item);
+    const cardLinkHref = createTag('a', { href: alink }, getLinkLabelByCategory(category));
     const cardLinkParagraphs = createTag('p', { class: 'button-container' });
     cardLinkParagraphs.append(cardLinkHref);
 
@@ -118,6 +159,20 @@ export default async function decorate(block) {
 
     // append both cards-card-image and cards-card-body to cardsList
     cardItem.append(cardImage, cardBody);
+
+    // Full card should be clickable
+    cardItem.addEventListener('click', (e) => {
+      if (alink.includes('youtube.com')) {
+        e.preventDefault();
+        const url = new URL(alink);
+        const vid = url.searchParams.get('v');
+        createYoutubeModal(block, vid);
+      } else if (category === 'product-overviews') {
+        window.open(alink, '_blank');
+      } else {
+        document.location.href = alink;
+      }
+    });
     cardsWrapper.append(cardItem);
   });
   block.append(cardsWrapper);

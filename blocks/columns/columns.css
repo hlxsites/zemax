@@ -34,7 +34,8 @@
   text-align: left;
 }
 
-.columns.applications > div ul,p {
+.columns.applications > div ul,
+.columns.applications > div ul p {
   padding: 0;
   margin: 0;
 }
@@ -116,6 +117,23 @@
   height: 63px;
 }
 
+.columns.featured{
+  background-color: #fafafa;
+  padding:  20px 20px 0;
+  margin-left: -20px;
+  margin-right: -20px;
+  margin-bottom: 35px;
+}
+
+.columns.featured p{
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #54565b;
+  font-size: 16px;
+  font-family: var(--ff-myradpro-regular);
+}
+
+
 @media screen and (max-width: 1030px) {
   .columns.applications { 
     padding-right: 20px;
@@ -140,40 +158,66 @@
 /***************************************************************
 * tab like columns
 ***************************************************************/
-.columns.tabs {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: end;
+.columns.tabs>div {
+  flex-direction: unset;
   border-bottom: 1px solid var(--highlight-background-color);
+  gap: 32px;
+  margin: 40px 0;
+  align-items: flex-end;
   overflow: auto;
 }
 
-.columns.tabs>div {
-  border-bottom: 4px solid var(--clr-white);
+.columns.tabs .button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: end;
+  position: relative;
 }
 
-.columns.tabs>div:hover {
-  border-bottom: 4px solid var(--clr-orange);
-}
-
-.columns.tabs>div:has(strong) {
-  border-bottom: 4px solid var(--clr-orange);
-  padding-bottom: 11px;
-}
-
-
-.columns.tabs a {
-  margin-bottom: 0;
-  padding-bottom: 0;
+.columns.tabs a,
+.columns.tabs a>code {
+  margin: auto 0;
+  padding: 0 0 15px;
   border: 0;
+  border-radius: 0;
+  font-size: inherit;
   color: var(--text-color);
   font-family: var(--ff-myradpro-semibold);
   letter-spacing: var(--letter-spacing-8);
+  min-width: 100px;
+}
+
+.columns.tabs a {
+  border-bottom: 4px solid var(--clr-white);
+}
+
+.columns.tabs a>code {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-bottom: 4px solid var(--clr-orange);
 }
 
 .columns.tabs a:hover {
+  padding-bottom: 15px;
+  border-bottom: 4px solid var(--clr-orange);
   text-decoration: none;
   color: var(--text-color);
   background: none;
+}
+
+@media screen and (min-width: 1030px) {
+  .columns>div {
+    align-items: center;
+    flex-direction: unset;
+    gap: 32px;
+  }
+
+  .columns>div>div {
+    flex: 1;
+    order: unset;
+  }
 }

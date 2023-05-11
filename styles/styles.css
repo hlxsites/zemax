@@ -350,6 +350,18 @@ main .default-content-wrapper li > a {
   color: var(--clr-blue) !important;
 }
 
+main .category{
+  width: var(--section-width);
+  margin: 0 auto;
+  font-family: var(--ff-myradpro-semibold);
+  font-size: 18px;
+  line-height: var(--line-height-14);
+  letter-spacing: var(--letter-spacing-64);
+  color: var(--clr-blue);
+  margin-top : 28px;
+  display: block;
+}
+
 /* center aligned sections */
 main .section.center-aligned {
   text-align: center;
@@ -368,17 +380,27 @@ main .section.center-aligned .default-content-wrapper > p {
   margin: inherit;
 }
 
-main .section.center-aligned-buttons .default-content-wrapper > p {
+main .section.center-aligned-buttons .default-content-wrapper > p,
+main .center-aligned-buttons p.button-container {
   text-align: center;
 }
 
 main .section.background-blue {
   background-color: var(--clr-blue);
-
 }
 
 main .section.background-gray {
   background-color: #fafafa;
+}
+
+main .section.background-orange {
+  background-color: var(--clr-orange);
+  padding: 78px 0 67px;
+}
+
+main .section.background-green {
+  background-color: var(--clr-green);
+  padding: 78px 0 67px;
 }
 
 main .section.spacing-60 {
@@ -418,6 +440,44 @@ main .divider {
   border: 1px solid var(--color-border);
   padding: unset
 }
+
+
+main .video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  /* stylelint-disable-next-line color-function-notation */
+  background-color: rgb(0,0,0,70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main .video-wrap {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+main .video-close {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  z-index: 0;
+  width: 16px;
+  height: 16px;
+  background: url('../icons/icon-close-white.png') center/16px no-repeat;
+}
+
+main .video-wrap iframe {
+  width: calc(100vw - 60px);
+  height: calc((100vw - 60px) * 0.605);
+}
+
 
 
 
@@ -475,6 +535,14 @@ main .divider {
     border-top-left-radius: 50% 20%;
   }
 
+  main .category{
+    margin-top:56px;
+  }
+
+  main .video-wrap iframe {
+    width: 620px;
+    height: 375px;
+  }
 }
 
 /* Desktop */
