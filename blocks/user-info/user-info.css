@@ -1,0 +1,48 @@
+.user-info-container {
+  display: flex;
+}
+
+.user-info-wrapper {
+  width: 100%;
+  max-width: 360px;
+}
+
+.user-info h3#about-me {
+  margin: 0.3em 0;
+  font-size: 34px;
+  line-height: 3.2rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.user-info-container p,
+.user-webroles-container p {
+  margin: 0.3em 0;
+  font-size: 16px;
+  line-height: 1.6rem;
+  font-weight: normal;
+  letter-spacing: 0.2px;
+}
+
+.user-info p.users-fullname {
+  font-weight: 700;
+}
+
+.user-info a.button {
+  height: 36px;
+  line-height: 36px;
+  margin: 0 18px 0 0;
+  width: auto;
+  padding: 9px 16px;
+  border: 2.5px solid var(--clr-blue);
+  border-radius: 8px;
+  font-size: 16px;
+  letter-spacing: 0.8px;
+  text-transform: none;
+  display: inline-flex;
+  background: white;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s linear 0s;
+  cursor: pointer;
+}

@@ -1,0 +1,57 @@
+.user-webroles-wrapper {
+    margin-bottom: 1.6rem;
+}
+
+.user-webroles h3 {
+  margin: 0.3em 0;
+  font-size: 26px;
+  line-height: 3.2rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.user-webroles h3,
+.user-webroles p {
+    margin-left: 2rem;
+}
+
+.user-webroles ul {
+    margin-top: 1.6rem;
+    padding: 0;
+}
+
+.user-webroles ul li {
+    margin-bottom: 30px;
+    padding: 0.8rem 2rem;
+    list-style: none;
+    background-color: #F6F6F7;
+    border-radius: .8rem;
+    box-shadow: var(--p-card-shadow, 0 0 0 1px #3f3f440d, 0 1px 3px 0 #3f3f4480);
+    outline: 0.1rem solid transparent;
+}
+
+.user-webroles ul li > h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 2.4rem;
+}
+
+.user-webroles ul li > p {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.user-webroles a.more-info-access {
+    margin: 0.8rem 2rem 2rem;
+    text-decoration: none;
+    font-size: 16px;
+    color: #0070c0;
+}
+
+.user-webroles a.more-info-access:hover {
+    text-decoration: underline;
+}
