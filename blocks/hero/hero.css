@@ -70,7 +70,7 @@ main .hero.white h3 {
   text-shadow: 0 2px 4px rgb(0 0 0 25%);
   text-align: left;
   font-family: var(--ff-myradpro-semibold);
-  width: 90%;
+  width: 85%;
 }
 
 main .hero.white {
@@ -152,7 +152,7 @@ main .hero.white > div::after {
 
   main .hero.white h3 {
     font-size: 37.5px;
-    width: 70%;
+    width: 520px;
     padding-left: 0.4em;
     line-height: 46.88px;
   }
@@ -202,24 +202,20 @@ main .hero.white > div::after {
 
   main .hero.white h3 {
     font-size: var(--heading-font-size-xxl);
-    width: 35%;
+    width: 500px;
     line-height: 60px;
     letter-spacing: 0.18px;
-    padding-left: 16vw;
-  }
-
-  main .hero.white > div > div > p {
-    padding-left: 16vw;
+    padding-left: 28vw;
   }
 
   .icon-opticsbuilder svg {
-    padding-top: 14vw;
+    padding-top: 140px;
     height: 63px;
     width: 360px;
   }
 
   .icon-opticstudio svg {
-    padding-top: 14vw;
+    padding-top: 140px;
     width: 321.56px;
     height: 63px;
   }
