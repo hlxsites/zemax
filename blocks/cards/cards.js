@@ -23,7 +23,7 @@ export default function decorate(block) {
 
     card.addEventListener('click', (e) => {
       if (!alink.includes('youtube.com')) {
-        document.location.href = alink.href;
+        document.location.href = alink;
       } else {
         e.preventDefault();
         const url = new URL(alink);
