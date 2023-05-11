@@ -1,4 +1,4 @@
-import getEnvironmentConfig from '../../scripts/zemax-config.js';
+import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
@@ -33,7 +33,7 @@ export default async function decorate(block) {
       const userLink = (data.link === '' || data.link === undefined) ? 'https://community.zemax.com/ssoproxy/setUsernameForm' : data.link;
 
       // Use placeholder
-      const anchor = createTag('a', { class: 'button primary', href: userLink, target: '_blank' }, 'Forum Profile & Activity');
+      const anchor = createTag('a', { class: 'button primary', href: userLink, target: '_blank' }, getLocaleConfig('en_us', 'userInfo').forumProfileActivityButtonText);
       block.append(anchor);
     }).catch((err) => {
       // There was an error

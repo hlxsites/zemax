@@ -1,27 +1,28 @@
-import getEnvironmentConfig from '../../scripts/zemax-config.js';
+import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag } from '../../scripts/scripts.js';
 
 function createTableHeaderMapping(data) {
+  const { allLicenseTabHeadingMapping } = getLocaleConfig('en_us', 'userLicenses');
   const tableHeaderMapping = [];
 
   if (data.my_licenses_admin !== undefined && data.my_licenses_admin.length > 0) {
-    tableHeaderMapping.push('My Licenses (Admin)|my_licenses_admin');
+    tableHeaderMapping.push(`${allLicenseTabHeadingMapping[0]}|my_licenses_admin`);
   }
 
   if (data.my_licenses !== undefined && data.my_licenses.length > 0) {
-    tableHeaderMapping.push('My Licenses (End User)|my_licenses');
+    tableHeaderMapping.push(`${allLicenseTabHeadingMapping[1]}|my_licenses`);
   }
 
   if (data.company_licenses !== undefined && data.company_licenses.length > 0) {
-    tableHeaderMapping.push('Company Licenses|company_licenses');
+    tableHeaderMapping.push(`${allLicenseTabHeadingMapping[2]}|company_licenses`);
   }
 
   if (data.academic_licenses !== undefined && data.academic_licenses.length > 0) {
-    tableHeaderMapping.push('Academic Licenses|academic_licenses');
+    tableHeaderMapping.push(`${allLicenseTabHeadingMapping[3]}|academic_licenses`);
   }
 
   if (data.academic_esp_licenses !== undefined && data.academic_esp_licenses.length > 0) {
-    tableHeaderMapping.push('Academic ESP Licenses|academic_esp_licenses');
+    tableHeaderMapping.push(`${allLicenseTabHeadingMapping[4]}|academic_esp_licenses`);
   }
   return tableHeaderMapping;
 }
@@ -66,18 +67,7 @@ function createLicencesTable(rows) {
   const thead = document.createElement('thead');
   const tr = document.createElement('tr');
 
-  const tableHeadings = [
-    '',
-    'Status',
-    'Support Expiry',
-    'License #',
-    'Nickname',
-    'Product',
-    'License Type',
-    'Seat Count',
-    'End User Count',
-    'Administrator',
-  ];
+  const { tableHeadings } = getLocaleConfig('en_us', 'userLicenses');
 
   tableHeadings.forEach((tableHeading) => {
     const tableHeadingElement = document.createElement('th');

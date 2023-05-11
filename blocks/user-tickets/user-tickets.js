@@ -1,4 +1,4 @@
-import getEnvironmentConfig from '../../scripts/zemax-config.js';
+import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { p, a } from '../../scripts/dom-helpers.js';
 import { createTag } from '../../scripts/scripts.js';
 
@@ -40,16 +40,19 @@ export default async function decorate(block) {
         });
 
         const supportLinkDiv = createTag('div', { class: 'support-links' }, '');
+        const { askCommunityButtonText } = getLocaleConfig('en_us', 'userTickets');
         if (allButtonAccess) {
+          const { openANewTicketButtonText } = getLocaleConfig('en_us', 'userTickets');
+          const { scheduleACallButtonText } = getLocaleConfig('en_us', 'userTickets');
           supportLinkDiv.appendChild(
             a(
               {
                 href: 'https://support.zemax.com/hc/requests/new',
-                'aria-label': 'Open a New Ticket',
+                'aria-label': openANewTicketButtonText,
                 class: 'open-ticket button primary',
                 target: '_blank',
               },
-              'Open a New Ticket',
+              openANewTicketButtonText,
             ),
           );
 
@@ -57,11 +60,11 @@ export default async function decorate(block) {
             a(
               {
                 href: 'https://support.zemax.com/hc/requests/new?scheduled-calls=true',
-                'aria-label': 'Schedule a Call',
+                'aria-label': scheduleACallButtonText,
                 class: 'schedule-call button primary',
                 target: '_blank',
               },
-              'Schedule a Call',
+              scheduleACallButtonText,
             ),
           );
         }
@@ -70,11 +73,11 @@ export default async function decorate(block) {
           a(
             {
               href: 'https://community.zemax.com/ssoproxy/login?ssoType=openidconnect',
-              'aria-label': 'Ask the Community',
+              'aria-label': askCommunityButtonText,
               class: 'more-info-access button secondary',
               target: '_blank',
             },
-            'Ask the Community',
+            askCommunityButtonText,
           ),
         );
 
@@ -85,8 +88,7 @@ export default async function decorate(block) {
           const thead = document.createElement('thead');
           const tr = document.createElement('tr');
 
-          const tableHeadings = ['Case Number', 'Case Title', 'Status', 'Created', 'Last Updated'];
-
+          const { tableHeadings } = getLocaleConfig('en_us', 'userTickets');
           tableHeadings.forEach((heading) => {
             const tableHeadingElement = document.createElement('th');
             const button = document.createElement('button');
@@ -141,7 +143,7 @@ export default async function decorate(block) {
           block.append(tableElement);
         } else {
           // TODO placeholder
-          block.append(p({ class: 'no-tickets' }, 'There are currently no Support Tickets associated with this account.'));
+          block.append(p({ class: 'no-tickets' }, getLocaleConfig('en_us', 'userTickets').noTicketDescription));
         }
       })
       .catch((err) => {
