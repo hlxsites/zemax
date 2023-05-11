@@ -385,11 +385,20 @@ main .center-aligned-buttons p.button-container {
 
 main .section.background-blue {
   background-color: var(--clr-blue);
-
 }
 
 main .section.background-gray {
   background-color: #fafafa;
+}
+
+main .section.background-orange {
+  background-color: var(--clr-orange);
+  padding: 78px 0 67px;
+}
+
+main .section.background-green {
+  background-color: var(--clr-green);
+  padding: 78px 0 67px;
 }
 
 main .section.spacing-60 {
@@ -428,6 +437,43 @@ main .divider {
   margin: 20px 0;
   border: 1px solid var(--color-border);
   padding: unset
+}
+
+
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  /* stylelint-disable-next-line color-function-notation */
+  background-color: rgb(0,0,0,70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-wrap {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.video-close {
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  z-index: 0;
+  width: 16px;
+  height: 16px;
+  background: url('../icons/icon-close-white.png') center/16px no-repeat;
+}
+
+.video-wrap iframe {
+  width: 620px;
+  height: 375px;
 }
 
 
