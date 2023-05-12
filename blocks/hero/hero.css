@@ -13,11 +13,19 @@ main .hero-container {
 main .hero {
   position: relative;
   min-height: 280px;
-  height: 630px;
+  height: 100%;
 }
 
-main .hero h1 {
+main .hero.white {
+  height: 100%;
+}
+
+main .hero h1,
+main .hero h2,
+main .hero h3{
   color: #002f6d;
+  padding-top:unset;
+  font-family: var(--ff-myradpro-semibold);
 }
 
 main .hero p
@@ -25,13 +33,6 @@ main .hero p
   color: #54565b;
   margin-top: unset;
 }
-
-/* main .hero p:has(picture){
-  width: 100%;
-  flex-grow: 1;
-  margin: unset;
-  padding-bottom: 10px;
-} */
 
 main .hero p > picture {
   width: 100%;
@@ -44,15 +45,26 @@ main .hero p > picture ~ * {
   width: 100%;
 }
 
+main .hero .icon > svg{
+  height: 63px;
+}
 
 
-main .hero.white a:any-link, main .hero.white a:hover{
+main .hero.white a:any-link, 
+main .hero.white a:hover{
   border:none;
   background-color: unset;
   color : #fff;
   padding: unset;
   border-radius: unset;
-  text-decoration: underline;
+  font-family: var(--ff-myradpro-semibold);
+}
+
+
+main .hero.white h1,
+main .hero.white h2,
+main .hero.white h3{
+  color : #fff;
 }
 
 main .hero picture {
@@ -64,19 +76,9 @@ main .hero picture {
   box-sizing: border-box;
 }
 
-main .hero.white picture {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: 0 auto;
-
-}
-
 main .hero img {
   object-fit: cover;
+  position: relative;
   width: 100%;
   height: 100%;
   max-height: 630px;
@@ -86,17 +88,34 @@ main .hero img {
 }
 
 main .hero.white h1,
+main .hero.white h2
+main .hero.white h3 
 main .hero.white p,
 main .hero.white a:any-link,
 main .hero.white a:hover{
   color : #ffff;
 }
 
+main .hero .button.play::before {
+    content: "";
+    position: relative;
+    padding-left: 10px;
+    top: 12px;
+    left: 12px;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    background: url("/icons/icon-play.png") center/20px no-repeat;
+    display: inline-block;
+  }
+
 
 /* Mobile */
 @media only screen and (max-width: 480px) {
-main .hero h1 , 
-main .hero p:not(:first-child){
+  main .hero h1,
+  main .hero h2,
+  main .hero h3, 
+  main .hero p:not(:first-child){
   padding: 0 20px;
   }
 }
@@ -109,10 +128,7 @@ main .hero p:not(:first-child){
     justify-content: center;
     width: 50%;
     margin: 0 auto;
-  }
-
-  main .hero h1 {
-    padding-top:36px
+    padding-top: 50px;
   }
 
   main .hero picture {
@@ -127,19 +143,22 @@ main .hero p:not(:first-child){
   }
 
   main .hero h1 , 
+  main .hero h2 , 
+  main .hero h3 , 
   main .hero p:not(:first-child),
   main .hero p:not(:last-child) {
         width: calc(var(--section-width)/2);
         padding-left: calc((100vw - var(--section-width))/8);
   }
-
-
 }
 
-/* Tablet */
+/* Desktop */
 @media only screen and (min-width: 1030px) {
-  main .hero h1 {
-    padding-top:72px
+  main .hero {
+    height: 630px;
   }
 
+  main .hero.white {
+    height: 575px;
+  }
 }
