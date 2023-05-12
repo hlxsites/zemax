@@ -88,9 +88,20 @@ function getLinkLabelByCategory(category) {
   const categoryMap = {
     Webinar: 'Watch now',
     videos: 'Play now',
-    'Success Story': 'Learn more',
     'product-overviews': 'Download now',
     eguides: 'Learn more',
+    'Success Story': 'Learn more',
+  };
+  return categoryMap[category] || 'Learn more';
+}
+
+function getTitleByCategory(category) {
+  const categoryMap = {
+    Webinar: 'Webinar',
+    videos: 'Product video',
+    'Success Story': 'Success Story',
+    'product-overviews': 'Product Overview',
+    eguides: 'eGuide',
   };
   return categoryMap[category] || 'Learn more';
 }
@@ -147,11 +158,11 @@ export default async function decorate(block) {
     // cards-card-body
     const cardBody = createTag('div', { class: 'cards-card-body' });
 
-    const cardTitle = createTag('h5', { class: 'card-title' }, category);
+    const cardTitle = createTag('h5', { class: 'card-title' }, getTitleByCategory(category));
     const cardDescription = createTag('p', { class: 'card-description' }, item.title);
 
     const alink = getLink(item);
-    const cardLinkHref = createTag('a', { href: alink }, getLinkLabelByCategory(category));
+    const cardLinkHref = createTag('a', { href: alink, class: 'button' }, getLinkLabelByCategory(category));
     const cardLinkParagraphs = createTag('p', { class: 'button-container' });
     cardLinkParagraphs.append(cardLinkHref);
 
@@ -176,6 +187,11 @@ export default async function decorate(block) {
     cardsWrapper.append(cardItem);
   });
   block.append(cardsWrapper);
+  const layoutClass = blockConfig.layout || 'layout-3-card';
+  block.classList.add('cards', layoutClass, 'curved-text', 'orange', 'resource-center', 'search-results');
+  if (category === 'videos') {
+    block.classList.add('video');
+  }
 
   // only show pagination if there are more than 12 cards
   if (filteredCards.length > CARDS_PER_PAGE) {

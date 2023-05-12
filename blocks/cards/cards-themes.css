@@ -215,3 +215,30 @@
 }
 
   }
+
+/* search-results */
+.cards.search-results .cards-card-body h5 {
+  letter-spacing: 0.64px;
+  color: #0070c0;
+  font-size: 18px;
+}
+
+.cards.search-results .cards-card-body a.button {
+  font-family: MyriadPro-Semibold, sans-serif;
+  letter-spacing: 0.56px;
+}
+
+.cards.video .cards-card-image {
+  position: relative;
+}
+
+.cards.video .cards-card-image::after {
+  content: "";
+  position: absolute;
+  top: calc(47% - 6px);
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  background: url("/icons/icon-play-video.png") center/50px no-repeat;
+}
