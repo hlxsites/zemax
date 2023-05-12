@@ -3,14 +3,15 @@ footer {
   align-items: flex-start;
   flex-wrap: wrap;
   font-size: var(--body-font-size-s);
-  width: var(--section-width);
+  width: 100%;
   padding-top:24px;
   margin: 0 auto;
 }
 
 footer .footer {
   max-width: 1100px;
-  
+  padding: 0 20px;
+  margin: 0 auto;
 }
 
 footer span.icon{

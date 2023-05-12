@@ -1,4 +1,11 @@
 /* Blog Styling */
+
+main .news{
+    padding: 0 20px;
+    margin: 0 auto;
+    width: var(--section-width);
+}
+
 main .default-content-wrapper img {
     border-radius: 16px;
 }

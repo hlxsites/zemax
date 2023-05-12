@@ -23,13 +23,25 @@ main .hero h1 {
 main .hero p
 {
   color: #54565b;
+  margin-top: unset;
 }
 
-main .hero p:has(picture){
+/* main .hero p:has(picture){
   width: 100%;
   flex-grow: 1;
   margin: unset;
   padding-bottom: 10px;
+} */
+
+main .hero p > picture {
+  width: 100%;
+  flex-grow: 1;
+  margin: unset;
+  padding-bottom: 10px;
+}
+
+main .hero p > picture ~ * {
+  width: 100%;
 }
 
 
@@ -81,10 +93,11 @@ main .hero.white a:hover{
 }
 
 
-/* Tablet */
-@media only screen and (min-width: 480px) {
-  main .hero h1 , main .hero p:not(:has(picture)){
-    padding: 0 20px;
+/* Mobile */
+@media only screen and (max-width: 480px) {
+main .hero h1 , 
+main .hero p:not(:first-child){
+  padding: 0 20px;
   }
 }
 
@@ -113,10 +126,11 @@ main .hero.white a:hover{
 
   }
 
-  main .hero h1 , main .hero p:not(:has(picture)){
-    width: calc(var(--section-width)/2);
-    padding-left: calc((100vw - var(--section-width))/8);
-
+  main .hero h1 , 
+  main .hero p:not(:first-child),
+  main .hero p:not(:last-child) {
+        width: calc(var(--section-width)/2);
+        padding-left: calc((100vw - var(--section-width))/8);
   }
 
 

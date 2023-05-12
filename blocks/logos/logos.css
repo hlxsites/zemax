@@ -1,8 +1,4 @@
 /** logos section styling */
-.section.logos-container {
-    background: var(--neutral-bone);
-    padding: var(--spacer-layout-06) 0 var(--spacer-layout-06);
-}
 
 .logos-wrapper {
     width: 100% ;
