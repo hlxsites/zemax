@@ -1,5 +1,5 @@
 import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
-import { createTag, loadScript } from '../../scripts/scripts.js';
+import { createTag, loadScript, decorateLinkedPictures } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -365,6 +365,7 @@ export default async function decorate(block) {
     nav.querySelector('.nav-menu').innerHTML = navMenuUl.outerHTML;
 
     decorateIcons(nav);
+    decorateLinkedPictures(nav);
     block.append(addSearchForm());
     block.append(nav);
 
