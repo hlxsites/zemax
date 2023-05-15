@@ -158,11 +158,15 @@ function login() {
 
 // logout call
 function logout() {
-  webauth.logout({
-    returnTo: `${window.location.origin}`,
-    clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
-  });
   localStorage.clear();
+  if (webauth === undefined) {
+    window.location.assign(`${window.location.origin}`);
+  } else {
+    webauth.logout({
+      returnTo: `${window.location.origin}`,
+      clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
+    });
+  }
 }
 
 // utility to attach logout listeners
