@@ -292,7 +292,9 @@ export function decorateLinkedPictures(main) {
   /* thanks to word online */
   main.querySelectorAll('picture').forEach((picture) => {
     if (!picture.closest('div.block')) {
+      const p = picture.parentElement;
       linkPicture(picture);
+      p.remove();
     }
   });
 }
