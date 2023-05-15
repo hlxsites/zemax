@@ -1,0 +1,1774 @@
+[
+    {
+        "loc": "https://www.zemax.com/blogs/envision-zemax-conference-2021-save-the-date",
+        "lastmod": "2021-04-16T13:24:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/careers",
+        "lastmod": "2021-05-17T02:50:47-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides",
+        "lastmod": "2022-04-21T15:37:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos",
+        "lastmod": "2022-05-12T00:59:36-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials",
+        "lastmod": "2022-06-02T11:51:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/blogs",
+        "lastmod": "2022-09-29T06:59:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews",
+        "lastmod": "2022-11-17T09:08:19-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars",
+        "lastmod": "2022-12-01T16:58:53-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories",
+        "lastmod": "2022-12-30T11:09:01-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news",
+        "lastmod": "2023-02-14T08:49:39-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/product-video2",
+        "lastmod": "2021-06-07T05:12:30-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/international-day-of-photonics",
+        "lastmod": "2021-04-27T16:00:16-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-launches-opticsbuilder-to-streamline-optomechanical-packaging",
+        "lastmod": "2021-04-27T16:21:35-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/what-s-happening-at-zemax-upcoming-webinars-events",
+        "lastmod": "2021-04-27T17:17:32-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/using-augmented-reality-for-medical-applications-part-3",
+        "lastmod": "2021-04-29T05:18:40-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/celebrating-pi-day",
+        "lastmod": "2021-05-02T16:51:30-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/what-s-happening-at-zemax-upcoming-webinars-events-6",
+        "lastmod": "2021-04-27T08:46:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/what-s-happening-at-zemax-march-events-and-webinars",
+        "lastmod": "2021-04-27T08:45:39-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/get-involved-with-zemax-spring-webinars-events",
+        "lastmod": "2021-04-27T08:29:21-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/celebrating-the-international-day-of-women-girls-in-science",
+        "lastmod": "2021-04-27T13:19:22-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-appoints-dorothy-pults-as-chief-product-marketing-officer-1",
+        "lastmod": "2021-04-27T17:13:39-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/celebrating-the-international-day-of-women-girls-in-science-1",
+        "lastmod": "2021-04-27T12:39:45-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/industry-insights-a-conversation-with-sense-photonics",
+        "lastmod": "2021-05-10T11:11:54-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/how-esi-developed-a-new-cost-saving-design-methodology-for-laser-systems",
+        "lastmod": "2021-06-02T12:16:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/5-steps-to-design-for-manufacturability",
+        "lastmod": "2021-07-21T08:09:27-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/designing-for-manufacturability-with-opticstudio",
+        "lastmod": "2021-05-14T10:01:12-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/sample-one-pager",
+        "lastmod": "2021-10-22T10:32:47-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/envision-zemax-conference-2021-save-the-date",
+        "lastmod": "2021-05-19T12:46:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/nlight-uses-opticstudio-to-create-a-robust-multi-kilowatt-laser-that-enriches-how-devices-display-images",
+        "lastmod": "2021-06-02T12:14:15-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/life-sciences-industry-insights-with-zemax-cto-sanjay-gangadhara",
+        "lastmod": "2021-04-27T09:06:07-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/flexibility-built-into-opticstudio-helps-lightpath-design-for-manufacturability",
+        "lastmod": "2021-04-22T17:39:37-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-design-a-confocal-fluorescent-microscope-in-opticstudio",
+        "lastmod": "2021-04-27T09:14:15-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/new-3-part-webinar-series-aimed-to-get-your-products-from-concept-to-market-faster",
+        "lastmod": "2021-04-27T15:47:37-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/advanced-tolerancing-techniques-for-endoscope-optical-design",
+        "lastmod": "2021-06-02T12:15:53-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/flexibility-built-into-opticstudio-helps-lightpath-design-for-manufacturability-across-a-range-of-solutions",
+        "lastmod": "2021-06-02T12:12:45-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/redefining-human-machine-interactions-through-eye-tracking",
+        "lastmod": "2021-06-02T13:10:40-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/neuroscientists-use-opticstudio-to-innovate-unprecedented-brain-imaging-system-with-breathtaking-resolution",
+        "lastmod": "2021-06-02T13:14:06-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/opticstudio-used-to-develop-break-through-handheld-eye-imaging-device",
+        "lastmod": "2021-06-02T13:12:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/opticstudio-used-to-design-critical-systems-for-james-webb-space-telescope",
+        "lastmod": "2021-06-02T13:15:24-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/high-yield-optimization-streamlining-the-path-to-more-easily-manufacturable-designs",
+        "lastmod": "2021-07-21T07:11:04-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/contrast-loss-map-in-opticstudio",
+        "lastmod": "2021-05-13T15:29:09-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/how-to-perform-stray-light-analysis",
+        "lastmod": "2021-05-13T15:28:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/optimizing-for-mtf-performance-using-contrast-optimization",
+        "lastmod": "2021-05-13T15:29:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/a-manager-s-four-step-guide-to-buying-optical-product-design-and-simulation-software",
+        "lastmod": "2021-05-13T15:26:54-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/virtual-prototypes-speed-time-to-market-for-solid-state-lidar",
+        "lastmod": "2021-05-13T15:25:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/lidar-is-one-of-the-most-important-optical-technologies-in-the-race-toward-mainstream-self-driving-cars-most-of-the-innovation-of-lidar-systems-in-the-automotive-industry-is-focused-on-creating-solid-state-systems-and-reducing-the-movement-of-the-mechani",
+        "lastmod": "2021-05-13T15:24:11-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/how-to-fail-fast-and-smart-during-the-optical-product-design-process",
+        "lastmod": "2021-05-13T15:23:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/industry-insights-a-conversation-with-chairman-of-toa-mr-lin-and-zemax-ceo-s-subbiah",
+        "lastmod": "2021-05-10T15:50:18-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/innovating-into-the-future-zemax-customer-panel",
+        "lastmod": "2021-05-10T15:39:54-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/led-based-linear-pendant-light-optical-design",
+        "lastmod": "2021-05-10T15:23:31-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/making-autonomy-a-virtual-reality-interoperability-between-zemax-opticstudio-and-ansys-simulation-platform",
+        "lastmod": "2021-05-10T14:56:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/meet-zemaxs-new-product-opticsbuilder",
+        "lastmod": "2021-05-10T14:24:30-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/modeling-uv-c-irradiation-chambers-for-mask-decontamination-using-zemax-opticstudio",
+        "lastmod": "2021-05-10T14:04:03-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/opticsbuilder-for-creo-parametric",
+        "lastmod": "2021-05-10T13:53:49-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/practical-not-perfect-design-trade-offs-for-successful-optoelectronic-product-development",
+        "lastmod": "2021-05-10T13:42:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/pushing-the-design-envelope-of-freeforms-find-out-what-s-possible-today-from-a-manufacturer",
+        "lastmod": "2021-05-10T12:36:53-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/shake-your-fear-of-the-application-programming-interface-api-and-unleash-its-power",
+        "lastmod": "2021-05-10T12:11:03-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/transform-the-way-you-bring-products-to-market",
+        "lastmod": "2021-05-10T12:01:11-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/truefreeform-optimization-for-complex-illumination-systems",
+        "lastmod": "2021-05-10T11:35:47-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/unleashing-the-power-of-opticstudio-through-the-zos-api",
+        "lastmod": "2021-05-10T11:17:50-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/technologies-and-techniques-for-optical-fabrication",
+        "lastmod": "2021-05-10T11:23:18-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/contrast-optimization-a-practical-comparison-of-micro-imaging-system-optimization",
+        "lastmod": "2021-05-10T11:19:15-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/what-s-new-in-opticsbuilder-20-3",
+        "lastmod": "2021-05-10T11:19:34-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/what-s-new-in-opticstudio-20-2",
+        "lastmod": "2021-05-10T11:19:52-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/what-s-new-in-opticstudio-20-3",
+        "lastmod": "2021-05-10T11:20:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/what-s-new-in-zemax-21-1-product-release",
+        "lastmod": "2021-05-10T11:20:39-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/green-light-on-lidar-developing-low-cost-systems-for-autonomous-vehicles",
+        "lastmod": "2021-05-10T11:20:56-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/six-best-practices-for-optical-product-design-teams",
+        "lastmod": "2021-05-10T11:21:13-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/12-tips-to-reduce-costs-and-speed-turnaround-of-your-optics",
+        "lastmod": "2021-05-10T11:21:33-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/trends-driving-innovations-in-optical-product-design",
+        "lastmod": "2021-05-10T11:21:53-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/designing-a-microscope-objective-with-opticstudio",
+        "lastmod": "2021-05-10T11:22:16-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/opticstudio-basics",
+        "lastmod": "2021-05-10T11:22:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/opticstudio-19-8-with-high-yield-optimization",
+        "lastmod": "2021-05-12T07:23:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/zemax-opticstudio-overview",
+        "lastmod": "2022-05-12T00:59:36-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/archive-files",
+        "lastmod": "2021-05-14T07:57:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/editors",
+        "lastmod": "2021-05-12T10:56:33-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/libraries",
+        "lastmod": "2021-05-12T10:51:42-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/libraries-1",
+        "lastmod": "2021-05-12T10:43:29-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/multiple-configurations",
+        "lastmod": "2021-05-12T10:34:50-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/system-explorer",
+        "lastmod": "2021-05-12T10:28:29-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/system-viewers",
+        "lastmod": "2021-05-12T10:14:29-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/window-management-1",
+        "lastmod": "2021-05-12T10:04:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/windows",
+        "lastmod": "2021-05-12T09:55:38-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/optimization-optical-system-design",
+        "lastmod": "2021-05-12T09:18:45-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/nsc-overview",
+        "lastmod": "2021-05-12T09:02:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/physical-optics",
+        "lastmod": "2021-05-14T08:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/videos/zos-api",
+        "lastmod": "2021-05-12T08:46:37-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/new-and-exciting-training-courses-now-offered-through-zemax-opticsacademy",
+        "lastmod": "2021-04-27T07:36:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/using-augmented-reality-ar-for-medical-applications-part-1",
+        "lastmod": "2021-04-27T11:56:36-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/using-augmented-reality-ar-for-medical-applications-part-2",
+        "lastmod": "2021-04-27T12:33:41-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/optical-heart-rate-sensor-simulation-using-zemax-opticstudio",
+        "lastmod": "2021-04-27T17:12:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-launches-native-diffraction-calculation-and-new-analysis-functionality",
+        "lastmod": "2021-04-27T17:10:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/photonics-west-2021-zemax-cto-reflections",
+        "lastmod": "2021-04-27T17:30:30-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/from-the-desk-of-zemax-cto-a-reflection-on-2020-and-a-look-ahead-for-the-optics-industry",
+        "lastmod": "2021-04-27T17:46:34-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/designing-a-head-mounted-display-hmd-for-augmented-reality-systems-in-opticstudio",
+        "lastmod": "2021-04-27T18:34:04-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/continued-education-is-important-for-optical-engineers-zemax-opticsacademy-can-help",
+        "lastmod": "2021-04-28T16:24:51-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/season-s-greetings-from-all-of-us-at-zemax",
+        "lastmod": "2021-04-27T19:19:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-quickly-and-securely-share-optical-design-files",
+        "lastmod": "2021-04-27T19:35:17-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/using-the-truefreeform-surface-for-grid-based-freeform-optimization",
+        "lastmod": "2021-04-27T19:44:38-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/what-lies-ahead-for-optics-in-2021-and-beyond",
+        "lastmod": "2021-04-27T19:51:21-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/photonics-digital-innovation-hub-secures-funding-for-future-growth-and-innovation",
+        "lastmod": "2021-04-27T20:01:18-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-envision-2020-goes-virtual-globally",
+        "lastmod": "2021-04-27T20:30:44-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-opticsbuilder-helps-organizations-avoid-the-hidden-cost-of-cad-time",
+        "lastmod": "2021-12-13T18:10:22-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-employee-spotlight-infusing-fun-during-times-of-quarantine",
+        "lastmod": "2021-04-28T09:37:54-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-accelerates-optimization-speed-and-expands-opticsbuilder-offering",
+        "lastmod": "2021-04-28T11:05:07-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/shake-your-fear-of-the-application-programming-interface-and-unleash-its-power",
+        "lastmod": "2021-04-28T11:03:29-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/leveraging-opticstudio-in-the-construction-of-uv-c-mask-decontamination-chambers",
+        "lastmod": "2021-04-28T12:38:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/powerful-api-in-opticstudio-used-to-simulate-x-ray-interforometers",
+        "lastmod": "2021-04-28T13:20:34-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/opticstudio-truefreeform-optimization-for-complex-illumination-systems",
+        "lastmod": "2021-04-28T13:45:11-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modeling-uv-c-irradiation-chambers-for-mask-decontamination-using-zemax-opticstudio",
+        "lastmod": "2021-04-28T14:12:14-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/leveraging-3d-camera-technology-for-virtual-tours",
+        "lastmod": "2021-04-28T14:27:52-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/customizing-opticstudio-to-deliver-substantial-improvements-in-image-quality-for-endoscopes",
+        "lastmod": "2021-04-28T14:37:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/sharpen-your-optics-skills-while-working-from-home",
+        "lastmod": "2021-04-28T14:47:22-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/from-the-desk-of-zemax-s-cto-the-role-of-optics-during-a-global-crisis",
+        "lastmod": "2021-04-28T14:54:49-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/customer-spotlight-holo-or-achieves-realistic-beam-modeling-in-zemax-opticstudio-using-geometric-ray-tracing",
+        "lastmod": "2021-04-28T15:16:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-model-an-optical-coherence-tomography-system",
+        "lastmod": "2021-07-23T15:10:23-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-expands-opticsbuilder-to-creo-parametric-cad-platform",
+        "lastmod": "2021-04-28T16:39:07-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tobii-tech-meets-the-demands-of-next-generation-mixed-reality-mr",
+        "lastmod": "2021-04-28T16:48:53-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/new-opticstudio-20-2-new-functionality-brings-early-design-insights",
+        "lastmod": "2021-04-28T17:01:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/from-optical-design-to-manufacturing-floor",
+        "lastmod": "2021-04-28T17:24:18-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-global-academic-program-plays-a-role-in-the-new-virtual-optics-classroom",
+        "lastmod": "2021-04-28T17:34:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-events-go-digital-join-our-next-webinar",
+        "lastmod": "2021-04-28T17:44:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-and-ansys-collaborate-to-enable-safer-reliable-autonomous-vehicle-navigation",
+        "lastmod": "2022-06-21T09:19:04-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/drive-manufacturability-by-improving-collaboration-between-your-engineers",
+        "lastmod": "2021-04-28T18:11:49-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/modeling-laser-beam-propagation-in-opticstudio",
+        "lastmod": "2021-07-09T13:29:23-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/getting-started-with-opticstudio",
+        "lastmod": "2022-06-02T11:51:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/getting-started-with-zos-api",
+        "lastmod": "2021-08-19T14:00:54-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/imaging-system-fundamentals",
+        "lastmod": "2021-07-09T13:30:05-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/illumination-systems-fundamentals",
+        "lastmod": "2021-07-09T13:30:33-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/getting-started-with-opticsviewer",
+        "lastmod": "2022-03-08T13:31:28-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/getting-started-with-opticsbuilder",
+        "lastmod": "2021-12-14T10:09:36-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/designing-with-holograms",
+        "lastmod": "2021-07-09T13:28:26-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/zpl-programming",
+        "lastmod": "2021-07-09T13:28:03-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/free-tutorials/how-to-build-a-spectrometer",
+        "lastmod": "2021-07-09T13:28:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-design-doe-lens-or-metalens-in-opticstudio",
+        "lastmod": "2021-08-03T17:25:44-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-names-ove-e-schuett-as-chief-revenue-officer",
+        "lastmod": "2021-04-29T08:55:11-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/automatic-conversion-of-optical-designs-into-cad-parts-accelerates-manufacturability",
+        "lastmod": "2021-12-15T17:53:50-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/webinar-join-us-to-learn-six-ways-opticsviewer-boosts-manufacturability",
+        "lastmod": "2021-04-29T09:56:49-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/photonics-west-2020-recap-highlights-and-thank-you-s",
+        "lastmod": "2021-04-29T10:24:16-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/automate-routine-engineering-processes-and-save-considerable-time-with-the-opticstudio-zos-api",
+        "lastmod": "2021-04-29T11:36:47-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/opticstudio-20-1-new-tolerancing-and-freeform-design-functionality",
+        "lastmod": "2021-04-29T11:50:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/new-opticsviewer-for-manufacturing-engineers",
+        "lastmod": "2021-04-29T12:07:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/smart-cities-are-fueled-by-optical-design",
+        "lastmod": "2021-04-29T12:44:27-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/new-learning-paths-on-myzemax",
+        "lastmod": "2021-04-29T13:00:30-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/incorporating-commercial-off-the-shelf-lenses-into-your-optical-designs",
+        "lastmod": "2021-04-29T13:11:41-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/book-your-2020-opticstudio-training-courses",
+        "lastmod": "2021-04-29T13:28:29-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-names-s-subbiah-as-chief-executive-officer",
+        "lastmod": "2021-04-29T13:51:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/three-reasons-why-you-should-be-an-exhibitor-at-envision-europe-2020",
+        "lastmod": "2021-04-29T14:00:04-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/ray-trace-faster-using-user-defined-objects-in-opticstudio",
+        "lastmod": "2021-04-29T14:28:29-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/non-circular-optics-for-lidar-and-other-cutting-edge-technologies",
+        "lastmod": "2021-04-29T14:48:23-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-work-around-the-limitations-of-low-cost-compact-imaging",
+        "lastmod": "2021-04-29T14:58:27-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/holographic-optical-elements-for-alternate-reality-and-other-systems",
+        "lastmod": "2021-04-29T15:26:06-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/high-yield-optimization-wins-gold-level-laser-focus-world-innovators-award",
+        "lastmod": "2021-04-29T15:37:50-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tobii-tech-improves-workload-by-upwards-of-threefold-with-the-help-of-opticstudio",
+        "lastmod": "2021-04-29T16:06:23-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/registration-for-envision-europe-2020-is-now-open",
+        "lastmod": "2021-04-29T16:14:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/employee-spotlight-9-questions-with-michael-cheng",
+        "lastmod": "2021-04-29T16:36:05-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/don-t-miss-our-talks-at-photonics-west-2020",
+        "lastmod": "2021-04-29T16:53:26-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/join-us-at-the-european-photonics-career-fair-and-sign-up-for-free-zemax-software",
+        "lastmod": "2021-04-29T18:03:42-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/employee-spotlight-18-questions-with-don-dickinson",
+        "lastmod": "2021-04-29T18:38:48-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-envision-china-and-japan-two-events-two-days-of-optics-education",
+        "lastmod": "2021-04-29T18:58:39-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/your-envision-usa-invitation-from-mark-nicholson",
+        "lastmod": "2021-04-29T19:09:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/north-delivers-stylish-smart-glasses-with-the-help-of-opticstudio",
+        "lastmod": "2021-04-29T19:27:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/employee-spotlight-8-questions-with-ratnadeep-mukkirwar",
+        "lastmod": "2021-04-29T19:38:20-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/designing-the-webb-workhorse-its-primary-mirror-with-opticstudio",
+        "lastmod": "2021-04-29T19:59:29-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/check-out-the-zemax-envision-usa-agenda-a-three-day-laser-optics-intensive",
+        "lastmod": "2021-04-30T08:59:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/from-protecting-ships-to-avoiding-blind-spots-modeling-and-using-the-fresnel-lens",
+        "lastmod": "2021-04-30T09:51:33-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/three-presentations-not-to-be-missed-at-envision-usa-2019",
+        "lastmod": "2021-04-30T10:24:24-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/top-four-ways-having-multiple-instances-of-opticstudio-improves-design-efficiencies",
+        "lastmod": "2021-04-30T10:37:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/upcoming-talk-the-pros-and-cons-of-using-gpus-in-optical-design",
+        "lastmod": "2021-04-30T11:14:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/upcoming-webinar-technologies-and-techniques-for-optical-fabrication",
+        "lastmod": "2021-04-30T12:42:33-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-has-received-cpd-accreditation",
+        "lastmod": "2021-04-30T13:02:04-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/designing-solar-panels-leds-and-more-where-stray-light-is-critical-to-operation",
+        "lastmod": "2021-04-30T13:26:23-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/imaging-illumination-or-laser-design-opticstudio-is-the-only-tool-you-need",
+        "lastmod": "2021-05-01T15:53:04-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/for-complex-optical-systems-design-physical-optics-propagation-is-the-answer",
+        "lastmod": "2021-05-01T15:51:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/introducing-myzemax-our-new-customer-portal",
+        "lastmod": "2021-05-01T16:04:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/registration-is-open-join-us-at-envision-usa-2019-in-boston",
+        "lastmod": "2021-05-01T16:57:51-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-announces-opticstudio-subscription-licenses",
+        "lastmod": "2021-05-01T17:08:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/projection-system-to-study-insect-vision-could-lead-to-new-navigational-aids",
+        "lastmod": "2021-05-01T17:30:32-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/registration-is-open-join-us-at-envision-asia-2019",
+        "lastmod": "2021-05-01T17:43:29-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/three-reasons-why-you-should-speak-at-zemax-envision-2019",
+        "lastmod": "2021-05-01T17:51:13-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/employee-spotlight-14-questions-with-ben-robinson",
+        "lastmod": "2021-05-01T18:03:07-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/digilens-takes-ar-to-the-next-level-with-the-help-of-opticstudio",
+        "lastmod": "2021-05-01T18:13:26-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/s-subbiah-tapped-to-lead-product-planning-as-chief-product-officer",
+        "lastmod": "2021-05-02T11:56:09-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/learn-about-truefreeform-and-high-yield-optimization-at-laser-world-of-photonics",
+        "lastmod": "2021-05-02T12:13:55-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/top-10-moments-at-envision-europe-2019",
+        "lastmod": "2021-05-02T12:22:05-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/employee-spotlight-14-questions-with-thomas-magnac",
+        "lastmod": "2021-05-02T12:34:44-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/high-yield-optimization-optimization-for-as-built-performance",
+        "lastmod": "2021-05-02T12:46:40-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/truefreeform-the-latest-method-in-designing-freeform-optics",
+        "lastmod": "2021-05-02T12:57:36-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/employee-spotlight-12-questions-with-akil-bhagat",
+        "lastmod": "2021-05-02T13:06:09-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/exhibition-area-now-available-for-envision-europe",
+        "lastmod": "2021-05-02T13:21:22-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/join-bob-householder-for-a-practical-led-optical-design-workshop-at-the-strategies-in-light-conference",
+        "lastmod": "2021-05-02T15:23:42-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/mars-rover-leaves-rich-photo-library-thanks-to-lenses-designed-with-opticstudio",
+        "lastmod": "2021-05-02T14:04:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/20-year-optics-veteran-talks-product-development-cycles-productivity-hacks-and-the-future",
+        "lastmod": "2021-05-02T15:22:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/optical-design-requirements-for-handheld-imaging-devices",
+        "lastmod": "2021-05-02T15:51:48-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/smarter-smart-sensor-design-for-the-internet-of-things-iot",
+        "lastmod": "2021-05-02T16:13:31-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/correcting-six-common-types-of-lens-aberrations",
+        "lastmod": "2021-05-02T16:49:13-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/lacroix-precision-optics-series-webinar-2-from-concept-to-prototype-how-to-get-a-quote-and-order-your-optics",
+        "lastmod": "2021-05-13T14:46:14-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/lacroix-precision-optics-series-webinar-3-prototype-to-production-a-guide-on-how-to-scale-your-optics",
+        "lastmod": "2021-05-13T14:53:20-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/opticsbuilder-frequently-asked-questions",
+        "lastmod": "2022-05-31T16:53:56-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/opticsbuilder-features-and-benefits",
+        "lastmod": "2022-05-31T16:53:17-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/features-in-each-edition",
+        "lastmod": "2022-11-15T13:50:31-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/system-requirements",
+        "lastmod": "2022-11-17T09:08:19-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/opticsviewer-product-capabilities",
+        "lastmod": "2021-10-22T10:28:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/opticsviewer-frequently-asked-questions",
+        "lastmod": "2021-10-22T10:27:19-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/simulating-lasers-in-opticstudio",
+        "lastmod": "2021-05-17T07:53:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/introducing-the-opticstudio-star-module",
+        "lastmod": "2021-05-28T09:40:21-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/latest-zemax-release-features-new-module-for-structural-thermal-and-optical-performance-stop-analysis",
+        "lastmod": "2021-06-08T13:19:39-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-llc-announces-new-entity-zemax-germany-gmbh-to-better-serve-growing-customer-base",
+        "lastmod": "2021-05-28T09:41:05-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/june-2021-events-and-webinars",
+        "lastmod": "2021-06-02T08:48:52-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/what-is-new-in-zemax-21-2",
+        "lastmod": "2021-06-08T19:16:50-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-celebrates-three-decades-of-technology-advances-and-innovations",
+        "lastmod": "2021-07-21T19:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/triple-ring-white-paper-excerpt",
+        "lastmod": "2021-07-22T16:37:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/lacroix-precision-optics-series-webinar-1-how-to-make-an-iso-10110-print-and-use-the-cost-estimator",
+        "lastmod": "2021-07-21T05:29:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/between-the-scenes-a-conversation-with-lisa-clauson-opticsbuilder-product-manager",
+        "lastmod": "2021-07-21T05:41:21-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/between-the-scenes-a-conversation-with-akil-bhagat-opticstudio-product-business-manager",
+        "lastmod": "2021-07-21T05:46:55-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/faster-design-time-to-more-manufacturable-systems",
+        "lastmod": "2021-07-21T05:51:31-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/industry-insights-a-conversation-with-baraja-co-founder-cto-cibby-pulikkaseril-and-zemax-cto-sanjay-gangadhara",
+        "lastmod": "2021-07-21T05:55:56-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/aspheres-designed-to-be-made-advice-from-a-manufacturer",
+        "lastmod": "2021-07-21T06:00:34-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/design-an-optimal-diffractive-grating-with-lumerical-fdtd-and-zemax-opticstudio",
+        "lastmod": "2021-07-21T06:04:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/from-earth-to-pluto-and-beyond",
+        "lastmod": "2021-07-21T06:08:53-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/industry-insights-a-conversation-with-spie-director-of-industry-development-stephen-anderson-and-zemax-chief-executive-officer-s-subbiah",
+        "lastmod": "2021-07-21T06:13:06-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/design-eye-cube-an-unobtrusive-eye-tracking-camera-for-next-generation-extended-reality",
+        "lastmod": "2021-07-21T06:17:20-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/design-for-manufacturability-with-the-zemax-product-suite",
+        "lastmod": "2021-07-21T06:31:42-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/gpu-optimized-light-tissue-simulation-integrated-with-the-opticstudio-api",
+        "lastmod": "2021-07-21T06:37:30-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/industry-insights-epic-director-of-technology-and-innovation-jose-pozo-zemax-cto-sanjay",
+        "lastmod": "2021-07-21T06:44:16-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/shining-a-light-on-the-pivotal-role-of-cad-time-in-driving",
+        "lastmod": "2021-07-21T06:56:08-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/eguides/designing-for-manufacturability",
+        "lastmod": "2021-07-21T07:07:13-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/optix-jsc",
+        "lastmod": "2021-07-21T18:01:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/optix-jsc",
+        "lastmod": "2021-08-03T17:40:22-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/updated-website-and-customer-portal",
+        "lastmod": "2021-08-11T10:06:23-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/industry-insights-manufacturability-and-the-21-2-r",
+        "lastmod": "2021-07-22T16:53:48-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/future-of-cell-phone-camera-lens-manufacturing",
+        "lastmod": "2021-08-03T17:43:44-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/envision-2021-registration-is-open",
+        "lastmod": "2021-07-22T17:10:49-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modeling-high-order-laser-beams-in-opticstudio",
+        "lastmod": "2021-08-03T17:36:23-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/using-physical-optics-propagation-part-1",
+        "lastmod": "2021-08-03T17:35:07-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/optical-zoom-based-on-alvarez-freeform-elements",
+        "lastmod": "2021-07-22T17:58:44-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-events-july-and-august",
+        "lastmod": "2021-07-22T18:04:38-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/celebrating-the-international-day-of-light",
+        "lastmod": "2021-07-23T14:16:43-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/angus-macleod-in-memorium",
+        "lastmod": "2021-07-23T14:43:50-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-use-the-find-best-asphere-tool",
+        "lastmod": "2021-08-03T17:34:07-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/introduction-to-stray-light-analysis",
+        "lastmod": "2021-08-03T17:31:52-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-may-and-june-events",
+        "lastmod": "2021-08-03T08:49:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/employee-spotlight-12-questions-with-esteban-carbajal",
+        "lastmod": "2021-08-03T08:48:03-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/creating-high-accuracy-telecentric-lenses-for-machine-vision-systems",
+        "lastmod": "2021-08-03T08:46:20-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/vignetting-as-a-powerful-tool-in-lens-design",
+        "lastmod": "2021-08-03T08:44:40-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/methods-of-stray-light-analysis-in-opticstudio",
+        "lastmod": "2021-07-27T13:08:49-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/opticstudio-star-module-and-full-system-modeling-with-the-zemax-suite",
+        "lastmod": "2021-08-03T08:43:40-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-envision-conference-2021-agenda-is-live",
+        "lastmod": "2021-08-03T08:42:55-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/find-out-what-is-happening-at-zemax-august-events",
+        "lastmod": "2021-08-03T08:41:41-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/fly-s-eye-arrays-for-uniform-illumination-in-digital-projector-optics",
+        "lastmod": "2021-08-06T11:07:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/upnano-integrates-opticstudio-into-its-successful-3d-lens-prototyping-and-complex-lens-analysis-workflows",
+        "lastmod": "2021-09-01T12:14:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/upnano-builds-opticstudio-into-its-successful-3d-lens-prototyping-and-complex-lens-analysis-workflows",
+        "lastmod": "2021-09-07T15:55:25-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-optimize-non-sequential-optical-systems",
+        "lastmod": "2021-08-10T15:45:43-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/lightpath-laser-collimating-optics-using-zemax-opticstudio",
+        "lastmod": "2021-08-04T08:47:06-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/modeling-of-human-visual-acuity",
+        "lastmod": "2021-08-24T12:01:06-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/improved-endoscope-systems",
+        "lastmod": "2021-08-04T10:36:35-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/smartphone-lens-modules",
+        "lastmod": "2021-08-16T08:08:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/optomechanical-workflow-with-opticstudio-star-module-ansys-mechanical-optislang",
+        "lastmod": "2021-08-10T15:07:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/new-in-opticstudio-high-yield-optimization-1",
+        "lastmod": "2021-08-11T14:08:53-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/how-to-model-projection-systems-using-opticstudio",
+        "lastmod": "2021-08-19T17:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/dont-miss-envision-the-event-of-2021",
+        "lastmod": "2021-08-17T20:23:05-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/cto-industry-insights-august-2021",
+        "lastmod": "2021-08-31T13:27:16-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/envision-2021-last-chance",
+        "lastmod": "2021-08-31T00:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/ansys-to-acquire-zemax",
+        "lastmod": "2021-08-30T16:30:04-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-september-2021-events",
+        "lastmod": "2021-09-02T08:00:12-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/envision-2021-top-reason-to-attend",
+        "lastmod": "2021-10-18T07:06:32-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/simulating-holograms-in-opticstudio",
+        "lastmod": "2021-09-09T18:49:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/simulating-holograms",
+        "lastmod": "2021-09-14T00:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-21-3-release",
+        "lastmod": "2021-12-14T11:33:13-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/industry-insights-3d-printing",
+        "lastmod": "2021-09-23T17:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/range-compensating-lens-applications-to-lidar",
+        "lastmod": "2021-10-21T12:21:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-cto-industry-insight-september-2021",
+        "lastmod": "2021-10-25T10:01:22-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/structural-and-thermal-impacts-in-high-power-laser-system-design",
+        "lastmod": "2021-10-22T10:26:07-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/gain-critical-accuracy-and-speed-in-stop-analysis-with-the-opticstudio-star-module",
+        "lastmod": "2021-10-22T11:07:55-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-events-october-2021",
+        "lastmod": "2021-10-06T12:00:24-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-create-a-time-of-flight-user-analysis-using-zos-api-1",
+        "lastmod": "2021-10-08T09:13:18-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-envision-south-east-asia-2021-book-your-place-now",
+        "lastmod": "2021-10-18T07:07:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-create-a-user-analysis-using-zos-api",
+        "lastmod": "2021-10-14T08:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/baraja-lidar-a-journey-to-high-resolution-and-long-range",
+        "lastmod": "2021-11-04T13:00:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/using-contrast-optimization-to-optimize-for-mtf-performance",
+        "lastmod": "2021-10-28T13:28:49-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/cto-insights-celebrating-the-international-day-of-photonics",
+        "lastmod": "2021-10-21T00:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/frequently-asked-question",
+        "lastmod": "2022-01-16T18:35:07-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/find-out-what-the-opticstudio-star-module-can-do-for-your-business",
+        "lastmod": "2022-01-16T18:41:46-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-supports-students-in-emerging-economies",
+        "lastmod": "2021-10-27T00:00:11-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/easily-factoring-structural-and-thermal-impacts-into-high-power-laser-system-design",
+        "lastmod": "2021-10-26T06:16:15-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/from-optical-design-to-mechanical-packaging-using-zemax-opticstudio-and-opticsbuilder-to-develop-a-flash-lidar-system",
+        "lastmod": "2021-11-17T14:36:03-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-events-november-and-december-2021",
+        "lastmod": "2021-11-04T05:53:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/gain-critical-accuracy-and-speed-in-stop-analysis-with-the-opticstudio-star-module",
+        "lastmod": "2021-11-01T13:56:16-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/which-tools-to-use-when-working-on-a-head-up-display",
+        "lastmod": "2021-11-09T13:12:37-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/vivo-streamlines-and-enhances-its-cell-phone-and-ar-vr-product-designs-using-rcwa-in-opticstudio",
+        "lastmod": "2022-04-18T09:33:40-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/introduction-to-illumination-systems",
+        "lastmod": "2021-11-21T16:42:32-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/stray-light-analysis-for-head-up-display-systems",
+        "lastmod": "2021-11-18T13:12:05-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/eli-beamlines-designs-installs-and-commissions-the-high-power-high-repetition-rate-hapls-laser-beam-transport-system-using-opticstudio",
+        "lastmod": "2021-11-11T14:54:22-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/eli-beamlines-customer-success-story",
+        "lastmod": "2021-11-15T12:30:35-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/new-aspheres-freeforms-learning-plan",
+        "lastmod": "2021-11-17T08:21:12-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/meopta-boosts-productivity-with-seamless-ray-tracing-in-opticstudio-for-semiconductors-and-other-markets",
+        "lastmod": "2021-11-17T12:10:42-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/meopta-boosts-productivity-with-seamless-ray-tracing-in-opticstudio-for-semiconductors-and-other-markets",
+        "lastmod": "2022-04-18T09:35:32-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/straylight-analysis-for-head-up-display",
+        "lastmod": "2021-11-18T14:20:05-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/vivo-streamlines-and-enhances-its-cell-phone-and-ar-vr-product-designs-using-rcwa-in-opticstudio",
+        "lastmod": "2021-11-29T16:39:21-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-events-december-2021",
+        "lastmod": "2021-12-02T00:00:02-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/automotive-industry-insights-a-conversation-with-epic-director-of-technology-innovation-jose-pozo-and-zemax-cto",
+        "lastmod": "2021-11-30T15:46:57-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/methods-for-analyzing-mtf-in-opticstudio",
+        "lastmod": "2021-12-06T06:21:21-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/automating-stop-analysis-with-ansys-solutions",
+        "lastmod": "2021-12-13T00:00:00-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/seasons-greetings-from-zemax",
+        "lastmod": "2021-12-20T16:15:36-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/ozyegin-university-pioneers-the-use-of-opticstudio-for-channel-modeling-in-optical-wireless-communication",
+        "lastmod": "2022-04-18T09:46:34-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/ozyegin-university-pioneers-the-use-of-opticstudio-for-channel-modeling-in-optical-wireless-communication",
+        "lastmod": "2022-04-18T09:47:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/simulating-image-quality-in-opticstudio",
+        "lastmod": "2021-12-09T13:00:00-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/resolution-of-diffraction-limited-imaging-systems-using-the-point-spread-function",
+        "lastmod": "2021-12-16T10:57:04-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/opticstudio-star-module-is-a-finalist-for-the-2022-spie-prism-awards",
+        "lastmod": "2021-12-17T09:39:29-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/welcome-to-2022-zemax-events-and-webinars-to-start-your-new-year-off-right",
+        "lastmod": "2022-01-05T15:25:22-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/photonics-and-applied-physics-labs-at-university-of-jena-use-opticstudio-to-gain-precision-in-ultrafast-bulk-laser-processing",
+        "lastmod": "2022-01-03T10:10:49-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/photonics-and-applied-physics-labs-at-university-of-jena-use-opticstudio-to-gain-precision-in-ultrafast-bulk-laser-processing",
+        "lastmod": "2022-01-03T10:30:33-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/opticstudio-star-module-ansys-data-export-extension",
+        "lastmod": "2022-01-06T05:27:35-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/join-us-at-photonics-west-to-discuss-the-latest-photonics-innovations",
+        "lastmod": "2022-01-10T00:00:01-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/understanding-the-basics-of-zos-api-structure",
+        "lastmod": "2022-01-11T11:05:47-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-set-the-lens-mount-reference-for-thermal-analysis",
+        "lastmod": "2022-01-13T18:16:44-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/product-overviews/opticstudio-star-module-features-and-benefits",
+        "lastmod": "2022-06-02T17:36:50-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/opticstudio-narcissus-analysis-macro",
+        "lastmod": "2022-02-10T09:39:15-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/simulating-infrared-thermal-detectors-in-opticstudio",
+        "lastmod": "2022-01-20T15:00:00-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-launches-star-module-enhancements-plus-new-opticstudio-and-opticsbuilder-analysis-visualization-tools",
+        "lastmod": "2022-01-25T20:21:01-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-wins-the-prestigious-prism-award-in-software-for-opticstudio-star-module",
+        "lastmod": "2022-02-02T15:06:24-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/find-out-what-is-happening-at-zemax-february-2022-events-and-webinars",
+        "lastmod": "2022-02-02T13:04:17-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tech-tips-tuesdays-with-zemax-in-review-january-2022",
+        "lastmod": "2022-02-08T00:00:00-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/using-the-henyey-greenstein-distribution-to-model-bulk-scattering",
+        "lastmod": "2022-02-08T08:49:24-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/what-scattering-models-are-available-in-opticstudio",
+        "lastmod": "2022-02-10T07:19:20-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/what-is-new-in-zemax-22-1-product-release",
+        "lastmod": "2022-02-10T13:47:32-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-honors-the-international-day-of-women-and-girls-in-science",
+        "lastmod": "2022-02-11T00:00:02-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-model-the-human-skin-and-optical-heart-rate-sensors-in-opticstudio",
+        "lastmod": "2022-02-15T08:40:44-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/confocal-fluorescent-microscope-design-in-opticstudio",
+        "lastmod": "2022-02-28T00:00:02-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/brush-up-on-your-optical-design-skills-with-zemax-training",
+        "lastmod": "2022-02-16T13:31:05-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/notre-dame-astrophysics-uses-opticstudio-to-simulate-diffraction-limited-spectrograph-performance-for-the-large-binocular-telescope",
+        "lastmod": "2022-04-18T09:30:31-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/performing-simulations-in-opticsbuilder-for-creo-parametric",
+        "lastmod": "2022-02-21T00:00:00-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/from-concept-to-cubesat-design-and-iterate-faster-with-zemax-software",
+        "lastmod": "2022-02-28T09:26:42-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/improve-design-and-validation-workflows-for-automotive-cameras",
+        "lastmod": "2022-02-23T12:27:33-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/find-out-what-is-happening-in-the-zemax-community",
+        "lastmod": "2022-02-24T18:08:38-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tech-tip-tuesdays-with-zemax-featured-february-tip",
+        "lastmod": "2022-03-01T00:00:01-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/find-out-whats-happening-at-zemax-spring-2022-events-and-webinars",
+        "lastmod": "2022-03-02T00:30:01-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/introduction-to-rotationally-symmetric-irregularity",
+        "lastmod": "2022-03-03T00:00:00-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modelling-rotationally-symmetric-irregularity-with-the-api",
+        "lastmod": "2022-03-08T00:00:01-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/building-a-better-automotive-lidar-zemax-ansys-and-innoviz-technologies",
+        "lastmod": "2022-03-10T00:00:02-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/micro-optical-objective-design-strategies-for-robotic-surgery-concept-through-production",
+        "lastmod": "2022-03-10T13:00:11-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/the-university-of-notre-dame-astrophysics-uses-opticstudio-to-simulate-diffraction-limited-spectrograph-performance-for-the-large-binocular-telescope",
+        "lastmod": "2022-03-23T06:30:17-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/german-institute-of-technical-physics-uses-zemax-to-design-a-usb-powered-nanosatellite-thruster",
+        "lastmod": "2022-04-18T09:28:49-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/customer-success-story-german-institute-of-technical-physics-uses-zemax-to-design-a-usb-powered-nanosatellite-thruster",
+        "lastmod": "2022-03-25T09:26:35-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/from-nanoscale-to-macroscale-why-optics-matters",
+        "lastmod": "2022-03-21T10:02:12-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/cort-stinnett-in-memoriam",
+        "lastmod": "2022-03-17T16:13:13-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/using-skew-rays-to-model-gaussian-beam-propagation-in-opticstudio",
+        "lastmod": "2022-04-14T13:29:03-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/speeding-up-optical-design-with-ansys",
+        "lastmod": "2022-03-24T12:05:40-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/laser-applications",
+        "lastmod": "2022-04-28T12:10:26-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/the-march-edition-of-the-zemax-community-newsletter-is-available-now",
+        "lastmod": "2022-03-25T08:12:17-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/micro-objective-design-for-robotic-surgery",
+        "lastmod": "2022-03-30T00:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/check-out-what-is-happening-at-zemax-in-april-and-may-2022",
+        "lastmod": "2022-04-07T11:53:13-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/opticstudio-star-module-data-import-and-analysis-tutorial",
+        "lastmod": "2022-04-07T10:29:51-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/vividq-uses-a-zemax-solution-to-simplify-computer-generated-holography-for-ar",
+        "lastmod": "2022-04-08T07:25:27-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/vividq-zemax-to-simplify-computer-generated-holography-for-ar",
+        "lastmod": "2022-04-08T07:17:20-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-model-laser-beam-propagation-in-opticstudio-part-1-gaussian-beam-theory-and-ray-based-approach",
+        "lastmod": "2022-04-13T08:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-model-laser-beam-propagation-in-opticstudio-part-2-using-paraxial-gaussian-beam-analysis-to-model-gaussian-beam",
+        "lastmod": "2022-04-14T08:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-model-laser-beam-propagation-in-opticstudio-part-3-using-physical-optics-propagation-to-model-gaussian-beams",
+        "lastmod": "2022-04-19T00:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tech-tip-tuesdays-with-zemax-featured-march-tip",
+        "lastmod": "2022-04-12T08:24:33-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/explore-the-hidden-cost-of-cad-time",
+        "lastmod": "2022-04-18T07:24:18-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/hidden-costs-of-cad-time",
+        "lastmod": "2022-04-21T14:35:59-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/industry-insight-photonics-and-quantum-technologies",
+        "lastmod": "2022-04-28T00:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/the-april-2022-edition-of-the-zemax-community-newsletter-is-available-now",
+        "lastmod": "2022-05-03T08:15:25-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/upcoming-zemax-events-may-and-june-2022",
+        "lastmod": "2022-05-03T14:06:18-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/zemax-and-lumerical-part-1-from-nano-scale-to-macro-scale-optics-and-back",
+        "lastmod": "2022-05-19T14:56:10-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/diffractive-optical-elements-in-opticstudio",
+        "lastmod": "2022-05-05T11:14:38-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/get-started-reducing-costs-and-get-optical-designs-to-market-faster-with-opticsbuilder-licensing-and-installation",
+        "lastmod": "2022-05-06T12:32:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/performing-partially-coherent-image-analysis",
+        "lastmod": "2022-05-09T00:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/get-started-reducing-costs-and-get-optical-designs-to-market-faster-with-opticsbuilder-prepare-for-opticsbuilder",
+        "lastmod": "2022-05-23T00:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tech-tip-tuesdays-with-zemax-featured-april-tip",
+        "lastmod": "2022-05-10T00:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/opticsbuilder-for-creo-product-tour",
+        "lastmod": "2022-05-12T12:51:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/zemax-and-lumerical-part-2-from-nano-scale-to-macro-scale-optics-and-back",
+        "lastmod": "2022-05-19T14:31:55-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/get-started-reducing-costs-and-get-optical-designs-to-market-faster-with-opticsbuilder-drawing-tutorial",
+        "lastmod": "2022-05-25T00:00:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/get-started-reducing-costs-and-get-optical-designs-to-market-faster-with-opticsbuilder-how-to-load-an-opticsbuilder-file",
+        "lastmod": "2022-05-24T10:35:39-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/using-and-modifying-creo-parts-with-opticsbuilder",
+        "lastmod": "2022-05-26T16:41:13-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/zemax-releases-performance-analysis-for-star-module-plus-advanced-ray-aiming-and-geometry-enhancements-for-opticstudio-and-opticsbuilder",
+        "lastmod": "2022-05-31T17:07:54-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/do-not-miss-these-zemax-events-in-june-2022",
+        "lastmod": "2022-06-06T03:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tech-tip-tuesdays-with-zemax-featured-may-2022-tip",
+        "lastmod": "2022-06-07T08:00:03-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/get-started-with-opticsbuilder-free-tutorials",
+        "lastmod": "2022-06-08T05:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/opticstudio-opticsbuilder-interoperability-in-design-of-optical-spectrometer",
+        "lastmod": "2022-06-09T14:05:23-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/design-using-off-the-shelf-components-with-the-stock-lens-matching-tool",
+        "lastmod": "2022-06-13T11:13:11-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/what-is-new-in-zemax-22-2-product-release",
+        "lastmod": "2022-06-16T14:20:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/introduction-to-enhanced-ray-aiming-and-ray-aiming-wizard",
+        "lastmod": "2022-06-23T00:00:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/opticstudio-opticsbuilder-opticstudio-star-module-interoperability-in-design-of-high-power-laser-systems",
+        "lastmod": "2022-06-28T15:37:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/resolution-of-diffraction-limited-imaging-systems-using-the-point-spread-function-1",
+        "lastmod": "2022-07-11T17:36:43-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/upcoming-events-july-2022",
+        "lastmod": "2022-07-06T13:49:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/the-june-edition-of-the-zemax-community-newsletter-is-available-now",
+        "lastmod": "2022-07-12T11:25:14-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-model-diffractive-optics-using-the-binary-2-surface",
+        "lastmod": "2022-07-11T10:01:21-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/calculating-the-sag-of-a-diffractive-optical-element-with-a-macro",
+        "lastmod": "2022-07-13T12:21:43-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/ar-waveguide-design-and-optimization-based-on-dynamic-linking-between-zemax-opticstudio-and-lumerical-rcwa",
+        "lastmod": "2022-07-27T12:06:57-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/cell-phone-lens-the-fundamentals-behind-the-optical-system-design",
+        "lastmod": "2022-08-12T12:03:42-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/modeling-flash-lidar-in-opticstudio-part-1-lidar-component-setup-in-sequential-mode",
+        "lastmod": "2022-08-12T11:26:31-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/modeling-flash-lidar-in-opticstudio-part-2-lidar-simulation-in-non-sequential-mode",
+        "lastmod": "2022-08-18T14:38:08-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tech-tip-tuesdays-with-zemax-featured-june-tip",
+        "lastmod": "2022-07-19T06:59:58-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/new-opticsbuilder-licensing-and-installation-guide",
+        "lastmod": "2022-07-21T12:03:52-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/stop-analysis-of-high-power-laser-systems-part-1",
+        "lastmod": "2022-08-02T11:15:47-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/events-august-2022",
+        "lastmod": "2022-08-03T21:13:22-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/now-part-of-the-ansys-family-opticstudio-and-opticsbuilder",
+        "lastmod": "2022-08-10T06:06:50-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/using-the-truefreeform-surface-for-grid-based-freeform-optimization-1",
+        "lastmod": "2022-08-11T11:50:21-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/innovations-in-optics-at-university-of-arizona-offer-a-glimpse-into-deep-space",
+        "lastmod": "2022-08-15T13:54:26-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modelling-a-holographic-waveguide-for-augmented-reality-ar-systems-part-1",
+        "lastmod": "2022-08-17T13:49:42-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/stop-analysis-of-high-power-laser-systems-part-2",
+        "lastmod": "2022-08-28T21:32:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modelling-a-holographic-waveguide-for-augmented-reality-ar-systems-part-2",
+        "lastmod": "2022-08-22T00:30:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/industry-insights-innovations-in-the-automotive-industry",
+        "lastmod": "2022-10-20T13:33:07-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/designing-cell-phone-camera-lenses-with-an-interoperability-workflow-part-1",
+        "lastmod": "2022-09-13T14:39:37-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/mechanics-of-an-ansys-zemax-workflow-opticstudio-opticsbuilder-speos",
+        "lastmod": "2022-09-29T14:37:46-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/designing-cell-phone-camera-lenses-with-an-interoperability-workflow-part-2",
+        "lastmod": "2022-09-22T12:57:08-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/stop-analysis-of-high-power-laser-systems-part-3",
+        "lastmod": "2022-08-29T00:30:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/laser-focus-world-honors-ansys-zemax-opticstudio-star-technology-and-opticsbuilder-with-lfw-innovators-awards",
+        "lastmod": "2022-08-30T00:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tech-tip-tuesdays-featured-tip-august-2022",
+        "lastmod": "2022-08-30T11:00:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/we-look-forward-to-seeing-you-at-these-events-in-september",
+        "lastmod": "2022-12-30T11:34:42-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/the-august-2022-community-newsletter-is-now-available",
+        "lastmod": "2022-08-31T14:08:22-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modeling-a-flash-lidar-system-part-1",
+        "lastmod": "2022-09-07T21:46:47-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/stop-analysis-of-high-power-laser-systems-part-4",
+        "lastmod": "2022-09-12T06:46:18-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modeling-a-flash-lidar-system-part-2",
+        "lastmod": "2022-09-13T16:11:37-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/stop-analysis-of-high-power-laser-systems-part-5",
+        "lastmod": "2022-09-22T09:00:11-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modeling-a-flash-lidar-system-part-3",
+        "lastmod": "2022-09-23T00:00:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/modeling-a-flash-lidar-system-using-optical-optomechanical-zemax-workflow",
+        "lastmod": "2022-10-27T01:15:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/tech-tip-tuesdays-with-ansys-zemax-featured-tip-september-2022",
+        "lastmod": "2022-09-27T13:58:17-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/graduate-project-at-mit-uses-opticstudio-to-validate-optical-design-for-laser-powder-bed-fusion",
+        "lastmod": "2022-12-16T12:38:58-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/graduate-project-at-mit-uses-opticstudio-to-validate-optical-design-for-laser-powder-bed-fusion-blog-news",
+        "lastmod": "2022-10-17T10:01:56-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/modeling-a-lidar-in-opticstudio-characterizing-range-for-lidar-systems",
+        "lastmod": "2022-10-27T12:54:28-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/hud-webinar-workflow-example",
+        "lastmod": "2022-11-15T11:34:31-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/optotune-liquid-lenses-added-to-zemax-stock-components-1",
+        "lastmod": "2022-11-27T09:24:41-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/october-and-november-events-2022",
+        "lastmod": "2022-12-30T11:33:01-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/creating-a-time-of-flight-user-analysis-using-zos-api",
+        "lastmod": "2022-10-07T00:00:03-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/designing-cell-phone-camera-lenses-part-1-optics",
+        "lastmod": "2022-10-12T00:30:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/the-october-2022-community-newsletter-is-now-available",
+        "lastmod": "2022-10-11T00:00:02-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/designing-cell-phone-camera-lenses-part-2-optomechanical-packaging-with-opticsbuilder",
+        "lastmod": "2022-10-13T00:30:00-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/background-theory-and-concepts-of-illumination-design",
+        "lastmod": "2022-10-19T00:30:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/an-overview-of-a-typical-illumination-system-design-cycle",
+        "lastmod": "2022-10-24T00:30:01-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/how-to-optimize-non-sequential-optical-systems-1",
+        "lastmod": "2022-10-26T01:48:27-07:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/webinars/equation-driven-surfaces-for-optical-parts-creation-in-opticsbuilder",
+        "lastmod": "2022-11-27T17:00:32-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/rbm-decoupling-for-star-module",
+        "lastmod": "2022-11-07T06:44:22-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/november-and-december-events-2022",
+        "lastmod": "2022-12-30T11:32:22-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/head-up-display-from-ansys-zemax-opticstudio-to-ansys-speos",
+        "lastmod": "2022-11-22T07:58:23-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/using-the-opticstudio-dynamic-cad-link",
+        "lastmod": "2022-11-28T20:48:40-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/university-of-arizona-uses-opticstudio-to-prove-the-viability-of-a-curved-hud-ar-waveguide-combiner",
+        "lastmod": "2022-12-16T12:39:42-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/university-of-arizona-uses-opticstudio-to-prove-the-viability-of-a-curved-hud-ar-waveguide-combiner",
+        "lastmod": "2022-12-16T12:44:30-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/programming-custom-light-sources-and-uniform-deviates",
+        "lastmod": "2022-12-20T00:30:00-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/modeling-photoluminescence-in-ansys-zemax-opticstudio-a-photoluminescent-solar-concentrator",
+        "lastmod": "2022-12-30T08:45:23-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/success-stories/inaoe-designs-a-thermal-camera-for-spotting-covid-19-exposures-in-densely-populated-spaces",
+        "lastmod": "2022-12-30T11:09:01-08:00"
+    },
+    {
+        "loc": "https://www.zemax.com/blogs/news/inaoe-designs-a-thermal-camera-forsspotting-covid-19-exposures-in-densely-populated-spaces",
+        "lastmod": "2022-12-30T11:22:28-08:00"
+    }
+]
