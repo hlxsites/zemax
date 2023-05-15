@@ -1,5 +1,5 @@
 import { readBlockConfig, decorateIcons } from '../../scripts/lib-franklin.js';
-import { createTag } from '../../scripts/scripts.js';
+import { createTag, decorateLinkedPictures } from '../../scripts/scripts.js';
 
 /**
  * loads and decorates the footer
@@ -20,6 +20,7 @@ export default async function decorate(block) {
     const footer = document.createElement('div');
     footer.innerHTML = html;
     decorateIcons(footer);
+    decorateLinkedPictures(footer);
     block.append(footer);
 
     const languagesWrapper = document.querySelector('.footer-sub-links div:nth-child(5) ul');
