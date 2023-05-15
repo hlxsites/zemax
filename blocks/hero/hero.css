@@ -1,5 +1,6 @@
-/* block specific CSS goes here */
+/* stylelint-disable color-function-notation */
 
+/* block specific CSS goes here */
 main .hero-container > div {
   max-width: unset;
   width: 100%;
@@ -46,7 +47,8 @@ main .hero p > picture ~ * {
 }
 
 main .hero .icon > svg{
-  height: 63px;
+  height: 31px;
+  padding-top: 48px;
 }
 
 
@@ -86,6 +88,8 @@ main .hero.white picture {
   margin: 0 auto;
 }
 
+
+
 main .hero img {
   object-fit: cover;
   position: relative;
@@ -94,8 +98,21 @@ main .hero img {
   max-height: 630px;
   border-bottom-right-radius: 80% 15%;
   border-bottom-left-radius: 80% 15%;
-
 }
+
+main .hero.white picture::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 97%;
+  background: linear-gradient(rgba(0, 0, 0, 0%), rgba(0, 0, 0, 30%));
+  pointer-events: none;
+  border-bottom-right-radius: 100% 19%;
+  border-bottom-left-radius: 100% 19%;
+}
+
 
 main .hero.white h1,
 main .hero.white h2
@@ -160,6 +177,11 @@ main .hero .button.play::before {
         width: calc(var(--section-width)/2);
         padding-left: calc((100vw - var(--section-width))/8);
   }
+
+  main .hero .icon > svg{
+    height: 63px;
+  }
+  
 }
 
 /* Desktop */
@@ -170,5 +192,9 @@ main .hero .button.play::before {
 
   main .hero.white {
     height: 575px;
+  }
+
+  main .hero.white picture::after {
+    height: 98%;
   }
 }
