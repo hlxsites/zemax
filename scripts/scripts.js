@@ -294,7 +294,9 @@ export function decorateLinkedPictures(main) {
     if (!picture.closest('div.block')) {
       const p = picture.parentElement;
       linkPicture(picture);
-      p.remove();
+      if (p.tagName === 'P' && p.childElementCount === 0) {
+        p.remove();
+      }
     }
   });
 }
