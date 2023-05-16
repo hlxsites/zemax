@@ -67,7 +67,7 @@ async function displayLicenseDetails(event) {
         licenseDetailsDiv.appendChild(licenseDetailsDataDiv);
         const headings = ['License Administrator|_new_registereduser_value@OData.Community.Display.V1.FormattedValue', 'Account|_new_account_value@OData.Community.Display.V1.FormattedValue', 'Renewal Date|new_supportexpires@OData.Community.Display.V1.FormattedValue', 'Key Serial Number|new_licenseid', 'Product|_new_product_value@OData.Community.Display.V1.FormattedValue', 'License Type|zemax_seattype@OData.Community.Display.V1.FormattedValue', 'ZPA Support|new_premiumsupport@OData.Community.Display.V1.FormattedValue', 'Seat Count|new_usercount@OData.Community.Display.V1.FormattedValue', 'End User Count|new_endusercount@OData.Community.Display.V1.FormattedValue'];
 
-        let licenseDetailsRow = createTag('div', { class: 'license-details-row' }, '');
+        let licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
         headings.forEach((heading, index) => {
           const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
           const elementDetailCellHeading = createTag('h3', { class: 'element-detail-cell-heading' }, heading.split('|')[0]);
