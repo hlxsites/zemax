@@ -445,6 +445,7 @@ header nav .nav-logo picture img {
   header nav .nav-tools .icon-search {
     width: 26px;
     height: 24px;
+    padding-top: 10px;
   }
 
   header nav .nav-tools > div {
