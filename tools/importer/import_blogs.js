@@ -12,11 +12,13 @@
 /* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
 
-const createMetadata = (main, document) => {
+const createMetadata = (main, document, originalURL, blogs) => {
   const meta = {};
 
-  // set template as news
-  meta.Template = 'news';
+  // set template for news
+  if (originalURL.includes('/news/')) {
+    meta.Template = 'news';
+  }
 
   // add title
   const title = document.querySelector('title');
@@ -39,9 +41,14 @@ const createMetadata = (main, document) => {
   }
 
   // add publish date
-  const publishDate = main.querySelector('main .section-article-post .article-resources-caption');
-  if (publishDate && publishDate.innerHTML) {
-    meta.PublishDate = publishDate.innerHTML.replace(/[\n\t]/gm, '');
+  const blog = blogs.find((item) => item.loc === originalURL);
+  if (blog.lastmod) {
+    meta.PublishDate = blog.lastmod;
+  } else {
+    const publishDate = main.querySelector('main .section-article-post .article-resources-caption');
+    if (publishDate && publishDate.innerHTML) {
+      meta.PublishDate = publishDate.innerHTML.replace(/[\n\t]/gm, '');
+    }
   }
 
   // add category
@@ -58,25 +65,93 @@ const createMetadata = (main, document) => {
   return meta;
 };
 
+const appendSectionDivider = (main, document) => {
+  const divider = document.createElement('p');
+  divider.textContent = '---';
+  main.append(divider);
+};
+
+const appendMarketoForm = (main, document) => {
+  const formTitle = main.querySelector('.article-resources-form h4')?.textContent;
+  const table = document.createElement('table');
+  const headTr = document.createElement('tr');
+  const th = document.createElement('th');
+  th.textContent = 'Marketo';
+  th.setAttribute('colspan', 2);
+  headTr.append(th);
+  table.append(headTr);
+
+  if (formTitle) {
+    const formTr = document.createElement('tr');
+    ['Form Title', formTitle].forEach((item) => {
+      const td = document.createElement('td');
+      td.textContent = item;
+      formTr.append(td);
+    });
+    table.append(formTr);
+  }
+
+  const divTr = document.createElement('tr');
+  ['Div ID', '1004'].forEach((item) => {
+    const td = document.createElement('td');
+    td.textContent = item;
+    divTr.append(td);
+  });
+  table.append(divTr);
+  main.append(table);
+
+  appendSectionDivider(main, document);
+};
+
+const appendNewsletterFragment = (main, document) => {
+  const table = document.createElement('table');
+
+  const headTr = document.createElement('tr');
+  const th = document.createElement('th');
+  th.textContent = 'Fragment';
+  headTr.append(th);
+  table.append(headTr);
+
+  const linkTr = document.createElement('tr');
+  const td = document.createElement('td');
+  td.textContent = 'https://main--zemax--hlxsites.hlx.page/fragments/subscribe-newsletter-fragment';
+  linkTr.append(td);
+  table.append(linkTr);
+
+  main.append(table);
+
+  appendSectionDivider(main, document);
+};
+
+const addSectionDivider4Title = (main, document) => {
+  const h2 = main.querySelector('h2');
+  const divider1 = document.createElement('p');
+  divider1.textContent = '---';
+  if (h2.nextSibling) {
+    h2.parentNode.insertBefore(divider1, h2.nextSibling);
+  } else {
+    h2.parentNode.appendChild(divider1);
+  }
+};
+
 export default {
   /**
-     * Apply DOM operations to the provided document and return
-     * the root element to be then transformed to Markdown.
-     * @param {HTMLDocument} document The document
-     * @param {string} url The url of the page imported
-     * @param {string} html The raw html (the document is cleaned up during preprocessing)
-     * @param {object} params Object containing some parameters given by the import process.
-     * @returns {HTMLElement} The root element to be transformed
-     */
-  transformDOM: ({
+   * Apply DOM operations to the provided document and return
+   * the root element to be then transformed to Markdown.
+   * @param {HTMLDocument} document The document
+   * @param {string} url The url of the page imported
+   * @param {string} html The raw html (the document is cleaned up during preprocessing)
+   * @param {object} params Object containing some parameters given by the import process.
+   * @returns {HTMLElement} The root element to be transformed
+   */
+  transformDOM: async ({
     // eslint-disable-next-line no-unused-vars
     document, url, html, params,
   }) => {
     // define the main element: the one that will be transformed to Markdown
     const main = document.body;
 
-    // generate metadata block
-    createMetadata(main, document);
+    appendMarketoForm(main, document);
 
     // use helper method to remove header, footer, etc.
     WebImporter.DOMUtils.remove(main, [
@@ -87,6 +162,7 @@ export default {
       'header',
       '.category-name',
       '.page-container .article-resources-caption',
+      '.page-container .article-resources-form',
       '.mobile-nav__item',
       'footer',
       '.newsletter-background',
@@ -94,21 +170,32 @@ export default {
       '.social-sharing-post',
       'a11y-refresh-page-message',
       'a11y-selection-message',
-      'ul[hidden=\'\']',
+      "ul[hidden='']",
       'onetrust-consent-sdk',
     ]);
+
+    addSectionDivider4Title(main, document);
+
+    appendNewsletterFragment(main, document);
+
+    // generate metadata block
+    const { originalURL } = params;
+    const response = await fetch('/tools/importer/data/blogs-lastmod.json');
+    const blogs = await response.json();
+    createMetadata(main, document, originalURL, blogs);
+
     return main;
   },
 
   /**
-     * Return a path that describes the document being transformed (file name, nesting...).
-     * The path is then used to create the corresponding Word document.
-     * @param {HTMLDocument} document The document
-     * @param {string} url The url of the page imported
-     * @param {string} html The raw html (the document is cleaned up during preprocessing)
-     * @param {object} params Object containing some parameters given by the import process.
-     * @return {string} The path
-     */
+   * Return a path that describes the document being transformed (file name, nesting...).
+   * The path is then used to create the corresponding Word document.
+   * @param {HTMLDocument} document The document
+   * @param {string} url The url of the page imported
+   * @param {string} html The raw html (the document is cleaned up during preprocessing)
+   * @param {object} params Object containing some parameters given by the import process.
+   * @return {string} The path
+   */
   generateDocumentPath: ({
     // eslint-disable-next-line no-unused-vars
     document, url, html, params,
