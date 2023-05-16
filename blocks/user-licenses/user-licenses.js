@@ -23,6 +23,7 @@ async function displayLicenseDetails(event) {
         // DOM creation
         const manageLicenseH2 = createTag('h2', { class: 'license-details-h2' }, `Manage License #${data.licenseid}`);
         const licenseDetailsDiv = document.querySelector('.license-details');
+        licenseDetailsDiv.innerHTML = '';
         licenseDetailsDiv.appendChild(manageLicenseH2);
         const licenseDetailsDataDiv = createTag('div', { class: 'license-details-data' }, '');
         licenseDetailsDiv.appendChild(licenseDetailsDataDiv);
@@ -65,7 +66,16 @@ async function displayLicenseDetails(event) {
             const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, user[heading.split('|')[1]]);
             trValue.appendChild(tableHeadingValue);
           });
-  
+          const buttonRemoveUser = createTag('button', { class: 'license-user-remove-user action important', type: 'button' }, 'Remove User');
+          const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, buttonRemoveUser);
+
+          trValue.appendChild(tableHeadingValue);
+
+          const buttonChangeEndUser = createTag('button', { class: 'license-user-change-user action', type: 'button' }, 'Change End User');
+          const tableHeadingChangeUserValue = createTag('td', { class: 'license-user-data-cell' }, buttonChangeEndUser);
+
+          trValue.appendChild(tableHeadingChangeUserValue);
+
           tbody.appendChild(trValue);
         });
         tableElement.appendChild(tbody);
@@ -169,7 +179,7 @@ function createLicencesTable(rows) {
     // TODO add logic for manage or view
     const tdManageOrView = document.createElement('td');
     const manageOrViewButton = document.createElement('button');
-    manageOrViewButton.classList.add('manage-view-license');
+    manageOrViewButton.classList.add('manage-view-license', 'action');
     manageOrViewButton.innerText = 'Manage';
     manageOrViewButton.setAttribute('type', 'button');
     manageOrViewButton.setAttribute('data-licensseid', row.new_licensesid);
