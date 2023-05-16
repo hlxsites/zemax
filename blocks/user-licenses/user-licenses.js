@@ -1,6 +1,24 @@
 import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag } from '../../scripts/scripts.js';
 
+async function updateLicenseNickname() {
+  const userId = localStorage.getItem('auth0_id');
+  const accessToken = localStorage.getItem('accessToken');
+  const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
+  const { value } = document.querySelector('.nickname');
+
+  if (value !== '' && value !== undefined) {
+    await fetch(`${DYNAMIC_365_DOMAIN}dynamics_set_license_nickname?auth0_id=${userId}&id=97d53652-122f-e611-80ea-005056831cd4&nickname=${value}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `bearer ${accessToken}`,
+      },
+    }).then(async (response) => {
+      console.log('update', response);
+    });
+  }
+}
 async function displayLicenseDetails(event) {
   const licenseId = event.target.getAttribute('data-licensseid');
   const userId = localStorage.getItem('auth0_id');
@@ -43,43 +61,53 @@ async function displayLicenseDetails(event) {
             licenseDetailsRow = createTag('div', { class: 'license-details-row' }, '');
           }
         });
+        console.log(data);
+        const nickNameTextField = createTag('input', { class: 'nickname', value: data.license_detail[0].zemax_nickname }, '');
+        licenseDetailsRow.appendChild(nickNameTextField);
+        const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button' }, 'Save');
+        saveNicknameButton.addEventListener('click', updateLicenseNickname);
+        licenseDetailsRow.appendChild(saveNicknameButton);
         licenseDetailsDataDiv.appendChild(licenseDetailsRow);
 
         const licenseUsers = data.users;
 
-        const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1'];
-        const tableElement = document.createElement('table');
+        if (licenseUsers !== undefined && licenseUsers.length > 0) {
+          const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1'];
+          const tableElement = document.createElement('table');
 
-        const thead = document.createElement('thead');
-        const tr = document.createElement('tr');
-        tableHeadings.forEach((heading) => {
-          const tableHeadingElement = createTag('th', { class: 'license-user-data-heading' }, heading.split('|')[0]);
-          tr.appendChild(tableHeadingElement);
-        });
-
-        thead.appendChild(tr);
-        tableElement.appendChild(thead);
-        const tbody = document.createElement('tbody');
-        licenseUsers.forEach((user) => {
-          const trValue = document.createElement('tr');
+          const thead = document.createElement('thead');
+          const tr = document.createElement('tr');
           tableHeadings.forEach((heading) => {
-            const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, user[heading.split('|')[1]]);
-            trValue.appendChild(tableHeadingValue);
+            const tableHeadingElement = createTag('th', { class: 'license-user-data-heading' }, heading.split('|')[0]);
+            tr.appendChild(tableHeadingElement);
           });
-          const buttonRemoveUser = createTag('button', { class: 'license-user-remove-user action important', type: 'button' }, 'Remove User');
-          const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, buttonRemoveUser);
 
-          trValue.appendChild(tableHeadingValue);
+          thead.appendChild(tr);
+          tableElement.appendChild(thead);
+          const tbody = document.createElement('tbody');
+          licenseUsers.forEach((user) => {
+            const trValue = document.createElement('tr');
+            tableHeadings.forEach((heading) => {
+              const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, user[heading.split('|')[1]]);
+              trValue.appendChild(tableHeadingValue);
+            });
+            const buttonRemoveUser = createTag('button', { class: 'license-user-remove-user action important', type: 'button' }, 'Remove User');
+            const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, buttonRemoveUser);
 
-          const buttonChangeEndUser = createTag('button', { class: 'license-user-change-user action', type: 'button' }, 'Change End User');
-          const tableHeadingChangeUserValue = createTag('td', { class: 'license-user-data-cell' }, buttonChangeEndUser);
+            trValue.appendChild(tableHeadingValue);
 
-          trValue.appendChild(tableHeadingChangeUserValue);
+            const buttonChangeEndUser = createTag('button', { class: 'license-user-change-user action', type: 'button' }, 'Change End User');
+            const tableHeadingChangeUserValue = createTag('td', { class: 'license-user-data-cell' }, buttonChangeEndUser);
 
-          tbody.appendChild(trValue);
-        });
-        tableElement.appendChild(tbody);
-        licenseDetailsDiv.appendChild(tableElement);
+            trValue.appendChild(tableHeadingChangeUserValue);
+
+            tbody.appendChild(trValue);
+          });
+          tableElement.appendChild(tbody);
+          licenseDetailsDiv.appendChild(tableElement);
+        } else {
+          licenseDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
+        }
       });
   }
 }
