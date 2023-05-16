@@ -1,6 +1,88 @@
 import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag } from '../../scripts/scripts.js';
 
+async function displayLicenseDetails(event) {
+  const licenseId = event.target.getAttribute('data-licensseid');
+  const userId = localStorage.getItem('auth0_id');
+  const accessToken = localStorage.getItem('accessToken');
+  const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
+
+  if (userId == null || userId === undefined || accessToken == null || accessToken === undefined) {
+    window.location.assign(`${window.location.origin}`);
+  } else {
+    await fetch(`${DYNAMIC_365_DOMAIN}dynamics_get_end_users_for_license?auth0_id=${userId}&license_id=${licenseId}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `bearer ${accessToken}`,
+      },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+
+        // DOM creation
+        const manageLicenseH2 = createTag('h2', { class: 'license-details-h2' }, `Manage License #${data.licenseid}`);
+        const licenseDetailsDiv = document.querySelector('.license-details');
+        licenseDetailsDiv.appendChild(manageLicenseH2);
+        const licenseDetailsDataDiv = createTag('div', { class: 'license-details-data' }, '');
+        licenseDetailsDiv.appendChild(licenseDetailsDataDiv);
+        const headings = ['License Administrator|_new_registereduser_value@OData.Community.Display.V1.FormattedValue', 'Account|_new_account_value@OData.Community.Display.V1.FormattedValue', 'Renewal Date|new_supportexpires@OData.Community.Display.V1.FormattedValue', 'Key Serial Number|new_licenseid', 'Product|_new_product_value@OData.Community.Display.V1.FormattedValue', 'License Type|zemax_seattype@OData.Community.Display.V1.FormattedValue', 'ZPA Support|new_premiumsupport@OData.Community.Display.V1.FormattedValue', 'Seat Count|new_usercount@OData.Community.Display.V1.FormattedValue', 'End User Count|new_endusercount@OData.Community.Display.V1.FormattedValue'];
+
+        let licenseDetailsRow = createTag('div', { class: 'license-details-row' }, '');
+        headings.forEach((heading, index) => {
+          const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
+          const elementDetailCellHeading = createTag('h3', { class: 'element-detail-cell-heading' }, heading.split('|')[0]);
+          const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, data.license_detail[0][heading.split('|')[1]]);
+          elementDetailCellDiv.appendChild(elementDetailCellHeading);
+          elementDetailCellDiv.appendChild(elementDetailCellDataPara);
+          licenseDetailsRow.appendChild(elementDetailCellDiv);
+
+          if (index % 3 === 2) {
+            licenseDetailsDataDiv.appendChild(licenseDetailsRow);
+            licenseDetailsRow = createTag('div', { class: 'license-details-row' }, '');
+          }
+        });
+        licenseDetailsDataDiv.appendChild(licenseDetailsRow);
+
+        const licenseUsers = data.users;
+
+        const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1'];
+        const tableElement = document.createElement('table');
+
+        const thead = document.createElement('thead');
+        const tr = document.createElement('tr');
+        tableHeadings.forEach((heading) => {
+          const tableHeadingElement = createTag('th', { class: 'license-user-data-heading' }, heading.split('|')[0]);
+          tr.appendChild(tableHeadingElement);
+        });
+
+        thead.appendChild(tr);
+        tableElement.appendChild(thead);
+        const tbody = document.createElement('tbody');
+        licenseUsers.forEach((user) => {
+          const trValue = document.createElement('tr');
+          tableHeadings.forEach((heading) => {
+            const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, user[heading.split('|')[1]]);
+            trValue.appendChild(tableHeadingValue);
+          });
+  
+          tbody.appendChild(trValue);
+        });
+        tableElement.appendChild(tbody);
+        licenseDetailsDiv.appendChild(tableElement);
+      });
+  }
+}
+
+function addManageLicenseFeature(block) {
+  const dataDiv = createTag('div', { class: 'license-details' }, '');
+  block.append(dataDiv);
+  const manageButtons = document.querySelectorAll('.manage-view-license');
+  manageButtons.forEach((manageButton) => {
+    manageButton.addEventListener('click', displayLicenseDetails);
+  });
+}
+
 function createTableHeaderMapping(data) {
   const { allLicenseTabHeadingMapping } = getLocaleConfig('en_us', 'userLicenses');
   const tableHeaderMapping = [];
@@ -90,6 +172,7 @@ function createLicencesTable(rows) {
     manageOrViewButton.classList.add('manage-view-license');
     manageOrViewButton.innerText = 'Manage';
     manageOrViewButton.setAttribute('type', 'button');
+    manageOrViewButton.setAttribute('data-licensseid', row.new_licensesid);
     tdManageOrView.appendChild(manageOrViewButton);
     trBody.appendChild(tdManageOrView);
 
@@ -267,6 +350,7 @@ export default async function decorate(block) {
 
         block.append(tabDiv);
         addTabFeature();
+        addManageLicenseFeature(block);
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
