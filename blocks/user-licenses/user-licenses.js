@@ -1,6 +1,54 @@
 import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag } from '../../scripts/scripts.js';
 
+function createGenericTable(tableHeadings, rowData) {
+  const tableElement = document.createElement('table');
+  const thead = document.createElement('thead');
+  const tr = document.createElement('tr');
+
+  tableHeadings.forEach((heading) => {
+    const tableHeadingElement = createTag('th', { class: 'collegue-user-data-heading' }, heading.split('|')[0]);
+    tr.appendChild(tableHeadingElement);
+  });
+  thead.appendChild(tr);
+
+  tableElement.appendChild(thead);
+  const tbody = document.createElement('tbody');
+
+  rowData.forEach((row) => {
+    const trValue = document.createElement('tr');
+    tableHeadings.forEach((heading) => {
+      const tableHeadingValue = createTag('td', '', row[heading.split('|')[1]]);
+      trValue.appendChild(tableHeadingValue);
+    });
+    tbody.appendChild(trValue);
+  });
+
+  tableElement.appendChild(tbody);
+  return tableElement;
+}
+
+async function showColleagues() {
+  const userId = localStorage.getItem('auth0_id');
+  const accessToken = localStorage.getItem('accessToken');
+  const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
+
+  await fetch(`${DYNAMIC_365_DOMAIN}dynamics_get_colleagues_view?auth0_id=${userId}`, {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      Authorization: `bearer ${accessToken}`,
+    },
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      const headingsMapping = ['Full Name|firstname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
+      const colleaguesTable = createGenericTable(headingsMapping, data.colleagues);
+      const endUsersDetailsDiv = document.querySelector('.end-users-details');
+      endUsersDetailsDiv.appendChild(colleaguesTable);
+    });
+}
+
 async function removeUserFromLicense(event) {
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
@@ -66,6 +114,7 @@ async function displayLicenseDetails(event) {
         licenseDetailsDiv.appendChild(licenseDetailsDataDiv);
         const headings = ['License Administrator|_new_registereduser_value@OData.Community.Display.V1.FormattedValue', 'Account|_new_account_value@OData.Community.Display.V1.FormattedValue', 'Renewal Date|new_supportexpires@OData.Community.Display.V1.FormattedValue', 'Key Serial Number|new_licenseid', 'Product|_new_product_value@OData.Community.Display.V1.FormattedValue', 'License Type|zemax_seattype@OData.Community.Display.V1.FormattedValue', 'ZPA Support|new_premiumsupport@OData.Community.Display.V1.FormattedValue', 'Seat Count|new_usercount@OData.Community.Display.V1.FormattedValue', 'End User Count|new_endusercount@OData.Community.Display.V1.FormattedValue'];
 
+        //element|keys|attributes|text
         let licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
         headings.forEach((heading, index) => {
           const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
@@ -89,9 +138,15 @@ async function displayLicenseDetails(event) {
         licenseDetailsDataDiv.appendChild(licenseDetailsRow);
 
         const endUsersDetailsDiv = document.querySelector('.end-users-details');
+        endUsersDetailsDiv.innerHTML = '';
         const licenseUsers = data.users;
         const endUsersH2 = createTag('h2', '', 'End Users');
         endUsersDetailsDiv.appendChild(endUsersH2);
+        const addUserButton = createTag('button', { class: 'add-user-to-license action', type: 'button' }, 'Add End User');
+
+        // TODO add condition
+        endUsersDetailsDiv.appendChild(addUserButton);
+        addUserButton.addEventListener('click', showColleagues);
 
         if (licenseUsers !== undefined && licenseUsers.length > 0) {
           const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1'];
