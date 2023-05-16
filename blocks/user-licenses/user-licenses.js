@@ -1,6 +1,26 @@
 import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag } from '../../scripts/scripts.js';
 
+async function removeUserFromLicense(event) {
+  const licenseId = event.target.getAttribute('data-licensseid');
+  const userId = localStorage.getItem('auth0_id');
+  const accessToken = localStorage.getItem('accessToken');
+  const newproductuserid = event.target.getAttribute('data-new-productuserid');
+  const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
+
+  // TODO add confirmation modal
+  await fetch(`${DYNAMIC_365_DOMAIN}dynamics_remove_enduser_from_license?auth0_id=${userId}&new_productuserid=${newproductuserid}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      Authorization: `bearer ${accessToken}`,
+    },
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      console.log('user deleted', data);
+    });
+}
 async function updateLicenseNickname() {
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
@@ -61,7 +81,7 @@ async function displayLicenseDetails(event) {
             licenseDetailsRow = createTag('div', { class: 'license-details-row' }, '');
           }
         });
-        console.log(data);
+
         const nickNameTextField = createTag('input', { class: 'nickname', value: data.license_detail[0].zemax_nickname }, '');
         licenseDetailsRow.appendChild(nickNameTextField);
         const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button' }, 'Save');
@@ -91,8 +111,9 @@ async function displayLicenseDetails(event) {
               const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, user[heading.split('|')[1]]);
               trValue.appendChild(tableHeadingValue);
             });
-            const buttonRemoveUser = createTag('button', { class: 'license-user-remove-user action important', type: 'button' }, 'Remove User');
+            const buttonRemoveUser = createTag('button', { class: 'license-user-remove-user action important', type: 'button', 'data-new-productuserid': user.new_productuserid }, 'Remove User');
             const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, buttonRemoveUser);
+            buttonRemoveUser.addEventListener('click', removeUserFromLicense);
 
             trValue.appendChild(tableHeadingValue);
 
