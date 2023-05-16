@@ -59,7 +59,7 @@ async function displayLicenseDetails(event) {
         const data = await response.json();
 
         // DOM creation
-        const manageLicenseH2 = createTag('h2', { class: 'license-details-h2' }, `Manage License #${data.licenseid}`);
+        const manageLicenseH2 = createTag('h2', { class: 'license-details-h2 h2-heading' }, `Manage License #${data.licenseid}`);
         const licenseDetailsDiv = document.querySelector('.license-details');
         licenseDetailsDiv.innerHTML = '';
         licenseDetailsDiv.appendChild(manageLicenseH2);
@@ -90,6 +90,8 @@ async function displayLicenseDetails(event) {
         licenseDetailsDataDiv.appendChild(licenseDetailsRow);
 
         const licenseUsers = data.users;
+        const endUsersH2 = createTag('h2', { class: 'end-users-details-h2 h2-heading' }, `End Users`);
+        licenseDetailsDiv.appendChild(endUsersH2);
 
         if (licenseUsers !== undefined && licenseUsers.length > 0) {
           const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1'];
