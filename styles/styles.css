@@ -266,6 +266,43 @@ button:disabled:hover {
   border: none !important;
 }
 
+button.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.15rem 0;
+  padding: 0.15rem 0.6rem;
+  min-height: 1.5rem;
+  min-width: 3.6rem;
+  border-radius: 0.3rem;
+  color: #0070c0;
+  background: transparent;
+  border: 1px solid #8c9196;
+  border-color: #0070c0;
+  box-shadow: 0 0 0 0.1rem #0070c0;
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6rem;
+  text-transform: initial;
+  letter-spacing: initial;
+}
+
+button.action:hover {
+  color: rgb(0, 112, 192);
+  box-shadow: 0 0 0 .1rem rgb(0, 112, 192);
+  position: relative;
+  border: 0.1rem solid rgba(140, 145, 150, 1);;
+  background: rgba(246, 246, 247, 1);
+}
+button.action:focus-visible {
+  outline: none;
+}
+
 main input {
   font-size: 1.25rem;
   width: 100%;
@@ -584,7 +621,8 @@ main .video-wrap iframe {
   /* Section Layouts */
 main .section-wrapper.layout-75-25,
 main .section-wrapper.layout-25-75, 
-main .section-wrapper.layout-50-50{
+main .section-wrapper.layout-50-50,
+main .layout-33-33-33 {
   width: var(--section-width);
   display: grid;
   grid-auto-flow: column;
@@ -604,6 +642,10 @@ main .section-wrapper.layout-25-75 {
 
 main .section-wrapper.layout-50-50 {
   grid-template-columns: 50% 50%;
+}
+
+main .layout-33-33-33 {
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 }
