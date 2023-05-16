@@ -2,7 +2,6 @@ import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-confi
 import { createTag } from '../../scripts/scripts.js';
 
 async function removeUserFromLicense(event) {
-  const licenseId = event.target.getAttribute('data-licensseid');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
   const newproductuserid = event.target.getAttribute('data-new-productuserid');
@@ -59,7 +58,7 @@ async function displayLicenseDetails(event) {
         const data = await response.json();
 
         // DOM creation
-        const manageLicenseH2 = createTag('h2', { class: 'license-details-h2 h2-heading' }, `Manage License #${data.licenseid}`);
+        const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
         const licenseDetailsDiv = document.querySelector('.license-details');
         licenseDetailsDiv.innerHTML = '';
         licenseDetailsDiv.appendChild(manageLicenseH2);
@@ -78,7 +77,7 @@ async function displayLicenseDetails(event) {
 
           if (index % 3 === 2) {
             licenseDetailsDataDiv.appendChild(licenseDetailsRow);
-            licenseDetailsRow = createTag('div', { class: 'license-details-row' }, '');
+            licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
           }
         });
 
@@ -89,9 +88,10 @@ async function displayLicenseDetails(event) {
         licenseDetailsRow.appendChild(saveNicknameButton);
         licenseDetailsDataDiv.appendChild(licenseDetailsRow);
 
+        const endUsersDetailsDiv = document.querySelector('.end-users-details');
         const licenseUsers = data.users;
-        const endUsersH2 = createTag('h2', { class: 'end-users-details-h2 h2-heading' }, `End Users`);
-        licenseDetailsDiv.appendChild(endUsersH2);
+        const endUsersH2 = createTag('h2', '', 'End Users');
+        endUsersDetailsDiv.appendChild(endUsersH2);
 
         if (licenseUsers !== undefined && licenseUsers.length > 0) {
           const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1'];
@@ -127,17 +127,19 @@ async function displayLicenseDetails(event) {
             tbody.appendChild(trValue);
           });
           tableElement.appendChild(tbody);
-          licenseDetailsDiv.appendChild(tableElement);
+          endUsersDetailsDiv.appendChild(tableElement);
         } else {
-          licenseDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
+          endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
         }
       });
   }
 }
 
 function addManageLicenseFeature(block) {
-  const dataDiv = createTag('div', { class: 'license-details' }, '');
-  block.append(dataDiv);
+  const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
+  const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
+  block.append(licenseDetailsDiv);
+  block.append(endUsersDetailsDiv);
   const manageButtons = document.querySelectorAll('.manage-view-license');
   manageButtons.forEach((manageButton) => {
     manageButton.addEventListener('click', displayLicenseDetails);
