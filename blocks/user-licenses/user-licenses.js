@@ -1,12 +1,50 @@
 import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag, createGenericTable } from '../../scripts/scripts.js';
 
-function showModal() {
-  document.getElementById('addUserModal').style.display = 'block';
+function showModal(event) {
+  const modalId = event.target.getAttribute('data-modal-id');
+  document.getElementById(modalId).style.display = 'block';
 }
 
-function hideModal() {
-  document.getElementById('addUserModal').style.display = 'none';
+function hideModal(event) {
+  const modalId = event.target.getAttribute('data-modal-id');
+  document.getElementById(modalId).style.display = 'none';
+}
+
+function showAddUserTable(event) {
+  const licenseId = event.target.getAttribute('data-license-id');
+  const addUserActionButton = document.querySelector('.add-user-action-button');
+  addUserActionButton.setAttribute('data-license-id', licenseId);
+  showModal(event);
+}
+
+async function changeUserForLicense() {
+  alert('Change user');
+}
+
+function updateAddUserId(event) {
+  const addUserActionButton = document.querySelector('.add-user-action-button');
+  addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
+}
+
+async function addUserToALicense(event) {
+  const userId = localStorage.getItem('auth0_id');
+  const accessToken = localStorage.getItem('accessToken');
+  const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
+  const contactId = event.target.getAttribute('contactid');
+  const licenseId = event.target.getAttribute('data-license-id');
+
+  await fetch(`${DYNAMIC_365_DOMAIN}dynamics_add_end_user?auth0_id=${userId}&contactId=${contactId}&licenseid=${licenseId}`, {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      Authorization: `bearer ${accessToken}`,
+    },
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      console.log(data);
+    });
 }
 
 async function showColleagues() {
@@ -23,15 +61,20 @@ async function showColleagues() {
   })
     .then(async (response) => {
       const data = await response.json();
-      const headingsMapping = ['html|input|type:checkbox,id:dataResponse0|contactid|', 'Full Name|firstname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
+      const headingsMapping = ['html|input|class:add-user-checkbox,type:checkbox,id:dataResponse0|contactid|', 'Full Name|firstname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
       const colleaguesTable = createGenericTable(headingsMapping, data.colleagues);
       const modalAddUserModalContentDiv = document.querySelector('.add-user-modal-content');
-      const addUserButton = createTag('button', { class: 'action' }, 'Add User');
-      const addUserModalCloseButton = createTag('button', { class: 'action' }, 'Close');
+      const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
+      const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
       modalAddUserModalContentDiv.appendChild(colleaguesTable);
       modalAddUserModalContentDiv.appendChild(addUserButton);
       modalAddUserModalContentDiv.appendChild(addUserModalCloseButton);
       addUserModalCloseButton.addEventListener('click', hideModal);
+      addUserButton.addEventListener('click', addUserToALicense);
+      const userAddCheckboxes = document.querySelectorAll('.add-user-checkbox');
+      userAddCheckboxes.forEach((userAddCheckboxe) => {
+        userAddCheckboxe.addEventListener('click', updateAddUserId);
+      });
     });
 }
 
@@ -41,6 +84,15 @@ async function removeUserFromLicense(event) {
   const newproductuserid = event.target.getAttribute('data-new-productuserid');
   const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
 
+  const modalDelUserModalContentDiv = document.querySelector('.delete-user-modal-content');
+  const deleteUserButton = createTag('button', { class: 'action important', 'data-modal-id': 'deleteUserModal' }, 'Yes, remove End User');
+  const deleteUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
+
+  modalDelUserModalContentDiv.appendChild(createTag('p', '', 'delete user'));
+  modalDelUserModalContentDiv.appendChild(deleteUserButton);
+  modalDelUserModalContentDiv.appendChild(deleteUserModalCloseButton);
+
+  deleteUserModalCloseButton.addEventListener('click', hideModal);
   // TODO add confirmation modal
   await fetch(`${DYNAMIC_365_DOMAIN}dynamics_remove_enduser_from_license?auth0_id=${userId}&new_productuserid=${newproductuserid}`, {
     method: 'DELETE',
@@ -129,12 +181,15 @@ async function displayLicenseDetails(event) {
         const licenseUsers = data.users;
         const endUsersH2 = createTag('h2', '', 'End Users');
         endUsersDetailsDiv.appendChild(endUsersH2);
-        const addUserButton = createTag('button', { class: 'add-user-to-license action', type: 'button' }, 'Add End User');
+        const addUserButton = createTag('button', {
+          class: 'add-user-to-license action', type: 'button', 'data-modal-id': 'addUserModal', 'data-license-id': licenseId,
+        }, 'Add End User');
 
         await showColleagues();
+
         // TODO add condition
         endUsersDetailsDiv.appendChild(addUserButton);
-        addUserButton.addEventListener('click', showModal);
+        addUserButton.addEventListener('click', showAddUserTable);
 
         if (licenseUsers !== undefined && licenseUsers.length > 0) {
           const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
@@ -143,13 +198,18 @@ async function displayLicenseDetails(event) {
 
           const tableElement = createGenericTable(tableHeadings, licenseUsers);
           endUsersDetailsDiv.appendChild(tableElement);
+
           const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
           removeButtons.forEach((removeButton) => {
             removeButton.addEventListener('click', removeUserFromLicense);
           });
 
+          const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user ');
+          changeUserLicenseButtons.forEach((changeUserLicenseButton) => {
+            changeUserLicenseButton.addEventListener('click', changeUserForLicense);
+          });
+
           // const modalContentDiv = document.querySelector('.add-user-modal-content');
-          buttonPop.addEventListener('click', showModal);
         } else {
           endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
         }
@@ -162,9 +222,13 @@ function addManageLicenseFeature(block) {
   const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
   const modalAddUserModalContentDiv = createTag('div', { class: 'modal-content add-user-modal-content' }, '');
   const modalAddUserModalDiv = createTag('div', { class: 'modal-container add-user-modal', id: 'addUserModal' }, modalAddUserModalContentDiv);
+  const modalDeleteUserModalContentDiv = createTag('div', { class: 'modal-content delete-user-modal-content' }, '');
+  const modalDeleteUserModalDiv = createTag('div', { class: 'modal-container delete-user-modal', id: 'deleteUserModal' }, modalDeleteUserModalContentDiv);
   block.append(licenseDetailsDiv);
   block.append(endUsersDetailsDiv);
   block.append(modalAddUserModalDiv);
+  block.append(modalDeleteUserModalDiv);
+
   const manageButtons = document.querySelectorAll('.manage-view-license');
   manageButtons.forEach((manageButton) => {
     manageButton.addEventListener('click', displayLicenseDetails);
