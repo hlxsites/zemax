@@ -42,7 +42,9 @@ async function addUserToALicense(event) {
     },
   })
     .then(async (response) => {
+      // TODO handle error cases
       const data = await response.json();
+      hideModal(event);
       console.log(data);
     });
 }
@@ -192,7 +194,11 @@ async function displayLicenseDetails(event) {
         addUserButton.addEventListener('click', showAddUserTable);
 
         if (licenseUsers !== undefined && licenseUsers.length > 0) {
-          const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
+          // const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
+          //  'html|button|class:license-user-remove-user action important,type:button,data-new-productuserid:dataResponse0|new_productuserid|Remove User',
+          //  'html|button|class:license-user-change-user action,type:button|new_productuserid|Change End User'];
+
+          const tableHeadings = ['html|td|class:user-name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
             'html|button|class:license-user-remove-user action important,type:button,data-new-productuserid:dataResponse0|new_productuserid|Remove User',
             'html|button|class:license-user-change-user action,type:button|new_productuserid|Change End User'];
 

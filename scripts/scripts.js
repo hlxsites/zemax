@@ -125,9 +125,25 @@ export function createGenericTable(tableHeadings, rowData) {
     tableHeadings.forEach((heading) => {
       const mapping = heading.split('|');
       if (mapping[0] === 'html') {
-        const inputTag = processTag(mapping, row);
-        const tableHeadingValue = createTag('td', '', inputTag);
-        trValue.appendChild(tableHeadingValue);
+        if (mapping[1] === 'td') {
+          const attributesMapping = mapping[2].split(',');
+          const attributes = {};
+          attributesMapping.forEach((attributeMapping) => {
+            // eslint-disable-next-line prefer-destructuring
+            if (attributeMapping.split(':')[1].startsWith('dataResponse')) {
+              attributes[attributeMapping.split(':')[0]] = row[mapping[3].split('|')[attributeMapping.split(':')[1].substring(12)]];
+            } else {
+              // eslint-disable-next-line prefer-destructuring
+              attributes[attributeMapping.split(':')[0]] = attributeMapping.split(':')[1];
+            }
+          });
+          const tableHeadingValue = createTag('td', attributes, row[mapping[3]]);
+          trValue.appendChild(tableHeadingValue);
+        } else {
+          const inputTag = processTag(mapping, row);
+          const tableHeadingValue = createTag('td', '', inputTag);
+          trValue.appendChild(tableHeadingValue);
+        }
       } else {
         const tableHeadingValue = createTag('td', '', row[heading.split('|')[1]]);
         trValue.appendChild(tableHeadingValue);
