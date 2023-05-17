@@ -85,6 +85,20 @@ async function updateLicenseNickname() {
 }
 
 async function displayLicenseDetails(event) {
+  // Hack
+  const sections = document.querySelectorAll('.section');
+
+  sections.forEach((section) => {
+    if (section.classList.contains('user-licenses-container')) {
+      section.querySelector('.tabs').innerHTML = '';
+      const licenseComponent = section.querySelector('.user-licenses.block');
+      const backToProfileButton = createTag('a', { href: '/pages/profile' }, 'Back to Profile');
+      licenseComponent.insertBefore(backToProfileButton, licenseComponent.firstChild);
+    } else {
+      console.log(section);
+      section.innerHTML = '';
+    }
+  });
   const licenseId = event.target.getAttribute('data-licensseid');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
