@@ -195,6 +195,7 @@ ul.tabs-nav li a.active::before {
 .end-users-details {
   margin-top: 60px;
 }
+
 .license-details h2,
 .end-users-details h2 {
   margin: .3em 0;
@@ -205,30 +206,34 @@ ul.tabs-nav li a.active::before {
   letter-spacing: 0.2px;
   color: #54565b;
 }
+
 .license-details-data {
-  margin: -10px 0 0 0;
+  margin: -10px 0 0;
   padding: .5rem 1.5rem;
   background-color: var(--p-surface);
   box-shadow: var(--p-card-shadow, 0 0 0 1px rgba(63, 63, 68, .05), 0 1px 3px 0 rgba(63, 63, 68, .15));
   outline: 0.1rem solid transparent;
   border-radius: 0.5rem;
 }
+
 .license-details-row {
   margin-bottom: .3em!important;
   padding: 0!important;
   border-bottom: 1px solid var(--color-border);
 }
+
 .license-details-row:last-child {
   border-bottom: none;
 }
 
 .element-detail-cell h3.element-detail-cell-heading {
-  margin: .3em 0 0 0;
+  margin: .3em 0 0;
   padding: 0;
   font-size: 16px;
   font-weight: 600;
   line-height: 2.4rem;
 }
+
 .element-detail-cell p {
   margin-top: 0;
   font-size: 14px;
@@ -238,11 +243,11 @@ ul.tabs-nav li a.active::before {
   letter-spacing: 0.2px;
   color: #54565b;
 }
+
 input.nickname {
-  font-size: 1.6rem;
+  font-size: 15px;
   font-weight: 400;
   line-height: 2.4rem;
-  border: none;
   text-transform: initial;
   letter-spacing: initial;
   position: relative;
@@ -259,25 +264,26 @@ input.nickname {
   background: none;
   border: 1px solid #CCCCCC;
   font-family: Helvetica, 'Helvetica Neue', Arial, 'Lucida Grande', sans-serif;
-  font-size: 15px;
-  font-weight: 400;
   appearance: none;
-  caret-color: rgba(32, 34, 35, 1);
-  color: rgba(32, 34, 35, 1);
+  caret-color: #202223;
+  color: #202223;
   border-radius: 0.25rem;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   touch-action: manipulation;
 }
+
 input.nickname:hover {
   border: 1px solid #CCCCCC;
 }
+
 input.nickname:focus,
 input.nickname:focus-visible {
   outline: none;
   border-color: #b3b3b3;
 }
+
 button.save-nickname {
   margin: 15px 0 0;
   width: 3.8rem;
@@ -291,11 +297,13 @@ button.save-nickname {
   justify-content: flex-start;
   flex-wrap: wrap;
 }
+
 button.add-user-to-license {
   position: absolute;
   right: 0;
   padding: .2rem 1.3rem;
 }
+
 .end-users-details table {
   margin-bottom: 0;
   font-size: 14px;
@@ -308,15 +316,19 @@ button.add-user-to-license {
   box-shadow: 0 0 5px #1718180D, 0 1px 2px #00000026;
   outline: 0.1rem solid transparent;
 }
+
 .end-users-details table thead tr {
   background: #f6f6f7;
 }
+
 .end-users-details table tbody tr:hover td {
   background: #f6f6f7;
 }
+
 .end-users-details table th, .end-users-details table td {
   border: 1px solid var(--color-border);
 }
+
 .end-users-details table th {
   padding: 0.45rem 0.7rem;
   font-weight: bold;
@@ -337,26 +349,13 @@ button.add-user-to-license {
   text-align: left;
   transition: background-color .2s ease-in-out;
 }
+
 .end-users-details td.user-name {
     font-weight: bold;
     font-family: var(--ff-myradpro-semibold);
     font-size: 16px;
     color: #54565b;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* Styling for the modal container */
@@ -367,7 +366,7 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-background-color: rgba(0, 0, 0, 0.5);
+background-color: #00000080;
 z-index: 9999;
 }
 
