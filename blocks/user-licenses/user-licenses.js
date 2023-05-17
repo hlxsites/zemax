@@ -1,57 +1,5 @@
 import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
-import { createTag } from '../../scripts/scripts.js';
-
-function processTag(mapping, row) {
-  const attributesMapping = mapping[2].split(',');
-  const attributes = {};
-  attributesMapping.forEach((attributeMapping) => {
-    // eslint-disable-next-line prefer-destructuring
-    if (attributeMapping.split(':')[1].startsWith('dataResponse')) {
-      attributes[attributeMapping.split(':')[0]] = row[mapping[3].split('|')[attributeMapping.split(':')[1].substring(12)]];
-    } else {
-      // eslint-disable-next-line prefer-destructuring
-      attributes[attributeMapping.split(':')[0]] = attributeMapping.split(':')[1];
-    }
-  });
-
-  const tag = createTag(mapping[1], attributes, mapping[4]);
-  return tag;
-}
-
-function createGenericTable(tableHeadings, rowData) {
-  const tableElement = document.createElement('table');
-  const thead = document.createElement('thead');
-  const tr = document.createElement('tr');
-
-  tableHeadings.forEach((heading) => {
-    const headingValue = (heading.split('|')[0] === 'html' ? '' : heading.split('|')[0]);
-    const tableHeadingElement = createTag('th', { class: 'collegue-user-data-heading' }, headingValue.split('|')[0]);
-    tr.appendChild(tableHeadingElement);
-  });
-  thead.appendChild(tr);
-
-  tableElement.appendChild(thead);
-  const tbody = document.createElement('tbody');
-
-  rowData.forEach((row) => {
-    const trValue = document.createElement('tr');
-    tableHeadings.forEach((heading) => {
-      const mapping = heading.split('|');
-      if (mapping[0] === 'html') {
-        const inputTag = processTag(mapping, row);
-        const tableHeadingValue = createTag('td', '', inputTag);
-        trValue.appendChild(tableHeadingValue);
-      } else {
-        const tableHeadingValue = createTag('td', '', row[heading.split('|')[1]]);
-        trValue.appendChild(tableHeadingValue);
-      }
-    });
-    tbody.appendChild(trValue);
-  });
-
-  tableElement.appendChild(tbody);
-  return tableElement;
-}
+import { createTag, createGenericTable } from '../../scripts/scripts.js';
 
 async function showColleagues() {
   const userId = localStorage.getItem('auth0_id');
@@ -141,7 +89,6 @@ async function displayLicenseDetails(event) {
         licenseDetailsDiv.appendChild(licenseDetailsDataDiv);
         const headings = ['License Administrator|_new_registereduser_value@OData.Community.Display.V1.FormattedValue', 'Account|_new_account_value@OData.Community.Display.V1.FormattedValue', 'Renewal Date|new_supportexpires@OData.Community.Display.V1.FormattedValue', 'Key Serial Number|new_licenseid', 'Product|_new_product_value@OData.Community.Display.V1.FormattedValue', 'License Type|zemax_seattype@OData.Community.Display.V1.FormattedValue', 'ZPA Support|new_premiumsupport@OData.Community.Display.V1.FormattedValue', 'Seat Count|new_usercount@OData.Community.Display.V1.FormattedValue', 'End User Count|new_endusercount@OData.Community.Display.V1.FormattedValue'];
 
-        // html|element|keys|attributes|text
         let licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
         headings.forEach((heading, index) => {
           const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
@@ -289,11 +236,7 @@ function createLicencesTable(rows) {
 
     // TODO add logic for manage or view
     const tdManageOrView = document.createElement('td');
-    const manageOrViewButton = document.createElement('button');
-    manageOrViewButton.classList.add('manage-view-license', 'action');
-    manageOrViewButton.innerText = 'Manage';
-    manageOrViewButton.setAttribute('type', 'button');
-    manageOrViewButton.setAttribute('data-licensseid', row.new_licensesid);
+    const manageOrViewButton = createTag('button', { class: 'manage-view-license action', type: 'button', 'data-licensseid': row.new_licensesid }, 'Manage');
     tdManageOrView.appendChild(manageOrViewButton);
     trBody.appendChild(tdManageOrView);
 
