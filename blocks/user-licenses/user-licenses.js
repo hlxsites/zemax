@@ -14,7 +14,7 @@ function processTag(mapping, row) {
     }
   });
 
-  const tag = createTag(mapping[1], attributes, '');
+  const tag = createTag(mapping[1], attributes, mapping[4]);
   return tag;
 }
 
@@ -24,7 +24,8 @@ function createGenericTable(tableHeadings, rowData) {
   const tr = document.createElement('tr');
 
   tableHeadings.forEach((heading) => {
-    const tableHeadingElement = createTag('th', { class: 'collegue-user-data-heading' }, heading.split('|')[0]);
+    const headingValue = (heading.split('|')[0] === 'html' ? '' : heading.split('|')[0]);
+    const tableHeadingElement = createTag('th', { class: 'collegue-user-data-heading' }, headingValue.split('|')[0]);
     tr.appendChild(tableHeadingElement);
   });
   thead.appendChild(tr);
@@ -175,40 +176,16 @@ async function displayLicenseDetails(event) {
         addUserButton.addEventListener('click', showColleagues);
 
         if (licenseUsers !== undefined && licenseUsers.length > 0) {
-          const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1'];
-          const tableElement = document.createElement('table');
+          const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
+            'html|button|class:license-user-remove-user action important,type:button,data-new-productuserid:dataResponse0|new_productuserid|Remove User',
+            'html|button|class:license-user-change-user action,type:button|new_productuserid|Change End User'];
 
-          const thead = document.createElement('thead');
-          const tr = document.createElement('tr');
-          tableHeadings.forEach((heading) => {
-            const tableHeadingElement = createTag('th', { class: 'license-user-data-heading' }, heading.split('|')[0]);
-            tr.appendChild(tableHeadingElement);
-          });
-
-          thead.appendChild(tr);
-          tableElement.appendChild(thead);
-          const tbody = document.createElement('tbody');
-          licenseUsers.forEach((user) => {
-            const trValue = document.createElement('tr');
-            tableHeadings.forEach((heading) => {
-              const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, user[heading.split('|')[1]]);
-              trValue.appendChild(tableHeadingValue);
-            });
-            const buttonRemoveUser = createTag('button', { class: 'license-user-remove-user action important', type: 'button', 'data-new-productuserid': user.new_productuserid }, 'Remove User');
-            const tableHeadingValue = createTag('td', { class: 'license-user-data-cell' }, buttonRemoveUser);
-            buttonRemoveUser.addEventListener('click', removeUserFromLicense);
-
-            trValue.appendChild(tableHeadingValue);
-
-            const buttonChangeEndUser = createTag('button', { class: 'license-user-change-user action', type: 'button' }, 'Change End User');
-            const tableHeadingChangeUserValue = createTag('td', { class: 'license-user-data-cell' }, buttonChangeEndUser);
-
-            trValue.appendChild(tableHeadingChangeUserValue);
-
-            tbody.appendChild(trValue);
-          });
-          tableElement.appendChild(tbody);
+          const tableElement = createGenericTable(tableHeadings, licenseUsers);
           endUsersDetailsDiv.appendChild(tableElement);
+          const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
+          removeButtons.forEach((removeButton) => {
+            removeButton.addEventListener('click', removeUserFromLicense);
+          });
         } else {
           endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
         }
