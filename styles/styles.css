@@ -308,12 +308,12 @@ button.action:before {
 button.action.important {
   color: rgb(191, 7, 17);
   border-color: rgb(191, 7, 17);
-  box-shadow: 0 0 0 0.1rem rgb(191, 7, 17);
+  box-shadow: 0 0 0 0.05rem rgb(191, 7, 17);
 }
 button.action.important:hover {
   color: rgb(191, 7, 17);
   border-color: rgb(191, 7, 17);
-  box-shadow: 0 0 0 0.1rem rgb(191, 7, 17);
+  box-shadow: 0 0 0 0.05rem rgb(191, 7, 17);
 }
 button.action.important:before {
   background-color: rgb(191, 7, 17);
