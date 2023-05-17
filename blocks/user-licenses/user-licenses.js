@@ -1,6 +1,23 @@
 import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag } from '../../scripts/scripts.js';
 
+function processTag(mapping, row) {
+  const attributesMapping = mapping[2].split(',');
+  const attributes = {};
+  attributesMapping.forEach((attributeMapping) => {
+    // eslint-disable-next-line prefer-destructuring
+    if (attributeMapping.split(':')[1].startsWith('dataResponse')) {
+      attributes[attributeMapping.split(':')[0]] = row[mapping[3].split('|')[attributeMapping.split(':')[1].substring(12)]];
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      attributes[attributeMapping.split(':')[0]] = attributeMapping.split(':')[1];
+    }
+  });
+
+  const tag = createTag(mapping[1], attributes, '');
+  return tag;
+}
+
 function createGenericTable(tableHeadings, rowData) {
   const tableElement = document.createElement('table');
   const thead = document.createElement('thead');
@@ -18,8 +35,15 @@ function createGenericTable(tableHeadings, rowData) {
   rowData.forEach((row) => {
     const trValue = document.createElement('tr');
     tableHeadings.forEach((heading) => {
-      const tableHeadingValue = createTag('td', '', row[heading.split('|')[1]]);
-      trValue.appendChild(tableHeadingValue);
+      const mapping = heading.split('|');
+      if (mapping[0] === 'html') {
+        const inputTag = processTag(mapping, row);
+        const tableHeadingValue = createTag('td', '', inputTag);
+        trValue.appendChild(tableHeadingValue);
+      } else {
+        const tableHeadingValue = createTag('td', '', row[heading.split('|')[1]]);
+        trValue.appendChild(tableHeadingValue);
+      }
     });
     tbody.appendChild(trValue);
   });
@@ -42,7 +66,7 @@ async function showColleagues() {
   })
     .then(async (response) => {
       const data = await response.json();
-      const headingsMapping = ['Full Name|firstname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
+      const headingsMapping = ['html|input|type:checkbox,id:dataResponse0|contactid|', 'Full Name|firstname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
       const colleaguesTable = createGenericTable(headingsMapping, data.colleagues);
       const endUsersDetailsDiv = document.querySelector('.end-users-details');
       endUsersDetailsDiv.appendChild(colleaguesTable);
@@ -68,6 +92,7 @@ async function removeUserFromLicense(event) {
       console.log('user deleted', data);
     });
 }
+
 async function updateLicenseNickname() {
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
@@ -86,6 +111,7 @@ async function updateLicenseNickname() {
     });
   }
 }
+
 async function displayLicenseDetails(event) {
   const licenseId = event.target.getAttribute('data-licensseid');
   const userId = localStorage.getItem('auth0_id');
@@ -114,7 +140,7 @@ async function displayLicenseDetails(event) {
         licenseDetailsDiv.appendChild(licenseDetailsDataDiv);
         const headings = ['License Administrator|_new_registereduser_value@OData.Community.Display.V1.FormattedValue', 'Account|_new_account_value@OData.Community.Display.V1.FormattedValue', 'Renewal Date|new_supportexpires@OData.Community.Display.V1.FormattedValue', 'Key Serial Number|new_licenseid', 'Product|_new_product_value@OData.Community.Display.V1.FormattedValue', 'License Type|zemax_seattype@OData.Community.Display.V1.FormattedValue', 'ZPA Support|new_premiumsupport@OData.Community.Display.V1.FormattedValue', 'Seat Count|new_usercount@OData.Community.Display.V1.FormattedValue', 'End User Count|new_endusercount@OData.Community.Display.V1.FormattedValue'];
 
-        //element|keys|attributes|text
+        // html|element|keys|attributes|text
         let licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
         headings.forEach((heading, index) => {
           const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
