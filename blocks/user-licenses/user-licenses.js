@@ -1,6 +1,14 @@
 import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
 import { createTag, createGenericTable } from '../../scripts/scripts.js';
 
+function showModal() {
+  document.getElementById('addUserModal').style.display = 'block';
+}
+
+function hideModal() {
+  document.getElementById('addUserModal').style.display = 'none';
+}
+
 async function showColleagues() {
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
@@ -17,8 +25,13 @@ async function showColleagues() {
       const data = await response.json();
       const headingsMapping = ['html|input|type:checkbox,id:dataResponse0|contactid|', 'Full Name|firstname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
       const colleaguesTable = createGenericTable(headingsMapping, data.colleagues);
-      const endUsersDetailsDiv = document.querySelector('.end-users-details');
-      endUsersDetailsDiv.appendChild(colleaguesTable);
+      const modalAddUserModalContentDiv = document.querySelector('.add-user-modal-content');
+      const addUserButton = createTag('button', { class: 'action' }, 'Add User');
+      const addUserModalCloseButton = createTag('button', { class: 'action' }, 'Close');
+      modalAddUserModalContentDiv.appendChild(colleaguesTable);
+      modalAddUserModalContentDiv.appendChild(addUserButton);
+      modalAddUserModalContentDiv.appendChild(addUserModalCloseButton);
+      addUserModalCloseButton.addEventListener('click', hideModal);
     });
 }
 
@@ -118,9 +131,10 @@ async function displayLicenseDetails(event) {
         endUsersDetailsDiv.appendChild(endUsersH2);
         const addUserButton = createTag('button', { class: 'add-user-to-license action', type: 'button' }, 'Add End User');
 
+        await showColleagues();
         // TODO add condition
         endUsersDetailsDiv.appendChild(addUserButton);
-        addUserButton.addEventListener('click', showColleagues);
+        addUserButton.addEventListener('click', showModal);
 
         if (licenseUsers !== undefined && licenseUsers.length > 0) {
           const tableHeadings = ['Name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
@@ -133,6 +147,9 @@ async function displayLicenseDetails(event) {
           removeButtons.forEach((removeButton) => {
             removeButton.addEventListener('click', removeUserFromLicense);
           });
+
+          // const modalContentDiv = document.querySelector('.add-user-modal-content');
+          buttonPop.addEventListener('click', showModal);
         } else {
           endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
         }
@@ -143,8 +160,11 @@ async function displayLicenseDetails(event) {
 function addManageLicenseFeature(block) {
   const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
   const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
+  const modalAddUserModalContentDiv = createTag('div', { class: 'modal-content add-user-modal-content' }, '');
+  const modalAddUserModalDiv = createTag('div', { class: 'modal-container add-user-modal', id: 'addUserModal' }, modalAddUserModalContentDiv);
   block.append(licenseDetailsDiv);
   block.append(endUsersDetailsDiv);
+  block.append(modalAddUserModalDiv);
   const manageButtons = document.querySelectorAll('.manage-view-license');
   manageButtons.forEach((manageButton) => {
     manageButton.addEventListener('click', displayLicenseDetails);
