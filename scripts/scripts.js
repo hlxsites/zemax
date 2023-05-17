@@ -71,6 +71,75 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+/**
+ *Example
+ *
+  'html|button|
+  class:license-user-remove-user action important,type:button,data-new-productuserid:dataResponse0|
+  new_productuserid|
+  Remove User'
+
+ *Format
+
+  'html|htmlTagName|
+   attribute1:attribute1Value, attribute2: attribute2Value, attribute3: dataResponse0|
+   dataResponse0Key,dataResponse1Key|htmlInnerText
+
+  *In the above format dataResponse0 denotes take the key from next split
+  * Currently only used by create generic table method, export to use for others and update this comment.
+*/
+function processTag(mapping, row) {
+  const attributesMapping = mapping[2].split(',');
+  const attributes = {};
+  attributesMapping.forEach((attributeMapping) => {
+    // eslint-disable-next-line prefer-destructuring
+    if (attributeMapping.split(':')[1].startsWith('dataResponse')) {
+      attributes[attributeMapping.split(':')[0]] = row[mapping[3].split('|')[attributeMapping.split(':')[1].substring(12)]];
+    } else {
+      // eslint-disable-next-line prefer-destructuring
+      attributes[attributeMapping.split(':')[0]] = attributeMapping.split(':')[1];
+    }
+  });
+
+  const tag = createTag(mapping[1], attributes, mapping[4]);
+  return tag;
+}
+
+export function createGenericTable(tableHeadings, rowData) {
+  const tableElement = document.createElement('table');
+  const thead = document.createElement('thead');
+  const tr = document.createElement('tr');
+
+  tableHeadings.forEach((heading) => {
+    const headingValue = (heading.split('|')[0] === 'html' ? '' : heading.split('|')[0]);
+    const tableHeadingElement = createTag('th', { class: 'collegue-user-data-heading' }, headingValue.split('|')[0]);
+    tr.appendChild(tableHeadingElement);
+  });
+  thead.appendChild(tr);
+
+  tableElement.appendChild(thead);
+  const tbody = document.createElement('tbody');
+
+  rowData.forEach((row) => {
+    const trValue = document.createElement('tr');
+    tableHeadings.forEach((heading) => {
+      const mapping = heading.split('|');
+      if (mapping[0] === 'html') {
+        const inputTag = processTag(mapping, row);
+        const tableHeadingValue = createTag('td', '', inputTag);
+        trValue.appendChild(tableHeadingValue);
+      } else {
+        const tableHeadingValue = createTag('td', '', row[heading.split('|')[1]]);
+        trValue.appendChild(tableHeadingValue);
+      }
+    });
+    tbody.appendChild(trValue);
+  });
+
+  tableElement.appendChild(tbody);
+  return tableElement;
+}
+
 export async function searchResults(index, category) {
   const resp = await fetch(index);
   const json = await resp.json();
