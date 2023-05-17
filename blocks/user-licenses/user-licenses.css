@@ -218,6 +218,7 @@ ul.tabs-nav li a.active::before {
 .license-details-row:last-child {
   border-bottom: none;
 }
+
 .element-detail-cell h3.element-detail-cell-heading {
   margin: .3em 0 0 0;
   padding: 0;
@@ -277,4 +278,28 @@ input.nickname:focus-visible {
 button.save-nickname {
   margin: 15px 0 0;
   width: 3.8rem;
+}
+
+ /* Styling for the modal container */
+ .modal-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+/* Styling for the modal content */
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  text-align: center;
 }
