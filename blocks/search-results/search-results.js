@@ -92,10 +92,30 @@ function getLinkLabelByCategory(category) {
     eguides: 'Learn more',
     'Success Story': 'Learn more',
   };
-  return categoryMap[category] || 'Learn more';
+  return categoryMap[category] || 'Read more';
 }
 
-function getTitleByCategory(category) {
+/**
+ * Format date from int to string
+ * @param {number} publishDate - int date value like: 44659, this date format is come
+ * from serialized date from excel file
+ * @returns {string} formatted date string like: Aug 2, 2022
+ */
+function formatDate(publishDate) {
+  const date = new Date(Math.round((publishDate - 25568) * 86400 * 1000));
+  const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+  return `${month} ${date.getDate()}, ${date.getFullYear()}`;
+}
+
+/**
+ * Return the title for search result card, which hard code for some category,
+ * for rest news blog, use publish date instead
+ * @param {string} category - the category which based on url path or
+ * blog category title for news blog
+ * @param {number} publishDate - int date value like: 44659, this date format is come
+ * @returns {string} - the blog title show in the search result card
+ */
+function getTitleByCategory(category, publishDate) {
   const categoryMap = {
     Webinar: 'Webinar',
     videos: 'Product video',
@@ -103,7 +123,7 @@ function getTitleByCategory(category) {
     'product-overviews': 'Product Overview',
     eguides: 'eGuide',
   };
-  return categoryMap[category] || 'Learn more';
+  return categoryMap[category] || formatDate(publishDate);
 }
 
 function getLink(item) {
@@ -115,9 +135,6 @@ function getLink(item) {
   }
   return '#';
 }
-
-// todo: link or path
-// todo: image or image from youtube
 
 export default async function decorate(block) {
   const category = getMetadata('category');
@@ -160,7 +177,7 @@ export default async function decorate(block) {
     // cards-card-body
     const cardBody = createTag('div', { class: 'cards-card-body' });
 
-    const cardTitle = createTag('h5', { class: 'card-title' }, getTitleByCategory(category));
+    const cardTitle = createTag('h5', { class: 'card-title' }, getTitleByCategory(category, item.publishdate));
     const cardDescription = createTag('p', { class: 'card-description' }, item.title);
 
     const alink = getLink(item);
