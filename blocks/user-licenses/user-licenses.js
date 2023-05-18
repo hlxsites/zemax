@@ -32,15 +32,24 @@ async function addUserToALicense(event) {
   const contactId = event.target.getAttribute('contactid');
   const licenseId = event.target.getAttribute('data-license-id');
   const data = await execute('dynamics_add_end_user', `&contactId=${contactId}&licenseid=${licenseId}`, 'POST');
-  console.log('User added to license', data);
-  hideModal(event);
+
+  if (data !== undefined && data !== null && data.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+    // eslint-disable-next-line no-use-before-define
+    displayLicenseDetails(event);
+  } else {
+    console.log('error ', data);
+  }
 }
 
 async function showColleagues() {
   const data = await execute('dynamics_get_colleagues_view', '', 'GET');
-  const headingsMapping = ['html|input|class:add-user-checkbox,type:checkbox,id:dataResponse0|contactid|', 'Full Name|firstname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
+  const headingsMapping = ['html|input|class:add-user-checkbox,type:checkbox,id:dataResponse0|contactid|', 'Full Name|firstname,lastname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
   const colleaguesTable = createGenericTable(headingsMapping, data.colleagues);
   const modalAddUserModalContentDiv = document.querySelector('.add-user-modal-content');
+  // clear previous modal content
+  modalAddUserModalContentDiv.innerHTML = '';
   const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
   const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
   modalAddUserModalContentDiv.appendChild(colleaguesTable);
@@ -69,37 +78,58 @@ async function removeUserFromLicense(event) {
   // TODO add confirmation modal
 
   const data = await execute('dynamics_remove_enduser_from_license', `&new_productuserid=${newproductuserid}`, 'DELETE');
-  console.log('user deleted', data);
+  // TODO handle response and add toast message
+  console.log('remove user', data);
+  const lincenseId = document.querySelector('.add-user-to-license.action').getAttribute('data-license-id');
+  event.target.setAttribute('data-license-id', lincenseId);
+
+  if (data !== undefined && data !== null && data.status === 204) {
+    // TODO show success toast message
+    alert('User deleted successfully');
+    // eslint-disable-next-line no-use-before-define
+    displayLicenseDetails(event);
+  } else {
+    console.log('error ', data);
+  }
 }
 
 async function updateLicenseNickname() {
   const { value } = document.querySelector('.nickname');
-
   if (value !== '' && value !== undefined) {
     const data = await execute('dynamics_set_license_nickname', `&id=97d53652-122f-e611-80ea-005056831cd4&nickname=${value}`, 'PATCH');
     console.log('Updated license nickname ', data);
   } else {
-    // TODO handle better
+    // TODO handle response and add toast message
     alert('Provide nickname value before saving');
   }
 }
 
-async function displayLicenseDetails(event) {
-  // Hack
+function hideOtherUserLicenseInformation() {
   const sections = document.querySelectorAll('.section');
 
   sections.forEach((section) => {
     if (section.classList.contains('user-licenses-container')) {
-      section.querySelector('.tabs').remove();
+      const tabsContent = section.querySelector('.tabs');
+      if (tabsContent !== undefined && tabsContent !== null) {
+        section.querySelector('.tabs').remove();
+      }
       const licenseComponent = section.querySelector('.user-licenses.block');
       licenseComponent.querySelector('h3').parentElement.parentElement.remove();
-      const backToProfileButton = createTag('a', { href: '/pages/profile', class: 'button primary' }, 'Back to Account');
-      licenseComponent.insertBefore(backToProfileButton, licenseComponent.firstChild);
+
+      let backToProfileButton = licenseComponent.querySelector('#backToAccountButton');
+      if (backToProfileButton === undefined || backToProfileButton === null) {
+        backToProfileButton = createTag('a', { href: '/pages/profile', class: 'button primary', id: 'backToAccountButton' }, 'Back to Account');
+        licenseComponent.insertBefore(backToProfileButton, licenseComponent.firstChild);
+      }
     } else {
       section.remove();
     }
   });
-  const licenseId = event.target.getAttribute('data-licensseid');
+}
+
+async function displayLicenseDetails(event) {
+  hideOtherUserLicenseInformation();
+  const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
 
@@ -107,7 +137,6 @@ async function displayLicenseDetails(event) {
     window.location.assign(`${window.location.origin}`);
   } else {
     const data = await execute('dynamics_get_end_users_for_license', `&license_id=${licenseId}`, 'GET');
-
     // DOM creation
     const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
     const licenseDetailsDiv = document.querySelector('.license-details');
@@ -156,7 +185,7 @@ async function displayLicenseDetails(event) {
     addUserButton.addEventListener('click', showAddUserTable);
 
     if (licenseUsers !== undefined && licenseUsers.length > 0) {
-      const tableHeadings = ['html|td|class:user-name|contact1.fullname', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
+      const tableHeadings = ['html|td|class:user-name|contact1.fullname|Name', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
         'html|button|class:license-user-remove-user action important,type:button,data-new-productuserid:dataResponse0|new_productuserid|Remove User',
         'html|button|class:license-user-change-user action,type:button|new_productuserid|Change End User'];
 
@@ -283,7 +312,7 @@ function createLicencesTable(rows) {
 
     // TODO add logic for manage or view
     const tdManageOrView = document.createElement('td');
-    const manageOrViewButton = createTag('button', { class: 'manage-view-license action', type: 'button', 'data-licensseid': row.new_licensesid }, 'Manage');
+    const manageOrViewButton = createTag('button', { class: 'manage-view-license action', type: 'button', 'data-license-id': row.new_licensesid }, 'Manage');
     tdManageOrView.appendChild(manageOrViewButton);
     trBody.appendChild(tdManageOrView);
 

@@ -111,7 +111,10 @@ export function createGenericTable(tableHeadings, rowData) {
   const tr = document.createElement('tr');
 
   tableHeadings.forEach((heading) => {
-    const headingValue = (heading.split('|')[0] === 'html' ? '' : heading.split('|')[0]);
+    let headingValue = heading.split('|')[0];
+    if (heading.split('|')[0] === 'html') {
+      headingValue = heading.split('|')[1] === 'td' ? heading.split('|')[4] : '';
+    }
     const tableHeadingElement = createTag('th', { class: 'collegue-user-data-heading' }, headingValue.split('|')[0]);
     tr.appendChild(tableHeadingElement);
   });
@@ -146,6 +149,17 @@ export function createGenericTable(tableHeadings, rowData) {
         }
       } else {
         const tableHeadingValue = createTag('td', '', row[heading.split('|')[1]]);
+        let innnerHtmlValue = '';
+        if (heading.split('|')[1].split(',').length > 1) {
+          const values = heading.split('|')[1].split(',');
+          values.forEach((value, index) => {
+            innnerHtmlValue = innnerHtmlValue.concat(row[value]);
+            if (index < values.length - 1) {
+              innnerHtmlValue = innnerHtmlValue.concat(' ');
+            }
+          });
+          tableHeadingValue.innerHTML = innnerHtmlValue;
+        }
         trValue.appendChild(tableHeadingValue);
       }
     });
