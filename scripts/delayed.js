@@ -9,24 +9,27 @@ sampleRUM('cwv');
 const placeholders = await fetchPlaceholders();
 
 // OneTrust Cookies Consent Notice start
-const otId = placeholders.onetrustid;
-if (otId) {
-  loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
-    type: 'text/javascript',
-    charset: 'UTF-8',
-    'data-domain-script': `${otId}`,
-  });
-
-  window.OptanonWrapper = () => {};
-}
-
-const allButtons = document.querySelectorAll('a.button');
-allButtons.forEach((button) => {
-  if (button.getAttribute('href').includes('cookie-policy')) {
-    button.addEventListener('click', (e) => {
-    // eslint-disable-next-line no-undef
-      OneTrust.ToggleInfoDisplay();
-      e.preventDefault();
+if (!window.location.host.includes('hlx.page') && !window.location.host.includes('localhost')) {
+  const otId = placeholders.onetrustid;
+  if (otId) {
+    loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
+      type: 'text/javascript',
+      charset: 'UTF-8',
+      'data-domain-script': `${otId}`,
     });
+
+    window.OptanonWrapper = () => {
+    };
   }
-});
+
+  const allButtons = document.querySelectorAll('a.button');
+  allButtons.forEach((button) => {
+    if (button.getAttribute('href').includes('cookie-policy')) {
+      button.addEventListener('click', (e) => {
+        // eslint-disable-next-line no-undef
+        OneTrust.ToggleInfoDisplay();
+        e.preventDefault();
+      });
+    }
+  });
+}
