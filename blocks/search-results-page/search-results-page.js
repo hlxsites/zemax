@@ -1,33 +1,45 @@
-import { div, h2 } from '../../scripts/dom-helpers.js';
+import { a, div, h2 } from '../../scripts/dom-helpers.js';
+
+function createTabs(params) {
+  const tabs = div({ class: 'tabs' });
+  // tabs labels are static as there is no authoring needed
+
+  tabs.appendChild(
+    div(
+      div({ 'data-view': '' },
+        a({ href: `/search?q=${params.searchTerm}` }, 'Product Information'),
+      ),
+      div({ 'data-view': 'resources' },
+        a({ href: `/search?view=resources&q=${params.searchTerm}&options%5Bprefix%5D=last&type=article` }, 'Resources'),
+      ),
+      div({ 'data-view': 'knowledgebase' },
+        a({ href: `/search?view=knowledgebase&q=${params.searchTerm}` }, 'Knowledgebase'),
+      ),
+      div({ 'data-view': 'community' },
+        a({ href: `/search?view=community&q=${params.searchTerm}` }, 'Community'),
+      ),
+    ),
+  );
+
+  tabs.querySelector(`[data-view="${params.view}"]`)?.classList.add('active');
+  return tabs;
+}
 
 export default async function decorate(block) {
   const params = getSearchParams();
 
   block.innerHTML = '';
-
   if (params.searchTerm) {
     block.prepend(h2(`Search results for “${params.searchTerm}”`));
   } else {
     block.prepend(h2('Search our site'));
   }
 
-  const tabs = div({ class: 'tabs' });
-  // tabs labels are static as there is no authoring needed
-  tabs.innerHTML = `
-            <div>
-              <div data-view=""><a href="">Product Information</a></div>
-              <div data-view="resources"><a href="">Resources</a></div>
-              <div data-view="knowledgebase"><a href="">Knowledgebase</a></div>
-              <div data-view="community"><a href="">Community</a></div>
-          </div> `;
+  block.append(createTabs(params));
 
-  tabs.querySelector(`[data-view="${params.view}"]`)?.classList.add('active');
-
-  tabs.firstElementChild.children[0].firstElementChild.href = `/search?q=${params.searchTerm}`;
-  tabs.firstElementChild.children[1].firstElementChild.href = `/search?view=resources&q=${params.searchTerm}&options%5Bprefix%5D=last&type=article`;
-  tabs.firstElementChild.children[2].firstElementChild.href = `/search?view=knowledgebase&q=${params.searchTerm}`;
-  tabs.firstElementChild.children[3].firstElementChild.href = `/search?view=community&q=${params.searchTerm}`;
-  block.append(tabs);
+  if (params.view === '') {
+    h2('Product Information');
+  }
 }
 
 function getSearchParams() {

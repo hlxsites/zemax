@@ -18,5 +18,8 @@ module.exports = {
       js: 'always',
     }],
     'no-use-before-define': ['error', { functions: false }],
+    // this is so you can keep the attribute object on the same line as the function call, to make visually similar with the dom.
+    // e.g. p({ class: 'button-container' },
+    'function-paren-newline': 'off',
   },
 };
