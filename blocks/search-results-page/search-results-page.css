@@ -9,7 +9,7 @@
 
 
 /* TODO: replace: */
-.search-results-page-container  .search-heads-block {
+.search-results-page-container  .search-result-section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,11 +18,18 @@
   border-bottom: 1px solid #dad9d7;
 }
 
-.search-results-page-container  .search-heads-block h3 {
+.search-results-page-container .search-result-section.knowledgebase p {
+  font-size: var(--body-font-size-s);
+  margin: 0;
+
+}
+
+
+.search-results-page-container  .search-result-section-header h3 {
   margin: 0;
 }
 
-.search-results-page-container a.search-community-block h4 {
+.search-results-page-container .search-result-section h4 {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-xl);
 }
@@ -50,10 +57,12 @@
   line-height: 2;
   letter-spacing: 0.56px;
   margin-right: 4px;
-
-
 }
 
+.search-results-page-container  .search-result-section {
+  padding-top: 31px;
+  padding-bottom: 36px;
+}
 
 /** tab like columns */
 .search-results-page-container .tabs > div {

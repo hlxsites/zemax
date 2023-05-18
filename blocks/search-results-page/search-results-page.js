@@ -16,7 +16,11 @@ export default async function decorate(block) {
 
   if (params.view === '') {
     block.append(await createProductInformationResult(params));
+    block.append(await createResourceResult(params, 3));
+    block.append(await createKnowledgebaseResult(params, 4));
+    block.append(await createCommunityResult(params));
   }
+
   if (params.view === 'resources') {
     block.append(await createResourceResult(params));
   }
@@ -112,8 +116,8 @@ async function createProductInformationResult(params) {
       a({ href: entry.path }, 'Learn more'),
     )));
 
-  return div(
-    div({ class: 'search-heads-block' },
+  return div({ class: 'search-result-section productinformation' },
+    div({ class: 'search-result-section-header' },
       h3('Product Information',
         // TODO: count
         span({ class: 'search-count-result' }, `${firstPage.length} of ${result.length} results`)),
@@ -122,9 +126,9 @@ async function createProductInformationResult(params) {
   );
 }
 
-async function createResourceResult(params) {
+async function createResourceResult(params, limit = 12) {
   const result = await searchResources(params);
-  const firstPage = result.slice(0, 12);
+  const firstPage = result.slice(0, limit);
 
   const resultDivs = firstPage
     .map((entry) => (div({ class: 'search-product-block' },
@@ -134,10 +138,9 @@ async function createResourceResult(params) {
       a({ href: entry.path }, 'Learn more'),
     )));
 
-  return div(
-    div({ class: 'search-heads-block' },
-      h3('Product Information',
-        // TODO: count
+  return div({ class: 'search-result-section resources' },
+    div({ class: 'search-result-section-header' },
+      h3('Resources',
         span({ class: 'search-count-result' }, `${firstPage.length} of ${result.length} results`)),
     ),
     ...resultDivs,
@@ -191,13 +194,13 @@ async function createResourceResult(params) {
  * @param params
  * @return {Promise<ZendeskSearchResults>}
  */
-async function searchKnowledgebase(params) {
+async function searchKnowledgebase(params, perPage) {
   const locale = 'en';
   const response = await fetch(`https://zemax.zendesk.com/api/v2/help_center/articles/search?${
     new URLSearchParams({
       page: 1,
       page_count: 1,
-      per_page: 12,
+      per_page: perPage,
       query: params.searchTerm,
       sort_order: 'desc',
       locale,
@@ -280,8 +283,8 @@ function trimToLength(number, text) {
   return `${wordsArrayWithoutLast.join(' ')}...`;
 }
 
-async function createKnowledgebaseResult(params) {
-  const searchResults = await searchKnowledgebase(params);
+async function createKnowledgebaseResult(params, perPage = 12) {
+  const searchResults = await searchKnowledgebase(params, perPage);
   const firstPage = searchResults.results;
 
   const resultDivs = firstPage
@@ -297,8 +300,8 @@ async function createKnowledgebaseResult(params) {
       ));
     });
 
-  return div(
-    div({ class: 'search-heads-block' },
+  return div({ class: 'search-result-section knowledgebase' },
+    div({ class: 'search-result-section-header' },
       h3('Knowledgebase',
         // TODO: count
         span({ class: 'search-count-result' }, `${firstPage.length} of ${searchResults.count} results`)),
@@ -353,8 +356,8 @@ async function createCommunityResult(params) {
       return link;
     });
 
-  return div(
-    div({ class: 'search-heads-block' },
+  return div({ class: 'search-result-section community' },
+    div({ class: 'search-result-section-header' },
       h3('Community',
         // TODO: count
         span({ class: 'search-count-result' }, `${searchResults.length} of ${searchResults.count} results`)),
