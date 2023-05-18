@@ -90,13 +90,13 @@ async function displayLicenseDetails(event) {
 
   sections.forEach((section) => {
     if (section.classList.contains('user-licenses-container')) {
-      section.querySelector('.tabs').innerHTML = '';
+      section.querySelector('.tabs').remove();
       const licenseComponent = section.querySelector('.user-licenses.block');
-      const backToProfileButton = createTag('a', { href: '/pages/profile' }, 'Back to Profile');
+      licenseComponent.querySelector('h3').parentElement.parentElement.remove();
+      const backToProfileButton = createTag('a', { href: '/pages/profile', class: 'button primary' }, 'Back to Account');
       licenseComponent.insertBefore(backToProfileButton, licenseComponent.firstChild);
     } else {
-      console.log(section);
-      section.innerHTML = '';
+      section.remove();
     }
   });
   const licenseId = event.target.getAttribute('data-licensseid');
