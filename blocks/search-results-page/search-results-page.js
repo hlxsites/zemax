@@ -1,48 +1,57 @@
-import {
-  a, div, h2, h3, h4, img, p, span,
-} from '../../scripts/dom-helpers.js';
+import { a, div, h2, h3, h4, img, p, span } from '../../scripts/dom-helpers.js';
 
-/**
- * @typedef {Object} SearchResults
- * @property {number} count - The total count of results.
- * @property {string} next_page - The URL to the next page of results.
- * @property {number} page - The current page number.
- * @property {number} page_count - The total count of pages.
- * @property {number} per_page - The number of results per page.
- * @property {?string} previous_page - The URL to the previous page of results. Null if no previous page.
- * @property {Array.<Result>} results - The array of results.
- */
+export default async function decorate(block) {
+  const params = getSearchParams();
 
-/**
- * @typedef {Object} Result
- * @property {number} id - The unique identifier of the result.
- * @property {string} url - The API URL of the result.
- * @property {string} html_url - The HTML URL of the result.
- * @property {number} author_id - The unique identifier of the author.
- * @property {boolean} comments_disabled - Whether comments are disabled.
- * @property {boolean} draft - Whether the result is a draft.
- * @property {boolean} promoted - Whether the result is promoted.
- * @property {number} position - The position of the result.
- * @property {number} vote_sum - The sum of votes.
- * @property {number} vote_count - The count of votes.
- * @property {number} section_id - The unique identifier of the section.
- * @property {string} created_at - The creation timestamp.
- * @property {string} updated_at - The update timestamp.
- * @property {string} name - The name of the result.
- * @property {string} title - The title of the result.
- * @property {string} source_locale - The source locale of the result.
- * @property {string} locale - The locale of the result.
- * @property {boolean} outdated - Whether the result is outdated.
- * @property {Array.<string>} outdated_locales - The list of outdated locales.
- * @property {string} edited_at - The edited timestamp.
- * @property {?number} user_segment_id - The unique identifier of the user segment. Null if not applicable.
- * @property {number} permission_group_id - The unique identifier of the permission group.
- * @property {Array.<number>} content_tag_ids - The array of content tag identifiers.
- * @property {Array.<string>} label_names - The array of label names.
- * @property {string} body - The HTML body content.
- * @property {string} snippet - The snippet content.
- * @property {string} result_type - The type of the result.
- */
+  block.innerHTML = '';
+  if (params.searchTerm) {
+    block.prepend(h2(`Search results for “${params.searchTerm}”`));
+  } else {
+    block.prepend(h2('Search our site'));
+  }
+
+  block.append(createTabs(params));
+
+  if (params.view === '') {
+    block.append(await createProductInformationResult(params));
+  }
+  if (params.view === 'resources') {
+    block.append(await createResourceResult(params));
+  }
+  if (params.view === 'knowledgebase') {
+    block.append(await createKnowledgebaseResult(params));
+  }
+  if (params.view === 'community') {
+    block.append(await createCommunityResult(params));
+  }
+}
+
+function getSearchParams() {
+  /**
+   * @type {'resources'|'resources'|'knowledgebase'|'community'}
+   */
+  const view = new URLSearchParams(window.location.search).get('view') || '';
+  /**
+   * @type {number}
+   */
+  const page = new URLSearchParams(window.location.search).get('page');
+  /**
+   * @type {'article'|undefined}
+   */
+  const type = new URLSearchParams(window.location.search).get('type');
+  /**
+   * @type {string}
+   */
+  const searchTerm = new URLSearchParams(window.location.search).get('q');
+  /**
+   * @type {'last'|'first'}
+   */
+  const prefix = new URLSearchParams(window.location.search).get('options[prefix]');
+
+  return {
+    view, page, type, searchTerm, prefix,
+  };
+}
 
 function createTabs(params) {
   const tabs = div({ class: 'tabs' });
@@ -134,9 +143,51 @@ async function createResourceResult(params) {
 }
 
 /**
+ * @typedef {Object} ZendeskSearchResults
+ * @property {number} count - The total count of results.
+ * @property {string} next_page - The URL to the next page of results.
+ * @property {number} page - The current page number.
+ * @property {number} page_count - The total count of pages.
+ * @property {number} per_page - The number of results per page.
+ * @property {?string} previous_page - The URL to the previous page of results. Null if no previous page.
+ * @property {Array.<ZenddeskResult>} results - The array of results.
+ */
+
+/**
+ * @typedef {Object} ZenddeskResult
+ * @property {number} id - The unique identifier of the result.
+ * @property {string} url - The API URL of the result.
+ * @property {string} html_url - The HTML URL of the result.
+ * @property {number} author_id - The unique identifier of the author.
+ * @property {boolean} comments_disabled - Whether comments are disabled.
+ * @property {boolean} draft - Whether the result is a draft.
+ * @property {boolean} promoted - Whether the result is promoted.
+ * @property {number} position - The position of the result.
+ * @property {number} vote_sum - The sum of votes.
+ * @property {number} vote_count - The count of votes.
+ * @property {number} section_id - The unique identifier of the section.
+ * @property {string} created_at - The creation timestamp.
+ * @property {string} updated_at - The update timestamp.
+ * @property {string} name - The name of the result.
+ * @property {string} title - The title of the result.
+ * @property {string} source_locale - The source locale of the result.
+ * @property {string} locale - The locale of the result.
+ * @property {boolean} outdated - Whether the result is outdated.
+ * @property {Array.<string>} outdated_locales - The list of outdated locales.
+ * @property {string} edited_at - The edited timestamp.
+ * @property {?number} user_segment_id - The unique identifier of the user segment. Null if not applicable.
+ * @property {number} permission_group_id - The unique identifier of the permission group.
+ * @property {Array.<number>} content_tag_ids - The array of content tag identifiers.
+ * @property {Array.<string>} label_names - The array of label names.
+ * @property {string} body - The HTML body content.
+ * @property {string} snippet - The snippet content.
+ * @property {string} result_type - The type of the result.
+ */
+
+/**
  *
  * @param params
- * @return {Promise<SearchResults>}
+ * @return {Promise<ZendeskSearchResults>}
  */
 async function searchKnowledgebase(params) {
   const locale = 'en';
@@ -155,6 +206,65 @@ async function searchKnowledgebase(params) {
   }
 
   return await response.json();
+}
+
+/**
+ * @typedef {Object} CommunityPost
+ * @property {string} contentType - The type of content.
+ * @property {string} id - The ID of the post.
+ * @property {string} publicId - The public ID of the post.
+ * @property {string} title - The title of the post.
+ * @property {string} content - The content of the post.
+ * @property {string} featuredImage - The featured image of the post.
+ * @property {string} publicLabel - The public label of the post.
+ * @property {string} categoryId - The ID of the post's category.
+ * @property {string} categoryName - The name of the post's category.
+ * @property {string[]} tags - The tags of the post.
+ * @property {string[]} moderatorTags - The moderator tags of the post.
+ * @property {string} moderationLabel - The moderation label of the post.
+ * @property {number} replyCount - The number of replies to the post.
+ * @property {number} likes - The number of likes on the post.
+ * @property {number} votes - The number of votes on the post.
+ * @property {number} views - The number of views of the post.
+ * @property {string[]} voteSet - The set of votes on the post.
+ * @property {string[]} likeSet - The set of likes on the post.
+ * @property {boolean} trashed - Whether the post has been trashed.
+ * @property {boolean} sticky - Whether the post is sticky.
+ * @property {boolean} bestAnswer - Whether the post is the best answer.
+ * @property {Object} author - The author of the post.
+ * @property {Object} lastContributor - The last contributor to the post.
+ * @property {string} createdAt - The timestamp when the post was created.
+ * @property {string} lastActivityAt - The timestamp of the last activity on the post.
+ * @property {string} status - The status of the post.
+ * @property {Object} ideaStatus - The status of the idea in the post.
+ * @property {string[]} productAreas - The product areas related to the post.
+ * @property {string} lastPostId - The ID of the last post in the thread.
+ * @property {string} publishedAt - The timestamp when the post was published.
+ */
+
+/**
+ *
+ * @param params
+ * @return {Promise<Array<CommunityPost>>}
+ */
+async function searchCommunity(params) {
+  const response = await fetch(`https://zemaxportalfunctions.azurewebsites.net/api/insided_search?${
+    new URLSearchParams({
+      pageSize: 12,
+      page: 1,
+      // TODO: paging
+      q: params.searchTerm,
+    })}`, {
+    headers: {
+      authsdi: 'iddqd',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const json = await response.json();
+  return json.result;
 }
 
 function trimToLength(number, text) {
@@ -201,52 +311,58 @@ async function createKnowledgebaseResult(params) {
   );
 }
 
-export default async function decorate(block) {
-  const params = getSearchParams();
+async function createCommunityResult(params) {
+  const searchResults = await searchCommunity(params);
 
-  block.innerHTML = '';
-  if (params.searchTerm) {
-    block.prepend(h2(`Search results for “${params.searchTerm}”`));
-  } else {
-    block.prepend(h2('Search our site'));
+  function convertToSlug(Text) {
+    return Text
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^\w-]+/g, '-')
+      .replace('---', '-')
+      .replace('--', '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '');
   }
 
-  block.append(createTabs(params));
+  function getRelativeDate(dateString) {
+    const date = new Date(dateString);
+    const dateCurrent = new Date();
+    const lastDay = Math.ceil((date - dateCurrent) / 1000 / 3600 / 24) * (-1);
+    let day = 'day';
+    if (parseInt(lastDay, 10) > 1) day = 'days';
 
-  if (params.view === '') {
-    block.append(await createProductInformationResult(params));
+    return `${lastDay} ${day} ago`;
   }
-  if (params.view === 'resources') {
-    block.append(await createResourceResult(params));
-  }
-  if (params.view === 'knowledgebase') {
-    block.append(await createKnowledgebaseResult(params));
-  }
-}
 
-function getSearchParams() {
-  /**
-   * @type {'resources'|'resources'|'knowledgebase'|'community'}
-   */
-  const view = new URLSearchParams(window.location.search).get('view') || '';
-  /**
-   * @type {number}
-   */
-  const page = new URLSearchParams(window.location.search).get('page');
-  /**
-   * @type {'article'|undefined}
-   */
-  const type = new URLSearchParams(window.location.search).get('type');
-  /**
-   * @type {string}
-   */
-  const searchTerm = new URLSearchParams(window.location.search).get('q');
-  /**
-   * @type {'last'|'first'}
-   */
-  const prefix = new URLSearchParams(window.location.search).get('options[prefix]');
+  const resultDivs = searchResults
+    .map((item) => {
+      const categorySlug = `${convertToSlug(item.categoryName)}-${item.categoryId}`;
+      const postSlug = `${convertToSlug(item.title)}-${item.publicId}`;
+      const url = `https://community.zemax.com/${categorySlug}/${postSlug}`;
+      const link = a({ class: 'search-community-block', href: url, target: '_blank' },
+        h4(item.title),
+        p(),
+      );
 
-  return {
-    view, page, type, searchTerm, prefix,
-  };
+      link.querySelector('p').innerHTML = `
+          Last Post: <strong>${(getRelativeDate(item.lastActivityAt))}</strong> 
+          | Replies: <strong>${item.replyCount}</strong>`;
+      return link;
+    });
+
+  return div(
+    div({ class: 'search-heads-block' },
+      h3('Community',
+        // TODO: count
+        span({ class: 'search-count-result' }, `${searchResults.length} of ${searchResults.count} results`)),
+      a({
+        href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+        class: 'learn-more learn-classNamearrow',
+        target: '_blank',
+        rel: 'null noopener',
+      }, 'Search the Knowledgebase'),
+    ),
+    ...resultDivs,
+  );
 }
