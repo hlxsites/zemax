@@ -22,5 +22,6 @@ module.exports = {
     // to make visually similar with the dom. e.g. p({ class: 'button-container' },
     'function-paren-newline': 'off',
     'no-return-await': 'off',
+    'max-len': ['warn', { code: 110 }],
   },
 };

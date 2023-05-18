@@ -1,5 +1,5 @@
 import {
-  a, div, h2, h3, h4, img, p, span
+  a, div, h2, h3, h4, img, p, span,
 } from '../../scripts/dom-helpers.js';
 
 /**
@@ -54,7 +54,8 @@ function createTabs(params) {
         a({ href: `/search?q=${params.searchTerm}` }, 'Product Information'),
       ),
       div({ 'data-view': 'resources' },
-        a({ href: `/search?view=resources&q=${params.searchTerm}&options%5Bprefix%5D=last&type=article` }, 'Resources'),
+        a({ href: `/search?view=resources&q=${params.searchTerm}&options%5Bprefix%5D=last&type=article` },
+          'Resources'),
       ),
       div({ 'data-view': 'knowledgebase' },
         a({ href: `/search?view=knowledgebase&q=${params.searchTerm}` }, 'Knowledgebase'),
@@ -189,7 +190,6 @@ async function createKnowledgebaseResult(params) {
       h3('Knowledgebase',
         // TODO: count
         span({ class: 'search-count-result' }, `${firstPage.length} of ${searchResults.count} results`)),
-      // <a href="https://support.zemax.com/hc/en-us/search?utf8=%E2%9C%93&amp;query=star" class="learn-more learn-classNamearrow" target="_blank" aria-describedby="a11y-new-window-external-message" rel="null noopener">Search the Knowledgebase</a>
       a({
         href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
         class: 'learn-more learn-classNamearrow',
