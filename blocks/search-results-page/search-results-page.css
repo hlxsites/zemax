@@ -1,3 +1,53 @@
+.search-results-page-container .search-count-result {
+  padding-left: 9px;
+  font-family: MyriadPro-Regular, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #54565b;
+}
+
+
+/* TODO: replace: */
+.search-results-page-container  .search-heads-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 19px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dad9d7;
+}
+
+.search-results-page-container  .search-heads-block h3 {
+  margin: 0;
+}
+
+
+
+.search-results-page-container  .search-product-block {
+  display: flex;
+}
+
+.search-results-page-container  .learn-more {
+  font-family: MyriadPro-Semibold, sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: 0.8px;
+  color: #f77f00;
+  position: relative;
+  z-index: 0;
+  transition: all 0.3s linear 0s;
+
+  font-size: 14px;
+  line-height: 2;
+  letter-spacing: 0.56px;
+  margin-right: 4px;
+
+
+}
+
+
+/** tab like columns */
 .search-results-page-container .tabs > div {
   display: flex;
   flex-direction: column;
@@ -19,9 +69,6 @@
   display: block;
 }
 
-/***************************************************************
-* tab like columns
-***************************************************************/
 .search-results-page-container .tabs>div {
   flex-direction: unset;
   border-bottom: 1px solid var(--highlight-background-color);
