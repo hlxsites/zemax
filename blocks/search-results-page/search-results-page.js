@@ -1,4 +1,6 @@
-import { a, div, h2, h3, h4, img, p, span } from '../../scripts/dom-helpers.js';
+import {
+  a, div, h2, h3, h4, img, p, span,
+} from '../../scripts/dom-helpers.js';
 
 export default async function decorate(block) {
   const params = getSearchParams();
@@ -361,7 +363,7 @@ async function createCommunityResult(params) {
         class: 'learn-more learn-classNamearrow',
         target: '_blank',
         rel: 'null noopener',
-      }, 'Search the Knowledgebase'),
+      }, 'Search the Community'),
     ),
     ...resultDivs,
   );
