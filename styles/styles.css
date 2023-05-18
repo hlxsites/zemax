@@ -291,40 +291,74 @@ button.action {
   text-transform: initial;
   letter-spacing: initial;
 }
+
 button.action:hover {
-  color: rgb(0, 112, 192);
-  background: rgba(246, 246, 247, 1);
+  color: rgb(0 112 192);
+  background: rgba(246 246 247 / 100%);
   outline: 0.1rem solid transparent;
 }
-button.action:before {
+
+button.action::before {
   content: "";
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
-  left: 0;
-  background-color: rgb(0, 112, 192);
+  border-color: rgb(0 112 192);
   opacity: 0;
   z-index: 0;
 }
-button.action.important {
-  color: rgb(191, 7, 17);
-  border-color: rgb(191, 7, 17);
-  box-shadow: 0 0 0 0.05rem rgb(191, 7, 17);
-}
+
+button.action.important,
 button.action.important:hover {
-  color: rgb(191, 7, 17);
-  border-color: rgb(191, 7, 17);
-  box-shadow: 0 0 0 0.05rem rgb(191, 7, 17);
+  color: rgb(191 7 17);
+  border-color: rgb(191 7 17);
+  box-shadow: 0 0 0 0.05rem rgb(191 7 17);
 }
-button.action.important:before {
-  background-color: rgb(191, 7, 17);
+
+button.action.important::before {
+  background-color: rgb(191 7 17);
 }
-button.action:hover:before, button.action:active:before {
+
+button.action.secondary {
+  color: rgb(32 34 35);
+  background-color: transparent;
+  border-color: rgb(32 34 35);
+  box-shadow: 0 0 0 0.05rem rgb(32 34 35);
+  outline: 0.05rem solid transparent;
+}
+
+button.action.secondary:hover {
+  background-color: rgba(246 246 247 );
+}
+
+button.action.secondary:active {
+  border: 0.05rem solid rgba(140 145 150);
+  box-shadow: none;
+  background: rgba(241 242 243);
+}
+
+button.action.secondary::before {
+  background-color: #FFF;
   opacity: .05;
 }
+
+button.action:hover::before, 
+button.action:active::before {
+  opacity: .05;
+}
+
 button.action:focus-visible {
   outline: none;
+}
+
+button.disable {
+  opacity: .4;
+}
+
+button.disable:hover {
+  background: none;
+  cursor: default;
 }
 
 main input {
@@ -539,6 +573,146 @@ main .video-wrap iframe {
   margin: unset!important;
 }
 
+
+/* Table Container - Table */
+.table-container table {
+  margin-bottom: 0;
+  font-size: 14px;
+  font-family: var(--ff-myradpro-regular);
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  background-color: var(--clr-white);
+  box-shadow: 0 0 5px #1718180D, 0 1px 2px #00000026; 
+  outline: 0.1rem solid transparent;
+}
+
+.table-container.rounded-corners table {
+  border-radius: 0.8rem 3px;
+}
+
+.table-container table th,
+.table-container table td {
+  border: 1px solid var(--color-border);
+}
+
+.table-container table th {
+  padding: .45rem 0.7rem;
+  font-weight: bold;
+  font-family: var(--ff-myradpro-semibold);
+  font-size: 16px;
+  vertical-align: top;
+  border-bottom: 0.05rem solid #8c9196;
+  border-top: 0;
+  max-height: 40px;
+  text-align: left;
+  white-space: normal;
+}
+
+.table-container table thead button {
+  font-family: var(--ff-myradpro-semibold);
+  font-size: 16px;
+  color: #54565b;
+  appearance: none;
+  margin: 0;
+  padding: 0 20px 0 0;
+  background: none;
+  border: none;
+  line-height: inherit;
+  position: relative;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  transition: color .2s cubic-bezier(.64,0,.35,1);
+  cursor: pointer;
+}
+
+.table-container table thead button:focus {
+  color: #0070c0;
+  outline: none;
+}
+
+.table-container table thead button::after {
+  content: "";
+  position: absolute;
+  top: 55%;
+  right: 5px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 5px solid #54565b;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  border-bottom: 0;
+}
+
+.table-container table thead button:focus::after {
+  border-top: 5px solid #1f5199;
+}
+
+.table-container table thead button::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: -0.1rem;
+  display: block;
+  pointer-events: none;
+  box-shadow: 0 0 0 -0.1rem #458fff;
+  transition: box-shadow .1s cubic-bezier(0.4, 0.22, 0.28, 1);
+  border-radius: calc(0.4rem + 0.1rem);
+}
+
+.table-container table thead button:focus:not(:active)::before {
+  box-shadow: 0 0 0 -0.1rem #458fff;
+  outline: 0.1rem solid transparent;
+}
+
+.table-container table thead tr {
+  background: #f6f6f7;
+}
+
+.table-container table tbody tr:hover td {
+  background: #f6f6f7;
+}
+
+.table-container table tbody td {
+  padding: .45rem;
+  vertical-align: top;
+  white-space: nowrap;
+  text-align: left;
+  transition: background-color .2s ease-in-out;
+}
+
+.table-container table tbody td:nth-child(3) {
+  text-transform: capitalize;
+  font-family: var(--ff-myradpro-semibold);
+}
+
+.table-container table tbody td > a {
+  font-size: 16px;
+  font-family: var(--ff-myradpro-semibold);
+  color: #0070c0;
+}
+
+.table-container table tbody td > a:hover {
+  text-decoration: underline;
+}
+
+.table-container table tbody td > input.add-user-checkbox {
+  font-size: 1.25rem;
+  width: 16px;
+  height: 16px;
+  max-width: 5rem;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  background-color: var(--background-color);
+
+}
 
 /* Mobile */
 @media only screen and (min-width: 480px) {
