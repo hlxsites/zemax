@@ -58,6 +58,10 @@
   border-bottom: 4px solid var(--clr-orange);
 }
 
+.search-results-page-container .tabs > div > div {
+  border-bottom: 4px solid transparent;
+}
+
 .search-results-page-container .tabs > div > div:hover {
   border-bottom: 4px solid var(--clr-orange);
 }
