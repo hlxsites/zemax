@@ -360,167 +360,103 @@ button.add-user-to-license {
 
 /* Styling for the modal container */
 .modal-container {
-display: none;
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-color: #00000080;
-z-index: 9999;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000080;
+  z-index: 9999;
 }
 
 /* Styling for the modal content */
 .modal-content {
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-padding: 20px;
-background-color: #fff;
-text-align: center;
-border-radius: 8px;
-max-height: calc(100vh - 60px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #FFF;
+  text-align: center;
+  border-radius: 8px;
+  max-height: calc(100vh - 60px);
 }
 
+.modal-header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border-bottom: 0.1rem solid rgba(225 227 229);
+}
+
+.modal-header > button.modal-close {
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  margin: 5px -5px 0 0;
+  padding: 0.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: none;
+  border: none;
+}
+
+.modal-header > button.modal-close:hover {
+  background: rgba(246 246 247 / 100%);
+}
+
+.modal-header > button.modal-close svg {
+  fill: rgba(92 95 98 / 100%);
+}
+
+.modal-header > button.modal-close:hover svg {
+  fill: rgba(26 28 29 / 100%);
+}
+
+
+/* Add User Modal Content */
 .add-user-modal-content {
   max-width: 98rem;
   width: 70rem;
   display: flex;
-    flex-grow: 1;
-    overflow-x: hidden;
-    flex-wrap: wrap;
+  flex-grow: 1;
+  flex-flow: column wrap;
 }
 
-/* Add User - Table */
-.add-user-modal-content table {
-  margin-bottom: 0;
-  font-size: 14px;
+.add-user-modal-content > .modal-header h3 {
+  margin: 0.3em 0;
+  font-size: 20px;
+  line-height: 2.8rem;
   font-family: var(--ff-myradpro-regular);
-  width: 100%;
-  text-align: left;
-  border-spacing: 0;
-  border-collapse: collapse;
-  border-radius: 0.8rem 3px;
-  background-color: var(--clr-white);
-  box-shadow: 0 0 5px #1718180D, 0 1px 2px #00000026; 
-  outline: 0.1rem solid transparent;
-}
-
-.add-user-modal-content table th,
-.add-user-modal-content table td {
-  border: 1px solid var(--color-border);
-}
-
-.add-user-modal-content table th {
-  padding: .45rem 0.7rem;
-  font-weight: bold;
-  font-family: var(--ff-myradpro-semibold);
-  font-size: 16px;
-  vertical-align: top;
-  border-bottom: 0.05rem solid #8c9196;
-  border-top: 0;
-  max-height: 40px;
-  text-align: left;
-  white-space: normal;
-}
-
-.add-user-modal-content table thead button {
-  font-family: var(--ff-myradpro-semibold);
-  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.18px;
   color: #54565b;
-  appearance: none;
-  margin: 0;
-  padding: 0 20px 0 0;
-  background: none;
-  border: none;
-  line-height: inherit;
-  position: relative;
-  display: inline-flex;
-  justify-content: flex-end;
-  align-items: baseline;
-  transition: color .2s cubic-bezier(.64,0,.35,1);
-  cursor: pointer;
-}
-
-.add-user-modal-content table thead button:focus {
-  color: #0070c0;
-  outline: none;
-}
-
-.add-user-modal-content table thead button::after {
-  content: "";
-  position: absolute;
-  top: 55%;
-  right: 5px;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-top: 5px solid #54565b;
-  border-right: 5px solid transparent;
-  border-left: 5px solid transparent;
-  border-bottom: 0;
-}
-
-.add-user-modal-content table thead button:focus::after {
-  border-top: 5px solid #1f5199;
-}
-
-.add-user-modal-content table thead button::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: -0.1rem;
-  display: block;
-  pointer-events: none;
-  box-shadow: 0 0 0 -0.1rem #458fff;
-  transition: box-shadow .1s cubic-bezier(0.4, 0.22, 0.28, 1);
-  border-radius: calc(0.4rem + 0.1rem);
-}
-
-.add-user-modal-content table thead button:focus:not(:active)::before {
-  box-shadow: 0 0 0 -0.1rem #458fff;
-  outline: 0.1rem solid transparent;
-}
-
-.add-user-modal-content table thead tr {
-  background: #f6f6f7;
-}
-
-.add-user-modal-content table tbody tr:hover td {
-  background: #f6f6f7;
-}
-
-.add-user-modal-content table tbody td {
-  padding: .75rem;
-  vertical-align: top;
-  white-space: nowrap;
+  text-transform: none;
   text-align: left;
-  transition: background-color .2s ease-in-out;
 }
 
-.add-user-modal-content table tbody td > a {
-  font-size: 16px;
-  font-family: var(--ff-myradpro-semibold);
-  color: #0070c0;
+.add-user-modal-content > .modal-body {
+  overflow-y: scroll;
+  padding: 0 20px;
+  height: 450px;
 }
 
-.add-user-modal-content table tbody td > a:hover {
-  text-decoration: underline;
+.add-user-modal-content > .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 40px 20px 20px 20px;
+  border-top: 0.1rem solid rgba(225 227 229);
 }
 
-input.add-user-checkbox {
-  font-size: 1.25rem;
-  width: 16px;
-  height: 16px;
-  max-width: 5rem;
-  display: block;
-  margin: 0;
-  padding: 0;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  border: 1px solid var(--text-color);
-  color: var(--text-color);
-  background-color: var(--background-color);
+.add-user-modal-content > .modal-footer > button {
+  margin: 0 8px;
+}
 
+.add-user-modal-content > .modal-footer > button:first-child {
+  position: absolute;
+  left: 20px;
 }
