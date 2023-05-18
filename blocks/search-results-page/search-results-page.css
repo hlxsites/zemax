@@ -1,0 +1,76 @@
+.search-results-page-container .tabs > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-results-page-container .tabs img {
+  width: 100%;
+}
+
+.search-results-page-container .tabs > div > div {
+  order: 1;
+}
+
+.search-results-page-container .tabs > div > .columns-img-col {
+  order: 0;
+}
+
+.search-results-page-container .tabs > div > .columns-img-col img {
+  display: block;
+}
+
+/***************************************************************
+* tab like columns
+***************************************************************/
+.search-results-page-container .tabs>div {
+  flex-direction: unset;
+  border-bottom: 1px solid var(--highlight-background-color);
+  gap: 32px;
+  margin: 40px 0;
+  align-items: flex-end;
+  overflow: auto;
+}
+
+.search-results-page-container .tabs .button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: end;
+  position: relative;
+}
+
+.search-results-page-container .tabs a,
+.search-results-page-container .tabs .active a {
+  margin: auto 0;
+  font-size: inherit;
+  color: var(--text-color);
+  font-family: var(--ff-myradpro-semibold);
+  letter-spacing: var(--letter-spacing-8);
+  min-width: 100px;
+}
+
+.search-results-page-container .tabs a:any-link {
+  border-bottom: 4px solid var(--clr-white);
+  text-decoration: none;
+}
+
+.search-results-page-container .tabs .active {
+  border-bottom: 4px solid var(--clr-orange);
+}
+
+.search-results-page-container .tabs > div > div:hover {
+  border-bottom: 4px solid var(--clr-orange);
+}
+
+@media screen and (min-width: 1030px) {
+  .search-results-page-container >div {
+    align-items: center;
+    flex-direction: unset;
+    gap: 32px;
+  }
+
+  .search-results-page-container >div>div {
+    flex: 1;
+    order: unset;
+  }
+}
