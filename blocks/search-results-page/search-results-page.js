@@ -18,10 +18,13 @@ export default async function decorate(block) {
   block.append(createTabs(params));
 
   if (params.view === '') {
-    block.append(await createProductInformationResult(params));
-    block.append(await createResourceResult(params, 3));
-    block.append(await createKnowledgebaseResult(params, 4));
-    block.append(await createCommunityResult(params));
+    const blocks = await Promise.all([
+      createProductInformationResult(params),
+      createResourceResult(params, 3),
+      createKnowledgebaseResult(params, 4),
+      createCommunityResult(params),
+    ]);
+    block.append(...blocks);
   }
 
   if (params.view === 'resources') {
