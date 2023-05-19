@@ -139,17 +139,31 @@ async function searchProducts(params) {
       .includes(params.searchTerm.toLowerCase()));
 }
 
+function getPlainTextFromHtml(html) {
+  const textBody = document.createElement('div');
+  textBody.innerHTML = html;
+  return textBody;
+}
+
 async function createProductInformationResult(params) {
   const result = await searchProducts(params);
   const firstPage = result.slice(0, 3);
 
-  const resultDivs = firstPage
-    .map((entry) => (div({ class: 'search-product-block' },
+  const columnsRows = firstPage
+    .map((entry) => [
       img({ src: entry.image, alt: entry.title }),
-      h4(entry.title),
-      p(entry.description),
-      a({ href: entry.path }, 'Learn more'),
-    )));
+      div(
+        h4(getPlainTextFromHtml(entry.title)),
+        p(entry.description),
+        a({ href: entry.path, class: 'button learn-more' }, 'Learn more'),
+      ),
+    ]);
+
+  const columnsWrapper = div();
+  const columnsBlock = buildBlock('columns', columnsRows);
+  columnsBlock.classList.add('columns', 'product-information');
+  columnsWrapper.append(columnsBlock);
+  decorateBlock(columnsBlock);
 
   return div({ class: 'search-result-section productinformation' },
     div({ class: 'search-result-section-header' },
@@ -157,7 +171,7 @@ async function createProductInformationResult(params) {
         // TODO: count
         span({ class: 'search-count-result' }, `${firstPage.length} of ${result.length} results`)),
     ),
-    ...resultDivs,
+    columnsWrapper,
   );
 }
 
@@ -186,10 +200,10 @@ async function createResourceResult(params, limit = 12) {
       ),
     ]);
 
-  const blockWrapper = div();
+  const cardsWrapper = div();
   const cardsBlock = buildBlock('cards', cardRows);
   cardsBlock.classList.add('layout-3-card', 'search-results', 'resource-center', 'curved-text', 'orange');
-  blockWrapper.append(cardsBlock);
+  cardsWrapper.append(cardsBlock);
   decorateBlock(cardsBlock);
 
   return div({ class: 'search-result-section resources' },
@@ -197,7 +211,7 @@ async function createResourceResult(params, limit = 12) {
       h3('Resources',
         span({ class: 'search-count-result' }, `${firstPage.length} of ${result.length} results`)),
     ),
-    cardsBlock,
+    cardsWrapper,
   );
 }
 
