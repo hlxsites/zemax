@@ -389,56 +389,66 @@ async function createKnowledgebaseResult(params, perPage = 12) {
 }
 
 async function createCommunityResult(params) {
-  const searchResults = await searchCommunity(params);
+  try {
+    const searchResults = await searchCommunity(params);
 
-  function convertToSlug(Text) {
-    return Text
-      .toLowerCase()
-      .replace(/ /g, '-')
-      .replace(/[^\w-]+/g, '-')
-      .replace('---', '-')
-      .replace('--', '-')
-      .replace(/^-+/, '')
-      .replace(/-+$/, '');
-  }
+    function convertToSlug(Text) {
+      return Text
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '-')
+        .replace('---', '-')
+        .replace('--', '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
+    }
 
-  function getRelativeDate(dateString) {
-    const date = new Date(dateString);
-    const dateCurrent = new Date();
-    const lastDay = Math.ceil((date - dateCurrent) / 1000 / 3600 / 24) * (-1);
-    let day = 'day';
-    if (parseInt(lastDay, 10) > 1) day = 'days';
+    function getRelativeDate(dateString) {
+      const date = new Date(dateString);
+      const dateCurrent = new Date();
+      const lastDay = Math.ceil((date - dateCurrent) / 1000 / 3600 / 24) * (-1);
+      let day = 'day';
+      if (parseInt(lastDay, 10) > 1) day = 'days';
 
-    return `${lastDay} ${day} ago`;
-  }
+      return `${lastDay} ${day} ago`;
+    }
 
-  const resultDivs = searchResults
-    .map((item) => {
-      const categorySlug = `${convertToSlug(item.categoryName)}-${item.categoryId}`;
-      const postSlug = `${convertToSlug(item.title)}-${item.publicId}`;
-      const url = `https://community.zemax.com/${categorySlug}/${postSlug}`;
-      const link = a({ class: 'search-community-block', href: url, target: '_blank' },
-        h4(item.title),
-        p(),
-      );
+    const resultDivs = searchResults
+      .map((item) => {
+        const categorySlug = `${convertToSlug(item.categoryName)}-${item.categoryId}`;
+        const postSlug = `${convertToSlug(item.title)}-${item.publicId}`;
+        const url = `https://community.zemax.com/${categorySlug}/${postSlug}`;
+        const link = a({ class: 'search-community-block', href: url, target: '_blank' },
+          h4(item.title),
+          p(),
+        );
 
-      link.querySelector('p').innerHTML = `
+        link.querySelector('p').innerHTML = `
           Last Post: <strong>${(getRelativeDate(item.lastActivityAt))}</strong> 
           | Replies: <strong>${item.replyCount}</strong>`;
-      return link;
-    });
+        return link;
+      });
 
-  return div({ class: 'search-result-section community' },
-    div({ class: 'search-result-section-header' },
-      h3('Community',
-        span({ class: 'search-count-result' }, `${searchResults.length} of ${searchResults.count} results`)),
+    return div({ class: 'search-result-section community' },
+      div({ class: 'search-result-section-header' },
+        h3('Community',
+          span({ class: 'search-count-result' }, `${searchResults.length} of ${searchResults.count} results`)),
+        a({
+          href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+          class: 'learn-more learn-classNamearrow',
+          target: '_blank',
+          rel: 'null noopener',
+        }, 'Search the Community'),
+      ),
+      ...resultDivs,
+    );
+  } catch (e) {
+    return p('Unable to load community results.',
       a({
-        href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
-        class: 'learn-more learn-classNamearrow',
-        target: '_blank',
-        rel: 'null noopener',
-      }, 'Search the Community'),
-    ),
-    ...resultDivs,
-  );
+      href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+      class: 'learn-more learn-classNamearrow',
+      target: '_blank',
+      rel: 'null noopener',
+    }, 'Search the Community'));
+  }
 }
