@@ -12,6 +12,17 @@ function hideModal(event) {
   document.getElementById(modalId).style.display = 'none';
 }
 
+function showUserRemoveModal(event) {
+  const newProductUserId = event.target.getAttribute('data-new-productuserid');
+  showModal(event);
+  document.querySelector('.delete-user-action-button').setAttribute('data-new-productuserid', newProductUserId);
+}
+
+function createUser(event) {
+  hideModal(event);
+  alert('Implement create user');
+}
+
 function showAddUserTable(event) {
   const licenseId = event.target.getAttribute('data-license-id');
   const addUserActionButton = document.querySelector('.add-user-action-button');
@@ -47,16 +58,11 @@ async function showColleagues() {
   const data = await execute('dynamics_get_colleagues_view', '', 'GET');
   const headingsMapping = ['html|input|class:add-user-checkbox,type:checkbox,id:dataResponse0|contactid|', 'Full Name|firstname,lastname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
   const colleaguesTable = createGenericTable(headingsMapping, data.colleagues);
-  const modalAddUserModalContentDiv = document.querySelector('.add-user-modal-content');
+  const modalAddUserBodyDiv = document.querySelector('.modal-body');
+  const modalAddUserContentDiv = modalAddUserBodyDiv.querySelector('.add-user-container');
   // clear previous modal content
-  modalAddUserModalContentDiv.innerHTML = '';
-  const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
-  const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
-  modalAddUserModalContentDiv.appendChild(colleaguesTable);
-  modalAddUserModalContentDiv.appendChild(addUserButton);
-  modalAddUserModalContentDiv.appendChild(addUserModalCloseButton);
-  addUserModalCloseButton.addEventListener('click', hideModal);
-  addUserButton.addEventListener('click', addUserToALicense);
+  modalAddUserContentDiv.innerHTML = '';
+  modalAddUserContentDiv.appendChild(colleaguesTable);
   const userAddCheckboxes = document.querySelectorAll('.add-user-checkbox');
   userAddCheckboxes.forEach((userAddCheckboxe) => {
     userAddCheckboxe.addEventListener('click', updateAddUserId);
@@ -65,29 +71,14 @@ async function showColleagues() {
 
 async function removeUserFromLicense(event) {
   const newproductuserid = event.target.getAttribute('data-new-productuserid');
-
-  const modalDelUserModalContentDiv = document.querySelector('.delete-user-modal-content');
-  const deleteUserButton = createTag('button', { class: 'action important', 'data-modal-id': 'deleteUserModal' }, 'Yes, remove End User');
-  const deleteUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
-
-  modalDelUserModalContentDiv.appendChild(createTag('p', '', 'delete user'));
-  modalDelUserModalContentDiv.appendChild(deleteUserButton);
-  modalDelUserModalContentDiv.appendChild(deleteUserModalCloseButton);
-
-  deleteUserModalCloseButton.addEventListener('click', hideModal);
-  // TODO add confirmation modal
-
   const data = await execute('dynamics_remove_enduser_from_license', `&new_productuserid=${newproductuserid}`, 'DELETE');
   // TODO handle response and add toast message
-  console.log('remove user', data);
-  const lincenseId = document.querySelector('.add-user-to-license.action').getAttribute('data-license-id');
-  event.target.setAttribute('data-license-id', lincenseId);
 
   if (data !== undefined && data !== null && data.status === 204) {
     // TODO show success toast message
-    alert('User deleted successfully');
+    hideModal(event);
     // eslint-disable-next-line no-use-before-define
-    displayLicenseDetails(event);
+    //displayLicenseDetails(event);
   } else {
     console.log('error ', data);
   }
@@ -186,7 +177,7 @@ async function displayLicenseDetails(event) {
 
     if (licenseUsers !== undefined && licenseUsers.length > 0) {
       const tableHeadings = ['html|td|class:user-name|contact1.fullname|Name', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
-        'html|button|class:license-user-remove-user action important,type:button,data-new-productuserid:dataResponse0|new_productuserid|Remove User',
+        'html|button|class:license-user-remove-user action important,type:button,data-modal-id:deleteUserModal,data-new-productuserid:dataResponse0|new_productuserid|Remove User',
         'html|button|class:license-user-change-user action,type:button|new_productuserid|Change End User'];
 
       const tableElement = createGenericTable(tableHeadings, licenseUsers);
@@ -194,7 +185,7 @@ async function displayLicenseDetails(event) {
 
       const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
       removeButtons.forEach((removeButton) => {
-        removeButton.addEventListener('click', removeUserFromLicense);
+        removeButton.addEventListener('click', showUserRemoveModal);
       });
 
       const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user ');
@@ -212,13 +203,64 @@ async function displayLicenseDetails(event) {
 function addManageLicenseFeature(block) {
   const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
   const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
-  const modalAddUserModalContentDiv = createTag('div', { class: 'modal-content add-user-modal-content' }, '');
-  const modalAddUserModalDiv = createTag('div', { class: 'modal-container add-user-modal', id: 'addUserModal' }, modalAddUserModalContentDiv);
-  const modalDeleteUserModalContentDiv = createTag('div', { class: 'modal-content delete-user-modal-content' }, '');
-  const modalDeleteUserModalDiv = createTag('div', { class: 'modal-container delete-user-modal', id: 'deleteUserModal' }, modalDeleteUserModalContentDiv);
   block.append(licenseDetailsDiv);
   block.append(endUsersDetailsDiv);
-  block.append(modalAddUserModalDiv);
+
+  // Add User
+  const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
+  const modalTitleH3 = createTag('h3', '', 'Add End User to License');
+  const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
+  modalHeaderDiv.appendChild(modalTitleH3);
+  modalHeaderDiv.appendChild(modalCloseButtonIcon);
+
+  const modalAddUserContentDiv = createTag('div', { class: 'modal-content add-user-modal-content' }, modalHeaderDiv);
+
+  const modalBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'add-user-container table-container' }, ''));
+
+  modalAddUserContentDiv.appendChild(modalBodyDiv);
+  const modalFooterDiv = createTag('div', { class: 'modal-footer' }, '');
+  const createUserButton = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'addUserModal' }, 'Create User');
+  const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
+  const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
+
+  modalFooterDiv.appendChild(createUserButton);
+  modalFooterDiv.appendChild(addUserButton);
+  modalFooterDiv.appendChild(addUserModalCloseButton);
+
+  createUserButton.addEventListener('click', createUser);
+  addUserModalCloseButton.addEventListener('click', hideModal);
+  addUserButton.addEventListener('click', addUserToALicense);
+
+  modalAddUserContentDiv.appendChild(modalFooterDiv);
+  const modalAddUserDiv = createTag('div', { class: 'modal-container add-user-modal', id: 'addUserModal' }, modalAddUserContentDiv);
+  block.append(modalAddUserDiv);
+
+  // Delete User
+  const modalDeleteHeaderDiv = createTag('div', { class: 'modal-header' }, '');
+  const modalDeleteTitleH3 = createTag('h3', '', 'Confirmation Required');
+  const modalDeleteCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
+  modalDeleteHeaderDiv.appendChild(modalDeleteTitleH3);
+  modalDeleteHeaderDiv.appendChild(modalDeleteCloseButtonIcon);
+
+  const modalDeleteUserContentDiv = createTag('div', { class: 'modal-content delete-user-modal-content' }, modalDeleteHeaderDiv);
+  const modalDeleteDescription = createTag('p', '', 'Please confirm this action to remove end user');
+  const modalDeleteBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'delete-user-container' }, modalDeleteDescription));
+  modalDeleteUserContentDiv.appendChild(modalDeleteBodyDiv);
+
+  const modalDeleteFooterDiv = createTag('div', { class: 'modal-footer' }, '');
+
+  const deleteUserButton = createTag('button', { class: 'action important delete-user-action-button', 'data-modal-id': 'deleteUserModal' }, 'Yes, remove End User');
+  const deleteUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
+
+  modalDeleteFooterDiv.appendChild(deleteUserButton);
+  modalDeleteFooterDiv.appendChild(deleteUserModalCloseButton);
+
+  deleteUserButton.addEventListener('click', removeUserFromLicense);
+  deleteUserModalCloseButton.addEventListener('click', hideModal);
+
+  modalDeleteUserContentDiv.appendChild(modalDeleteFooterDiv);
+
+  const modalDeleteUserModalDiv = createTag('div', { class: 'modal-container delete-user-modal', id: 'deleteUserModal' }, modalDeleteUserContentDiv);
   block.append(modalDeleteUserModalDiv);
 
   const manageButtons = document.querySelectorAll('.manage-view-license');
