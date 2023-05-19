@@ -389,31 +389,32 @@ async function createKnowledgebaseResult(params, perPage = 12) {
 }
 
 async function createCommunityResult(params) {
+  function convertToSlug(Text) {
+    return Text
+      .toLowerCase()
+      .replace(/ /g, '-')
+      .replace(/[^\w-]+/g, '-')
+      .replace('---', '-')
+      .replace('--', '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '');
+  }
+
+  function getRelativeDate(dateString) {
+    const date = new Date(dateString);
+    const dateCurrent = new Date();
+    const lastDay = Math.ceil((date - dateCurrent) / 1000 / 3600 / 24) * (-1);
+    let day = 'day';
+    if (parseInt(lastDay, 10) > 1) day = 'days';
+
+    return `${lastDay} ${day} ago`;
+  }
+
+  let resultDivs;
+  let searchResults;
   try {
-    const searchResults = await searchCommunity(params);
-
-    function convertToSlug(Text) {
-      return Text
-        .toLowerCase()
-        .replace(/ /g, '-')
-        .replace(/[^\w-]+/g, '-')
-        .replace('---', '-')
-        .replace('--', '-')
-        .replace(/^-+/, '')
-        .replace(/-+$/, '');
-    }
-
-    function getRelativeDate(dateString) {
-      const date = new Date(dateString);
-      const dateCurrent = new Date();
-      const lastDay = Math.ceil((date - dateCurrent) / 1000 / 3600 / 24) * (-1);
-      let day = 'day';
-      if (parseInt(lastDay, 10) > 1) day = 'days';
-
-      return `${lastDay} ${day} ago`;
-    }
-
-    const resultDivs = searchResults
+    searchResults = await searchCommunity(params);
+    resultDivs = searchResults
       .map((item) => {
         const categorySlug = `${convertToSlug(item.categoryName)}-${item.categoryId}`;
         const postSlug = `${convertToSlug(item.title)}-${item.publicId}`;
@@ -428,27 +429,21 @@ async function createCommunityResult(params) {
           | Replies: <strong>${item.replyCount}</strong>`;
         return link;
       });
-
-    return div({ class: 'search-result-section community' },
-      div({ class: 'search-result-section-header' },
-        h3('Community',
-          span({ class: 'search-count-result' }, `${searchResults.length} of ${searchResults.count} results`)),
-        a({
-          href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
-          class: 'learn-more learn-classNamearrow',
-          target: '_blank',
-          rel: 'null noopener',
-        }, 'Search the Community'),
-      ),
-      ...resultDivs,
-    );
   } catch (e) {
-    return p('Unable to load community results.',
-      a({
-      href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
-      class: 'learn-more learn-classNamearrow',
-      target: '_blank',
-      rel: 'null noopener',
-    }, 'Search the Community'));
+    resultDivs = [p('Unable to load community results.')];
   }
+
+  return div({ class: 'search-result-section community' },
+    div({ class: 'search-result-section-header' },
+      h3('Community',
+        span({ class: 'search-count-result' }, `${searchResults?.length} of ${searchResults?.count} results`)),
+      a({
+        href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+        class: 'learn-more learn-classNamearrow',
+        target: '_blank',
+        rel: 'null noopener',
+      }, 'Search the Community'),
+    ),
+    ...resultDivs,
+  );
 }
