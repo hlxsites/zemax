@@ -140,7 +140,7 @@ async function searchProducts(params) {
   const resp = await fetch(`${window.location.origin}/query-index.json`);
   const json = await resp.json();
   return json.data
-    .filter((entry) => entry.path.startsWith('/pages/'))
+    .filter((entry) => entry.path.startsWith('/pages/') || entry.path.startsWith('/products/'))
     .filter((entry) => (entry.description + entry.title).toLowerCase()
       .includes(params.searchTerm.toLowerCase()));
 }
@@ -357,26 +357,31 @@ function trimToLength(number, text) {
 }
 
 async function createKnowledgebaseResult(params, perPage = 12) {
-  const searchResults = await searchKnowledgebase(params, perPage);
-  const firstPage = searchResults.results;
+  let searchResults;
+  let resultDivs;
+  try {
+    searchResults = await searchKnowledgebase(params, perPage);
+    resultDivs = searchResults.results
+      .map((item) => {
+        const textBody = document.createElement('div');
+        textBody.innerHTML = item.body;
 
-  const resultDivs = firstPage
-    .map((item) => {
-      const textBody = document.createElement('div');
-      textBody.innerHTML = item.body;
-
-      return (div({ class: '' },
-        a({ href: item.html_url, target: '_blank' },
-          h4(item.title),
-        ),
-        p(trimToLength(233, textBody.textContent)),
-      ));
-    });
+        return (div({ class: '' },
+          a({ href: item.html_url, target: '_blank' },
+            h4(item.title),
+          ),
+          p(trimToLength(233, textBody.textContent)),
+        ));
+      });
+  } catch (e) {
+    console.error(e);
+    resultDivs = [p('Unable to load results.')];
+  }
 
   return div({ class: 'search-result-section knowledgebase' },
     div({ class: 'search-result-section-header' },
       h3('Knowledgebase',
-        span({ class: 'search-count-result' }, `${firstPage.length} of ${searchResults.count} results`)),
+        span({ class: 'search-count-result' }, `${searchResults?.results?.length} of ${searchResults?.count} results`)),
       a({
         href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
         class: 'learn-more learn-classNamearrow',
@@ -430,13 +435,16 @@ async function createCommunityResult(params) {
         return link;
       });
   } catch (e) {
-    resultDivs = [p('Unable to load community results.')];
+    // eslint-disable-next-line no-console
+    console.error(e);
+    resultDivs = [p('Unable to load results.')];
   }
 
   return div({ class: 'search-result-section community' },
     div({ class: 'search-result-section-header' },
       h3('Community',
-        span({ class: 'search-count-result' }, `${searchResults?.length} of ${searchResults?.count} results`)),
+        span({ class: 'search-count-result' },
+          `${searchResults?.length} of ${searchResults?.count} results`)),
       a({
         href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
         class: 'learn-more learn-classNamearrow',
