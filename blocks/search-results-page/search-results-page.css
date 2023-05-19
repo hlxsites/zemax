@@ -27,6 +27,9 @@
 
 .search-results-page-container  .search-result-section-header h3 {
   margin: 0;
+  font-family: var(--body-font-family);
+  font-size: var(--heading-font-size-x);
+  letter-spacing: var(--letter-spacing-34);
 }
 
 .search-results-page-container .search-result-section h4 {

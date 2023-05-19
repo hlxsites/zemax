@@ -172,10 +172,7 @@ async function createProductInformationResult(params) {
   decorateBlock(columnsBlock);
 
   return div({ class: 'search-result-section productinformation' },
-    div({ class: 'search-result-section-header' },
-      h3('Product Information',
-        span({ class: 'search-count-result' }, `${firstPage.length} of ${result.length} results`)),
-    ),
+    createSearchSectionTitle('Product Information', firstPage.length, result.length),
     columnsWrapper,
   );
 }
@@ -212,10 +209,7 @@ async function createResourceResult(params, limit = 12) {
   decorateBlock(cardsBlock);
 
   return div({ class: 'search-result-section resources' },
-    div({ class: 'search-result-section-header' },
-      h3('Resources',
-        span({ class: 'search-count-result' }, `${firstPage.length} of ${result.length} results`)),
-    ),
+    createSearchSectionTitle('Resources', firstPage.length, result.length),
     cardsWrapper,
   );
 }
@@ -356,6 +350,14 @@ function trimToLength(number, text) {
   return `${wordsArrayWithoutLast.join(' ')}...`;
 }
 
+function createSearchSectionTitle(title, resultCount, totalResultCount, moreLink) {
+  return div({ class: 'search-result-section-header' },
+    h3(title,
+      resultCount ? span({ class: 'search-count-result' }, `${resultCount} of ${totalResultCount} results`) : ''),
+    moreLink || '',
+  );
+}
+
 async function createKnowledgebaseResult(params, perPage = 12) {
   let searchResults;
   let resultDivs;
@@ -378,17 +380,16 @@ async function createKnowledgebaseResult(params, perPage = 12) {
     resultDivs = [p('Unable to load results.')];
   }
 
+  const moreLink = a({
+    href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+    class: 'learn-more learn-classNamearrow',
+    target: '_blank',
+    rel: 'null noopener',
+  }, 'Search the Knowledgebase');
+
   return div({ class: 'search-result-section knowledgebase' },
-    div({ class: 'search-result-section-header' },
-      h3('Knowledgebase',
-        span({ class: 'search-count-result' }, `${searchResults?.results?.length} of ${searchResults?.count} results`)),
-      a({
-        href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
-        class: 'learn-more learn-classNamearrow',
-        target: '_blank',
-        rel: 'null noopener',
-      }, 'Search the Knowledgebase'),
-    ),
+    // eslint-disable-next-line function-call-argument-newline
+    createSearchSectionTitle('Knowledgebase', searchResults?.results?.length, searchResults?.count, moreLink),
     ...resultDivs,
   );
 }
@@ -439,19 +440,15 @@ async function createCommunityResult(params) {
     console.error(e);
     resultDivs = [p('Unable to load results.')];
   }
+  const moreLink = a({
+    href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+    class: 'learn-more learn-classNamearrow',
+    target: '_blank',
+    rel: 'null noopener',
+  }, 'Search the Community');
 
   return div({ class: 'search-result-section community' },
-    div({ class: 'search-result-section-header' },
-      h3('Community',
-        span({ class: 'search-count-result' },
-          `${searchResults?.length} of ${searchResults?.count} results`)),
-      a({
-        href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
-        class: 'learn-more learn-classNamearrow',
-        target: '_blank',
-        rel: 'null noopener',
-      }, 'Search the Community'),
-    ),
+    createSearchSectionTitle('Community', searchResults?.length, searchResults?.count, moreLink),
     ...resultDivs,
   );
 }
