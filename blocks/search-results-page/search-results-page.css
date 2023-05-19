@@ -68,7 +68,11 @@
 /** tab like columns */
 .search-results-page-container .tabs > div {
   display: flex;
-  flex-direction: column;
+  border-bottom: 1px solid var(--highlight-background-color);
+  gap: 32px;
+  margin: 40px 0;
+  align-items: flex-end;
+  overflow: auto;
 }
 
 .search-results-page-container .tabs img {
@@ -77,6 +81,7 @@
 
 .search-results-page-container .tabs > div > div {
   order: 1;
+  border-bottom: 4px solid transparent;
 }
 
 .search-results-page-container .tabs > div > .columns-img-col {
@@ -87,14 +92,6 @@
   display: block;
 }
 
-.search-results-page-container .tabs>div {
-  flex-direction: unset;
-  border-bottom: 1px solid var(--highlight-background-color);
-  gap: 32px;
-  margin: 40px 0;
-  align-items: flex-end;
-  overflow: auto;
-}
 
 .search-results-page-container .tabs .button-container {
   display: flex;
@@ -121,10 +118,6 @@
 
 .search-results-page-container .tabs .active {
   border-bottom: 4px solid var(--clr-orange);
-}
-
-.search-results-page-container .tabs > div > div {
-  border-bottom: 4px solid transparent;
 }
 
 .search-results-page-container .tabs > div > div:hover {
