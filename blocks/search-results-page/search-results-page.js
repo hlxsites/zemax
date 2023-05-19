@@ -221,12 +221,12 @@ async function createResourceResult(params, limit = 12) {
  * @property {number} page - The current page number.
  * @property {number} page_count - The total count of pages.
  * @property {number} per_page - The number of results per page.
- * @property {?string} previous_page - The URL to the previous page of results. Null if no previous page.
- * @property {Array.<ZenddeskResult>} results - The array of results.
+ * @property {?string} previous_page - URL to previous page of results. Null on first page.
+ * @property {Array.<ZendeskResult>} results - The array of results.
  */
 
 /**
- * @typedef {Object} ZenddeskResult
+ * @typedef {Object} ZendeskResult
  * @property {number} id - The unique identifier of the result.
  * @property {string} url - The API URL of the result.
  * @property {string} html_url - The HTML URL of the result.
@@ -247,7 +247,7 @@ async function createResourceResult(params, limit = 12) {
  * @property {boolean} outdated - Whether the result is outdated.
  * @property {Array.<string>} outdated_locales - The list of outdated locales.
  * @property {string} edited_at - The edited timestamp.
- * @property {?number} user_segment_id - The unique identifier of the user segment. Null if not applicable.
+ * @property {?number} user_segment_id - The unique identifier of the user segment.
  * @property {number} permission_group_id - The unique identifier of the permission group.
  * @property {Array.<number>} content_tag_ids - The array of content tag identifiers.
  * @property {Array.<string>} label_names - The array of label names.
@@ -376,6 +376,7 @@ async function createKnowledgebaseResult(params, perPage = 12) {
         ));
       });
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
     resultDivs = [p('Unable to load results.')];
   }

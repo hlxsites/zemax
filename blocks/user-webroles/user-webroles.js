@@ -55,7 +55,7 @@ export default async function decorate(block) {
         );
       })
       .catch((err) => {
-        // There was an error
+        // eslint-disable-next-line no-console
         console.warn('Something went wrong.', err);
       });
   }
