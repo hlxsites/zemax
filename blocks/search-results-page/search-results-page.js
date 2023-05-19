@@ -118,7 +118,6 @@ function createTabs(params) {
 async function searchResources(params) {
   const resp = await fetch(`${window.location.origin}/query-index.json`);
   const json = await resp.json();
-  // todo: filter by url
   return json.data
     .filter((entry) => entry.path.startsWith('/blogs'))
     .filter((entry) => (entry.description + entry.title).toLowerCase()
@@ -168,7 +167,6 @@ async function createProductInformationResult(params) {
   return div({ class: 'search-result-section productinformation' },
     div({ class: 'search-result-section-header' },
       h3('Product Information',
-        // TODO: count
         span({ class: 'search-count-result' }, `${firstPage.length} of ${result.length} results`)),
     ),
     columnsWrapper,
@@ -371,7 +369,6 @@ async function createKnowledgebaseResult(params, perPage = 12) {
   return div({ class: 'search-result-section knowledgebase' },
     div({ class: 'search-result-section-header' },
       h3('Knowledgebase',
-        // TODO: count
         span({ class: 'search-count-result' }, `${firstPage.length} of ${searchResults.count} results`)),
       a({
         href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
@@ -427,7 +424,6 @@ async function createCommunityResult(params) {
   return div({ class: 'search-result-section community' },
     div({ class: 'search-result-section-header' },
       h3('Community',
-        // TODO: count
         span({ class: 'search-count-result' }, `${searchResults.length} of ${searchResults.count} results`)),
       a({
         href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
