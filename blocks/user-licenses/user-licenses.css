@@ -358,7 +358,7 @@ button.add-user-to-license {
 }
 
 
-/* Styling for the modal container */
+/* Modal Container */
 .modal-container {
   display: none;
   position: fixed;
@@ -370,7 +370,6 @@ button.add-user-to-license {
   z-index: 9999;
 }
 
-/* Styling for the modal content */
 .modal-content {
   position: absolute;
   top: 50%;
@@ -417,17 +416,7 @@ button.add-user-to-license {
   fill: rgba(26 28 29 / 100%);
 }
 
-
-/* Add User Modal Content */
-.add-user-modal-content {
-  max-width: 98rem;
-  width: 70rem;
-  display: flex;
-  flex-grow: 1;
-  flex-flow: column wrap;
-}
-
-.add-user-modal-content > .modal-header h3 {
+.modal-header h3 {
   margin: 0.3em 0;
   font-size: 20px;
   line-height: 2.8rem;
@@ -439,24 +428,62 @@ button.add-user-to-license {
   text-align: left;
 }
 
-.add-user-modal-content > .modal-body {
-  overflow-y: scroll;
+.modal-body {
   padding: 0 20px;
-  height: 450px;
 }
 
-.add-user-modal-content > .modal-footer {
+.modal-footer {
   display: flex;
   justify-content: flex-end;
-  padding: 40px 20px 20px 20px;
+  padding: 40px 20px 20px;
   border-top: 0.1rem solid rgba(225 227 229);
 }
 
-.add-user-modal-content > .modal-footer > button {
+.modal-footer > button {
   margin: 0 8px;
 }
 
-.add-user-modal-content > .modal-footer > button:first-child {
+
+/* Add User and Change User
+/* Modal Content */
+.add-user-modal-content,
+.change-user-modal-content {
+  max-width: 60rem;
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.add-user-modal-content > .modal-body,
+.change-user-modal-content > .modal-body {
+  overflow-y: scroll;
+  height: 450px;
+}
+
+.add-user-modal-content > .modal-footer > button:first-child,
+.change-user-modal-content > .modal-footer > button:first-child {
   position: absolute;
   left: 20px;
+}
+
+
+/* Delete User Modal Content */
+.delete-user-modal-content {
+  max-width: 39rem;
+  width: 100%;
+}
+
+.delete-user-modal-content > .modal-body {
+  padding: 20px;
+}
+
+.delete-user-container p {
+  margin: 0.3em 0;
+  font-size: 1.5rem;
+  line-height: 1em;
+  font-family: var(--ff-myradpro-regular);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  color: #54565b;
+  text-align: left;
 }

@@ -578,6 +578,10 @@ main .video-wrap iframe {
 
 
 /* Table Container - Table */
+.table-container {
+  overflow-x: auto;
+}
+
 .table-container table {
   margin-bottom: 0;
   font-size: 14px;
