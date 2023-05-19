@@ -18,13 +18,17 @@ export default async function decorate(block) {
   block.append(createTabs(params));
 
   if (params.view === '') {
-    const blocks = await Promise.all([
-      createProductInformationResult(params),
-      createResourceResult(params, 3),
-      createKnowledgebaseResult(params, 4),
-      createCommunityResult(params),
-    ]);
-    block.append(...blocks);
+    // start all searches in parallel
+    const productInformationResultPromise = createProductInformationResult(params);
+    const resourceResultPromise = createResourceResult(params, 3);
+    const knowledgebaseResultPromise = createKnowledgebaseResult(params, 4);
+    const communityResultPromise = createCommunityResult(params);
+
+    // add blocks as they become available
+    block.append(await productInformationResultPromise);
+    block.append(await resourceResultPromise);
+    block.append(await knowledgebaseResultPromise);
+    block.append(await communityResultPromise);
   }
 
   if (params.view === 'resources') {
