@@ -30,12 +30,27 @@ function showAddUserTable(event) {
   showModal(event);
 }
 
-async function changeUserForLicense() {
-  alert('Change user');
+async function changeUserForALicense(event) {
+  const contactId = event.target.getAttribute('contactid');
+  const newProductUserId = event.target.getAttribute('data-new-productuserid');
+  const data = await execute('dynamics_change_enduser_license', `&contact_id=${contactId}&new_productuserid=${newProductUserId}`, 'PATCH');
+  if (data !== undefined && data !== null && data.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+    // eslint-disable-next-line no-use-before-define
+    displayLicenseDetails(event);
+  } else {
+    console.log('error ', data);
+  }
 }
 
 function updateAddUserId(event) {
   const addUserActionButton = document.querySelector('.add-user-action-button');
+  addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
+}
+
+function updateChangeUserId(event) {
+  const addUserActionButton = document.querySelector('.change-user-action-button');
   addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
 }
 
@@ -54,18 +69,47 @@ async function addUserToALicense(event) {
   }
 }
 
-async function showColleagues() {
+async function createColleaguesTable(checkboxClass) {
   const data = await execute('dynamics_get_colleagues_view', '', 'GET');
-  const headingsMapping = ['html|input|class:add-user-checkbox,type:checkbox,id:dataResponse0|contactid|', 'Full Name|firstname,lastname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
-  const colleaguesTable = createGenericTable(headingsMapping, data.colleagues);
-  const modalAddUserBodyDiv = document.querySelector('.modal-body');
-  const modalAddUserContentDiv = modalAddUserBodyDiv.querySelector('.add-user-container');
+  const headingsMapping = [`html|input|class:${checkboxClass},type:checkbox,id:dataResponse0|contactid|`, 'Full Name|firstname,lastname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
+  return createGenericTable(headingsMapping, data.colleagues);
+}
+async function addColleaguesToAddUserModal() {
+  const modalAddUserBodyDivs = document.querySelectorAll('.modal-body');
+  let modalAddUserContentDiv = null;
+  modalAddUserBodyDivs.forEach((modalAddUserBodyDiv) => {
+    const containerDiv = modalAddUserBodyDiv.querySelector('.add-user-container');
+    if (containerDiv !== null && containerDiv !== undefined) {
+      modalAddUserContentDiv = containerDiv;
+    }
+  });
+
   // clear previous modal content
   modalAddUserContentDiv.innerHTML = '';
-  modalAddUserContentDiv.appendChild(colleaguesTable);
+  modalAddUserContentDiv.appendChild(await createColleaguesTable('add-user-checkbox'));
   const userAddCheckboxes = document.querySelectorAll('.add-user-checkbox');
-  userAddCheckboxes.forEach((userAddCheckboxe) => {
-    userAddCheckboxe.addEventListener('click', updateAddUserId);
+  userAddCheckboxes.forEach((userAddCheckbox) => {
+    userAddCheckbox.addEventListener('click', updateAddUserId);
+  });
+}
+
+async function addColleaguesToChangeUserModal() {
+  const modalChangeUserBodyDivs = document.querySelectorAll('.modal-body');
+  let modalChangeUserContentDiv = null;
+  modalChangeUserBodyDivs.forEach((modalChangeUserBodyDiv) => {
+    const containerDiv = modalChangeUserBodyDiv.querySelector('.change-user-container');
+    if (containerDiv !== null && containerDiv !== undefined) {
+      modalChangeUserContentDiv = containerDiv;
+    }
+  });
+
+  // clear previous modal content
+  // TODO merge with above function
+  modalChangeUserContentDiv.innerHTML = '';
+  modalChangeUserContentDiv.appendChild(await createColleaguesTable('change-user-checkbox'));
+  const userChangeCheckboxes = document.querySelectorAll('.change-user-checkbox');
+  userChangeCheckboxes.forEach((userChangeCheckbox) => {
+    userChangeCheckbox.addEventListener('click', updateChangeUserId);
   });
 }
 
@@ -78,7 +122,7 @@ async function removeUserFromLicense(event) {
     // TODO show success toast message
     hideModal(event);
     // eslint-disable-next-line no-use-before-define
-    //displayLicenseDetails(event);
+    // displayLicenseDetails(event);
   } else {
     console.log('error ', data);
   }
@@ -169,7 +213,7 @@ async function displayLicenseDetails(event) {
       class: 'add-user-to-license action', type: 'button', 'data-modal-id': 'addUserModal', 'data-license-id': licenseId,
     }, 'Add End User');
 
-    await showColleagues();
+    await addColleaguesToAddUserModal();
 
     // TODO add condition
     endUsersDetailsDiv.appendChild(addUserButton);
@@ -177,8 +221,8 @@ async function displayLicenseDetails(event) {
 
     if (licenseUsers !== undefined && licenseUsers.length > 0) {
       const tableHeadings = ['html|td|class:user-name|contact1.fullname|Name', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
-        'html|button|class:license-user-remove-user action important,type:button,data-modal-id:deleteUserModal,data-new-productuserid:dataResponse0|new_productuserid|Remove User',
-        'html|button|class:license-user-change-user action,type:button|new_productuserid|Change End User'];
+        `html|button|class:license-user-remove-user action important,type:button,data-modal-id:deleteUserModal,data-new-productuserid:dataResponse0,data-license-id:${licenseId}|new_productuserid|Remove User`,
+        `html|button|class:license-user-change-user action,data-modal-id:changeUserModal,data-new-productuserid:dataResponse0,data-license-id:${licenseId}|new_productuserid|Change End User`];
 
       const tableElement = createGenericTable(tableHeadings, licenseUsers);
       endUsersDetailsDiv.appendChild(tableElement);
@@ -190,7 +234,7 @@ async function displayLicenseDetails(event) {
 
       const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user ');
       changeUserLicenseButtons.forEach((changeUserLicenseButton) => {
-        changeUserLicenseButton.addEventListener('click', changeUserForLicense);
+        changeUserLicenseButton.addEventListener('click', showModal);
       });
 
       // const modalContentDiv = document.querySelector('.add-user-modal-content');
@@ -200,13 +244,13 @@ async function displayLicenseDetails(event) {
   }
 }
 
-function addManageLicenseFeature(block) {
+async function addManageLicenseFeature(block) {
   const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
   const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
   block.append(licenseDetailsDiv);
   block.append(endUsersDetailsDiv);
 
-  // Add User
+  // Add User Modal
   const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
   const modalTitleH3 = createTag('h3', '', 'Add End User to License');
   const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
@@ -235,7 +279,7 @@ function addManageLicenseFeature(block) {
   const modalAddUserDiv = createTag('div', { class: 'modal-container add-user-modal', id: 'addUserModal' }, modalAddUserContentDiv);
   block.append(modalAddUserDiv);
 
-  // Delete User
+  // Delete User Modal
   const modalDeleteHeaderDiv = createTag('div', { class: 'modal-header' }, '');
   const modalDeleteTitleH3 = createTag('h3', '', 'Confirmation Required');
   const modalDeleteCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
@@ -262,6 +306,37 @@ function addManageLicenseFeature(block) {
 
   const modalDeleteUserModalDiv = createTag('div', { class: 'modal-container delete-user-modal', id: 'deleteUserModal' }, modalDeleteUserContentDiv);
   block.append(modalDeleteUserModalDiv);
+
+  // Change User Modal
+  const modalChangeUserHeaderDiv = createTag('div', { class: 'modal-header' }, '');
+  const modalChangeUserTitleH3 = createTag('h3', '', 'Choose a User');
+  const modalChangeUserCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
+  modalChangeUserHeaderDiv.appendChild(modalChangeUserTitleH3);
+  modalChangeUserHeaderDiv.appendChild(modalChangeUserCloseButtonIcon);
+
+  const modalChangeUserContentDiv = createTag('div', { class: 'modal-content change-user-modal-content' }, modalChangeUserHeaderDiv);
+
+  const modalChangeUserBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'change-user-container table-container' }, ''));
+
+  modalChangeUserContentDiv.appendChild(modalChangeUserBodyDiv);
+  const modalChangeUserFooterDiv = createTag('div', { class: 'modal-footer' }, '');
+  const createUserButtonChangeUser = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Create User');
+  const changeUserButton = createTag('button', { class: 'action change-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Change User');
+  const changeUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'changeUserModal' }, 'Close');
+
+  modalChangeUserFooterDiv.appendChild(createUserButtonChangeUser);
+  modalChangeUserFooterDiv.appendChild(changeUserButton);
+  modalChangeUserFooterDiv.appendChild(changeUserModalCloseButton);
+
+  createUserButtonChangeUser.addEventListener('click', createUser);
+  changeUserButton.addEventListener('click', changeUserForALicense);
+  changeUserModalCloseButton.addEventListener('click', hideModal);
+
+  modalChangeUserContentDiv.appendChild(modalChangeUserFooterDiv);
+  const modalChangeUserDiv = createTag('div', { class: 'modal-container change-user-modal', id: 'changeUserModal' }, modalChangeUserContentDiv);
+  block.append(modalChangeUserDiv);
+
+  await addColleaguesToChangeUserModal();
 
   const manageButtons = document.querySelectorAll('.manage-view-license');
   manageButtons.forEach((manageButton) => {
