@@ -1,6 +1,9 @@
 import {
-  a, div, h2, h3, h4, img, p, span,
+  a, div, h2, h3, h4, h5, img, p, span,
 } from '../../scripts/dom-helpers.js';
+import {
+  buildBlock, createOptimizedPicture, decorateBlock, loadBlocks,
+} from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
   const params = getSearchParams();
@@ -30,6 +33,9 @@ export default async function decorate(block) {
   if (params.view === 'community') {
     block.append(await createCommunityResult(params));
   }
+
+  // Decorate and load all the newly injected content
+  await loadBlocks(block);
 }
 
 function getSearchParams() {
@@ -85,6 +91,30 @@ function createTabs(params) {
   return tabs;
 }
 
+/**
+ *@typedef {Object} FranklinSearchResults
+ * @property {number} total
+ * @property {number} offset
+ * @property {number} limit
+ * @property {FranklinResult[]} data
+ */
+
+/**
+ *@typedef {Object} FranklinResult
+ * @property {string} path
+ * @property {string} title
+ * @property {string} image
+ * @property {string} description
+ * @property {string} category
+ * @property {string} publishdate
+ * @property {string} lastModified
+ */
+
+/**
+ *
+ * @param params
+ * @return {Promise<FranklinSearchResults>}
+ */
 async function searchResources(params) {
   const resp = await fetch(`${window.location.origin}/query-index.json`);
   const json = await resp.json();
@@ -95,11 +125,16 @@ async function searchResources(params) {
       .includes(params.searchTerm.toLowerCase()));
 }
 
+/**
+ *
+ * @param params
+ * @return {Promise<FranklinSearchResults>}
+ */
 async function searchProducts(params) {
   const resp = await fetch(`${window.location.origin}/query-index.json`);
   const json = await resp.json();
   return json.data
-    .filter((entry) => entry.path.startsWith('/')) // todo: filter by url
+    .filter((entry) => entry.path.startsWith('/pages/'))
     .filter((entry) => (entry.description + entry.title).toLowerCase()
       .includes(params.searchTerm.toLowerCase()));
 }
@@ -130,20 +165,39 @@ async function createResourceResult(params, limit = 12) {
   const result = await searchResources(params);
   const firstPage = result.slice(0, limit);
 
-  const resultDivs = firstPage
-    .map((entry) => (div({ class: 'search-product-block' },
-      img({ src: entry.image, alt: entry.title }),
-      h4(entry.title),
-      p(entry.description),
-      a({ href: entry.path }, 'Learn more'),
-    )));
+  function getCategoryFromPath(path) {
+    if (path.startsWith('/blogs/news')) return 'News';
+    if (path.startsWith('/blogs/webinars')) return 'Webinar';
+    if (path.startsWith('/blogs/free-tutorials')) return 'Free Tutorials';
+    if (path.startsWith('/blogs/eguides')) return 'eGuide';
+    if (path.startsWith('/blogs/success-stories')) return 'Success Story';
+    return '';
+  }
+
+  const cardRows = firstPage
+    .map((entry) => [
+      createOptimizedPicture(entry.image, entry.title),
+      div(
+        h5(getCategoryFromPath(entry.path)),
+        p(entry.title),
+        p({ class: 'button-container' },
+          a({ href: entry.path, class: 'button' }, 'Learn more'),
+        ),
+      ),
+    ]);
+
+  const blockWrapper = div();
+  const cardsBlock = buildBlock('cards', cardRows);
+  cardsBlock.classList.add('layout-3-card', 'search-results', 'resource-center', 'curved-text', 'orange');
+  blockWrapper.append(cardsBlock);
+  decorateBlock(cardsBlock);
 
   return div({ class: 'search-result-section resources' },
     div({ class: 'search-result-section-header' },
       h3('Resources',
         span({ class: 'search-count-result' }, `${firstPage.length} of ${result.length} results`)),
     ),
-    ...resultDivs,
+    cardsBlock,
   );
 }
 
