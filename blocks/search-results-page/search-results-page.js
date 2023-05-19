@@ -1,5 +1,5 @@
 import {
-  a, div, h2, h3, h4, h5, img, p, span,
+  a, div, h2, h3, h4, h5, img, li, p, span,
 } from '../../scripts/dom-helpers.js';
 import {
   buildBlock, createOptimizedPicture, decorateBlock, loadBlocks,
@@ -13,6 +13,7 @@ export default async function decorate(block) {
     block.prepend(h2(`Search results for “${params.searchTerm}”`));
   } else {
     block.prepend(h2('Search our site'));
+    // TODO: handle this case for the rest of the page
   }
 
   block.append(createTabs(params));
@@ -20,9 +21,9 @@ export default async function decorate(block) {
   if (params.view === '') {
     // start all searches in parallel
     const productInformationResultPromise = createProductInformationResult(params);
-    const resourceResultPromise = createResourceResult(params, 3);
-    const knowledgebaseResultPromise = createKnowledgebaseResult(params, 4);
-    const communityResultPromise = createCommunityResult(params);
+    const resourceResultPromise = createResourceResult(params, false, 3);
+    const knowledgebaseResultPromise = createKnowledgebaseResult(params, false, 4);
+    const communityResultPromise = createCommunityResult(params, false);
 
     // add blocks as they become available
     block.append(await productInformationResultPromise);
@@ -53,7 +54,7 @@ function getSearchParams() {
   /**
    * @type {number}
    */
-  const page = new URLSearchParams(window.location.search).get('page');
+  const page = Number(new URLSearchParams(window.location.search).get('page')) || 1;
   /**
    * @type {'article'|undefined}
    */
@@ -177,9 +178,36 @@ async function createProductInformationResult(params) {
   );
 }
 
-async function createResourceResult(params, limit = 12) {
+/**
+ *
+ * @param page {number}
+ * @param totalPages {number}
+ * @return {Element}
+ */
+function createPagination(page, totalPages) {
+  const pagination = div({ class: 'paginate-page' });
+  const ul = pagination.appendChild(document.createElement('ul'));
+
+  function getUrlForPage(pageNo) {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('page', pageNo);
+    return `?${searchParams}`;
+  }
+
+  ul.append(li(a({ href: getUrlForPage(page - 1) }, '«')));
+  ul.append(li(a({ href: getUrlForPage(page - 1), class: 'current-page' }, page - 1)));
+  ul.append(li(a({ href: getUrlForPage(page), class: 'current-page' }, page)));
+  ul.append(li(a({ href: getUrlForPage(page + 1), class: 'current-page' }, page + 1)));
+  // ul.append(li(a({ href: getUrlForPage(page - 1), class: 'dotted-page', 'aria-describedby': 'a11y-external-message' }, '…')));
+  ul.append(li(a({ href: getUrlForPage(totalPages) }, totalPages)));
+  ul.append(li(a({ href: getUrlForPage(page + 1) }, '»')));
+
+  return pagination;
+}
+
+async function createResourceResult(params, paginate = true, perPage = 12) {
   const result = await searchResources(params);
-  const firstPage = result.slice(0, limit);
+  const firstPage = result.slice(0, perPage);
 
   function getCategoryFromPath(path) {
     if (path.startsWith('/blogs/news')) return 'News';
@@ -211,6 +239,7 @@ async function createResourceResult(params, limit = 12) {
   return div({ class: 'search-result-section resources' },
     createSearchSectionTitle('Resources', firstPage.length, result.length),
     cardsWrapper,
+    paginate ? createPagination(params.page, Math.ceil(result.length / perPage)) : null,
   );
 }
 
@@ -358,7 +387,7 @@ function createSearchSectionTitle(title, resultCount, totalResultCount, moreLink
   );
 }
 
-async function createKnowledgebaseResult(params, perPage = 12) {
+async function createKnowledgebaseResult(params, paginate = true, perPage = 12) {
   let searchResults;
   let resultDivs;
   try {
@@ -395,7 +424,7 @@ async function createKnowledgebaseResult(params, perPage = 12) {
   );
 }
 
-async function createCommunityResult(params) {
+async function createCommunityResult(params, paginate = true) {
   function convertToSlug(Text) {
     return Text
       .toLowerCase()
