@@ -185,24 +185,14 @@ async function createProductInformationResult(params) {
  * @return {Element}
  */
 function createPagination(page, totalPages) {
-  const pagination = div({ class: 'paginate-page' });
-  const ul = pagination.appendChild(document.createElement('ul'));
-
-  function getUrlForPage(pageNo) {
-    const searchParams = new URLSearchParams(window.location.search);
-    searchParams.set('page', pageNo);
-    return `?${searchParams}`;
-  }
-
-  ul.append(li(a({ href: getUrlForPage(page - 1) }, '«')));
-  ul.append(li(a({ href: getUrlForPage(page - 1), class: 'current-page' }, page - 1)));
-  ul.append(li(a({ href: getUrlForPage(page), class: 'current-page' }, page)));
-  ul.append(li(a({ href: getUrlForPage(page + 1), class: 'current-page' }, page + 1)));
-  // ul.append(li(a({ href: getUrlForPage(page - 1), class: 'dotted-page', 'aria-describedby': 'a11y-external-message' }, '…')));
-  ul.append(li(a({ href: getUrlForPage(totalPages) }, totalPages)));
-  ul.append(li(a({ href: getUrlForPage(page + 1) }, '»')));
-
-  return pagination;
+  const wrapper = div();
+  const pagination = buildBlock('pagination', [
+    ['page', page.toString()],
+    ['pages', totalPages.toString()],
+  ]);
+  wrapper.append(pagination);
+  decorateBlock(pagination);
+  return wrapper;
 }
 
 async function createResourceResult(params, paginate = true, perPage = 12) {
@@ -239,7 +229,7 @@ async function createResourceResult(params, paginate = true, perPage = 12) {
   return div({ class: 'search-result-section resources' },
     createSearchSectionTitle('Resources', firstPage.length, result.length),
     cardsWrapper,
-    paginate ? createPagination(params.page, Math.ceil(result.length / perPage)) : null,
+    paginate ? createPagination(params.page, Math.ceil(result.length / perPage)) : '',
   );
 }
 
