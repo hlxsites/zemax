@@ -1,12 +1,24 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { a, ul } from '../../scripts/dom-helpers.js';
 
+export default async function decorate(block) {
+  const { page, pages } = readBlockConfig(block);
+  block.textContent = '';
+  block.append(createPagination(block, page, pages));
+}
+
 function getUrlForPage(pageNo) {
   const searchParams = new URLSearchParams(window.location.search);
   searchParams.set('page', pageNo);
   return `?${searchParams}`;
 }
 
+/**
+ * Create an array of page numbers to display in the pagination
+ * @param currentPage
+ * @param totalPages
+ * @return {number[]}
+ */
 function createPageItems(currentPage, totalPages) {
   const maxPages = 5;
   let startPage;
@@ -35,6 +47,7 @@ function createPageItems(currentPage, totalPages) {
 
   // Create an array of page numbers
   const pages = [];
+  // eslint-disable-next-line no-plusplus
   for (let i = startPage; i <= endPage; i++) {
     pages.push(i);
   }
@@ -46,46 +59,38 @@ function createPagination(block, page, pages) {
 
   const pageItems = createPageItems(page, pages);
 
-  function addLink(ignore, str, ignore2) {
+  function addLink(pageNo) {
     const li = document.createElement('li');
-    if (str !== '...') {
-      li.append(a({ href: getUrlForPage(page), class: Number(str) === page ? 'current-page' : '' }, str));
+    if (pageNo !== '...') {
+      li.append(a({ href: getUrlForPage(page), class: Number(pageNo) === page ? 'current-page' : '' }, pageNo));
     } else {
-      li.append(str);
+      li.append(pageNo);
     }
     list.appendChild(li);
   }
 
   // prev
-  addLink(list, ' < ', 1);
+  addLink(' < ');
 
   // always show first page
   if (pageItems[0] !== 1) {
-    addLink(list, 1, null);
-    addLink(list, '...', null);
+    addLink(1);
+    addLink('...');
   }
 
   // list pages around current page
   pageItems.forEach((pageItem) => {
-    addLink(list, pageItem, pageItem);
+    addLink(pageItem);
   });
 
   // always show last page
   if (pageItems[pageItems.length - 1] !== pages) {
-    addLink(list, '...', null);
-    addLink(list, pages, null);
+    addLink('...');
+    addLink(pages);
   }
 
   // next
-  addLink(list, ' > ', page + 1);
+  addLink(' > ');
 
   return list;
-}
-
-export default async function decorate(block) {
-  const { page, pages } = readBlockConfig(block);
-
-  for (let i = 1; i <= 20; i++) {
-    block.append(createPagination(block, i, 20));
-  }
 }
