@@ -279,14 +279,14 @@ async function createResourceResult(params, showPaginationBlock = true, perPage 
 /**
  *
  * @param params
+ * @param perPage {number}
  * @return {Promise<ZendeskSearchResults>}
  */
 async function searchKnowledgebase(params, perPage) {
-  const locale = 'en';
+  const locale = 'en-us';
   const response = await fetch(`https://zemax.zendesk.com/api/v2/help_center/articles/search?${
     new URLSearchParams({
-      page: 1,
-      page_count: 1,
+      page: params.page,
       per_page: perPage,
       query: params.searchTerm,
       sort_order: 'desc',
@@ -378,7 +378,7 @@ function createSearchSectionTitle(title, resultCount, totalResultCount, moreLink
   );
 }
 
-async function createKnowledgebaseResult(params, paginate = true, perPage = 12) {
+async function createKnowledgebaseResult(params, showPaginationBlock = true, perPage = 12) {
   let searchResults;
   let resultDivs;
   try {
@@ -391,8 +391,8 @@ async function createKnowledgebaseResult(params, paginate = true, perPage = 12) 
         return (div({ class: '' },
           a({ href: item.html_url, target: '_blank' },
             h4(item.title),
+            p(trimToLength(233, textBody.textContent)),
           ),
-          p(trimToLength(233, textBody.textContent)),
         ));
       });
   } catch (e) {
@@ -412,6 +412,7 @@ async function createKnowledgebaseResult(params, paginate = true, perPage = 12) 
     // eslint-disable-next-line function-call-argument-newline
     createSearchSectionTitle('Knowledgebase', searchResults?.results?.length, searchResults?.count, moreLink),
     ...resultDivs,
+    showPaginationBlock ? createPagination(params.page, searchResults.page_count) : '',
   );
 }
 
