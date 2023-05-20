@@ -138,14 +138,3 @@
 }
 
 
-.search-results-page-container .paginate-page ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.search-results-page-container .paginate-page ul li {
-  list-style: none;
-}
-
-
