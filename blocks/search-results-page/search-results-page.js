@@ -121,6 +121,7 @@ function createTabs(params) {
 /**
  *
  * @param params
+ * @param perPage {number}
  * @return {Promise<FranklinSearchResults>}
  */
 async function searchResources(params) {
@@ -195,9 +196,9 @@ function createPagination(page, totalPages) {
   return wrapper;
 }
 
-async function createResourceResult(params, paginate = true, perPage = 12) {
+async function createResourceResult(params, showPaginationBlock = true, perPage = 12) {
   const result = await searchResources(params);
-  const firstPage = result.slice(0, perPage);
+  const firstPage = result.slice((params.page - 1) * perPage, params.page * perPage);
 
   function getCategoryFromPath(path) {
     if (path.startsWith('/blogs/news')) return 'News';
@@ -229,7 +230,7 @@ async function createResourceResult(params, paginate = true, perPage = 12) {
   return div({ class: 'search-result-section resources' },
     createSearchSectionTitle('Resources', firstPage.length, result.length),
     cardsWrapper,
-    paginate ? createPagination(params.page, Math.ceil(result.length / perPage)) : '',
+    showPaginationBlock ? createPagination(params.page, Math.ceil(result.length / perPage)) : '',
   );
 }
 
