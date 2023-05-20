@@ -1,10 +1,16 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { a, ul } from '../../scripts/dom-helpers.js';
 
+function getUrlForPage(pageNo) {
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.set('page', pageNo);
+  return `?${searchParams}`;
+}
+
 function addLink(list, str, page) {
   const li = document.createElement('li');
   if (page != null) {
-    li.append(a({ href: `?page=${page}` }, str));
+    li.append(a({ href: getUrlForPage(page) }, str));
   } else {
     li.append(str);
   }
@@ -12,10 +18,8 @@ function addLink(list, str, page) {
 }
 
 export default async function decorate(block) {
-  let { page, pages } = readBlockConfig(block);
+  const { page, pages } = readBlockConfig(block);
 
-  page = 7;
-  pages = 34;
   const pageCountLast = pages - 4;
   const lastIter = pages - page;
   const itemFirst = page - 2;
@@ -25,6 +29,8 @@ export default async function decorate(block) {
   const list = ul();
   block.append(list);
 
+  // algorithm for pagination copied from https://www.zemax.com/search?view=knowledgebase&q=OpticStudio
+  // could be replaced with something more readable.
   if (page > 1) {
     addLink(list, ' < ', 1);
   } else {
@@ -83,6 +89,6 @@ export default async function decorate(block) {
   if (page < pages) {
     addLink(list, ' > ', page + 1);
   } else {
-    addLink(list, '<span> &gt; </span>');
+    addLink(list, '&gt;', null);
   }
 }
