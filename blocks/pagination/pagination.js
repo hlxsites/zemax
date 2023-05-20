@@ -4,7 +4,7 @@ import { a, ul } from '../../scripts/dom-helpers.js';
 export default async function decorate(block) {
   const { page, pages } = readBlockConfig(block);
   block.textContent = '';
-  block.append(createPagination(block, page, pages));
+  block.append(createPagination(block, Number(page), Number(pages)));
 }
 
 function getUrlForPage(pageNo) {
@@ -54,43 +54,51 @@ function createPageItems(currentPage, totalPages) {
   return pages;
 }
 
+/**
+ *
+ * @param block
+ * @param page {number}
+ * @param pages {number}
+ * @return {Element}
+ */
 function createPagination(block, page, pages) {
   const list = ul();
 
   const pageItems = createPageItems(page, pages);
 
-  function addLink(pageNo) {
+  function addLink(str, pageNo = null) {
     const li = document.createElement('li');
-    if (pageNo !== '...') {
-      li.append(a({ href: getUrlForPage(page), class: Number(pageNo) === page ? 'current-page' : '' }, pageNo));
+    if (pageNo) {
+      const isCurrentPage = Number(pageNo) === page;
+      li.append(a({ href: getUrlForPage(pageNo), class: isCurrentPage ? 'current-page' : '' }, str));
     } else {
-      li.append(pageNo);
+      li.append(str);
     }
     list.appendChild(li);
   }
 
   // prev
-  addLink(' < ');
+  if (page > 1) addLink(' < ', page - 1);
 
   // always show first page
   if (pageItems[0] !== 1) {
-    addLink(1);
+    addLink(1, 1);
     addLink('...');
   }
 
   // list pages around current page
   pageItems.forEach((pageItem) => {
-    addLink(pageItem);
+    addLink(pageItem, pageItem);
   });
 
   // always show last page
   if (pageItems[pageItems.length - 1] !== pages) {
-    addLink('...');
-    addLink(pages);
+    addLink('...', '...');
+    addLink(pages, pages);
   }
 
   // next
-  addLink(' > ');
+  if (page < pages) addLink(' > ', page + 1);
 
   return list;
 }
