@@ -13,7 +13,6 @@ export default async function decorate(block) {
     block.prepend(h2(`Search results for “${params.searchTerm}”`));
   } else {
     block.prepend(h2('Search our site'));
-    // TODO: handle this case for the rest of the page
   }
 
   block.append(createTabs(params));
@@ -344,8 +343,6 @@ async function searchCommunity(params) {
     new URLSearchParams({
       pageSize: 12,
       page: 1,
-      // TODO: paging
-      // xxx
       q: params.searchTerm,
     })}`, {
     headers: {
