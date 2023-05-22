@@ -127,6 +127,11 @@
   border-bottom: 4px solid var(--clr-orange);
 }
 
+.search-results-page-container .load-more {
+  margin: 50px;
+  text-align: center;
+}
+
 @media screen and (min-width: 1030px) {
   .search-results-page-container >div {
     align-items: center;

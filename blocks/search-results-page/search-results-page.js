@@ -1,5 +1,5 @@
 import {
-  a, div, h2, h3, h4, h5, img, li, p, span,
+  a, div, h2, h3, h4, h5, img, p, span,
 } from '../../scripts/dom-helpers.js';
 import {
   buildBlock, createOptimizedPicture, decorateBlock, loadBlocks,
@@ -345,6 +345,7 @@ async function searchCommunity(params) {
       pageSize: 12,
       page: 1,
       // TODO: paging
+      // xxx
       q: params.searchTerm,
     })}`, {
     headers: {
@@ -373,7 +374,9 @@ function trimToLength(number, text) {
 function createSearchSectionTitle(title, resultCount, totalResultCount, moreLink) {
   return div({ class: 'search-result-section-header' },
     h3(title,
-      resultCount ? span({ class: 'search-count-result' }, `${resultCount} of ${totalResultCount} results`) : ''),
+      resultCount && totalResultCount ? span({ class: 'search-count-result' }, `${resultCount} of ${totalResultCount} results`) : '',
+      resultCount && !totalResultCount ? span({ class: 'search-count-result' }, `showing first ${resultCount} results`) : '',
+    ),
     moreLink || '',
   );
 }
@@ -470,7 +473,11 @@ async function createCommunityResult(params, paginate = true) {
   }, 'Search the Community');
 
   return div({ class: 'search-result-section community' },
-    createSearchSectionTitle('Community', searchResults?.length, searchResults?.count, moreLink),
+    createSearchSectionTitle('Community', searchResults?.length, null, moreLink),
     ...resultDivs,
+    paginate ? p({ class: 'button-container load-more' }, a({
+      class: 'button secondary',
+      href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+    }, 'Load More results')) : '',
   );
 }
