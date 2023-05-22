@@ -12,10 +12,14 @@ function hideModal(event) {
   document.getElementById(modalId).style.display = 'none';
 }
 
-function showUserRemoveModal(event) {
+function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
+  const licenseId = event.target.getAttribute('data-license-id');
+  const nextActionClass = event.target.getAttribute('data-next-action-class');
   showModal(event);
-  document.querySelector('.delete-user-action-button').setAttribute('data-new-productuserid', newProductUserId);
+  const userActionButton = document.querySelector(`.${nextActionClass}`);
+  userActionButton.setAttribute('data-new-productuserid', newProductUserId);
+  userActionButton.setAttribute('data-license-id', licenseId);
 }
 
 function createUser(event) {
@@ -122,7 +126,7 @@ async function removeUserFromLicense(event) {
     // TODO show success toast message
     hideModal(event);
     // eslint-disable-next-line no-use-before-define
-    // displayLicenseDetails(event);
+    displayLicenseDetails(event);
   } else {
     console.log('error ', data);
   }
@@ -221,20 +225,20 @@ async function displayLicenseDetails(event) {
 
     if (licenseUsers !== undefined && licenseUsers.length > 0) {
       const tableHeadings = ['html|td|class:user-name|contact1.fullname|Name', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
-        `html|button|class:license-user-remove-user action important,type:button,data-modal-id:deleteUserModal,data-new-productuserid:dataResponse0,data-license-id:${licenseId}|new_productuserid|Remove User`,
-        `html|button|class:license-user-change-user action,data-modal-id:changeUserModal,data-new-productuserid:dataResponse0,data-license-id:${licenseId}|new_productuserid|Change End User`];
+        `html|button|class:license-user-remove-user action important,type:button,data-modal-id:deleteUserModal,data-new-productuserid:dataResponse0,data-license-id:${licenseId},data-next-action-class:delete-user-action-button|new_productuserid|Remove User`,
+        `html|button|class:license-user-change-user action,data-modal-id:changeUserModal,data-new-productuserid:dataResponse0,data-license-id:${licenseId},data-next-action-class:change-user-action-button|new_productuserid|Change End User`];
 
       const tableElement = createGenericTable(tableHeadings, licenseUsers);
       endUsersDetailsDiv.appendChild(tableElement);
 
       const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
       removeButtons.forEach((removeButton) => {
-        removeButton.addEventListener('click', showUserRemoveModal);
+        removeButton.addEventListener('click', showUserActionModal);
       });
 
       const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user ');
       changeUserLicenseButtons.forEach((changeUserLicenseButton) => {
-        changeUserLicenseButton.addEventListener('click', showModal);
+        changeUserLicenseButton.addEventListener('click', showUserActionModal);
       });
 
       // const modalContentDiv = document.querySelector('.add-user-modal-content');
