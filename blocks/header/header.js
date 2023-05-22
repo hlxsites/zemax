@@ -1,7 +1,5 @@
 import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
-import {
-  createTag, loadScript, loadScriptPromise, decorateLinkedPictures,
-} from '../../scripts/scripts.js';
+import { createTag, loadScriptPromise, decorateLinkedPictures } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
