@@ -71,6 +71,16 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+export function showModal(event) {
+  const modalId = event.target.getAttribute('data-modal-id');
+  document.getElementById(modalId).style.display = 'block';
+}
+
+export function hideModal(event) {
+  const modalId = event.target.getAttribute('data-modal-id');
+  document.getElementById(modalId).style.display = 'none';
+}
+
 /**
  *Example
  *
@@ -85,7 +95,7 @@ export function createTag(tag, attributes, html) {
    attribute1:attribute1Value, attribute2: attribute2Value, attribute3: dataResponse0|
    dataResponse0Key,dataResponse1Key|htmlInnerText
 
-  *In the above format dataResponse0 denotes take the key from next split
+  * In the above format dataResponse0 denotes take the key from next split
   * Currently only used by create generic table method, export to use for others and update this comment.
 */
 function processTag(mapping, row) {

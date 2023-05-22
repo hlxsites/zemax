@@ -1,16 +1,8 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
-import { createTag, createGenericTable } from '../../scripts/scripts.js';
+import {
+  createTag, createGenericTable, hideModal, showModal,
+} from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
-
-function showModal(event) {
-  const modalId = event.target.getAttribute('data-modal-id');
-  document.getElementById(modalId).style.display = 'block';
-}
-
-function hideModal(event) {
-  const modalId = event.target.getAttribute('data-modal-id');
-  document.getElementById(modalId).style.display = 'none';
-}
 
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
@@ -78,42 +70,27 @@ async function createColleaguesTable(checkboxClass) {
   const headingsMapping = [`html|input|class:${checkboxClass},type:checkbox,id:dataResponse0|contactid|`, 'Full Name|firstname,lastname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
   return createGenericTable(headingsMapping, data.colleagues);
 }
-async function addColleaguesToAddUserModal() {
-  const modalAddUserBodyDivs = document.querySelectorAll('.modal-body');
-  let modalAddUserContentDiv = null;
-  modalAddUserBodyDivs.forEach((modalAddUserBodyDiv) => {
-    const containerDiv = modalAddUserBodyDiv.querySelector('.add-user-container');
+
+async function addColleaguesToUserActionModal(
+  modalSelectorClass,
+  modalCheckBoxClass,
+  eventListenerMethoda,
+) {
+  const modalBodyDivs = document.querySelectorAll('.modal-body');
+  let modalContentDiv = null;
+  modalBodyDivs.forEach((modalBodyDiv) => {
+    const containerDiv = modalBodyDiv.querySelector(`.${modalSelectorClass}`);
     if (containerDiv !== null && containerDiv !== undefined) {
-      modalAddUserContentDiv = containerDiv;
+      modalContentDiv = containerDiv;
     }
   });
 
   // clear previous modal content
-  modalAddUserContentDiv.innerHTML = '';
-  modalAddUserContentDiv.appendChild(await createColleaguesTable('add-user-checkbox'));
-  const userAddCheckboxes = document.querySelectorAll('.add-user-checkbox');
-  userAddCheckboxes.forEach((userAddCheckbox) => {
-    userAddCheckbox.addEventListener('click', updateAddUserId);
-  });
-}
-
-async function addColleaguesToChangeUserModal() {
-  const modalChangeUserBodyDivs = document.querySelectorAll('.modal-body');
-  let modalChangeUserContentDiv = null;
-  modalChangeUserBodyDivs.forEach((modalChangeUserBodyDiv) => {
-    const containerDiv = modalChangeUserBodyDiv.querySelector('.change-user-container');
-    if (containerDiv !== null && containerDiv !== undefined) {
-      modalChangeUserContentDiv = containerDiv;
-    }
-  });
-
-  // clear previous modal content
-  // TODO merge with above function
-  modalChangeUserContentDiv.innerHTML = '';
-  modalChangeUserContentDiv.appendChild(await createColleaguesTable('change-user-checkbox'));
-  const userChangeCheckboxes = document.querySelectorAll('.change-user-checkbox');
-  userChangeCheckboxes.forEach((userChangeCheckbox) => {
-    userChangeCheckbox.addEventListener('click', updateChangeUserId);
+  modalContentDiv.innerHTML = '';
+  modalContentDiv.appendChild(await createColleaguesTable(modalCheckBoxClass));
+  const userCheckboxes = document.querySelectorAll(`.${modalCheckBoxClass}`);
+  userCheckboxes.forEach((userCheckbox) => {
+    userCheckbox.addEventListener('click', eventListenerMethoda);
   });
 }
 
@@ -217,7 +194,7 @@ async function displayLicenseDetails(event) {
       class: 'add-user-to-license action', type: 'button', 'data-modal-id': 'addUserModal', 'data-license-id': licenseId,
     }, 'Add End User');
 
-    await addColleaguesToAddUserModal();
+    await addColleaguesToUserActionModal('add-user-container', 'add-user-checkbox', updateAddUserId);
 
     // TODO add condition
     endUsersDetailsDiv.appendChild(addUserButton);
@@ -340,7 +317,7 @@ async function addManageLicenseFeature(block) {
   const modalChangeUserDiv = createTag('div', { class: 'modal-container change-user-modal', id: 'changeUserModal' }, modalChangeUserContentDiv);
   block.append(modalChangeUserDiv);
 
-  await addColleaguesToChangeUserModal();
+  await addColleaguesToUserActionModal('change-user-container', 'change-user-checkbox', updateChangeUserId);
 
   const manageButtons = document.querySelectorAll('.manage-view-license');
   manageButtons.forEach((manageButton) => {
