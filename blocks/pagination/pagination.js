@@ -28,21 +28,18 @@ function createPageItems(currentPage, totalPages) {
     // If there are 5 pages or less, show all pages
     startPage = 1;
     endPage = totalPages;
+  } else if (currentPage <= Math.floor(maxPages / 2)) {
+    // If the current page is at the start
+    startPage = 1;
+    endPage = maxPages;
+  } else if (currentPage + Math.floor(maxPages / 2) >= totalPages) {
+    // If the current page is at the end
+    startPage = totalPages - maxPages + 1;
+    endPage = totalPages;
   } else {
-    // If there are more than 5 pages
-    if (currentPage <= Math.floor(maxPages / 2)) {
-      // If the current page is at the start
-      startPage = 1;
-      endPage = maxPages;
-    } else if (currentPage + Math.floor(maxPages / 2) >= totalPages) {
-      // If the current page is at the end
-      startPage = totalPages - maxPages + 1;
-      endPage = totalPages;
-    } else {
-      // Anywhere in the middle
-      startPage = currentPage - Math.floor(maxPages / 2);
-      endPage = startPage + maxPages - 1;
-    }
+    // Anywhere in the middle
+    startPage = currentPage - Math.floor(maxPages / 2);
+    endPage = startPage + maxPages - 1;
   }
 
   // Create an array of page numbers
