@@ -14,11 +14,11 @@ function changeTabs(e) {
   // remove cloned tab panel for mobile
   grandparent.parentNode.querySelectorAll('.tablist-container .tabpanel').forEach((p) => p.remove());
 
+  const targetTabIndex = target.getAttribute('tabindex');
+
   const mediaQuery = window.matchMedia('(max-width: 767px)');
   if (mediaQuery.matches) {
     const activeTabIndex = document.querySelector('.tab[aria-selected="true"]')?.getAttribute('tabindex');
-    const targetTabIndex = target.getAttribute('tabindex');
-
     // make selected tab unselected
     parent.querySelectorAll('[aria-selected="true"]').forEach((t) => t.setAttribute('aria-selected', false));
 
@@ -40,24 +40,24 @@ function changeTabs(e) {
     const targetTabContent = grandparent.parentNode.querySelector(`#${target.getAttribute('aria-controls')}`);
     targetTabContent.removeAttribute('hidden');
   }
+  window.history.replaceState(null, null, `${document.location.pathname}#${targetTabIndex}`);
 }
 
 function openTabDirect(block) {
-  const { hash } = window.location;
-  const tabindex = hash.substring(1);
-  const tab = block.querySelector(`a[tabindex="${tabindex}"]`);
-  if (tab) tab.click();
+  if (window.location.hash !== '') {
+    const { hash } = window.location;
+    const tabindex = hash.substring(1);
+    const tab = block.querySelector(`a[tabindex="${tabindex}"]`);
+    if (tab) tab.click();
+  }
 }
 
-function initTabs(e) {
-  const tabs = e.querySelectorAll('[role="tab"]');
+function initTabs(block) {
+  const tabs = block.querySelectorAll('[role="tab"]');
   tabs.forEach((tab) => {
     tab.addEventListener('click', changeTabs);
   });
-
-  if (window.location.hash !== '') {
-    openTabDirect(e);
-  }
+  openTabDirect(block);
 }
 
 let initCount = 0;
@@ -146,14 +146,14 @@ export default function decorate(block) {
 
   window.matchMedia('(min-width: 768px)').addEventListener('change', (mediaQuery) => {
     if (mediaQuery.matches) {
-      initTabs(block);
+      openTabDirect(block);
     }
   });
   window.matchMedia('(max-width: 767px)').addEventListener('change', (mediaQuery) => {
     if (mediaQuery.matches) {
-      initTabs(block);
+      openTabDirect(block);
     }
   });
 
-  window.addEventListener('hashchange', () => initTabs(block));
+  window.addEventListener('hashchange', () => openTabDirect(block));
 }
