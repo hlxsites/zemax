@@ -22,7 +22,7 @@ header nav > div {
 
 header nav .nav-logo {
   grid-area: logo;
-  padding: 11px 0 0 20px;
+  padding: 0 0 0 20px;
 }
 
 header nav .nav-logo svg {
