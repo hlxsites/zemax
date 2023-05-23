@@ -30,7 +30,7 @@ async function changeUserForALicense(event) {
   const contactId = event.target.getAttribute('contactid');
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
   const data = await execute('dynamics_change_enduser_license', `&contact_id=${contactId}&new_productuserid=${newProductUserId}`, 'PATCH');
-  if (data !== undefined && data !== null && data.status === 204) {
+  if (data?.status === 204) {
     // TODO show success toast message
     hideModal(event);
     // eslint-disable-next-line no-use-before-define
@@ -55,7 +55,7 @@ async function addUserToALicense(event) {
   const licenseId = event.target.getAttribute('data-license-id');
   const data = await execute('dynamics_add_end_user', `&contactId=${contactId}&licenseid=${licenseId}`, 'POST');
 
-  if (data !== undefined && data !== null && data.status === 204) {
+  if (data?.status === 204) {
     // TODO show success toast message
     hideModal(event);
     // eslint-disable-next-line no-use-before-define
@@ -107,7 +107,7 @@ async function addColleaguesToUserActionModal(
   let modalContentDiv = null;
   modalBodyDivs.forEach((modalBodyDiv) => {
     const containerDiv = modalBodyDiv.querySelector(`.${modalSelectorClass}`);
-    if (containerDiv !== null && containerDiv !== undefined) {
+    if (containerDiv) {
       modalContentDiv = containerDiv;
     }
   });
@@ -126,7 +126,7 @@ async function removeUserFromLicense(event) {
   const data = await execute('dynamics_remove_enduser_from_license', `&new_productuserid=${newproductuserid}`, 'DELETE');
   // TODO handle response and add toast message
 
-  if (data !== undefined && data !== null && data.status === 204) {
+  if (data?.status === 204) {
     // TODO show success toast message
     hideModal(event);
     // eslint-disable-next-line no-use-before-define
@@ -138,7 +138,7 @@ async function removeUserFromLicense(event) {
 
 async function updateLicenseNickname() {
   const { value } = document.querySelector('.nickname');
-  if (value !== '' && value !== undefined) {
+  if (value) {
     const data = await execute('dynamics_set_license_nickname', `&id=97d53652-122f-e611-80ea-005056831cd4&nickname=${value}`, 'PATCH');
     console.log('Updated license nickname ', data);
   } else {
@@ -153,14 +153,14 @@ function hideOtherUserLicenseInformation() {
   sections.forEach((section) => {
     if (section.classList.contains('user-licenses-container')) {
       const tabsContent = section.querySelector('.tabs');
-      if (tabsContent !== undefined && tabsContent !== null) {
+      if (tabsContent) {
         section.querySelector('.tabs').remove();
       }
       const licenseComponent = section.querySelector('.user-licenses.block');
       licenseComponent.querySelector('h3').parentElement.parentElement.remove();
 
       let backToProfileButton = licenseComponent.querySelector('#backToAccountButton');
-      if (backToProfileButton === undefined || backToProfileButton === null) {
+      if (!backToProfileButton) {
         backToProfileButton = createTag('a', { href: '/pages/profile', class: 'button primary', id: 'backToAccountButton' }, 'Back to Account');
         licenseComponent.insertBefore(backToProfileButton, licenseComponent.firstChild);
       }
@@ -175,10 +175,7 @@ async function displayLicenseDetails(event) {
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
-
-  if (userId == null || userId === undefined || accessToken == null || accessToken === undefined) {
-    window.location.assign(`${window.location.origin}`);
-  } else {
+  if (userId && accessToken) {
     const data = await execute('dynamics_get_end_users_for_license', `&license_id=${licenseId}`, 'GET');
     // DOM creation
     const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
@@ -204,7 +201,7 @@ async function displayLicenseDetails(event) {
       }
     });
 
-    const nickNameSetValue = (data.license_detail[0].zemax_nickname === undefined ? '' : data.license_detail[0].zemax_nickname);
+    const nickNameSetValue = data.license_detail[0].zemax_nickname ?? '';
     const nickNameTextField = createTag('input', { class: 'nickname', value: nickNameSetValue }, '');
     licenseDetailsRow.appendChild(nickNameTextField);
     const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button' }, 'Save');
@@ -227,7 +224,7 @@ async function displayLicenseDetails(event) {
     endUsersDetailsDiv.appendChild(addUserButton);
     addUserButton.addEventListener('click', showAddUserTable);
 
-    if (licenseUsers !== undefined && licenseUsers.length > 0) {
+    if (licenseUsers && licenseUsers.length > 0) {
       const tableHeadings = [
         {
           label: 'Name',
@@ -293,6 +290,8 @@ async function displayLicenseDetails(event) {
     } else {
       endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
     }
+  } else {
+    window.location.assign(`${window.location.origin}`);
   }
 }
 
@@ -400,23 +399,23 @@ function createTableHeaderMapping(data) {
   const { allLicenseTabHeadingMapping } = getLocaleConfig('en_us', 'userLicenses');
   const tableHeaderMapping = [];
 
-  if (data.my_licenses_admin !== undefined && data.my_licenses_admin.length > 0) {
+  if (data.my_licenses_admin?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[0]}|my_licenses_admin`);
   }
 
-  if (data.my_licenses !== undefined && data.my_licenses.length > 0) {
+  if (data.my_licenses?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[1]}|my_licenses`);
   }
 
-  if (data.company_licenses !== undefined && data.company_licenses.length > 0) {
+  if (data.company_licenses?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[2]}|company_licenses`);
   }
 
-  if (data.academic_licenses !== undefined && data.academic_licenses.length > 0) {
+  if (data.academic_licenses?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[3]}|academic_licenses`);
   }
 
-  if (data.academic_esp_licenses !== undefined && data.academic_esp_licenses.length > 0) {
+  if (data.academic_esp_licenses?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[4]}|academic_esp_licenses`);
   }
   return tableHeaderMapping;
@@ -520,7 +519,7 @@ function createLicencesTable(rows) {
         const licenseLink = createTag('a', { href: '#' }, headingValue);
         td.appendChild(licenseLink);
       } else {
-        td.innerText = headingValue !== undefined ? headingValue : '';
+        td.innerText = headingValue ?? '';
       }
       trBody.appendChild(td);
     });
