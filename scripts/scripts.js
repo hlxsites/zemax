@@ -115,17 +115,37 @@ function processTag(mapping, row) {
   return tag;
 }
 
+function findReplaceJSON(jsonObj, data) {
+  Object.keys(jsonObj).forEach((key) => {
+    if (typeof jsonObj[key] === 'object' && jsonObj[key] !== null) {
+      findReplaceJSON(jsonObj[key], data);
+    } else if (typeof jsonObj[key] === 'string') {
+      if (jsonObj[key].startsWith('{{') && jsonObj[key].endsWith('}}')) {
+        const newValueKey = jsonObj[key].slice(2, -2);
+        jsonObj[key] = data[newValueKey];
+      }
+    }
+  });
+
+  return jsonObj;
+}
+
+/**
+ * @typedef {Object} tableHeadings
+ * @property {string} label - table heading label text.
+ * @property {Array.<string>} value - The list of strings concatenated to form a single value.
+ * @property {string} html - Defines html tag to be created.
+ * @property {array} attributes attributes to be added
+ */
+
 export function createGenericTable(tableHeadings, rowData) {
   const tableElement = document.createElement('table');
   const thead = document.createElement('thead');
   const tr = document.createElement('tr');
 
   tableHeadings.forEach((heading) => {
-    let headingValue = heading.split('|')[0];
-    if (heading.split('|')[0] === 'html') {
-      headingValue = heading.split('|')[1] === 'td' ? heading.split('|')[4] : '';
-    }
-    const tableHeadingElement = createTag('th', { class: 'collegue-user-data-heading' }, headingValue.split('|')[0]);
+    const { label } = heading;
+    const tableHeadingElement = createTag('th', { class: '' }, label);
     tr.appendChild(tableHeadingElement);
   });
   thead.appendChild(tr);
@@ -136,41 +156,13 @@ export function createGenericTable(tableHeadings, rowData) {
   rowData.forEach((row) => {
     const trValue = document.createElement('tr');
     tableHeadings.forEach((heading) => {
-      const mapping = heading.split('|');
-      if (mapping[0] === 'html') {
-        if (mapping[1] === 'td') {
-          const attributesMapping = mapping[2].split(',');
-          const attributes = {};
-          attributesMapping.forEach((attributeMapping) => {
-            // eslint-disable-next-line prefer-destructuring
-            if (attributeMapping.split(':')[1].startsWith('dataResponse')) {
-              attributes[attributeMapping.split(':')[0]] = row[mapping[3].split('|')[attributeMapping.split(':')[1].substring(12)]];
-            } else {
-              // eslint-disable-next-line prefer-destructuring
-              attributes[attributeMapping.split(':')[0]] = attributeMapping.split(':')[1];
-            }
-          });
-          const tableHeadingValue = createTag('td', attributes, row[mapping[3]]);
-          trValue.appendChild(tableHeadingValue);
-        } else {
-          const inputTag = processTag(mapping, row);
-          const tableHeadingValue = createTag('td', '', inputTag);
-          trValue.appendChild(tableHeadingValue);
-        }
+      const clonedHeading = JSON.parse(JSON.stringify(heading));
+      findReplaceJSON(clonedHeading, row);
+      if (clonedHeading && clonedHeading.html && clonedHeading.html !== 'td') {
+        const tagLabel = clonedHeading.htmlTagLabel ? clonedHeading.htmlTagLabel : '';
+        trValue.appendChild(createTag('td', '', createTag(clonedHeading.html, clonedHeading.htmlAttributes, tagLabel)));
       } else {
-        const tableHeadingValue = createTag('td', '', row[heading.split('|')[1]]);
-        let innnerHtmlValue = '';
-        if (heading.split('|')[1].split(',').length > 1) {
-          const values = heading.split('|')[1].split(',');
-          values.forEach((value, index) => {
-            innnerHtmlValue = innnerHtmlValue.concat(row[value]);
-            if (index < values.length - 1) {
-              innnerHtmlValue = innnerHtmlValue.concat(' ');
-            }
-          });
-          tableHeadingValue.innerHTML = innnerHtmlValue;
-        }
-        trValue.appendChild(tableHeadingValue);
+        trValue.appendChild(createTag('td', clonedHeading.htmlAttributes, clonedHeading.value.join('')));
       }
     });
     tbody.appendChild(trValue);

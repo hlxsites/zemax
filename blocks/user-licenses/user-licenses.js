@@ -67,7 +67,34 @@ async function addUserToALicense(event) {
 
 async function createColleaguesTable(checkboxClass) {
   const data = await execute('dynamics_get_colleagues_view', '', 'GET');
-  const headingsMapping = [`html|input|class:${checkboxClass},type:checkbox,id:dataResponse0|contactid|`, 'Full Name|firstname,lastname', 'Job Title|jobtitle', 'Email|emailaddress1', 'Business Phone|telephone1'];
+  const headingsMapping = [
+    {
+      label: '',
+      value: [],
+      html: 'input',
+      htmlAttributes: {
+        class: `${checkboxClass}`,
+        type: 'checkbox',
+        id: '{{contactid}}',
+      },
+    },
+    {
+      label: 'Full Name',
+      value: ['{{firstname}}', ' ', '{{lastname}}'],
+    },
+    {
+      label: 'Job Title',
+      value: ['{{jobtitle}}'],
+    },
+    {
+      label: 'Email',
+      value: ['{{emailaddress1}}'],
+    },
+    {
+      label: 'Business Phone',
+      value: ['{{telephone1}}'],
+    },
+  ];
   return createGenericTable(headingsMapping, data.colleagues);
 }
 
@@ -201,10 +228,56 @@ async function displayLicenseDetails(event) {
     addUserButton.addEventListener('click', showAddUserTable);
 
     if (licenseUsers !== undefined && licenseUsers.length > 0) {
-      const tableHeadings = ['html|td|class:user-name|contact1.fullname|Name', 'Email|contact1.emailaddress1', 'Job Title|contact1.jobtitle', 'Phone|contact1.telephone1',
-        `html|button|class:license-user-remove-user action important,type:button,data-modal-id:deleteUserModal,data-new-productuserid:dataResponse0,data-license-id:${licenseId},data-next-action-class:delete-user-action-button|new_productuserid|Remove User`,
-        `html|button|class:license-user-change-user action,data-modal-id:changeUserModal,data-new-productuserid:dataResponse0,data-license-id:${licenseId},data-next-action-class:change-user-action-button|new_productuserid|Change End User`];
-
+      const tableHeadings = [
+        {
+          label: 'Name',
+          value: ['{{contact1.fullname}}'],
+          html: 'td',
+          htmlAttributes: {
+            class: 'user-name',
+          },
+        },
+        {
+          label: 'Email',
+          value: ['{{contact1.emailaddress1}}'],
+        },
+        {
+          label: 'Job Title',
+          value: ['{{contact1.jobtitle}}'],
+        },
+        {
+          label: 'Phone',
+          value: ['{{contact1.telephone1}}'],
+        },
+        {
+          label: '',
+          value: ['{{contact1.fullname}}'],
+          html: 'button',
+          htmlTagLabel: 'Remove User',
+          htmlAttributes: {
+            class: 'license-user-remove-user action important',
+            type: 'button',
+            'data-modal-id': 'deleteUserModal',
+            'data-new-productuserid': '{{new_productuserid}}',
+            'data-license-id': `${licenseId}`,
+            'data-next-action-class': 'delete-user-action-button',
+          },
+        },
+        {
+          label: '',
+          value: ['{{contact1.fullname}}'],
+          html: 'button',
+          htmlTagLabel: 'Change End User',
+          htmlAttributes: {
+            class: 'license-user-change-user action',
+            type: 'button',
+            'data-modal-id': 'changeUserModal',
+            'data-new-productuserid': '{{new_productuserid}}',
+            'data-license-id': `${licenseId}`,
+            'data-next-action-class': 'change-user-action-button',
+          },
+        },
+      ];
       const tableElement = createGenericTable(tableHeadings, licenseUsers);
       endUsersDetailsDiv.appendChild(tableElement);
 
@@ -217,8 +290,6 @@ async function displayLicenseDetails(event) {
       changeUserLicenseButtons.forEach((changeUserLicenseButton) => {
         changeUserLicenseButton.addEventListener('click', showUserActionModal);
       });
-
-      // const modalContentDiv = document.querySelector('.add-user-modal-content');
     } else {
       endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
     }
