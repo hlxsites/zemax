@@ -231,11 +231,15 @@
 }
 
 .cards.video .cards-card-image {
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
   position: relative;
+  overflow: hidden;
 }
 
 .cards.video .cards-card-image img {
   object-fit: none;
+  transform: scale(1.05);
 }
 
 .cards.video .cards-card-image::after {
