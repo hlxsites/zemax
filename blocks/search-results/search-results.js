@@ -168,7 +168,6 @@ export default async function decorate(block) {
       const url = new URL(item.link);
       const vid = url.searchParams.get('v');
       const img = document.createElement('img');
-      img.setAttribute('loading', 'lazy');
       img.setAttribute('alt', item.title);
       img.setAttribute('src', `https://img.youtube.com/vi/${vid}/mqdefault.jpg`);
       cardImage.appendChild(img);
