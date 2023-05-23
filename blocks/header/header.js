@@ -206,6 +206,7 @@ function handleAuthentication(ele) {
       localStorage.setItem('fullname', userData.name);
       attachLogoutListener(ele);
     } else if (err) {
+      // eslint-disable-next-line no-console
       console.log(`Unable to authenticate with error ${err}`);
     }
   });

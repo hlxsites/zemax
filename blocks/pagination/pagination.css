@@ -1,0 +1,13 @@
+.pagination ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination ul li {
+  list-style: none;
+}
+
+.pagination ul li a.current-page {
+  font-weight: bold;
+}
