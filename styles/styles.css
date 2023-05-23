@@ -375,7 +375,7 @@ main .section.larger-paragraph-text p {
   display: flex;
 }
 
-main .center-aligned-buttons .default-content-wrapper > p.button-container:only-child {
+main .center-aligned-buttons .default-content-wrapper > p.button-container {
   text-align: center;
 }
 
