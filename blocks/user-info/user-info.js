@@ -10,7 +10,7 @@ export default async function decorate(block) {
 
   // TODO move to template logic
   // eslint-disable-next-line max-len
-  if (userId !== null || userId !== undefined || accessToken !== null || accessToken !== undefined) {
+  if (userId && accessToken) {
     await fetch(`${DYNAMIC_365_DOMAIN}insided_get_user_link?auth0_id=${userId}`, {
       method: 'GET',
       headers: {

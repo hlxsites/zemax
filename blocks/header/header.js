@@ -153,7 +153,7 @@ function initializeAuth(domain, clientID, audience, responseType, scope) {
 
 // login call
 function login() {
-  if (webauth !== undefined) {
+  if (!webauth) {
     webauth.authorize();
   }
 }

@@ -227,7 +227,7 @@ export default async function decorate(block) {
   const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
 
   // eslint-disable-next-line max-len
-  if (userId !== null || userId !== undefined || accessToken !== null || accessToken !== undefined) {
+  if (userId && accessToken) {
     await fetch(`${DYNAMIC_365_DOMAIN}dynamics_get_licenses_by_auth0id?auth0_id=${userId}`, {
       method: 'GET',
       headers: {
