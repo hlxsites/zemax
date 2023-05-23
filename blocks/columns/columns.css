@@ -57,7 +57,7 @@
   padding: 0;
 }
 
-.columns.applications > div a:hover { 
+.columns.applications > div a:hover {
   background: none;
   color: var(--clr-orange);
   text-decoration: underline;
@@ -216,3 +216,50 @@
     order: unset;
   }
 }
+
+
+/* search result: Product Information */
+.columns.product-information h4 {
+  line-height: 1.36;
+  letter-spacing: 0.3px;
+  color: #002f6d;
+  margin-bottom: 7px;
+  font-family: var(--ff-myradpro-semibold);
+}
+
+.columns.product-information p {
+  font-family: MyriadPro-Regular, sans-serif;
+  color: #54565b;
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  margin-bottom: 7px;
+}
+
+.columns.product-information > div > div:first-child {
+  max-width: 292px;
+}
+
+.columns.product-information a.button.learn-more {
+  font-family: var(--ff-myradpro-semibold);
+  padding: unset;
+  color: var(--clr-orange);
+  background-color: var(--clr-white);
+  font-size: 14px;
+  margin: 0;
+}
+
+.columns.product-information a.button.learn-more:hover {
+  text-decoration: underline;
+}
+
+.columns.product-information a.button.learn-more::after{
+  background: url("/icons/icon-right-arrow-orange.svg") bottom right/contain no-repeat;
+  content: "";
+  display: inline-block;
+  margin-left: 3px;
+  height: 0.6em !important;
+  width: 7px !important;
+  transform: translateY(0);
+}
+

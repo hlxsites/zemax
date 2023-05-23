@@ -35,7 +35,7 @@ export default async function decorate(block) {
       const anchor = createTag('a', { class: 'button primary', href: userLink, target: '_blank' }, getLocaleConfig('en_us', 'userInfo').forumProfileActivityButtonText);
       block.append(anchor);
     }).catch((err) => {
-      // There was an error
+      // eslint-disable-next-line no-console
       console.warn('Something went wrong.', err);
     });
   }
