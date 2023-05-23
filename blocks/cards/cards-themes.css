@@ -234,6 +234,10 @@
   position: relative;
 }
 
+.cards.video .cards-card-image img {
+  object-fit: none;
+}
+
 .cards.video .cards-card-image::after {
   content: "";
   position: absolute;
