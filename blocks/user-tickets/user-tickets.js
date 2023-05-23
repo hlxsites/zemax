@@ -11,7 +11,7 @@ export default async function decorate(block) {
   const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
 
   // eslint-disable-next-line max-len
-  if (userId !== null || userId !== undefined || accessToken !== null || accessToken !== undefined) {
+  if (userId && accessToken) {
     await fetch(`${DYNAMIC_365_DOMAIN}zendesk_tickets_by_id?auth0_id=${userId}&user_email=${userEmail}&zemax_zendeskid=${contactid}`, {
       method: 'GET',
       headers: {

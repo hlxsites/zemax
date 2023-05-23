@@ -153,9 +153,7 @@ function initializeAuth(domain, clientID, audience, responseType, scope) {
 
 // login call
 function login() {
-  if (!webauth) {
-    webauth.authorize();
-  }
+  webauth.authorize();
 }
 
 // logout call
@@ -311,9 +309,9 @@ export default async function decorate(block) {
     const scopes = placeholders.scope;
     if (!authtoken) {
       loginLink.setAttribute('aria-expanded', 'false');
-      loginLink.addEventListener('click', login);
       authScriptTagPromise.then(() => {
         webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
+        loginLink.addEventListener('click', login);
         handleAuthentication(loginLink);
       });
     } else {
