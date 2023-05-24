@@ -313,6 +313,9 @@ export default async function decorate(block) {
         webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
         loginLink.addEventListener('click', login);
         handleAuthentication(loginLink);
+        if (window.location.pathname === '/pages/profile') {
+          login();
+        }
       });
     } else {
       authScriptTagPromise.then(() => {
@@ -320,6 +323,7 @@ export default async function decorate(block) {
       });
       handleAuthenticated(loginLink);
     }
+
     // link section
     const navMenuUl = createTag('ul');
     const menus = [...nav.querySelectorAll('.nav-menu > div')];
