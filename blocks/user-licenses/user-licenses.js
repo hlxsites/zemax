@@ -4,6 +4,7 @@ import {
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 
+// move to script script.js
 function createModal(modalTitle, modalBodyInnerContent, modalContentClass, modalBodyClass,
   modalId, modalContainerClass, buttonsConfig) {
   let modalBodyInnerContentHtml = '';
@@ -26,7 +27,6 @@ function createModal(modalTitle, modalBodyInnerContent, modalContentClass, modal
     const { button, userAction, listenerMethod } = buttonConfig;
     button.addEventListener(userAction, listenerMethod);
     modalFooterDiv.appendChild(button);
-    console.log(button);
   });
 
   modalContentDiv.appendChild(modalFooterDiv);
@@ -43,6 +43,21 @@ function showUserActionModal(event) {
   const userActionButton = document.querySelector(`.${nextActionClass}`);
   userActionButton.setAttribute('data-new-productuserid', newProductUserId);
   userActionButton.setAttribute('data-license-id', licenseId);
+}
+
+async function showResetUserPasswordModal(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  const nextActionClass = event.target.getAttribute('data-next-action-class');
+  showModal(event);
+  const userActionButton = document.querySelector(`.${nextActionClass}`);
+  userActionButton.setAttribute('data-contactid', contactid);
+}
+
+async function resetUserPassword(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`);
+  console.log(data);
+  hideModal(event);
 }
 
 async function createUser(event) {
@@ -106,10 +121,9 @@ async function createUser(event) {
       htmlAttributes: {
         class: 'license-user-reset-password action',
         type: 'button',
-        'data-modal-id': 'resetPasswordModal',
-        'data-new-productuserid': 'test',
-        'data-license-id': 'test2',
-        'data-next-action-class': 'change-user-action-button',
+        'data-modal-id': 'resetUserPasswordModal',
+        'data-contactid': '{{contactid}}',
+        'data-next-action-class': 'reset-user-password-action-button',
       },
     },
     {
@@ -156,7 +170,7 @@ async function createUser(event) {
   const activeColleagues = allColleagues.filter((colleague) => colleague.statecode === 0);
   const inactiveColleagues = data.colleagues.filter((colleague) => colleague.statecode === 1);
   console.log(activeColleagues);
-  console.log(inactiveColleagues);
+
   // Render tab content
   colleaguesTabsMapping.forEach((heading, index) => {
     if (index === 0) {
@@ -171,6 +185,29 @@ async function createUser(event) {
   });
 
   licenseBlock.appendChild(tabDiv);
+  const modalResetUserPasswordDescription = createTag('p', '', 'Please confirm this action to generate the password reset email');
+  const resetUserPasswordModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'resetUserPasswordModal' }, 'Cancel');
+  const resetUserPasswordModalButton = createTag('button', { class: 'action important reset-user-password-action-button', 'data-modal-id': 'resetUserPasswordModal' }, 'Send Password Reset Email');
+
+  const resetUserPasswordButtonsConfig = [
+    {
+      userAction: 'click',
+      button: resetUserPasswordModalCloseButton,
+      listenerMethod: hideModal,
+    }, {
+      userAction: 'click',
+      button: resetUserPasswordModalButton,
+      listenerMethod: resetUserPassword,
+    },
+  ];
+
+  const modalResetUserPasswordModalDiv = createModal('Confirmation Required', modalResetUserPasswordDescription, 'reset-user-password-modal-content', 'reset-user-password-container', 'resetUserPasswordModal', 'reset-user-password-modal', resetUserPasswordButtonsConfig);
+  licenseBlock.appendChild(modalResetUserPasswordModalDiv);
+
+  const resetButtons = document.querySelectorAll('.license-user-reset-password.action');
+  resetButtons.forEach((resetButton) => {
+    resetButton.addEventListener('click', showResetUserPasswordModal);
+  });
   addTabFeature();
 }
 
@@ -514,7 +551,7 @@ async function addManageLicenseFeature(block) {
       userAction: 'click',
       button: changeUserButton,
       listenerMethod: changeUserForALicense,
-    },  {
+    }, {
       userAction: 'click',
       button: changeUserModalCloseButton,
       listenerMethod: hideModal,
