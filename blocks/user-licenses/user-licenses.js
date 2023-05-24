@@ -14,9 +14,133 @@ function showUserActionModal(event) {
   userActionButton.setAttribute('data-license-id', licenseId);
 }
 
-function createUser(event) {
+async function createUser(event) {
   hideModal(event);
-  alert('Implement create user');
+  hideOtherUserLicenseInformation();
+  const licenseDetailsDiv = document.querySelector('.license-details');
+  const endUserDetailsDiv = document.querySelector('.end-users-details');
+  const licenseBlock = document.querySelector('.user-licenses.block');
+  licenseDetailsDiv.remove();
+  endUserDetailsDiv.remove();
+
+  const tabDiv = createTag('div', { class: 'tabs' });
+  const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
+  const colleaguesTabsMapping = ['Active Colleagues', 'Deactivated Colleagues'];
+
+  const data = await execute('dynamics_get_colleagues_manage', '', 'GET');
+  const tableHeadings = [
+    {
+      label: 'Firstname',
+      value: ['{{firstname}}'],
+      html: 'td',
+      htmlAttributes: {
+        class: 'user-name',
+      },
+    },
+    {
+      label: 'lastname',
+      value: ['{{lastname}}'],
+    },
+    {
+      label: 'Job Title',
+      value: ['{{jobtitle}}'],
+    },
+    {
+      label: 'Email',
+      value: ['{{shehjkhan@gmail.com}}'],
+    },
+    {
+      label: 'Phone',
+      value: ['{{telephone1}}'],
+    },
+    {
+      label: '',
+      value: [''],
+      html: 'button',
+      htmlTagLabel: 'Edit User',
+      htmlAttributes: {
+        class: 'license-user-edit-user action',
+        type: 'button',
+        'data-modal-id': 'editUserModal',
+        'data-new-productuserid': 'test',
+        'data-license-id': 'test',
+        'data-next-action-class': 'edit-user-action-button',
+      },
+    },
+    {
+      label: '',
+      value: [''],
+      html: 'button',
+      htmlTagLabel: 'Reset Password',
+      htmlAttributes: {
+        class: 'license-user-reset-password action',
+        type: 'button',
+        'data-modal-id': 'resetPasswordModal',
+        'data-new-productuserid': 'test',
+        'data-license-id': 'test2',
+        'data-next-action-class': 'change-user-action-button',
+      },
+    },
+    {
+      label: 'User Status',
+      value: [''],
+      html: 'button',
+      htmlTagLabel: 'Deactivate User',
+      htmlAttributes: {
+        class: 'license-user-deactivate-user action important',
+        type: 'button',
+        'data-new-productuserid': 'test',
+        'data-license-id': 'test2',
+        'data-next-action-class': 'deactivate-user-action-button',
+      },
+    },
+    {
+      label: '',
+      value: [''],
+      html: 'button',
+      htmlTagLabel: 'Manage',
+      htmlAttributes: {
+        class: 'license-user-manage-user action important',
+        type: 'button',
+        'data-new-productuserid': 'test',
+        'data-license-id': 'test2',
+        'data-next-action-class': 'manage-user-action-button',
+      },
+    },
+  ];
+
+  // Render tab headings
+  colleaguesTabsMapping.forEach((heading, index) => {
+    if (index === 0) {
+      tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading));
+    } else {
+      tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading));
+    }
+  });
+
+  tabDiv.appendChild(tabListUl);
+
+  const allColleagues = data.colleagues;
+
+  const activeColleagues = allColleagues.filter((colleague) => colleague.statecode === 0);
+  const inactiveColleagues = data.colleagues.filter((colleague) => colleague.statecode === 1);
+  console.log(activeColleagues);
+  console.log(inactiveColleagues);
+  // Render tab content
+  colleaguesTabsMapping.forEach((heading, index) => {
+    if (index === 0) {
+      tabDiv.append(
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createGenericTable(tableHeadings, activeColleagues).outerHTML),
+      );
+    } else {
+      tabDiv.append(
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createGenericTable(tableHeadings, inactiveColleagues).outerHTML),
+      );
+    }
+  });
+
+  licenseBlock.appendChild(tabDiv);
+  addTabFeature();
 }
 
 function showAddUserTable(event) {
@@ -95,7 +219,8 @@ async function createColleaguesTable(checkboxClass) {
       value: ['{{telephone1}}'],
     },
   ];
-  return createGenericTable(headingsMapping, data.colleagues);
+  const colleaguesData = await data.colleagues;
+  return createGenericTable(headingsMapping, colleaguesData);
 }
 
 async function addColleaguesToUserActionModal(
