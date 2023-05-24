@@ -139,12 +139,12 @@ function reAttachEventListeners() {
 }
 
 // authentication related functions
-function initializeAuth(domain, clientID, audience, responseType, scope) {
+function initializeAuth(domain, clientID, audience, responseType, scope, redirectUri) {
   // eslint-disable-next-line no-undef
   return new auth0.WebAuth({
     domain: `${domain}`,
     clientID: `${clientID}`,
-    redirectUri: `${window.location.origin}`,
+    redirectUri: `${redirectUri}`,
     audience: `${audience}`,
     responseType: `${responseType}`,
     scope: `${scope}`,
@@ -218,6 +218,14 @@ function handleAuthenticated(ele) {
   logintxt.innerText = localStorage.getItem('displayname');
   attachLogoutListener(ele);
 }
+
+function getRedirectUri() {
+  if (window.location.pathname === '/pages/profile') {
+    return window.location.origin + window.location.pathname;
+  }
+  return window.location.origin;
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -310,7 +318,8 @@ export default async function decorate(block) {
     if (!authtoken) {
       loginLink.setAttribute('aria-expanded', 'false');
       authScriptTagPromise.then(() => {
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
+        // eslint-disable-next-line max-len
+        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
         loginLink.addEventListener('click', login);
         handleAuthentication(loginLink);
         if (window.location.pathname === '/pages/profile') {
@@ -319,7 +328,8 @@ export default async function decorate(block) {
       });
     } else {
       authScriptTagPromise.then(() => {
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
+        // eslint-disable-next-line max-len
+        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
       });
       handleAuthenticated(loginLink);
     }
