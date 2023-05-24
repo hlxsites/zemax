@@ -4,6 +4,37 @@ import {
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 
+function createModal(modalTitle, modalBodyInnerContent, modalContentClass, modalBodyClass,
+  modalId, modalContainerClass, buttonsConfig) {
+  let modalBodyInnerContentHtml = '';
+  if (modalBodyInnerContent !== '') {
+    modalBodyInnerContentHtml = modalBodyInnerContent.outerHTML;
+  }
+  const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
+  const modalTitleH3 = createTag('h3', '', modalTitle);
+  const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
+  modalHeaderDiv.appendChild(modalTitleH3);
+  modalHeaderDiv.appendChild(modalCloseButtonIcon);
+
+  const modalContentDiv = createTag('div', { class: `modal-content ${modalContentClass}` }, modalHeaderDiv);
+  const modalBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: modalBodyClass }, modalBodyInnerContentHtml));
+  modalContentDiv.appendChild(modalBodyDiv);
+
+  const modalFooterDiv = createTag('div', { class: 'modal-footer' }, '');
+
+  buttonsConfig.forEach((buttonConfig) => {
+    const { button, userAction, listenerMethod } = buttonConfig;
+    button.addEventListener(userAction, listenerMethod);
+    modalFooterDiv.appendChild(button);
+    console.log(button);
+  });
+
+  modalContentDiv.appendChild(modalFooterDiv);
+
+  const modalModalDiv = createTag('div', { class: `modal-container ${modalContainerClass}`, id: modalId }, modalContentDiv);
+  return modalModalDiv;
+}
+
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
   const licenseId = event.target.getAttribute('data-license-id');
@@ -34,7 +65,7 @@ async function createUser(event) {
       value: ['{{firstname}}'],
       html: 'td',
       htmlAttributes: {
-        class: 'user-name',
+        class: 'first-name',
       },
     },
     {
@@ -427,89 +458,70 @@ async function addManageLicenseFeature(block) {
   block.append(endUsersDetailsDiv);
 
   // Add User Modal
-  const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
-  const modalTitleH3 = createTag('h3', '', 'Add End User to License');
-  const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
-  modalHeaderDiv.appendChild(modalTitleH3);
-  modalHeaderDiv.appendChild(modalCloseButtonIcon);
-
-  const modalAddUserContentDiv = createTag('div', { class: 'modal-content add-user-modal-content' }, modalHeaderDiv);
-
-  const modalBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'add-user-container table-container' }, ''));
-
-  modalAddUserContentDiv.appendChild(modalBodyDiv);
-  const modalFooterDiv = createTag('div', { class: 'modal-footer' }, '');
   const createUserButton = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'addUserModal' }, 'Create User');
   const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
   const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
+  const buttonsConfig = [
+    {
+      userAction: 'click',
+      button: createUserButton,
+      listenerMethod: createUser,
+    }, {
+      userAction: 'click',
+      button: addUserButton,
+      listenerMethod: addUserToALicense,
+    }, {
+      userAction: 'click',
+      button: addUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
 
-  modalFooterDiv.appendChild(createUserButton);
-  modalFooterDiv.appendChild(addUserButton);
-  modalFooterDiv.appendChild(addUserModalCloseButton);
-
-  createUserButton.addEventListener('click', createUser);
-  addUserModalCloseButton.addEventListener('click', hideModal);
-  addUserButton.addEventListener('click', addUserToALicense);
-
-  modalAddUserContentDiv.appendChild(modalFooterDiv);
-  const modalAddUserDiv = createTag('div', { class: 'modal-container add-user-modal', id: 'addUserModal' }, modalAddUserContentDiv);
+  const modalAddUserDiv = createModal('Add End User to License', '', 'add-user-modal-content', 'add-user-container table-container', 'addUserModal', 'add-user-modal', buttonsConfig);
   block.append(modalAddUserDiv);
 
   // Delete User Modal
-  const modalDeleteHeaderDiv = createTag('div', { class: 'modal-header' }, '');
-  const modalDeleteTitleH3 = createTag('h3', '', 'Confirmation Required');
-  const modalDeleteCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
-  modalDeleteHeaderDiv.appendChild(modalDeleteTitleH3);
-  modalDeleteHeaderDiv.appendChild(modalDeleteCloseButtonIcon);
-
-  const modalDeleteUserContentDiv = createTag('div', { class: 'modal-content delete-user-modal-content' }, modalDeleteHeaderDiv);
   const modalDeleteDescription = createTag('p', '', 'Please confirm this action to remove end user');
-  const modalDeleteBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'delete-user-container' }, modalDeleteDescription));
-  modalDeleteUserContentDiv.appendChild(modalDeleteBodyDiv);
-
-  const modalDeleteFooterDiv = createTag('div', { class: 'modal-footer' }, '');
-
   const deleteUserButton = createTag('button', { class: 'action important delete-user-action-button', 'data-modal-id': 'deleteUserModal' }, 'Yes, remove End User');
   const deleteUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
 
-  modalDeleteFooterDiv.appendChild(deleteUserButton);
-  modalDeleteFooterDiv.appendChild(deleteUserModalCloseButton);
+  const deleteButtonsConfig = [
+    {
+      userAction: 'click',
+      button: deleteUserButton,
+      listenerMethod: removeUserFromLicense,
+    }, {
+      userAction: 'click',
+      button: deleteUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
 
-  deleteUserButton.addEventListener('click', removeUserFromLicense);
-  deleteUserModalCloseButton.addEventListener('click', hideModal);
-
-  modalDeleteUserContentDiv.appendChild(modalDeleteFooterDiv);
-
-  const modalDeleteUserModalDiv = createTag('div', { class: 'modal-container delete-user-modal', id: 'deleteUserModal' }, modalDeleteUserContentDiv);
+  const modalDeleteUserModalDiv = createModal('Confirmation Required', modalDeleteDescription, 'delete-user-modal-content', 'delete-user-container table-container', 'deleteUserModal', 'delete-user-modal', deleteButtonsConfig);
   block.append(modalDeleteUserModalDiv);
 
   // Change User Modal
-  const modalChangeUserHeaderDiv = createTag('div', { class: 'modal-header' }, '');
-  const modalChangeUserTitleH3 = createTag('h3', '', 'Choose a User');
-  const modalChangeUserCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
-  modalChangeUserHeaderDiv.appendChild(modalChangeUserTitleH3);
-  modalChangeUserHeaderDiv.appendChild(modalChangeUserCloseButtonIcon);
-
-  const modalChangeUserContentDiv = createTag('div', { class: 'modal-content change-user-modal-content' }, modalChangeUserHeaderDiv);
-
-  const modalChangeUserBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'change-user-container table-container' }, ''));
-
-  modalChangeUserContentDiv.appendChild(modalChangeUserBodyDiv);
-  const modalChangeUserFooterDiv = createTag('div', { class: 'modal-footer' }, '');
   const createUserButtonChangeUser = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Create User');
   const changeUserButton = createTag('button', { class: 'action change-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Change User');
   const changeUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'changeUserModal' }, 'Close');
 
-  modalChangeUserFooterDiv.appendChild(createUserButtonChangeUser);
-  modalChangeUserFooterDiv.appendChild(changeUserButton);
-  modalChangeUserFooterDiv.appendChild(changeUserModalCloseButton);
+  const createUserButtonsConfig = [
+    {
+      userAction: 'click',
+      button: createUserButtonChangeUser,
+      listenerMethod: createUser,
+    }, {
+      userAction: 'click',
+      button: changeUserButton,
+      listenerMethod: changeUserForALicense,
+    },  {
+      userAction: 'click',
+      button: changeUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
 
-  createUserButtonChangeUser.addEventListener('click', createUser);
-  changeUserButton.addEventListener('click', changeUserForALicense);
-  changeUserModalCloseButton.addEventListener('click', hideModal);
-
-  modalChangeUserContentDiv.appendChild(modalChangeUserFooterDiv);
-  const modalChangeUserDiv = createTag('div', { class: 'modal-container change-user-modal', id: 'changeUserModal' }, modalChangeUserContentDiv);
+  const modalChangeUserDiv = createModal('Choose a User', '', 'change-user-modal-content', 'change-user-container table-container', 'changeUserModal', 'change-user-modal', createUserButtonsConfig);
   block.append(modalChangeUserDiv);
 
   await addColleaguesToUserActionModal('change-user-container', 'change-user-checkbox', updateChangeUserId);
