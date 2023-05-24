@@ -133,6 +133,11 @@
   font-family: var(--ff-myradpro-regular);
 }
 
+.columns.featured .icon{
+width: 61px;
+height:60px;
+}
+
 
 @media screen and (max-width: 1030px) {
   .columns.applications > div {

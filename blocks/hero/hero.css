@@ -65,7 +65,8 @@ main .hero.white a:hover{
 
 main .hero.white h1,
 main .hero.white h2,
-main .hero.white h3{
+main .hero.white h3,
+main .hero.white p{
   color : #fff;
 }
 

@@ -223,6 +223,7 @@ transition: all 0.3s linear 0s;
   border-bottom-left-radius: 15px;
   border-top-right-radius: 0;
   border-bottom-right-radius: unset;
+  object-fit: fill;
 } 
 
 /* layout-carousel */
