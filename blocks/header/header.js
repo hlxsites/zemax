@@ -1,5 +1,8 @@
 import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
-import { createTag, loadScript, decorateLinkedPictures } from '../../scripts/scripts.js';
+import { createTag, decorateLinkedPictures, loadScript } from '../../scripts/scripts.js';
+import {
+  button, div, form, input, span,
+} from '../../scripts/dom-helpers.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -46,14 +49,48 @@ function addDropdownIcon(element) {
 }
 
 function addSearchForm(breakpoint) {
-  const cssclass = breakpoint === 'mobile' ? 'mobile-search-container' : 'search-container';
-
-  let searchHTML = '<div class=\'search-form\'><form action=\'/search\' method=\'get\'><input type=\'text\' name=\'q\' class=\'search-input\'/><input type=\'hidden\' name=\'options[prefix]\' value=\'last\' aria-hidden=\'true\' /><button class=\'search-button\'><span class=\'icon icon-search\' ></span></button></form> </div><div class=\'search-close\'> <button type=\'button\' class=\'close-button\'> <span  class=\'icon icon-search-close\'></span></button></div>';
   if (breakpoint === 'mobile') {
-    searchHTML = '<div class=\'search-form\'><form action=\'/search\' method=\'get\'><button class=\'search-button\'><span class=\'icon icon-search\' ></span></button><input type=\'text\' name=\'q\' class=\'search-input\'/><input type=\'hidden\' name=\'options[prefix]\' value=\'last\' aria-hidden=\'true\' /></form> </div><div class=\'search-close\'> <button type=\'button\' class=\'close-button\'> <span  class=\'icon icon-search-close\'></span></button></div>';
+    return div({ class: 'mobile-search-container', 'aria-expanded': false },
+
+      div({ class: 'search-form' },
+        form({ action: '/search', method: 'get' },
+          button({ class: 'search-button' },
+            span({ class: 'icon icon-search' }),
+          ),
+          input({ type: 'text', name: 'q', class: 'search-input' }),
+          input({
+            type: 'hidden', name: 'options[prefix]', value: 'last', 'aria-hidden': 'true',
+          }),
+        ),
+      ),
+      div({ class: 'search-close' },
+        button({ type: 'button', class: 'close-button' },
+          span({ class: 'icon icon-search-close' }),
+        ),
+      ),
+    );
+    // eslint-disable-next-line no-else-return
+  } else {
+    return div({ class: 'search-container', 'aria-expanded': false },
+
+      div({ class: 'search-form' },
+        form({ action: '/search', method: 'get' },
+          input({ type: 'text', name: 'q', class: 'search-input' }),
+          input({
+            type: 'hidden', name: 'options[prefix]', value: 'last', 'aria-hidden': true,
+          }),
+          button({ class: 'search-button' },
+            span({ class: 'icon icon-search' }),
+          ),
+        ),
+      ),
+      div({ class: 'search-close' },
+        button({ type: 'button', class: 'close-button' },
+          span({ class: 'icon icon-search-close' }),
+        ),
+      ),
+    );
   }
-  const searchContainer = createTag('div', { class: cssclass, 'aria-expanded': false }, searchHTML);
-  return searchContainer;
 }
 
 function addEventListenersMobile() {
@@ -172,8 +209,12 @@ function logout() {
 // utility to attach logout listeners
 function attachLogoutListener(ele) {
   ele.removeEventListener('click', login);
-  ele.addEventListener('mouseenter', () => { ele.setAttribute('aria-expanded', 'true'); });
-  ele.addEventListener('mouseleave', () => { ele.setAttribute('aria-expanded', 'false'); });
+  ele.addEventListener('mouseenter', () => {
+    ele.setAttribute('aria-expanded', 'true');
+  });
+  ele.addEventListener('mouseleave', () => {
+    ele.setAttribute('aria-expanded', 'false');
+  });
   const logoutLink = ele.querySelector('ul > li:nth-of-type(2)');
   logoutLink.addEventListener('click', logout);
 }
@@ -218,6 +259,7 @@ function handleAuthenticated(ele) {
   logintxt.innerText = localStorage.getItem('displayname');
   attachLogoutListener(ele);
 }
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
