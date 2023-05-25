@@ -4,6 +4,37 @@ import {
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 
+function createForm(config) {
+  const form = createTag('form', { id: 'editUserEditForm' }, '');
+
+  config.fields.forEach((field) => {
+    const label = createTag('label', { for: field.id }, field.label);
+    const input = createTag('input', { type: 'text', id: field.id }, '');
+
+    if (field.value) {
+      input.setAttribute('value', field.value);
+    }
+
+    if (field.readOnly) {
+      input.setAttribute('readonly', '');
+    }
+
+    if (field.disabled) {
+      input.setAttribute('disabled', '');
+    }
+
+    form.appendChild(label);
+    form.appendChild(input);
+  });
+
+  const submitButton = createTag('input', {
+    type: 'submit', id: config.submitId, class: config.submitClass, value: config.submitText, 'data-modal-id': config.submitDataModalId,
+  });
+  form.appendChild(submitButton);
+
+  return form;
+}
+
 // move to script script.js
 function createModal(modalTitle, modalBodyInnerContent, modalContentClass, modalBodyClass,
   modalId, modalContainerClass, buttonsConfig) {
@@ -53,11 +84,64 @@ async function showResetUserPasswordModal(event) {
   userActionButton.setAttribute('data-contactid', contactid);
 }
 
+async function updateUserInfo(event) {
+  event.preventDefault();
+  const jobtitle = event.target.parentNode.querySelector('#job-title').value;
+  const telephone = event.target.parentNode.querySelector('#phone').value;
+  const contactid = event.target.getAttribute('data-contactid');
+  const data = execute('dynamics_edit_colleague', `&jobtitle=${jobtitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function showEditUserModal(event) {
+  const button = event.target;
+  const contactid = button.getAttribute('data-contactid');
+  const firstname = button.getAttribute('data-user-firstname');
+  const lastname = button.getAttribute('data-user-lastname');
+  const jobTitle = button.getAttribute('data-user-jobtitle');
+  const email = button.getAttribute('data-user-email');
+  const phone = button.getAttribute('data-user-phone');
+  const userEditForm = document.querySelector('#editUserEditForm');
+  userEditForm.querySelector('#first-name').setAttribute('value', firstname);
+  userEditForm.querySelector('#last-name').setAttribute('value', lastname);
+  userEditForm.querySelector('#job-title').setAttribute('value', jobTitle);
+  userEditForm.querySelector('#email').setAttribute('value', email);
+  userEditForm.querySelector('#phone').setAttribute('value', phone);
+  const submitButton = userEditForm.querySelector('#userEditSubmitButton');
+  submitButton.setAttribute('data-contactid', contactid);
+  submitButton.addEventListener('click', updateUserInfo);
+  // userEditForm.
+  showModal(event);
+}
+
+async function editUser(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  const jobTitle = 'data anayslt';
+  const telephone = '312-163';
+  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobTitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
 async function resetUserPassword(event) {
   const contactid = event.target.getAttribute('data-contactid');
-  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`);
-  console.log(data);
-  hideModal(event);
+  // TODO check method type
+  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`, 'POST');
+  if (data?.status === 200) {
+    // TODO show success toast message
+    hideModal(event);
+  } else {
+    console.log('error ', data);
+  }
 }
 
 async function createUser(event) {
@@ -93,7 +177,7 @@ async function createUser(event) {
     },
     {
       label: 'Email',
-      value: ['{{shehjkhan@gmail.com}}'],
+      value: ['{{emailaddress1}}'],
     },
     {
       label: 'Phone',
@@ -108,9 +192,13 @@ async function createUser(event) {
         class: 'license-user-edit-user action',
         type: 'button',
         'data-modal-id': 'editUserModal',
-        'data-new-productuserid': 'test',
-        'data-license-id': 'test',
+        'data-contactid': '{{contactid}}',
         'data-next-action-class': 'edit-user-action-button',
+        'data-user-firstname': ['{{firstname}}'],
+        'data-user-lastname': ['{{lastname}}'],
+        'data-user-jobtitle': ['{{jobtitle}}'],
+        'data-user-email': ['{{emailaddress1}}'],
+        'data-user-phone': ['{{telephone1}}'],
       },
     },
     {
@@ -185,6 +273,8 @@ async function createUser(event) {
   });
 
   licenseBlock.appendChild(tabDiv);
+
+  // Reset password modal
   const modalResetUserPasswordDescription = createTag('p', '', 'Please confirm this action to generate the password reset email');
   const resetUserPasswordModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'resetUserPasswordModal' }, 'Cancel');
   const resetUserPasswordModalButton = createTag('button', { class: 'action important reset-user-password-action-button', 'data-modal-id': 'resetUserPasswordModal' }, 'Send Password Reset Email');
@@ -208,6 +298,43 @@ async function createUser(event) {
   resetButtons.forEach((resetButton) => {
     resetButton.addEventListener('click', showResetUserPasswordModal);
   });
+
+  // Edit user modal
+  const config = {
+    fields: [
+      {
+        id: 'first-name', label: 'First Name', value: '', readOnly: true, disabled: true,
+      },
+      {
+        id: 'last-name', label: 'Last Name', value: '', readOnly: true, disabled: true,
+      },
+      { id: 'job-title', label: 'Job Title' },
+      {
+        id: 'email', label: 'Email', value: '', readOnly: true, disabled: true,
+      },
+      { id: 'phone', label: 'Business Phone' },
+    ],
+    submitText: 'Submit',
+    submitId: 'userEditSubmitButton',
+    submitClass: 'user-edit-submit-button',
+    submitDataModalId: 'editUserEditForm',
+  };
+
+  const editUserModalContent = createForm(config);
+
+  //const editUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'editUserModal' }, 'Cancel');
+  //const editUserActionModalButton = createTag('button', { class: 'action important edit-user-action-button', 'data-modal-id': 'editUserModal' }, 'Save Information');
+
+  const editUserButtonsConfig = [];
+
+  const editUserModalDiv = createModal('Edit Colleague', editUserModalContent, 'edit-user-modal-content', 'edit-user-container', 'editUserModal', 'edit-user-modal', editUserButtonsConfig);
+  licenseBlock.appendChild(editUserModalDiv);
+
+  const editUserButtons = document.querySelectorAll('.license-user-edit-user.action');
+  editUserButtons.forEach((editUserButton) => {
+    editUserButton.addEventListener('click', showEditUserModal);
+  });
+
   addTabFeature();
 }
 
