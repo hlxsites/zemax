@@ -39,7 +39,7 @@
     color: var(--clr-orange);
   }
 
-  .table.green a.button:any-link,  .table.orange a.button:any-link:hover{
+  .table.green a.button:any-link,  .table.green a.button:any-link:hover{
     color: var(--clr-green);
   }
 
