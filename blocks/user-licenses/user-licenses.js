@@ -226,7 +226,7 @@ export default async function decorate(block) {
   const accessToken = localStorage.getItem('accessToken');
   const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
 
-  if (!userId || !accessToken) {
+  if (userId == null || userId === undefined || accessToken == null || accessToken === undefined) {
     window.location.assign(`${window.location.origin}`);
   } else {
     fetch(`${DYNAMIC_365_DOMAIN}dynamics_get_licenses_by_auth0id?auth0_id=${userId}`, {
