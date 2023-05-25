@@ -63,16 +63,16 @@ function addSearchForm(breakpoint) {
   // desktop
   const dialog = domEl('dialog', { class: 'search-container', 'aria-expanded': false });
   dialog.innerHTML = `
+    <div class='search-wrapper'>
       <div class='search-form'>
         <form action='/search' method='get'>
           <input type='text' name='q' class='search-input' />
           <input type='hidden' name='options[prefix]' value='last' aria-hidden='true' />
           <button class='search-button'><span class='icon icon-search'></span></button>
+          <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
         </form>
       </div>
-      <div class='search-close'>
-        <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
-      </div>`;
+    </div>`;
   return dialog;
 }
 
@@ -394,11 +394,10 @@ export default async function decorate(block) {
 
     nav.querySelector('.nav-menu').innerHTML = navMenuUl.outerHTML;
 
-    decorateIcons(nav);
     decorateLinkedPictures(nav);
     block.append(addSearchForm());
     block.append(nav);
-
+    decorateIcons(block);
     // Handle different event listeners for mobile/desktop on window resize
     const removeAllEventListeners = () => {
       elementsWithEventListener.forEach((el) => {
