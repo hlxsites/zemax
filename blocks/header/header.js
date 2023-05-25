@@ -1,8 +1,5 @@
 import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { createTag, decorateLinkedPictures, loadScript } from '../../scripts/scripts.js';
-import {
-  button, div, form, input, span,
-} from '../../scripts/dom-helpers.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -50,37 +47,30 @@ function addDropdownIcon(element) {
 
 function addSearchForm(breakpoint) {
   if (breakpoint === 'mobile') {
-    const container = div({ class: 'mobile-search-container', 'aria-expanded': false });
-    container.innerHTML = `
-        <div class='search-form'>
-          <form action='/search' method='get'>
-            <button class='search-button'><span class='icon icon-search'><svg xmlns='http://www.w3.org/2000/svg'><use
-              href='#search'></use></svg></span></button>
-            <input type='text' name='q' class='search-input'>
-            <input type='hidden' name='options[prefix]' value='last' aria-hidden='true'>
-          </form>
-        </div>
-        <div class='search-close'>
-          <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
-        </div>
-    `;
-    return container;
-    // eslint-disable-next-line no-else-return
-  } else {
-    const container = div({ class: 'search-container', 'aria-expanded': false, style: 'display: flex;'});
-    container.innerHTML = `
-        <div class='search-form'>
-          <form action='/search' method='get'><input type='text' name='q' class='search-input'>
-            <input type='hidden' name='options[prefix]' value='last' aria-hidden='true'>
-            <button class='search-button'><span class='icon icon-search'></span></button>
-          </form>
-        </div>
-        <div class='search-close'>
-          <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
-        </div>
-      `;
-    return container;
+    return createTag('div', { class: 'mobile-search-container', 'aria-expanded': false }, `
+      <div class='search-form'>
+        <form action='/search' method='get'>
+          <button class='search-button'><span class='icon icon-search'></span></button>
+          <input type='text' name='q' class='search-input' />
+          <input type='hidden' name='options[prefix]' value='last' aria-hidden='true' />
+        </form>
+      </div>
+      <div class='search-close'>
+        <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
+      </div>`);
   }
+  // desktop
+  return createTag('div', { class: 'search-container', 'aria-expanded': false }, `
+      <div class='search-form'>
+        <form action='/search' method='get'>
+          <input type='text' name='q' class='search-input' />
+          <input type='hidden' name='options[prefix]' value='last' aria-hidden='true' />
+          <button class='search-button'><span class='icon icon-search'></span></button>
+        </form>
+      </div>
+      <div class='search-close'>
+        <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
+      </div>`);
 }
 
 function addEventListenersMobile() {
