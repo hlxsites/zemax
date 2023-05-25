@@ -615,9 +615,21 @@ function addTabFeature() {
 export default async function decorate(block) {
   const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
 
-  const licenseTableHeadingMapping = createTableHeaderMapping(data);
-  const tabDiv = createTag('div', { class: 'tabs' });
-  const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
+  if (userId == null || userId === undefined || accessToken == null || accessToken === undefined) {
+    window.location.assign(`${window.location.origin}`);
+  } else {
+    fetch(`${DYNAMIC_365_DOMAIN}dynamics_get_licenses_by_auth0id?auth0_id=${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        Authorization: `bearer ${accessToken}`,
+      },
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        const licenseTableHeadingMapping = createTableHeaderMapping(data);
+        const tabDiv = createTag('div', { class: 'tabs' });
+        const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
 
   // Render tab headings
   licenseTableHeadingMapping.forEach((heading, index) => {
