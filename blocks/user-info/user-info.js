@@ -12,7 +12,7 @@ export default async function decorate(block) {
   if (userId == null || userId === undefined || accessToken == null || accessToken === undefined) {
     window.location.assign(`${window.location.origin}`);
   } else {
-    await fetch(`${DYNAMIC_365_DOMAIN}insided_get_user_link?auth0_id=${userId}`, {
+    fetch(`${DYNAMIC_365_DOMAIN}insided_get_user_link?auth0_id=${userId}`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
