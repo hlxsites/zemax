@@ -89,7 +89,7 @@ async function updateUserInfo(event) {
   const jobtitle = event.target.parentNode.querySelector('#job-title').value;
   const telephone = event.target.parentNode.querySelector('#phone').value;
   const contactid = event.target.getAttribute('data-contactid');
-  const data = execute('dynamics_edit_colleague', `&jobtitle=${jobtitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
+  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobtitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
   if (data?.status === 204) {
     // TODO show success toast message
     hideModal(event);
@@ -115,15 +115,13 @@ async function showEditUserModal(event) {
   const submitButton = userEditForm.querySelector('#userEditSubmitButton');
   submitButton.setAttribute('data-contactid', contactid);
   submitButton.addEventListener('click', updateUserInfo);
-  // userEditForm.
   showModal(event);
 }
 
-async function editUser(event) {
+async function resetUserPassword(event) {
   const contactid = event.target.getAttribute('data-contactid');
-  const jobTitle = 'data anayslt';
-  const telephone = '312-163';
-  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobTitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
+  // TODO check method type
+  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`, 'POST');
   if (data?.status === 204) {
     // TODO show success toast message
     hideModal(event);
@@ -132,11 +130,23 @@ async function editUser(event) {
   }
 }
 
-async function resetUserPassword(event) {
+async function activateUser(event) {
   const contactid = event.target.getAttribute('data-contactid');
   // TODO check method type
-  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`, 'POST');
-  if (data?.status === 200) {
+  const data = await execute('dynamics_activate_userid', `&contact_id=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function deactivateUser(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  // TODO check method type
+  const data = await execute('dynamics_deactivate_userid', `&contact_id=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
     // TODO show success toast message
     hideModal(event);
   } else {
@@ -222,9 +232,18 @@ async function createUser(event) {
       htmlAttributes: {
         class: 'license-user-deactivate-user action important',
         type: 'button',
-        'data-new-productuserid': 'test',
-        'data-license-id': 'test2',
-        'data-next-action-class': 'deactivate-user-action-button',
+        'data-contactid': '{{contactid}}',
+      },
+    },
+    {
+      label: 'User Status',
+      value: [''],
+      html: 'button',
+      htmlTagLabel: 'Activate User',
+      htmlAttributes: {
+        class: 'license-user-activate-user action important',
+        type: 'button',
+        'data-contactid': '{{contactid}}',
       },
     },
     {
@@ -257,17 +276,22 @@ async function createUser(event) {
 
   const activeColleagues = allColleagues.filter((colleague) => colleague.statecode === 0);
   const inactiveColleagues = data.colleagues.filter((colleague) => colleague.statecode === 1);
-  console.log(activeColleagues);
 
   // Render tab content
+  const activatedUsersHeading = tableHeadings.slice();
+  activatedUsersHeading.splice(8, 1);
+
+  const deactivatedUsersHeading = tableHeadings.slice();
+  deactivatedUsersHeading.splice(7, 1);
+
   colleaguesTabsMapping.forEach((heading, index) => {
     if (index === 0) {
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createGenericTable(tableHeadings, activeColleagues).outerHTML),
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createGenericTable(activatedUsersHeading, activeColleagues).outerHTML),
       );
     } else {
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createGenericTable(tableHeadings, inactiveColleagues).outerHTML),
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createGenericTable(deactivatedUsersHeading, inactiveColleagues).outerHTML),
       );
     }
   });
@@ -316,15 +340,11 @@ async function createUser(event) {
     ],
     submitText: 'Submit',
     submitId: 'userEditSubmitButton',
-    submitClass: 'user-edit-submit-button',
-    submitDataModalId: 'editUserEditForm',
+    submitClass: 'edit-user-action-button',
+    submitDataModalId: 'editUserModal',
   };
 
   const editUserModalContent = createForm(config);
-
-  //const editUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'editUserModal' }, 'Cancel');
-  //const editUserActionModalButton = createTag('button', { class: 'action important edit-user-action-button', 'data-modal-id': 'editUserModal' }, 'Save Information');
-
   const editUserButtonsConfig = [];
 
   const editUserModalDiv = createModal('Edit Colleague', editUserModalContent, 'edit-user-modal-content', 'edit-user-container', 'editUserModal', 'edit-user-modal', editUserButtonsConfig);
@@ -333,6 +353,16 @@ async function createUser(event) {
   const editUserButtons = document.querySelectorAll('.license-user-edit-user.action');
   editUserButtons.forEach((editUserButton) => {
     editUserButton.addEventListener('click', showEditUserModal);
+  });
+
+  const deactivateUserButtons = document.querySelectorAll('.license-user-deactivate-user.action');
+  deactivateUserButtons.forEach((deactivateUserButton) => {
+    deactivateUserButton.addEventListener('click', deactivateUser);
+  });
+
+  const activateUserButtons = document.querySelectorAll('.license-user-activate-user.action');
+  activateUserButtons.forEach((activateUserButton) => {
+    activateUserButton.addEventListener('click', activateUser);
   });
 
   addTabFeature();
