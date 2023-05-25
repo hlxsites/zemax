@@ -71,6 +71,73 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+export function showModal(event) {
+  const modalId = event.target.getAttribute('data-modal-id');
+  document.getElementById(modalId).style.display = 'block';
+}
+
+export function hideModal(event) {
+  const modalId = event.target.getAttribute('data-modal-id');
+  document.getElementById(modalId).style.display = 'none';
+}
+
+function findReplaceJSON(jsonObj, data) {
+  Object.keys(jsonObj).forEach((key) => {
+    if (typeof jsonObj[key] === 'object' && jsonObj[key] !== null) {
+      findReplaceJSON(jsonObj[key], data);
+    } else if (typeof jsonObj[key] === 'string') {
+      if (jsonObj[key].startsWith('{{') && jsonObj[key].endsWith('}}')) {
+        const newValueKey = jsonObj[key].slice(2, -2);
+        jsonObj[key] = data[newValueKey];
+      }
+    }
+  });
+
+  return jsonObj;
+}
+
+/**
+ * @typedef {Object} tableHeadings
+ * @property {string} label - table heading label text.
+ * @property {Array.<string>} value - The list of strings concatenated to form a single value.
+ * @property {string} html - Defines html tag to be created.
+ * @property {array} attributes attributes to be added
+ */
+
+export function createGenericTable(tableHeadings, rowData) {
+  const tableElement = document.createElement('table');
+  const thead = document.createElement('thead');
+  const tr = document.createElement('tr');
+
+  tableHeadings.forEach((heading) => {
+    const { label } = heading;
+    const tableHeadingElement = createTag('th', { class: '' }, label);
+    tr.appendChild(tableHeadingElement);
+  });
+  thead.appendChild(tr);
+
+  tableElement.appendChild(thead);
+  const tbody = document.createElement('tbody');
+
+  rowData.forEach((row) => {
+    const trValue = document.createElement('tr');
+    tableHeadings.forEach((heading) => {
+      const clonedHeading = JSON.parse(JSON.stringify(heading));
+      findReplaceJSON(clonedHeading, row);
+      if (clonedHeading && clonedHeading.html && clonedHeading.html !== 'td') {
+        const tagLabel = clonedHeading.htmlTagLabel ? clonedHeading.htmlTagLabel : '';
+        trValue.appendChild(createTag('td', '', createTag(clonedHeading.html, clonedHeading.htmlAttributes, tagLabel)));
+      } else {
+        trValue.appendChild(createTag('td', clonedHeading.htmlAttributes, clonedHeading.value.join('')));
+      }
+    });
+    tbody.appendChild(trValue);
+  });
+
+  tableElement.appendChild(tbody);
+  return tableElement;
+}
+
 export async function searchResults(index, category) {
   const resp = await fetch(index);
   const json = await resp.json();
@@ -130,6 +197,25 @@ export function loadScript(url, attrs) {
   }
   head.append(script);
   return script;
+}
+
+export async function loadScriptPromise(url, attrs) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = url;
+    if (attrs) {
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const attr in attrs) {
+        script.setAttribute(attr, attrs[attr]);
+      }
+    }
+
+    script.onload = () => resolve(script);
+    script.onerror = reject;
+
+    const head = document.querySelector('head');
+    head.append(script);
+  });
 }
 
 /**

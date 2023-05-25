@@ -9,9 +9,8 @@ export default async function decorate(block) {
   const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
 
   // TODO move to template logic
-  if (userId == null || userId === undefined || accessToken == null || accessToken === undefined) {
-    window.location.assign(`${window.location.origin}`);
-  } else {
+  // eslint-disable-next-line max-len
+  if (userId && accessToken) {
     fetch(`${DYNAMIC_365_DOMAIN}insided_get_user_link?auth0_id=${userId}`, {
       method: 'GET',
       headers: {
