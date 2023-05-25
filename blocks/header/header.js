@@ -1,5 +1,6 @@
 import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { createTag, decorateLinkedPictures, loadScript } from '../../scripts/scripts.js';
+import { domEl } from '../../scripts/dom-helpers.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -60,7 +61,8 @@ function addSearchForm(breakpoint) {
       </div>`);
   }
   // desktop
-  return createTag('div', { class: 'search-container', 'aria-expanded': false }, `
+  const dialog = domEl('dialog', { class: 'search-container', 'aria-expanded': false });
+  dialog.innerHTML = `
       <div class='search-form'>
         <form action='/search' method='get'>
           <input type='text' name='q' class='search-input' />
@@ -70,7 +72,8 @@ function addSearchForm(breakpoint) {
       </div>
       <div class='search-close'>
         <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
-      </div>`);
+      </div>`;
+  return dialog;
 }
 
 function addEventListenersMobile() {
@@ -259,7 +262,7 @@ export default async function decorate(block) {
     // hamburger
     const hamburger = createTag('div');
     hamburger.classList.add('nav-hamburger');
-    hamburger.innerHTML = '<span class=\'icon icon-mobile-menu\'></span>';
+    hamburger.innerHTML = '<span class="icon icon-mobile-menu"></span>';
 
     const expandHamburger = () => {
       const expanded = nav.getAttribute('aria-expanded') === 'true';
@@ -268,8 +271,8 @@ export default async function decorate(block) {
       document.querySelector('main').style.visibility = expanded
         ? ''
         : 'hidden';
-      if (!expanded) hamburger.innerHTML = '<span class=\'icon icon-search-close\'><svg viewBox=\'0 0 40 40\'><path d=\'M23.868 20.015L39.117 4.78c1.11-1.108 1.11-2.77 0-3.877-1.109-1.108-2.773-1.108-3.882 0L19.986 16.137 4.737.904C3.628-.204 1.965-.204.856.904c-1.11 1.108-1.11 2.77 0 3.877l15.249 15.234L.855 35.248c-1.108 1.108-1.108 2.77 0 3.877.555.554 1.248.831 1.942.831s1.386-.277 1.94-.83l15.25-15.234 15.248 15.233c.555.554 1.248.831 1.941.831s1.387-.277 1.941-.83c1.11-1.109 1.11-2.77 0-3.878L23.868 20.015z\' class=\'layer\'></path></svg></span>';
-      else hamburger.innerHTML = '<span class=\'icon icon-mobile-menu\'><svg aria-hidden=\'true\' focusable=\'false\'  viewBox=\'0 0 37 40\'><path d=\'M33.5 25h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2zm0-11.5h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2zm0 23h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2z\'></path></svg></span>';
+      if (!expanded) hamburger.innerHTML = '<span class="icon icon-search-close"></span>';
+      else hamburger.innerHTML = '<span class="icon icon-mobile-menu"></span>';
     };
 
     hamburger.setAttribute('tabindex', '0');
@@ -289,20 +292,20 @@ export default async function decorate(block) {
 
     // add event to open search form
     const closeSearch = () => {
-      const searchContainer = block.querySelector('.search-container');
-      searchContainer.style.display = 'none';
+      block.querySelector('.search-container').close();
     };
     const showSearchForm = () => {
       const searchContainer = block.querySelector('.search-container');
-      if (searchContainer.style.display === 'flex') {
-        searchContainer.style.display = 'none';
-        searchContainer.setAttribute('aria-expanded', false);
-      } else {
-        searchContainer.style.display = 'flex';
-        searchContainer.setAttribute('aria-expanded', true);
-        const closeBtn = searchContainer.querySelector(':scope .search-close .close-button');
-        closeBtn.addEventListener('click', closeSearch);
-      }
+      searchContainer.showModal();
+      searchContainer.addEventListener('click', (event) => {
+        // only react to clicks outside the dialog. https://stackoverflow.com/a/70593278/79461
+        const dialogDimensions = searchContainer.getBoundingClientRect();
+        if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right
+          || event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
+          searchContainer.close();
+        }
+      });
+      searchContainer.querySelector('.close-button').addEventListener('click', closeSearch);
     };
 
     const searchIcon = nav.querySelector(':scope .nav-tools .icon-search');
