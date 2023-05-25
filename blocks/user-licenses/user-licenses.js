@@ -174,7 +174,7 @@ async function createUser(event) {
       value: ['{{firstname}}'],
       html: 'td',
       htmlAttributes: {
-        class: 'first-name',
+        class: 'label-bold',
       },
     },
     {
@@ -199,7 +199,7 @@ async function createUser(event) {
       html: 'button',
       htmlTagLabel: 'Edit User',
       htmlAttributes: {
-        class: 'license-user-edit-user action',
+        class: 'license-user-edit-user action secondary',
         type: 'button',
         'data-modal-id': 'editUserModal',
         'data-contactid': '{{contactid}}',
@@ -217,7 +217,7 @@ async function createUser(event) {
       html: 'button',
       htmlTagLabel: 'Reset Password',
       htmlAttributes: {
-        class: 'license-user-reset-password action',
+        class: 'license-user-reset-password action secondary',
         type: 'button',
         'data-modal-id': 'resetUserPasswordModal',
         'data-contactid': '{{contactid}}',
@@ -241,7 +241,7 @@ async function createUser(event) {
       html: 'button',
       htmlTagLabel: 'Activate User',
       htmlAttributes: {
-        class: 'license-user-activate-user action important',
+        class: 'license-user-activate-user action activate',
         type: 'button',
         'data-contactid': '{{contactid}}',
       },
@@ -252,7 +252,7 @@ async function createUser(event) {
       html: 'button',
       htmlTagLabel: 'Manage',
       htmlAttributes: {
-        class: 'license-user-manage-user action important',
+        class: 'license-user-manage-user action secondary',
         type: 'button',
         'data-new-productuserid': 'test',
         'data-license-id': 'test2',
@@ -581,7 +581,7 @@ async function displayLicenseDetails(event) {
           value: ['{{contact1.fullname}}'],
           html: 'td',
           htmlAttributes: {
-            class: 'user-name',
+            class: 'label-bold',
           },
         },
         {
