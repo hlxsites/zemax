@@ -1,5 +1,5 @@
 import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
-import { createTag, loadScript, decorateLinkedPictures } from '../../scripts/scripts.js';
+import { createTag, loadScriptPromise, decorateLinkedPictures } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -139,12 +139,12 @@ function reAttachEventListeners() {
 }
 
 // authentication related functions
-function initializeAuth(domain, clientID, audience, responseType, scope) {
+function initializeAuth(domain, clientID, audience, responseType, scope, redirectUri) {
   // eslint-disable-next-line no-undef
   return new auth0.WebAuth({
     domain: `${domain}`,
     clientID: `${clientID}`,
-    redirectUri: `${window.location.origin}`,
+    redirectUri: `${redirectUri}`,
     audience: `${audience}`,
     responseType: `${responseType}`,
     scope: `${scope}`,
@@ -218,6 +218,14 @@ function handleAuthenticated(ele) {
   logintxt.innerText = localStorage.getItem('displayname');
   attachLogoutListener(ele);
 }
+
+function getRedirectUri() {
+  if (window.location.pathname.startsWith('/pages/profile')) {
+    return window.location.origin + window.location.pathname;
+  }
+  return window.location.origin;
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -297,7 +305,7 @@ export default async function decorate(block) {
     const authtoken = localStorage.getItem('accessToken');
     const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLink.classList.add('login-wrapper');
-    const authScriptTag = loadScript('/scripts/auth0.min.js', {
+    const authScriptTagPromise = loadScriptPromise('/scripts/auth0.min.js', {
       type: 'text/javascript',
       charset: 'UTF-8',
     });
@@ -309,17 +317,23 @@ export default async function decorate(block) {
     const scopes = placeholders.scope;
     if (!authtoken) {
       loginLink.setAttribute('aria-expanded', 'false');
-      authScriptTag.onload = () => {
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
+      authScriptTagPromise.then(() => {
+        // eslint-disable-next-line max-len
+        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
         loginLink.addEventListener('click', login);
         handleAuthentication(loginLink);
-      };
+        if (window.location.pathname.startsWith('/pages/profile')) {
+          login();
+        }
+      });
     } else {
-      authScriptTag.onload = () => {
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes);
-      };
+      authScriptTagPromise.then(() => {
+        // eslint-disable-next-line max-len
+        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
+      });
       handleAuthenticated(loginLink);
     }
+
     // link section
     const navMenuUl = createTag('ul');
     const menus = [...nav.querySelectorAll('.nav-menu > div')];
