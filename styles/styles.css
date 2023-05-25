@@ -269,7 +269,7 @@ button.action {
   align-items: center;
   justify-content: center;
   margin: 0.15rem 0;
-  padding: 0.15rem 0.6rem;
+  padding: 0.10rem 0.6rem;
   min-height: 1.5rem;
   min-width: 3.6rem;
   border-radius: 0.3rem;
@@ -283,7 +283,7 @@ button.action {
   cursor: pointer;
   user-select: none;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.6rem;
   text-transform: initial;
@@ -331,13 +331,32 @@ button.action.secondary:hover {
 }
 
 button.action.secondary:active {
-  border: 0.05rem solid rgba(140 145 150);
-  box-shadow: none;
   background: rgba(241 242 243);
 }
 
 button.action.secondary::before {
   background-color: #FFF;
+  opacity: .05;
+}
+
+button.action.activate {
+  color: rgb(0, 88, 0);
+  background-color: transparent;
+  border-color: rgb(0, 88, 0);
+  box-shadow: 0 0 0 0.05rem rgb(0, 88, 0);
+  outline: 0.05rem solid transparent;
+}
+
+button.action.activate:hover {
+  background-color: rgba(246 246 247);
+}
+
+button.action.activate:active {
+  background: rgba(241 242 243);
+}
+
+button.action.activate::before {
+  background-color: rgb(0, 88, 0);
   opacity: .05;
 }
 
@@ -690,9 +709,15 @@ main .video-wrap iframe {
   transition: background-color .2s ease-in-out;
 }
 
-.table-container table tbody td:nth-child(3) {
-  text-transform: capitalize;
+.table-container table tbody td.label-bold {
+  font-weight: bold;
   font-family: var(--ff-myradpro-semibold);
+  font-size: 16px;
+  color: #54565b;
+}
+
+.table-container table tbody td.label-capitalize {
+  text-transform: capitalize;
 }
 
 .table-container table tbody td > a {
