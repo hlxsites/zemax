@@ -103,12 +103,16 @@ export function createModal(modalTitle, modalBodyInnerContent, modalContentClass
 
 export function showModal(event) {
   const modalId = event.target.getAttribute('data-modal-id');
-  document.getElementById(modalId).style.display = 'block';
+  if (modalId && document.getElementById(modalId)) {
+    document.getElementById(modalId).style.display = 'block';
+  }
 }
 
 export function hideModal(event) {
   const modalId = event.target.getAttribute('data-modal-id');
-  document.getElementById(modalId).style.display = 'none';
+  if (modalId && document.getElementById(modalId)) {
+    document.getElementById(modalId).style.display = 'none';
+  }
 }
 
 function findReplaceJSON(jsonObj, data) {

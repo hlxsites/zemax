@@ -8,7 +8,7 @@ import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicens
 import activatedDeactivatedColleaguesTable from '../../configs/tables/activatedDeactivatedColleaguesTableConfig.js';
 
 function createForm(config) {
-  const form = createTag('form', { id: 'editUserEditForm' }, '');
+  const form = createTag('form', { id: config.formId }, '');
 
   config.fields.forEach((field) => {
     const label = createTag('label', { for: field.id }, field.label);
@@ -65,6 +65,8 @@ async function updateUserInfo(event) {
   if (data?.status === 204) {
     // TODO show success toast message
     hideModal(event);
+    // Re render after the data is updated
+    createUser(event);
   } else {
     console.log('error ', data);
   }
@@ -108,7 +110,8 @@ async function activateUser(event) {
   const data = await execute('dynamics_activate_userid', `&contact_id=${contactid}`, 'PATCH');
   if (data?.status === 204) {
     // TODO show success toast message
-    hideModal(event);
+    // Re render after the data is updated
+    createUser(event);
   } else {
     console.log('error ', data);
   }
@@ -120,7 +123,8 @@ async function deactivateUser(event) {
   const data = await execute('dynamics_deactivate_userid', `&contact_id=${contactid}`, 'PATCH');
   if (data?.status === 204) {
     // TODO show success toast message
-    hideModal(event);
+    // Re render after the data is updated
+    createUser(event);
   } else {
     console.log('error ', data);
   }
@@ -132,8 +136,12 @@ async function createUser(event) {
   const licenseDetailsDiv = document.querySelector('.license-details');
   const endUserDetailsDiv = document.querySelector('.end-users-details');
   const licenseBlock = document.querySelector('.user-licenses.block');
-  licenseDetailsDiv.remove();
-  endUserDetailsDiv.remove();
+  if (licenseDetailsDiv) {
+    licenseDetailsDiv.remove();
+  }
+  if (endUserDetailsDiv) {
+    endUserDetailsDiv.remove();
+  }
 
   const tabDiv = createTag('div', { class: 'tabs' });
   const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
@@ -222,6 +230,7 @@ async function createUser(event) {
     submitId: 'userEditSubmitButton',
     submitClass: 'edit-user-action-button',
     submitDataModalId: 'editUserModal',
+    formId: 'editUserEditForm',
   };
 
   const editUserModalContent = createForm(config);
