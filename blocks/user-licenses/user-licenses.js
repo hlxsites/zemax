@@ -1,27 +1,564 @@
-import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-config.js';
-import { createTag } from '../../scripts/scripts.js';
+import { getLocaleConfig } from '../../scripts/zemax-config.js';
+import {
+  createModal, createTag, createGenericTable, hideModal, showModal,
+} from '../../scripts/scripts.js';
+import execute from '../../scripts/zemax-api.js';
+import getLicenseDetailsUsersTable from '../../configs/tables/licenseDetailsUsersTableConfig.js';
+import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicenseTableConfig.js';
+import activatedDeactivatedColleaguesTable from '../../configs/tables/activatedDeactivatedColleaguesTableConfig.js';
+
+function createForm(config) {
+  const form = createTag('form', { id: config.formId }, '');
+
+  config.fields.forEach((field) => {
+    const label = createTag('label', { for: field.id }, field.label);
+    const input = createTag('input', { type: 'text', id: field.id }, '');
+
+    if (field.value) {
+      input.setAttribute('value', field.value);
+    }
+
+    if (field.readOnly) {
+      input.setAttribute('readonly', '');
+    }
+
+    if (field.disabled) {
+      input.setAttribute('disabled', '');
+    }
+
+    form.appendChild(label);
+    form.appendChild(input);
+  });
+
+  const submitButton = createTag('input', {
+    type: 'submit', id: config.submitId, class: config.submitClass, value: config.submitText, 'data-modal-id': config.submitDataModalId,
+  });
+  form.appendChild(submitButton);
+
+  return form;
+}
+
+function showUserActionModal(event) {
+  const newProductUserId = event.target.getAttribute('data-new-productuserid');
+  const licenseId = event.target.getAttribute('data-license-id');
+  const nextActionClass = event.target.getAttribute('data-next-action-class');
+  showModal(event);
+  const userActionButton = document.querySelector(`.${nextActionClass}`);
+  userActionButton.setAttribute('data-new-productuserid', newProductUserId);
+  userActionButton.setAttribute('data-license-id', licenseId);
+}
+
+async function showResetUserPasswordModal(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  const nextActionClass = event.target.getAttribute('data-next-action-class');
+  showModal(event);
+  const userActionButton = document.querySelector(`.${nextActionClass}`);
+  userActionButton.setAttribute('data-contactid', contactid);
+}
+
+async function updateUserInfo(event) {
+  event.preventDefault();
+  const jobtitle = event.target.parentNode.querySelector('#job-title').value;
+  const telephone = event.target.parentNode.querySelector('#phone').value;
+  const contactid = event.target.getAttribute('data-contactid');
+  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobtitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+    // Re render after the data is updated
+    createUser(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function showEditUserModal(event) {
+  const button = event.target;
+  const contactid = button.getAttribute('data-contactid');
+  const firstname = button.getAttribute('data-user-firstname');
+  const lastname = button.getAttribute('data-user-lastname');
+  const jobTitle = button.getAttribute('data-user-jobtitle');
+  const email = button.getAttribute('data-user-email');
+  const phone = button.getAttribute('data-user-phone');
+  const userEditForm = document.querySelector('#editUserEditForm');
+  userEditForm.querySelector('#first-name').setAttribute('value', firstname);
+  userEditForm.querySelector('#last-name').setAttribute('value', lastname);
+  userEditForm.querySelector('#job-title').setAttribute('value', jobTitle);
+  userEditForm.querySelector('#email').setAttribute('value', email);
+  userEditForm.querySelector('#phone').setAttribute('value', phone);
+  const submitButton = userEditForm.querySelector('#userEditSubmitButton');
+  submitButton.setAttribute('data-contactid', contactid);
+  submitButton.addEventListener('click', updateUserInfo);
+  showModal(event);
+}
+
+async function resetUserPassword(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  // TODO check method type
+  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`, 'POST');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function activateUser(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  // TODO check method type
+  const data = await execute('dynamics_activate_userid', `&contact_id=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    // Re render after the data is updated
+    createUser(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function deactivateUser(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  // TODO check method type
+  const data = await execute('dynamics_deactivate_userid', `&contact_id=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    // Re render after the data is updated
+    createUser(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function createUser(event) {
+  hideModal(event);
+  hideOtherUserLicenseInformation();
+  const licenseDetailsDiv = document.querySelector('.license-details');
+  const endUserDetailsDiv = document.querySelector('.end-users-details');
+  const licenseBlock = document.querySelector('.user-licenses.block');
+  if (licenseDetailsDiv) {
+    licenseDetailsDiv.remove();
+  }
+  if (endUserDetailsDiv) {
+    endUserDetailsDiv.remove();
+  }
+
+  const tabDiv = createTag('div', { class: 'tabs' });
+  const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
+  const colleaguesTabsMapping = ['Active Colleagues', 'Deactivated Colleagues'];
+
+  const data = await execute('dynamics_get_colleagues_manage', '', 'GET');
+
+  // Render tab headings
+  colleaguesTabsMapping.forEach((heading, index) => {
+    if (index === 0) {
+      tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading));
+    } else {
+      tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading));
+    }
+  });
+
+  tabDiv.appendChild(tabListUl);
+
+  const allColleagues = data.colleagues;
+
+  const activeColleagues = allColleagues.filter((colleague) => colleague.statecode === 0);
+  const inactiveColleagues = data.colleagues.filter((colleague) => colleague.statecode === 1);
+
+  // Render tab content
+  const activatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
+  activatedUsersHeading.splice(8, 1);
+
+  const deactivatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
+  deactivatedUsersHeading.splice(7, 1);
+
+  colleaguesTabsMapping.forEach((heading, index) => {
+    if (index === 0) {
+      tabDiv.append(
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createGenericTable(activatedUsersHeading, activeColleagues).outerHTML),
+      );
+    } else {
+      tabDiv.append(
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createGenericTable(deactivatedUsersHeading, inactiveColleagues).outerHTML),
+      );
+    }
+  });
+
+  licenseBlock.appendChild(tabDiv);
+
+  // Reset password modal
+  const modalResetUserPasswordDescription = createTag('p', '', 'Please confirm this action to generate the password reset email');
+  const resetUserPasswordModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'resetUserPasswordModal' }, 'Cancel');
+  const resetUserPasswordModalButton = createTag('button', { class: 'action important reset-user-password-action-button', 'data-modal-id': 'resetUserPasswordModal' }, 'Send Password Reset Email');
+
+  const resetUserPasswordButtonsConfig = [
+    {
+      userAction: 'click',
+      button: resetUserPasswordModalCloseButton,
+      listenerMethod: hideModal,
+    }, {
+      userAction: 'click',
+      button: resetUserPasswordModalButton,
+      listenerMethod: resetUserPassword,
+    },
+  ];
+
+  const modalResetUserPasswordModalDiv = createModal('Confirmation Required', modalResetUserPasswordDescription, 'reset-user-password-modal-content', 'reset-user-password-container', 'resetUserPasswordModal', 'reset-user-password-modal', resetUserPasswordButtonsConfig);
+  licenseBlock.appendChild(modalResetUserPasswordModalDiv);
+
+  const resetButtons = document.querySelectorAll('.license-user-reset-password.action');
+  resetButtons.forEach((resetButton) => {
+    resetButton.addEventListener('click', showResetUserPasswordModal);
+  });
+
+  // Edit user modal
+  const config = {
+    fields: [
+      {
+        id: 'first-name', label: 'First Name', value: '', readOnly: true, disabled: true,
+      },
+      {
+        id: 'last-name', label: 'Last Name', value: '', readOnly: true, disabled: true,
+      },
+      { id: 'job-title', label: 'Job Title' },
+      {
+        id: 'email', label: 'Email', value: '', readOnly: true, disabled: true,
+      },
+      { id: 'phone', label: 'Business Phone' },
+    ],
+    submitText: 'Submit',
+    submitId: 'userEditSubmitButton',
+    submitClass: 'edit-user-action-button',
+    submitDataModalId: 'editUserModal',
+    formId: 'editUserEditForm',
+  };
+
+  const editUserModalContent = createForm(config);
+  const editUserButtonsConfig = [];
+
+  const editUserModalDiv = createModal('Edit Colleague', editUserModalContent, 'edit-user-modal-content', 'edit-user-container', 'editUserModal', 'edit-user-modal', editUserButtonsConfig);
+  licenseBlock.appendChild(editUserModalDiv);
+
+  const editUserButtons = document.querySelectorAll('.license-user-edit-user.action');
+  editUserButtons.forEach((editUserButton) => {
+    editUserButton.addEventListener('click', showEditUserModal);
+  });
+
+  const deactivateUserButtons = document.querySelectorAll('.license-user-deactivate-user.action');
+  deactivateUserButtons.forEach((deactivateUserButton) => {
+    deactivateUserButton.addEventListener('click', deactivateUser);
+  });
+
+  const activateUserButtons = document.querySelectorAll('.license-user-activate-user.action');
+  activateUserButtons.forEach((activateUserButton) => {
+    activateUserButton.addEventListener('click', activateUser);
+  });
+
+  addTabFeature();
+}
+
+function showAddUserTable(event) {
+  const licenseId = event.target.getAttribute('data-license-id');
+  const addUserActionButton = document.querySelector('.add-user-action-button');
+  addUserActionButton.setAttribute('data-license-id', licenseId);
+  showModal(event);
+}
+
+async function changeUserForALicense(event) {
+  const contactId = event.target.getAttribute('contactid');
+  const newProductUserId = event.target.getAttribute('data-new-productuserid');
+  const data = await execute('dynamics_change_enduser_license', `&contact_id=${contactId}&new_productuserid=${newProductUserId}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+    // eslint-disable-next-line no-use-before-define
+    displayLicenseDetails(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+function updateAddUserId(event) {
+  const addUserActionButton = document.querySelector('.add-user-action-button');
+  addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
+}
+
+function updateChangeUserId(event) {
+  const addUserActionButton = document.querySelector('.change-user-action-button');
+  addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
+}
+
+async function addUserToALicense(event) {
+  const contactId = event.target.getAttribute('contactid');
+  const licenseId = event.target.getAttribute('data-license-id');
+  const data = await execute('dynamics_add_end_user', `&contactId=${contactId}&licenseid=${licenseId}`, 'POST');
+
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+    // eslint-disable-next-line no-use-before-define
+    displayLicenseDetails(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function createAddUserToLicenseTable(checkboxClass) {
+  const data = await execute('dynamics_get_colleagues_view', '', 'GET');
+  const colleaguesData = await data.colleagues;
+  return createGenericTable(getAddUserToLicenseTableConfig(checkboxClass), colleaguesData);
+}
+
+async function addColleaguesToUserActionModal(
+  modalSelectorClass,
+  modalCheckBoxClass,
+  eventListenerMethoda,
+) {
+  const modalBodyDivs = document.querySelectorAll('.modal-body');
+  let modalContentDiv = null;
+  modalBodyDivs.forEach((modalBodyDiv) => {
+    const containerDiv = modalBodyDiv.querySelector(`.${modalSelectorClass}`);
+    if (containerDiv) {
+      modalContentDiv = containerDiv;
+    }
+  });
+
+  // clear previous modal content
+  modalContentDiv.innerHTML = '';
+  modalContentDiv.appendChild(await createAddUserToLicenseTable(modalCheckBoxClass));
+  const userCheckboxes = document.querySelectorAll(`.${modalCheckBoxClass}`);
+  userCheckboxes.forEach((userCheckbox) => {
+    userCheckbox.addEventListener('click', eventListenerMethoda);
+  });
+}
+
+async function removeUserFromLicense(event) {
+  const newproductuserid = event.target.getAttribute('data-new-productuserid');
+  const data = await execute('dynamics_remove_enduser_from_license', `&new_productuserid=${newproductuserid}`, 'DELETE');
+  // TODO handle response and add toast message
+
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+    // eslint-disable-next-line no-use-before-define
+    displayLicenseDetails(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function updateLicenseNickname() {
+  const { value } = document.querySelector('.nickname');
+  if (value) {
+    const data = await execute('dynamics_set_license_nickname', `&id=97d53652-122f-e611-80ea-005056831cd4&nickname=${value}`, 'PATCH');
+    console.log('Updated license nickname ', data);
+  } else {
+    // TODO handle response and add toast message
+    alert('Provide nickname value before saving');
+  }
+}
+
+function hideOtherUserLicenseInformation() {
+  const sections = document.querySelectorAll('.section');
+
+  sections.forEach((section) => {
+    if (section.classList.contains('user-licenses-container')) {
+      const tabsContent = section.querySelector('.tabs');
+      if (tabsContent) {
+        section.querySelector('.tabs').remove();
+      }
+      const licenseComponent = section.querySelector('.user-licenses.block');
+      licenseComponent.querySelector('h3').parentElement.parentElement.remove();
+
+      let backToProfileButton = licenseComponent.querySelector('#backToAccountButton');
+      if (!backToProfileButton) {
+        backToProfileButton = createTag('a', { href: '/pages/profile', class: 'button primary', id: 'backToAccountButton' }, 'Back to Account');
+        licenseComponent.insertBefore(backToProfileButton, licenseComponent.firstChild);
+      }
+    } else {
+      section.remove();
+    }
+  });
+}
+
+async function displayLicenseDetails(event) {
+  hideOtherUserLicenseInformation();
+  const licenseId = event.target.getAttribute('data-license-id');
+  const userId = localStorage.getItem('auth0_id');
+  const accessToken = localStorage.getItem('accessToken');
+  if (userId && accessToken) {
+    const data = await execute('dynamics_get_end_users_for_license', `&license_id=${licenseId}`, 'GET');
+    // DOM creation
+    const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
+    const licenseDetailsDiv = document.querySelector('.license-details');
+    licenseDetailsDiv.innerHTML = '';
+    licenseDetailsDiv.appendChild(manageLicenseH2);
+    const licenseDetailsDataDiv = createTag('div', { class: 'license-details-data' }, '');
+    licenseDetailsDiv.appendChild(licenseDetailsDataDiv);
+    const headings = ['License Administrator|_new_registereduser_value@OData.Community.Display.V1.FormattedValue', 'Account|_new_account_value@OData.Community.Display.V1.FormattedValue', 'Renewal Date|new_supportexpires@OData.Community.Display.V1.FormattedValue', 'Key Serial Number|new_licenseid', 'Product|_new_product_value@OData.Community.Display.V1.FormattedValue', 'License Type|zemax_seattype@OData.Community.Display.V1.FormattedValue', 'ZPA Support|new_premiumsupport@OData.Community.Display.V1.FormattedValue', 'Seat Count|new_usercount@OData.Community.Display.V1.FormattedValue', 'End User Count|new_endusercount@OData.Community.Display.V1.FormattedValue'];
+
+    let licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
+    headings.forEach((heading, index) => {
+      const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
+      const elementDetailCellHeading = createTag('h3', { class: 'element-detail-cell-heading' }, heading.split('|')[0]);
+      const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, data.license_detail[0][heading.split('|')[1]]);
+      elementDetailCellDiv.appendChild(elementDetailCellHeading);
+      elementDetailCellDiv.appendChild(elementDetailCellDataPara);
+      licenseDetailsRow.appendChild(elementDetailCellDiv);
+
+      if (index % 3 === 2) {
+        licenseDetailsDataDiv.appendChild(licenseDetailsRow);
+        licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
+      }
+    });
+
+    const nickNameSetValue = data.license_detail[0].zemax_nickname ?? '';
+    const nickNameTextField = createTag('input', { class: 'nickname', value: nickNameSetValue }, '');
+    licenseDetailsRow.appendChild(nickNameTextField);
+    const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button' }, 'Save');
+    saveNicknameButton.addEventListener('click', updateLicenseNickname);
+    licenseDetailsRow.appendChild(saveNicknameButton);
+    licenseDetailsDataDiv.appendChild(licenseDetailsRow);
+
+    const endUsersDetailsDiv = document.querySelector('.end-users-details');
+    endUsersDetailsDiv.innerHTML = '';
+    const licenseUsers = data.users;
+    const endUsersH2 = createTag('h2', '', 'End Users');
+    endUsersDetailsDiv.appendChild(endUsersH2);
+    const addUserButton = createTag('button', {
+      class: 'add-user-to-license action', type: 'button', 'data-modal-id': 'addUserModal', 'data-license-id': licenseId,
+    }, 'Add End User');
+
+    await addColleaguesToUserActionModal('add-user-container', 'add-user-checkbox', updateAddUserId);
+
+    // TODO add condition
+    endUsersDetailsDiv.appendChild(addUserButton);
+    addUserButton.addEventListener('click', showAddUserTable);
+
+    if (licenseUsers && licenseUsers.length > 0) {
+      const licenseDetailsUsersTable = getLicenseDetailsUsersTable(licenseId);
+      const tableElement = createGenericTable(licenseDetailsUsersTable, licenseUsers);
+      endUsersDetailsDiv.appendChild(tableElement);
+
+      const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
+      removeButtons.forEach((removeButton) => {
+        removeButton.addEventListener('click', showUserActionModal);
+      });
+
+      const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user ');
+      changeUserLicenseButtons.forEach((changeUserLicenseButton) => {
+        changeUserLicenseButton.addEventListener('click', showUserActionModal);
+      });
+    } else {
+      endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
+    }
+  } else {
+    window.location.assign(`${window.location.origin}`);
+  }
+}
+
+async function addManageLicenseFeature(block) {
+  const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
+  const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
+  block.append(licenseDetailsDiv);
+  block.append(endUsersDetailsDiv);
+
+  // Add User Modal
+  const createUserButton = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'addUserModal' }, 'Create User');
+  const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
+  const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
+  const buttonsConfig = [
+    {
+      userAction: 'click',
+      button: createUserButton,
+      listenerMethod: createUser,
+    }, {
+      userAction: 'click',
+      button: addUserButton,
+      listenerMethod: addUserToALicense,
+    }, {
+      userAction: 'click',
+      button: addUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
+
+  const modalAddUserDiv = createModal('Add End User to License', '', 'add-user-modal-content', 'add-user-container table-container', 'addUserModal', 'add-user-modal', buttonsConfig);
+  block.append(modalAddUserDiv);
+
+  // Delete User Modal
+  const modalDeleteDescription = createTag('p', '', 'Please confirm this action to remove end user');
+  const deleteUserButton = createTag('button', { class: 'action important delete-user-action-button', 'data-modal-id': 'deleteUserModal' }, 'Yes, remove End User');
+  const deleteUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
+
+  const deleteButtonsConfig = [
+    {
+      userAction: 'click',
+      button: deleteUserButton,
+      listenerMethod: removeUserFromLicense,
+    }, {
+      userAction: 'click',
+      button: deleteUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
+
+  const modalDeleteUserModalDiv = createModal('Confirmation Required', modalDeleteDescription, 'delete-user-modal-content', 'delete-user-container table-container', 'deleteUserModal', 'delete-user-modal', deleteButtonsConfig);
+  block.append(modalDeleteUserModalDiv);
+
+  // Change User Modal
+  const createUserButtonChangeUser = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Create User');
+  const changeUserButton = createTag('button', { class: 'action change-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Change User');
+  const changeUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'changeUserModal' }, 'Close');
+
+  const createUserButtonsConfig = [
+    {
+      userAction: 'click',
+      button: createUserButtonChangeUser,
+      listenerMethod: createUser,
+    }, {
+      userAction: 'click',
+      button: changeUserButton,
+      listenerMethod: changeUserForALicense,
+    }, {
+      userAction: 'click',
+      button: changeUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
+
+  const modalChangeUserDiv = createModal('Choose a User', '', 'change-user-modal-content', 'change-user-container table-container', 'changeUserModal', 'change-user-modal', createUserButtonsConfig);
+  block.append(modalChangeUserDiv);
+
+  await addColleaguesToUserActionModal('change-user-container', 'change-user-checkbox', updateChangeUserId);
+
+  const manageButtons = document.querySelectorAll('.manage-view-license');
+  manageButtons.forEach((manageButton) => {
+    manageButton.addEventListener('click', displayLicenseDetails);
+  });
+}
 
 function createTableHeaderMapping(data) {
   const { allLicenseTabHeadingMapping } = getLocaleConfig('en_us', 'userLicenses');
   const tableHeaderMapping = [];
 
-  if (data.my_licenses_admin !== undefined && data.my_licenses_admin.length > 0) {
+  if (data.my_licenses_admin?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[0]}|my_licenses_admin`);
   }
 
-  if (data.my_licenses !== undefined && data.my_licenses.length > 0) {
+  if (data.my_licenses?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[1]}|my_licenses`);
   }
 
-  if (data.company_licenses !== undefined && data.company_licenses.length > 0) {
+  if (data.company_licenses?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[2]}|company_licenses`);
   }
 
-  if (data.academic_licenses !== undefined && data.academic_licenses.length > 0) {
+  if (data.academic_licenses?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[3]}|academic_licenses`);
   }
 
-  if (data.academic_esp_licenses !== undefined && data.academic_esp_licenses.length > 0) {
+  if (data.academic_esp_licenses?.length > 0) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[4]}|academic_esp_licenses`);
   }
   return tableHeaderMapping;
@@ -86,10 +623,7 @@ function createLicencesTable(rows) {
 
     // TODO add logic for manage or view
     const tdManageOrView = document.createElement('td');
-    const manageOrViewButton = document.createElement('button');
-    manageOrViewButton.classList.add('manage-view-license');
-    manageOrViewButton.innerText = 'Manage';
-    manageOrViewButton.setAttribute('type', 'button');
+    const manageOrViewButton = createTag('button', { class: 'manage-view-license action', type: 'button', 'data-license-id': row.new_licensesid }, 'Manage');
     tdManageOrView.appendChild(manageOrViewButton);
     trBody.appendChild(tdManageOrView);
 
@@ -128,7 +662,7 @@ function createLicencesTable(rows) {
         const licenseLink = createTag('a', { href: '#' }, headingValue);
         td.appendChild(licenseLink);
       } else {
-        td.innerText = headingValue !== undefined ? headingValue : '';
+        td.innerText = headingValue ?? '';
       }
       trBody.appendChild(td);
     });
@@ -222,55 +756,41 @@ function addTabFeature() {
 }
 
 export default async function decorate(block) {
-  const userId = localStorage.getItem('auth0_id');
-  const accessToken = localStorage.getItem('accessToken');
-  const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
+  // noinspection ES6MissingAwait
+  loadData(block);
+}
 
-  if (userId == null || userId === undefined || accessToken == null || accessToken === undefined) {
-    window.location.assign(`${window.location.origin}`);
-  } else {
-    await fetch(`${DYNAMIC_365_DOMAIN}dynamics_get_licenses_by_auth0id?auth0_id=${userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-        Authorization: `bearer ${accessToken}`,
-      },
-    })
-      .then(async (response) => {
-        const data = await response.json();
-        const licenseTableHeadingMapping = createTableHeaderMapping(data);
-        const tabDiv = createTag('div', { class: 'tabs' });
-        const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
+async function loadData(block) {
+  const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
 
-        // Render tab headings
-        licenseTableHeadingMapping.forEach((heading, index) => {
-          if (index === 0) {
-            tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading.split('|')[0]));
-          } else {
-            tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading.split('|')[0]));
-          }
-        });
+  const licenseTableHeadingMapping = createTableHeaderMapping(data);
+  const tabDiv = createTag('div', { class: 'tabs' });
+  const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
 
-        tabDiv.appendChild(tabListUl);
-        // Render tab content
-        licenseTableHeadingMapping.forEach((heading, index) => {
-          if (index === 0) {
-            tabDiv.append(
-              createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
-            );
-          } else {
-            tabDiv.append(
-              createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
-            );
-          }
-        });
+  // Render tab headings
+  licenseTableHeadingMapping.forEach((heading, index) => {
+    if (index === 0) {
+      tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading.split('|')[0]));
+    } else {
+      tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading.split('|')[0]));
+    }
+  });
 
-        block.append(tabDiv);
-        addTabFeature();
-      })
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.warn('Something went wrong.', err);
-      });
-  }
+  tabDiv.appendChild(tabListUl);
+  // Render tab content
+  licenseTableHeadingMapping.forEach((heading, index) => {
+    if (index === 0) {
+      tabDiv.append(
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
+      );
+    } else {
+      tabDiv.append(
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
+      );
+    }
+  });
+
+  block.append(tabDiv);
+  addTabFeature();
+  addManageLicenseFeature(block);
 }

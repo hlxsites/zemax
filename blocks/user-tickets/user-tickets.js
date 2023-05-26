@@ -10,10 +10,9 @@ export default async function decorate(block) {
   const webroles = JSON.parse(localStorage.getItem('webroles'));
   const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
 
-  if (userId == null || userId === undefined || accessToken == null || accessToken === undefined) {
-    window.location.assign(`${window.location.origin}`);
-  } else {
-    await fetch(`${DYNAMIC_365_DOMAIN}zendesk_tickets_by_id?auth0_id=${userId}&user_email=${userEmail}&zemax_zendeskid=${contactid}`, {
+  // eslint-disable-next-line max-len
+  if (userId && accessToken) {
+    fetch(`${DYNAMIC_365_DOMAIN}zendesk_tickets_by_id?auth0_id=${userId}&user_email=${userEmail}&zemax_zendeskid=${contactid}`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',

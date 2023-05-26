@@ -12,7 +12,7 @@ div.tabs {
 ul.tabs-nav {
   display: flex;
   flex-wrap: wrap;
-  margin: 32px 0;
+  margin: 32px 0 0;
   padding: 0;
 }
 
@@ -147,32 +147,6 @@ ul.tabs-nav li a.active::before {
   transition: background-color .2s ease-in-out;
 }
 
-.tab-content table tbody td button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.15rem 0;
-  padding: 0.15rem 0.6rem;
-  min-height: 1.5rem;
-  min-width: 3.6rem;
-  border-radius: .3rem;
-  color: #0070c0;
-  background: transparent;
-  border: 1px solid #8c9196;
-  border-color: #0070c0;
-  box-shadow: 0 0 0 .1rem #0070c0;
-  position: relative;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.6rem;
-  text-transform: initial;
-  letter-spacing: initial;
-}
-
 .tab-content table tbody tr:hover td {
   background: #f6f6f7;
 }
@@ -187,4 +161,308 @@ ul.tabs-nav li a.active::before {
   border-bottom: none;
   text-decoration: none;
   font-size: 16px;
+}
+
+
+/* Manage License Details */
+.license-details,
+.end-users-details {
+  margin-top: 60px;
+}
+
+.license-details h2,
+.end-users-details h2 {
+  margin: .3em 0;
+  font-size: 24px;
+  line-height: 3.2rem;
+  font-weight: 400;
+  font-family: var(--ff-myradpro-regular);
+  letter-spacing: 0.2px;
+  color: #54565b;
+}
+
+.license-details-data {
+  margin: -10px 0 0;
+  padding: .5rem 1.5rem;
+  background-color: var(--p-surface);
+  box-shadow: var(--p-card-shadow, 0 0 0 1px rgba(63 63 68 / 5%), 0 1px 3px 0 rgba(63 63 68 / 15%));
+  outline: 0.1rem solid transparent;
+  border-radius: 0.5rem;
+}
+
+.license-details-row {
+  margin-bottom: .3em!important;
+  padding: 0!important;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.license-details-row:last-child {
+  border-bottom: none;
+}
+
+.element-detail-cell h3.element-detail-cell-heading {
+  margin: .3em 0 0;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 2.4rem;
+}
+
+.element-detail-cell p {
+  margin-top: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 400;
+  font-family: var(--ff-myradpro-regular);
+  letter-spacing: 0.2px;
+  color: #54565b;
+}
+
+input.nickname {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 2.4rem;
+  text-transform: initial;
+  letter-spacing: initial;
+  position: relative;
+  z-index: 20;
+  display: block;
+  flex: 1 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  height: 36px;
+  margin: 15px 0 0;
+  padding: 0.5rem 1.2rem;
+  background: initial;
+  background: none;
+  border: 1px solid #CCC;
+  font-family: Helvetica, 'Helvetica Neue', Arial, 'Lucida Grande', sans-serif;
+  appearance: none;
+  caret-color: #202223;
+  color: #202223;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+input.nickname:hover {
+  border: 1px solid #CCC;
+}
+
+input.nickname:focus,
+input.nickname:focus-visible {
+  outline: none;
+  border-color: #b3b3b3;
+}
+
+button.save-nickname {
+  margin: 15px 0 0;
+  width: 3.8rem;
+}
+
+
+/* End User Details */
+.end-users-details {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+button.add-user-to-license {
+  position: absolute;
+  right: 0;
+  padding: .2rem 1.3rem;
+}
+
+.end-users-details table {
+  margin-bottom: 0;
+  font-size: 14px;
+  font-family: var(--ff-myradpro-regular);
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-radius: 10px;
+  background-color: var(--clr-white);
+  box-shadow: 0 0 5px #1718180D, 0 1px 2px #00000026;
+  outline: 0.1rem solid transparent;
+}
+
+.end-users-details table thead tr {
+  background: #f6f6f7;
+}
+
+.end-users-details table tbody tr:hover td {
+  background: #f6f6f7;
+}
+
+.end-users-details table th, .end-users-details table td {
+  border: 1px solid var(--color-border);
+}
+
+.end-users-details table th {
+  padding: 0.45rem 0.7rem;
+  font-weight: bold;
+  font-family: var(--ff-myradpro-semibold);
+  font-size: 16px;
+  vertical-align: top;
+  border-bottom: 0.05rem solid #8c9196;
+  border-top: 0;
+  max-height: 40px;
+  text-align: left;
+  white-space: normal;
+}
+
+.end-users-details table tbody td {
+  padding: 0.45rem;
+  vertical-align: top;
+  white-space: nowrap;
+  text-align: left;
+  transition: background-color .2s ease-in-out;
+}
+
+
+
+/* Modal Container */
+.modal-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #00000080;
+  z-index: 9999;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #FFF;
+  text-align: center;
+  border-radius: 8px;
+  max-height: calc(100vh - 60px);
+}
+
+.modal-header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border-bottom: 0.1rem solid rgba(225 227 229);
+}
+
+.modal-header > button.modal-close {
+  display: flex;
+  cursor: pointer;
+  position: relative;
+  margin: 5px -5px 0 0;
+  padding: 0.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: none;
+  border: none;
+}
+
+.modal-header > button.modal-close:hover {
+  background: rgba(246 246 247 / 100%);
+}
+
+.modal-header > button.modal-close svg {
+  fill: rgba(92 95 98 / 100%);
+}
+
+.modal-header > button.modal-close:hover svg {
+  fill: rgba(26 28 29 / 100%);
+}
+
+.modal-header h3 {
+  margin: 0.3em 0;
+  font-size: 20px;
+  line-height: 2.8rem;
+  font-family: var(--ff-myradpro-regular);
+  font-weight: 400;
+  letter-spacing: 0.18px;
+  color: #54565b;
+  text-transform: none;
+  text-align: left;
+}
+
+.modal-body {
+  padding: 0 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 40px 20px 20px;
+  border-top: 0.1rem solid rgba(225 227 229);
+}
+
+.modal-footer > button {
+  margin: 0 8px;
+}
+
+
+/* Add User and Change User
+/* Modal Content */
+.add-user-modal-content,
+.change-user-modal-content {
+  max-width: 60rem;
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.add-user-modal-content > .modal-body,
+.change-user-modal-content > .modal-body {
+  overflow-y: scroll;
+  height: 450px;
+}
+
+.add-user-modal-content > .modal-footer > button:first-child,
+.change-user-modal-content > .modal-footer > button:first-child {
+  position: absolute;
+  left: 20px;
+}
+
+
+/* Delete User Modal Content */
+.delete-user-modal-content {
+  max-width: 39rem;
+  width: 100%;
+}
+
+.delete-user-modal-content > .modal-body {
+  padding: 20px;
+}
+
+.delete-user-container p {
+  margin: 0.3em 0;
+  font-size: 1.5rem;
+  line-height: 1em;
+  font-family: var(--ff-myradpro-regular);
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  color: #54565b;
+  text-align: left;
+}
+
+
+/* Edit User Modal Content */
+.edit-user-modal-content {
+  max-width: 39rem;
+  width: 100%;
+}
+
+.edit-user-container form {
+  text-align: left;
 }
