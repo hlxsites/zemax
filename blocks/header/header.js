@@ -180,7 +180,7 @@ function handleAuthentication(ele) {
     if (authResult && authResult.accessToken && authResult.idToken) {
       // Successful login, store tokens in localStorage
       window.location.hash = '';
-      window.location.pathname = '/';
+      window.location.pathname = `${window.location.pathname}`;
       localStorage.setItem('accessToken', authResult.accessToken);
       localStorage.setItem('idToken', authResult.idToken);
       const base64Url = authResult.idToken.split('.')[1];
@@ -289,16 +289,17 @@ export default async function decorate(block) {
     const authtoken = localStorage.getItem('accessToken');
     const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLink.classList.add('login-wrapper');
-    const authScriptTag = loadScript('/scripts/auth0.min.js', {
-      type: 'text/javascript',
-      charset: 'UTF-8',
-    });
     const placeholders = await fetchPlaceholders();
     const domain = placeholders.auth0domain;
     const clientID = placeholders.clientid;
     const audienceURI = placeholders.audienceuri;
     const responseType = placeholders.responsetype;
     const scopes = placeholders.scope;
+    const authScriptTag = loadScript('/scripts/auth0.min.js', {
+      type: 'text/javascript',
+      charset: 'UTF-8',
+    });
+
     if (!authtoken) {
       loginLink.setAttribute('aria-expanded', 'false');
       authScriptTag.onload = () => {
