@@ -25,14 +25,19 @@ header nav .nav-logo {
   padding: 0 0 0 20px;
 }
 
-header nav .nav-logo svg {
-  width: 100px;
-  height: 60px;
+header nav .nav-logo div {
+  width: 100%;
+  height: 100%;
+}
+
+header nav .nav-logo p {
+  width: 100%;
+  height: 100%;
 }
 
 header nav .nav-logo picture img {
-  width: 71px;
-  height: 28px;
+  width: auto;
+  height: 47px;
 }
 
 header nav .nav-hamburger svg {
@@ -188,15 +193,15 @@ header nav[aria-expanded='true'] .nav-menu > ul > .mobile-search > .mobile-searc
 }
 
 header nav[aria-expanded='true'] .nav-menu > ul > .mobile-search > .mobile-search-container > .search-form > form > .search-input {
-  /* flex-basis: 700px; */
   display: inline-block;
   margin-left: 15px;
   width: 100%;
-  box-shadow: inset 0 1px 3px 0 #000;
-  border-color: #909196;
   border-radius: 4px;
-  height: 44px;
+  height: 26px;
   border: 1px solid #ccc;
+  padding: 8px 45px 8px 15px;
+  box-shadow: inset 0 1px 3px 0 rgb(0 0 0 / 20%);
+  font-size: var(--body-font-size-s);
 }
 
 header nav .nav-menu ul .mobile-search-container button {
@@ -207,14 +212,17 @@ header nav .nav-menu ul .mobile-search-container button {
 
 header nav .nav-menu ul .mobile-search-container .search-close {
   position: relative;
-  left: -31px;
+  left: -36px;
+  top: -2px;
 }
 
-header nav .nav-menu .mobile-search-container .close-button svg {
-  display: block;
-  width: 20px;
-  height: 20px;
-  margin: 1px;
+header nav .nav-menu .mobile-search-container .clear-input {
+  padding: 8px;
+}
+
+header nav .nav-menu .mobile-search-container .clear-input svg {
+  width: 16px;
+  height: 16px;
 }
 
 header nav p.m-expandable-title {
@@ -270,8 +278,9 @@ header nav[aria-expanded='true'] .nav-tools {
   }
 
   header nav .nav-logo picture img {
-    width: 71px;
-    height: 28px;
+    /* width: 71px; */
+    /* height: 28px; */
+    /*TODO*/
   }
 
   header nav .nav-hamburger svg {

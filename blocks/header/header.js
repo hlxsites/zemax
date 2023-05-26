@@ -48,7 +48,7 @@ function addDropdownIcon(element) {
 
 function addSearchForm(breakpoint) {
   if (breakpoint === 'mobile') {
-    return createTag('div', { class: 'mobile-search-container', 'aria-expanded': false }, `
+    const container = createTag('div', { class: 'mobile-search-container', 'aria-expanded': false }, `
       <div class='search-form'>
         <form action='/search' method='get'>
           <button class='search-button'><span class='icon icon-search'></span></button>
@@ -57,8 +57,13 @@ function addSearchForm(breakpoint) {
         </form>
       </div>
       <div class='search-close'>
-        <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
+        <button type='button' class='clear-input'><span class='icon icon-search-close'></span></button>
       </div>`);
+    container.querySelector('.clear-input').addEventListener('click', () => {
+      container.querySelector('.search-input').value = '';
+      container.querySelector('.search-input').focus();
+    });
+    return container;
   }
   // desktop
   const dialog = domEl('dialog', { class: 'search-container', 'aria-expanded': false });
@@ -253,11 +258,9 @@ export default async function decorate(block) {
   const resp = await fetch('/nav.plain.html');
 
   if (resp.ok) {
-    const html = await resp.text();
-
     // decorate nav DOM
     const nav = createTag('nav');
-    nav.innerHTML = html;
+    nav.innerHTML = await resp.text();
 
     // hamburger
     const hamburger = createTag('div');
@@ -271,8 +274,11 @@ export default async function decorate(block) {
       document.querySelector('main').style.visibility = expanded
         ? ''
         : 'hidden';
-      if (!expanded) hamburger.innerHTML = '<span class="icon icon-search-close"></span>';
-      else hamburger.innerHTML = '<span class="icon icon-mobile-menu"></span>';
+      if (!expanded) {
+        hamburger.innerHTML = '<span class="icon icon-search-close"></span>';
+      } else {
+        hamburger.innerHTML = '<span class="icon icon-mobile-menu"></span>';
+      }
     };
 
     hamburger.setAttribute('tabindex', '0');
@@ -392,7 +398,8 @@ export default async function decorate(block) {
       navMenuUl.append(li);
     }
 
-    nav.querySelector('.nav-menu').innerHTML = navMenuUl.outerHTML;
+    nav.querySelector('.nav-menu').innerHTML = '';
+    nav.querySelector('.nav-menu').append(navMenuUl);
 
     decorateLinkedPictures(nav);
     block.append(addSearchForm());
