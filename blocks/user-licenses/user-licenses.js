@@ -613,6 +613,11 @@ function addTabFeature() {
 }
 
 export default async function decorate(block) {
+  // noinspection ES6MissingAwait
+  loadData(block);
+}
+
+async function loadData(block) {
   const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
 
   const licenseTableHeadingMapping = createTableHeaderMapping(data);

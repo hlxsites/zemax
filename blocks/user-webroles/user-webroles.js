@@ -11,7 +11,7 @@ export default async function decorate(block) {
 
   // eslint-disable-next-line max-len
   if (userId && accessToken) {
-    await fetch(`${DYNAMIC_365_DOMAIN}dynamics_get_webrole?auth0_id=${userId}`, {
+    fetch(`${DYNAMIC_365_DOMAIN}dynamics_get_webrole?auth0_id=${userId}`, {
       method: 'GET',
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
