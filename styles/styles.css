@@ -52,6 +52,8 @@
   --secondary-button-hover-color: #264E83;
   --secondary-button-bg-color: #002f6d;
   --color-border: #ebebeb;
+  --button-green: #005800;
+  --button-red: #bf0711;
 
   /* gradients */
   --linear-gradient: linear-gradient(to left, #871054, #78be20 53%, #f77f00 100%);
@@ -291,7 +293,7 @@ button.action {
 }
 
 button.action:hover {
-  color: rgb(0 112 192);
+  color: var(--primary-button-color);
   background: rgba(246 246 247 / 100%);
   outline: 0.1rem solid transparent;
 }
@@ -302,20 +304,20 @@ button.action::before {
   top: 0;
   right: 0;
   bottom: 0;
-  border-color: rgb(0 112 192);
+  border-color: var(--primary-button-color);
   opacity: 0;
   z-index: 0;
 }
 
 button.action.important,
 button.action.important:hover {
-  color: rgb(191 7 17);
-  border-color: rgb(191 7 17);
-  box-shadow: 0 0 0 0.05rem rgb(191 7 17);
+  color: var(--button-red);
+  border-color: var(--button-red);
+  box-shadow: 0 0 0 0.05rem var(--button-red);
 }
 
 button.action.important::before {
-  background-color: rgb(191 7 17);
+  background-color: var(--button-red);
 }
 
 button.action.secondary {
@@ -340,10 +342,10 @@ button.action.secondary::before {
 }
 
 button.action.activate {
-  color: rgb(0, 88, 0);
+  color: var(--button-green);
   background-color: transparent;
-  border-color: rgb(0, 88, 0);
-  box-shadow: 0 0 0 0.05rem rgb(0, 88, 0);
+  border-color: var(--button-green);
+  box-shadow: 0 0 0 0.05rem var(--button-green);
   outline: 0.05rem solid transparent;
 }
 
@@ -356,7 +358,7 @@ button.action.activate:active {
 }
 
 button.action.activate::before {
-  background-color: rgb(0, 88, 0);
+  background-color: var(--button-green);
   opacity: .05;
 }
 
