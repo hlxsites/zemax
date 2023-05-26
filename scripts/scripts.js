@@ -71,6 +71,36 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+export function createModal(modalTitle, modalBodyInnerContent, modalContentClass, modalBodyClass,
+  modalId, modalContainerClass, buttonsConfig) {
+  let modalBodyInnerContentHtml = '';
+  if (modalBodyInnerContent !== '') {
+    modalBodyInnerContentHtml = modalBodyInnerContent.outerHTML;
+  }
+  const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
+  const modalTitleH3 = createTag('h3', '', modalTitle);
+  const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
+  modalHeaderDiv.appendChild(modalTitleH3);
+  modalHeaderDiv.appendChild(modalCloseButtonIcon);
+
+  const modalContentDiv = createTag('div', { class: `modal-content ${modalContentClass}` }, modalHeaderDiv);
+  const modalBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: modalBodyClass }, modalBodyInnerContentHtml));
+  modalContentDiv.appendChild(modalBodyDiv);
+
+  const modalFooterDiv = createTag('div', { class: 'modal-footer' }, '');
+
+  buttonsConfig.forEach((buttonConfig) => {
+    const { button, userAction, listenerMethod } = buttonConfig;
+    button.addEventListener(userAction, listenerMethod);
+    modalFooterDiv.appendChild(button);
+  });
+
+  modalContentDiv.appendChild(modalFooterDiv);
+
+  const modalModalDiv = createTag('div', { class: `modal-container ${modalContainerClass}`, id: modalId }, modalContentDiv);
+  return modalModalDiv;
+}
+
 export function showModal(event) {
   const modalId = event.target.getAttribute('data-modal-id');
   document.getElementById(modalId).style.display = 'block';

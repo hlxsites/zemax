@@ -1,8 +1,11 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import {
-  createTag, createGenericTable, hideModal, showModal,
+  createModal, createTag, createGenericTable, hideModal, showModal,
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
+import getLicenseDetailsUsersTable from '../../configs/tables/licenseDetailsUsersTableConfig.js';
+import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicenseTableConfig.js';
+import activatedDeactivatedColleaguesTable from '../../configs/tables/activatedDeactivatedColleaguesTableConfig.js';
 
 function createForm(config) {
   const form = createTag('form', { id: 'editUserEditForm' }, '');
@@ -33,37 +36,6 @@ function createForm(config) {
   form.appendChild(submitButton);
 
   return form;
-}
-
-// move to script script.js
-function createModal(modalTitle, modalBodyInnerContent, modalContentClass, modalBodyClass,
-  modalId, modalContainerClass, buttonsConfig) {
-  let modalBodyInnerContentHtml = '';
-  if (modalBodyInnerContent !== '') {
-    modalBodyInnerContentHtml = modalBodyInnerContent.outerHTML;
-  }
-  const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
-  const modalTitleH3 = createTag('h3', '', modalTitle);
-  const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
-  modalHeaderDiv.appendChild(modalTitleH3);
-  modalHeaderDiv.appendChild(modalCloseButtonIcon);
-
-  const modalContentDiv = createTag('div', { class: `modal-content ${modalContentClass}` }, modalHeaderDiv);
-  const modalBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: modalBodyClass }, modalBodyInnerContentHtml));
-  modalContentDiv.appendChild(modalBodyDiv);
-
-  const modalFooterDiv = createTag('div', { class: 'modal-footer' }, '');
-
-  buttonsConfig.forEach((buttonConfig) => {
-    const { button, userAction, listenerMethod } = buttonConfig;
-    button.addEventListener(userAction, listenerMethod);
-    modalFooterDiv.appendChild(button);
-  });
-
-  modalContentDiv.appendChild(modalFooterDiv);
-
-  const modalModalDiv = createTag('div', { class: `modal-container ${modalContainerClass}`, id: modalId }, modalContentDiv);
-  return modalModalDiv;
 }
 
 function showUserActionModal(event) {
@@ -168,98 +140,6 @@ async function createUser(event) {
   const colleaguesTabsMapping = ['Active Colleagues', 'Deactivated Colleagues'];
 
   const data = await execute('dynamics_get_colleagues_manage', '', 'GET');
-  const tableHeadings = [
-    {
-      label: 'Firstname',
-      value: ['{{firstname}}'],
-      html: 'td',
-      htmlAttributes: {
-        class: 'label-bold',
-      },
-    },
-    {
-      label: 'lastname',
-      value: ['{{lastname}}'],
-    },
-    {
-      label: 'Job Title',
-      value: ['{{jobtitle}}'],
-    },
-    {
-      label: 'Email',
-      value: ['{{emailaddress1}}'],
-    },
-    {
-      label: 'Phone',
-      value: ['{{telephone1}}'],
-    },
-    {
-      label: '',
-      value: [''],
-      html: 'button',
-      htmlTagLabel: 'Edit User',
-      htmlAttributes: {
-        class: 'license-user-edit-user action secondary',
-        type: 'button',
-        'data-modal-id': 'editUserModal',
-        'data-contactid': '{{contactid}}',
-        'data-next-action-class': 'edit-user-action-button',
-        'data-user-firstname': ['{{firstname}}'],
-        'data-user-lastname': ['{{lastname}}'],
-        'data-user-jobtitle': ['{{jobtitle}}'],
-        'data-user-email': ['{{emailaddress1}}'],
-        'data-user-phone': ['{{telephone1}}'],
-      },
-    },
-    {
-      label: '',
-      value: [''],
-      html: 'button',
-      htmlTagLabel: 'Reset Password',
-      htmlAttributes: {
-        class: 'license-user-reset-password action secondary',
-        type: 'button',
-        'data-modal-id': 'resetUserPasswordModal',
-        'data-contactid': '{{contactid}}',
-        'data-next-action-class': 'reset-user-password-action-button',
-      },
-    },
-    {
-      label: 'User Status',
-      value: [''],
-      html: 'button',
-      htmlTagLabel: 'Deactivate User',
-      htmlAttributes: {
-        class: 'license-user-deactivate-user action important',
-        type: 'button',
-        'data-contactid': '{{contactid}}',
-      },
-    },
-    {
-      label: 'User Status',
-      value: [''],
-      html: 'button',
-      htmlTagLabel: 'Activate User',
-      htmlAttributes: {
-        class: 'license-user-activate-user action activate',
-        type: 'button',
-        'data-contactid': '{{contactid}}',
-      },
-    },
-    {
-      label: '',
-      value: [''],
-      html: 'button',
-      htmlTagLabel: 'Manage',
-      htmlAttributes: {
-        class: 'license-user-manage-user action secondary',
-        type: 'button',
-        'data-new-productuserid': 'test',
-        'data-license-id': 'test2',
-        'data-next-action-class': 'manage-user-action-button',
-      },
-    },
-  ];
 
   // Render tab headings
   colleaguesTabsMapping.forEach((heading, index) => {
@@ -278,10 +158,10 @@ async function createUser(event) {
   const inactiveColleagues = data.colleagues.filter((colleague) => colleague.statecode === 1);
 
   // Render tab content
-  const activatedUsersHeading = tableHeadings.slice();
+  const activatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
   activatedUsersHeading.splice(8, 1);
 
-  const deactivatedUsersHeading = tableHeadings.slice();
+  const deactivatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
   deactivatedUsersHeading.splice(7, 1);
 
   colleaguesTabsMapping.forEach((heading, index) => {
@@ -414,38 +294,10 @@ async function addUserToALicense(event) {
   }
 }
 
-async function createColleaguesTable(checkboxClass) {
+async function createAddUserToLicenseTable(checkboxClass) {
   const data = await execute('dynamics_get_colleagues_view', '', 'GET');
-  const headingsMapping = [
-    {
-      label: '',
-      value: [],
-      html: 'input',
-      htmlAttributes: {
-        class: `${checkboxClass}`,
-        type: 'checkbox',
-        id: '{{contactid}}',
-      },
-    },
-    {
-      label: 'Full Name',
-      value: ['{{firstname}}', ' ', '{{lastname}}'],
-    },
-    {
-      label: 'Job Title',
-      value: ['{{jobtitle}}'],
-    },
-    {
-      label: 'Email',
-      value: ['{{emailaddress1}}'],
-    },
-    {
-      label: 'Business Phone',
-      value: ['{{telephone1}}'],
-    },
-  ];
   const colleaguesData = await data.colleagues;
-  return createGenericTable(headingsMapping, colleaguesData);
+  return createGenericTable(getAddUserToLicenseTableConfig(checkboxClass), colleaguesData);
 }
 
 async function addColleaguesToUserActionModal(
@@ -464,7 +316,7 @@ async function addColleaguesToUserActionModal(
 
   // clear previous modal content
   modalContentDiv.innerHTML = '';
-  modalContentDiv.appendChild(await createColleaguesTable(modalCheckBoxClass));
+  modalContentDiv.appendChild(await createAddUserToLicenseTable(modalCheckBoxClass));
   const userCheckboxes = document.querySelectorAll(`.${modalCheckBoxClass}`);
   userCheckboxes.forEach((userCheckbox) => {
     userCheckbox.addEventListener('click', eventListenerMethoda);
@@ -575,57 +427,8 @@ async function displayLicenseDetails(event) {
     addUserButton.addEventListener('click', showAddUserTable);
 
     if (licenseUsers && licenseUsers.length > 0) {
-      const tableHeadings = [
-        {
-          label: 'Name',
-          value: ['{{contact1.fullname}}'],
-          html: 'td',
-          htmlAttributes: {
-            class: 'label-bold',
-          },
-        },
-        {
-          label: 'Email',
-          value: ['{{contact1.emailaddress1}}'],
-        },
-        {
-          label: 'Job Title',
-          value: ['{{contact1.jobtitle}}'],
-        },
-        {
-          label: 'Phone',
-          value: ['{{contact1.telephone1}}'],
-        },
-        {
-          label: '',
-          value: ['{{contact1.fullname}}'],
-          html: 'button',
-          htmlTagLabel: 'Remove User',
-          htmlAttributes: {
-            class: 'license-user-remove-user action important',
-            type: 'button',
-            'data-modal-id': 'deleteUserModal',
-            'data-new-productuserid': '{{new_productuserid}}',
-            'data-license-id': `${licenseId}`,
-            'data-next-action-class': 'delete-user-action-button',
-          },
-        },
-        {
-          label: '',
-          value: ['{{contact1.fullname}}'],
-          html: 'button',
-          htmlTagLabel: 'Change End User',
-          htmlAttributes: {
-            class: 'license-user-change-user action',
-            type: 'button',
-            'data-modal-id': 'changeUserModal',
-            'data-new-productuserid': '{{new_productuserid}}',
-            'data-license-id': `${licenseId}`,
-            'data-next-action-class': 'change-user-action-button',
-          },
-        },
-      ];
-      const tableElement = createGenericTable(tableHeadings, licenseUsers);
+      const licenseDetailsUsersTable = getLicenseDetailsUsersTable(licenseId);
+      const tableElement = createGenericTable(licenseDetailsUsersTable, licenseUsers);
       endUsersDetailsDiv.appendChild(tableElement);
 
       const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
