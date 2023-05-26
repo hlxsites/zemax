@@ -1,8 +1,42 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import {
-  createTag, createGenericTable, hideModal, showModal,
+  createModal, createTag, createGenericTable, hideModal, showModal,
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
+import getLicenseDetailsUsersTable from '../../configs/tables/licenseDetailsUsersTableConfig.js';
+import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicenseTableConfig.js';
+import activatedDeactivatedColleaguesTable from '../../configs/tables/activatedDeactivatedColleaguesTableConfig.js';
+
+function createForm(config) {
+  const form = createTag('form', { id: config.formId }, '');
+
+  config.fields.forEach((field) => {
+    const label = createTag('label', { for: field.id }, field.label);
+    const input = createTag('input', { type: 'text', id: field.id }, '');
+
+    if (field.value) {
+      input.setAttribute('value', field.value);
+    }
+
+    if (field.readOnly) {
+      input.setAttribute('readonly', '');
+    }
+
+    if (field.disabled) {
+      input.setAttribute('disabled', '');
+    }
+
+    form.appendChild(label);
+    form.appendChild(input);
+  });
+
+  const submitButton = createTag('input', {
+    type: 'submit', id: config.submitId, class: config.submitClass, value: config.submitText, 'data-modal-id': config.submitDataModalId,
+  });
+  form.appendChild(submitButton);
+
+  return form;
+}
 
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
@@ -14,9 +48,213 @@ function showUserActionModal(event) {
   userActionButton.setAttribute('data-license-id', licenseId);
 }
 
-function createUser(event) {
+async function showResetUserPasswordModal(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  const nextActionClass = event.target.getAttribute('data-next-action-class');
+  showModal(event);
+  const userActionButton = document.querySelector(`.${nextActionClass}`);
+  userActionButton.setAttribute('data-contactid', contactid);
+}
+
+async function updateUserInfo(event) {
+  event.preventDefault();
+  const jobtitle = event.target.parentNode.querySelector('#job-title').value;
+  const telephone = event.target.parentNode.querySelector('#phone').value;
+  const contactid = event.target.getAttribute('data-contactid');
+  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobtitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+    // Re render after the data is updated
+    createUser(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function showEditUserModal(event) {
+  const button = event.target;
+  const contactid = button.getAttribute('data-contactid');
+  const firstname = button.getAttribute('data-user-firstname');
+  const lastname = button.getAttribute('data-user-lastname');
+  const jobTitle = button.getAttribute('data-user-jobtitle');
+  const email = button.getAttribute('data-user-email');
+  const phone = button.getAttribute('data-user-phone');
+  const userEditForm = document.querySelector('#editUserEditForm');
+  userEditForm.querySelector('#first-name').setAttribute('value', firstname);
+  userEditForm.querySelector('#last-name').setAttribute('value', lastname);
+  userEditForm.querySelector('#job-title').setAttribute('value', jobTitle);
+  userEditForm.querySelector('#email').setAttribute('value', email);
+  userEditForm.querySelector('#phone').setAttribute('value', phone);
+  const submitButton = userEditForm.querySelector('#userEditSubmitButton');
+  submitButton.setAttribute('data-contactid', contactid);
+  submitButton.addEventListener('click', updateUserInfo);
+  showModal(event);
+}
+
+async function resetUserPassword(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  // TODO check method type
+  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`, 'POST');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function activateUser(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  // TODO check method type
+  const data = await execute('dynamics_activate_userid', `&contact_id=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    // Re render after the data is updated
+    createUser(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function deactivateUser(event) {
+  const contactid = event.target.getAttribute('data-contactid');
+  // TODO check method type
+  const data = await execute('dynamics_deactivate_userid', `&contact_id=${contactid}`, 'PATCH');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    // Re render after the data is updated
+    createUser(event);
+  } else {
+    console.log('error ', data);
+  }
+}
+
+async function createUser(event) {
   hideModal(event);
-  alert('Implement create user');
+  hideOtherUserLicenseInformation();
+  const licenseDetailsDiv = document.querySelector('.license-details');
+  const endUserDetailsDiv = document.querySelector('.end-users-details');
+  const licenseBlock = document.querySelector('.user-licenses.block');
+  if (licenseDetailsDiv) {
+    licenseDetailsDiv.remove();
+  }
+  if (endUserDetailsDiv) {
+    endUserDetailsDiv.remove();
+  }
+
+  const tabDiv = createTag('div', { class: 'tabs' });
+  const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
+  const colleaguesTabsMapping = ['Active Colleagues', 'Deactivated Colleagues'];
+
+  const data = await execute('dynamics_get_colleagues_manage', '', 'GET');
+
+  // Render tab headings
+  colleaguesTabsMapping.forEach((heading, index) => {
+    if (index === 0) {
+      tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading));
+    } else {
+      tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading));
+    }
+  });
+
+  tabDiv.appendChild(tabListUl);
+
+  const allColleagues = data.colleagues;
+
+  const activeColleagues = allColleagues.filter((colleague) => colleague.statecode === 0);
+  const inactiveColleagues = data.colleagues.filter((colleague) => colleague.statecode === 1);
+
+  // Render tab content
+  const activatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
+  activatedUsersHeading.splice(8, 1);
+
+  const deactivatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
+  deactivatedUsersHeading.splice(7, 1);
+
+  colleaguesTabsMapping.forEach((heading, index) => {
+    if (index === 0) {
+      tabDiv.append(
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createGenericTable(activatedUsersHeading, activeColleagues).outerHTML),
+      );
+    } else {
+      tabDiv.append(
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createGenericTable(deactivatedUsersHeading, inactiveColleagues).outerHTML),
+      );
+    }
+  });
+
+  licenseBlock.appendChild(tabDiv);
+
+  // Reset password modal
+  const modalResetUserPasswordDescription = createTag('p', '', 'Please confirm this action to generate the password reset email');
+  const resetUserPasswordModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'resetUserPasswordModal' }, 'Cancel');
+  const resetUserPasswordModalButton = createTag('button', { class: 'action important reset-user-password-action-button', 'data-modal-id': 'resetUserPasswordModal' }, 'Send Password Reset Email');
+
+  const resetUserPasswordButtonsConfig = [
+    {
+      userAction: 'click',
+      button: resetUserPasswordModalCloseButton,
+      listenerMethod: hideModal,
+    }, {
+      userAction: 'click',
+      button: resetUserPasswordModalButton,
+      listenerMethod: resetUserPassword,
+    },
+  ];
+
+  const modalResetUserPasswordModalDiv = createModal('Confirmation Required', modalResetUserPasswordDescription, 'reset-user-password-modal-content', 'reset-user-password-container', 'resetUserPasswordModal', 'reset-user-password-modal', resetUserPasswordButtonsConfig);
+  licenseBlock.appendChild(modalResetUserPasswordModalDiv);
+
+  const resetButtons = document.querySelectorAll('.license-user-reset-password.action');
+  resetButtons.forEach((resetButton) => {
+    resetButton.addEventListener('click', showResetUserPasswordModal);
+  });
+
+  // Edit user modal
+  const config = {
+    fields: [
+      {
+        id: 'first-name', label: 'First Name', value: '', readOnly: true, disabled: true,
+      },
+      {
+        id: 'last-name', label: 'Last Name', value: '', readOnly: true, disabled: true,
+      },
+      { id: 'job-title', label: 'Job Title' },
+      {
+        id: 'email', label: 'Email', value: '', readOnly: true, disabled: true,
+      },
+      { id: 'phone', label: 'Business Phone' },
+    ],
+    submitText: 'Submit',
+    submitId: 'userEditSubmitButton',
+    submitClass: 'edit-user-action-button',
+    submitDataModalId: 'editUserModal',
+    formId: 'editUserEditForm',
+  };
+
+  const editUserModalContent = createForm(config);
+  const editUserButtonsConfig = [];
+
+  const editUserModalDiv = createModal('Edit Colleague', editUserModalContent, 'edit-user-modal-content', 'edit-user-container', 'editUserModal', 'edit-user-modal', editUserButtonsConfig);
+  licenseBlock.appendChild(editUserModalDiv);
+
+  const editUserButtons = document.querySelectorAll('.license-user-edit-user.action');
+  editUserButtons.forEach((editUserButton) => {
+    editUserButton.addEventListener('click', showEditUserModal);
+  });
+
+  const deactivateUserButtons = document.querySelectorAll('.license-user-deactivate-user.action');
+  deactivateUserButtons.forEach((deactivateUserButton) => {
+    deactivateUserButton.addEventListener('click', deactivateUser);
+  });
+
+  const activateUserButtons = document.querySelectorAll('.license-user-activate-user.action');
+  activateUserButtons.forEach((activateUserButton) => {
+    activateUserButton.addEventListener('click', activateUser);
+  });
+
+  addTabFeature();
 }
 
 function showAddUserTable(event) {
@@ -65,37 +303,10 @@ async function addUserToALicense(event) {
   }
 }
 
-async function createColleaguesTable(checkboxClass) {
+async function createAddUserToLicenseTable(checkboxClass) {
   const data = await execute('dynamics_get_colleagues_view', '', 'GET');
-  const headingsMapping = [
-    {
-      label: '',
-      value: [],
-      html: 'input',
-      htmlAttributes: {
-        class: `${checkboxClass}`,
-        type: 'checkbox',
-        id: '{{contactid}}',
-      },
-    },
-    {
-      label: 'Full Name',
-      value: ['{{firstname}}', ' ', '{{lastname}}'],
-    },
-    {
-      label: 'Job Title',
-      value: ['{{jobtitle}}'],
-    },
-    {
-      label: 'Email',
-      value: ['{{emailaddress1}}'],
-    },
-    {
-      label: 'Business Phone',
-      value: ['{{telephone1}}'],
-    },
-  ];
-  return createGenericTable(headingsMapping, data.colleagues);
+  const colleaguesData = await data.colleagues;
+  return createGenericTable(getAddUserToLicenseTableConfig(checkboxClass), colleaguesData);
 }
 
 async function addColleaguesToUserActionModal(
@@ -114,7 +325,7 @@ async function addColleaguesToUserActionModal(
 
   // clear previous modal content
   modalContentDiv.innerHTML = '';
-  modalContentDiv.appendChild(await createColleaguesTable(modalCheckBoxClass));
+  modalContentDiv.appendChild(await createAddUserToLicenseTable(modalCheckBoxClass));
   const userCheckboxes = document.querySelectorAll(`.${modalCheckBoxClass}`);
   userCheckboxes.forEach((userCheckbox) => {
     userCheckbox.addEventListener('click', eventListenerMethoda);
@@ -225,57 +436,8 @@ async function displayLicenseDetails(event) {
     addUserButton.addEventListener('click', showAddUserTable);
 
     if (licenseUsers && licenseUsers.length > 0) {
-      const tableHeadings = [
-        {
-          label: 'Name',
-          value: ['{{contact1.fullname}}'],
-          html: 'td',
-          htmlAttributes: {
-            class: 'user-name',
-          },
-        },
-        {
-          label: 'Email',
-          value: ['{{contact1.emailaddress1}}'],
-        },
-        {
-          label: 'Job Title',
-          value: ['{{contact1.jobtitle}}'],
-        },
-        {
-          label: 'Phone',
-          value: ['{{contact1.telephone1}}'],
-        },
-        {
-          label: '',
-          value: ['{{contact1.fullname}}'],
-          html: 'button',
-          htmlTagLabel: 'Remove User',
-          htmlAttributes: {
-            class: 'license-user-remove-user action important',
-            type: 'button',
-            'data-modal-id': 'deleteUserModal',
-            'data-new-productuserid': '{{new_productuserid}}',
-            'data-license-id': `${licenseId}`,
-            'data-next-action-class': 'delete-user-action-button',
-          },
-        },
-        {
-          label: '',
-          value: ['{{contact1.fullname}}'],
-          html: 'button',
-          htmlTagLabel: 'Change End User',
-          htmlAttributes: {
-            class: 'license-user-change-user action',
-            type: 'button',
-            'data-modal-id': 'changeUserModal',
-            'data-new-productuserid': '{{new_productuserid}}',
-            'data-license-id': `${licenseId}`,
-            'data-next-action-class': 'change-user-action-button',
-          },
-        },
-      ];
-      const tableElement = createGenericTable(tableHeadings, licenseUsers);
+      const licenseDetailsUsersTable = getLicenseDetailsUsersTable(licenseId);
+      const tableElement = createGenericTable(licenseDetailsUsersTable, licenseUsers);
       endUsersDetailsDiv.appendChild(tableElement);
 
       const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
@@ -302,89 +464,70 @@ async function addManageLicenseFeature(block) {
   block.append(endUsersDetailsDiv);
 
   // Add User Modal
-  const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
-  const modalTitleH3 = createTag('h3', '', 'Add End User to License');
-  const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
-  modalHeaderDiv.appendChild(modalTitleH3);
-  modalHeaderDiv.appendChild(modalCloseButtonIcon);
-
-  const modalAddUserContentDiv = createTag('div', { class: 'modal-content add-user-modal-content' }, modalHeaderDiv);
-
-  const modalBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'add-user-container table-container' }, ''));
-
-  modalAddUserContentDiv.appendChild(modalBodyDiv);
-  const modalFooterDiv = createTag('div', { class: 'modal-footer' }, '');
   const createUserButton = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'addUserModal' }, 'Create User');
   const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
   const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
+  const buttonsConfig = [
+    {
+      userAction: 'click',
+      button: createUserButton,
+      listenerMethod: createUser,
+    }, {
+      userAction: 'click',
+      button: addUserButton,
+      listenerMethod: addUserToALicense,
+    }, {
+      userAction: 'click',
+      button: addUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
 
-  modalFooterDiv.appendChild(createUserButton);
-  modalFooterDiv.appendChild(addUserButton);
-  modalFooterDiv.appendChild(addUserModalCloseButton);
-
-  createUserButton.addEventListener('click', createUser);
-  addUserModalCloseButton.addEventListener('click', hideModal);
-  addUserButton.addEventListener('click', addUserToALicense);
-
-  modalAddUserContentDiv.appendChild(modalFooterDiv);
-  const modalAddUserDiv = createTag('div', { class: 'modal-container add-user-modal', id: 'addUserModal' }, modalAddUserContentDiv);
+  const modalAddUserDiv = createModal('Add End User to License', '', 'add-user-modal-content', 'add-user-container table-container', 'addUserModal', 'add-user-modal', buttonsConfig);
   block.append(modalAddUserDiv);
 
   // Delete User Modal
-  const modalDeleteHeaderDiv = createTag('div', { class: 'modal-header' }, '');
-  const modalDeleteTitleH3 = createTag('h3', '', 'Confirmation Required');
-  const modalDeleteCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
-  modalDeleteHeaderDiv.appendChild(modalDeleteTitleH3);
-  modalDeleteHeaderDiv.appendChild(modalDeleteCloseButtonIcon);
-
-  const modalDeleteUserContentDiv = createTag('div', { class: 'modal-content delete-user-modal-content' }, modalDeleteHeaderDiv);
   const modalDeleteDescription = createTag('p', '', 'Please confirm this action to remove end user');
-  const modalDeleteBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'delete-user-container' }, modalDeleteDescription));
-  modalDeleteUserContentDiv.appendChild(modalDeleteBodyDiv);
-
-  const modalDeleteFooterDiv = createTag('div', { class: 'modal-footer' }, '');
-
   const deleteUserButton = createTag('button', { class: 'action important delete-user-action-button', 'data-modal-id': 'deleteUserModal' }, 'Yes, remove End User');
   const deleteUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
 
-  modalDeleteFooterDiv.appendChild(deleteUserButton);
-  modalDeleteFooterDiv.appendChild(deleteUserModalCloseButton);
+  const deleteButtonsConfig = [
+    {
+      userAction: 'click',
+      button: deleteUserButton,
+      listenerMethod: removeUserFromLicense,
+    }, {
+      userAction: 'click',
+      button: deleteUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
 
-  deleteUserButton.addEventListener('click', removeUserFromLicense);
-  deleteUserModalCloseButton.addEventListener('click', hideModal);
-
-  modalDeleteUserContentDiv.appendChild(modalDeleteFooterDiv);
-
-  const modalDeleteUserModalDiv = createTag('div', { class: 'modal-container delete-user-modal', id: 'deleteUserModal' }, modalDeleteUserContentDiv);
+  const modalDeleteUserModalDiv = createModal('Confirmation Required', modalDeleteDescription, 'delete-user-modal-content', 'delete-user-container table-container', 'deleteUserModal', 'delete-user-modal', deleteButtonsConfig);
   block.append(modalDeleteUserModalDiv);
 
   // Change User Modal
-  const modalChangeUserHeaderDiv = createTag('div', { class: 'modal-header' }, '');
-  const modalChangeUserTitleH3 = createTag('h3', '', 'Choose a User');
-  const modalChangeUserCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
-  modalChangeUserHeaderDiv.appendChild(modalChangeUserTitleH3);
-  modalChangeUserHeaderDiv.appendChild(modalChangeUserCloseButtonIcon);
-
-  const modalChangeUserContentDiv = createTag('div', { class: 'modal-content change-user-modal-content' }, modalChangeUserHeaderDiv);
-
-  const modalChangeUserBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: 'change-user-container table-container' }, ''));
-
-  modalChangeUserContentDiv.appendChild(modalChangeUserBodyDiv);
-  const modalChangeUserFooterDiv = createTag('div', { class: 'modal-footer' }, '');
   const createUserButtonChangeUser = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Create User');
   const changeUserButton = createTag('button', { class: 'action change-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Change User');
   const changeUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'changeUserModal' }, 'Close');
 
-  modalChangeUserFooterDiv.appendChild(createUserButtonChangeUser);
-  modalChangeUserFooterDiv.appendChild(changeUserButton);
-  modalChangeUserFooterDiv.appendChild(changeUserModalCloseButton);
+  const createUserButtonsConfig = [
+    {
+      userAction: 'click',
+      button: createUserButtonChangeUser,
+      listenerMethod: createUser,
+    }, {
+      userAction: 'click',
+      button: changeUserButton,
+      listenerMethod: changeUserForALicense,
+    }, {
+      userAction: 'click',
+      button: changeUserModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
 
-  createUserButtonChangeUser.addEventListener('click', createUser);
-  changeUserButton.addEventListener('click', changeUserForALicense);
-  changeUserModalCloseButton.addEventListener('click', hideModal);
-
-  modalChangeUserContentDiv.appendChild(modalChangeUserFooterDiv);
-  const modalChangeUserDiv = createTag('div', { class: 'modal-container change-user-modal', id: 'changeUserModal' }, modalChangeUserContentDiv);
+  const modalChangeUserDiv = createModal('Choose a User', '', 'change-user-modal-content', 'change-user-container table-container', 'changeUserModal', 'change-user-modal', createUserButtonsConfig);
   block.append(modalChangeUserDiv);
 
   await addColleaguesToUserActionModal('change-user-container', 'change-user-checkbox', updateChangeUserId);

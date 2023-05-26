@@ -12,7 +12,7 @@ div.tabs {
 ul.tabs-nav {
   display: flex;
   flex-wrap: wrap;
-  margin: 32px 0;
+  margin: 32px 0 0;
   padding: 0;
 }
 
@@ -145,32 +145,6 @@ ul.tabs-nav li a.active::before {
   white-space: nowrap;
   text-align: left;
   transition: background-color .2s ease-in-out;
-}
-
-.tab-content table tbody td button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.15rem 0;
-  padding: 0.15rem 0.6rem;
-  min-height: 1.5rem;
-  min-width: 3.6rem;
-  border-radius: .3rem;
-  color: #0070c0;
-  background: transparent;
-  border: 1px solid #8c9196;
-  border-color: #0070c0;
-  box-shadow: 0 0 0 .1rem #0070c0;
-  position: relative;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.6rem;
-  text-transform: initial;
-  letter-spacing: initial;
 }
 
 .tab-content table tbody tr:hover td {
@@ -350,12 +324,6 @@ button.add-user-to-license {
   transition: background-color .2s ease-in-out;
 }
 
-.end-users-details td.user-name {
-    font-weight: bold;
-    font-family: var(--ff-myradpro-semibold);
-    font-size: 16px;
-    color: #54565b;
-}
 
 
 /* Modal Container */
@@ -485,5 +453,16 @@ button.add-user-to-license {
   font-weight: 400;
   letter-spacing: 0.2px;
   color: #54565b;
+  text-align: left;
+}
+
+
+/* Edit User Modal Content */
+.edit-user-modal-content {
+  max-width: 39rem;
+  width: 100%;
+}
+
+.edit-user-container form {
   text-align: left;
 }

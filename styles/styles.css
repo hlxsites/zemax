@@ -52,6 +52,8 @@
   --secondary-button-hover-color: #264E83;
   --secondary-button-bg-color: #002f6d;
   --color-border: #ebebeb;
+  --button-green: #005800;
+  --button-red: #bf0711;
 
   /* gradients */
   --linear-gradient: linear-gradient(to left, #871054, #78be20 53%, #f77f00 100%);
@@ -269,7 +271,7 @@ button.action {
   align-items: center;
   justify-content: center;
   margin: 0.15rem 0;
-  padding: 0.15rem 0.6rem;
+  padding: 0.10rem 0.6rem;
   min-height: 1.5rem;
   min-width: 3.6rem;
   border-radius: 0.3rem;
@@ -283,7 +285,7 @@ button.action {
   cursor: pointer;
   user-select: none;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1.6rem;
   text-transform: initial;
@@ -291,7 +293,7 @@ button.action {
 }
 
 button.action:hover {
-  color: rgb(0 112 192);
+  color: var(--primary-button-color);
   background: rgba(246 246 247 / 100%);
   outline: 0.1rem solid transparent;
 }
@@ -302,20 +304,20 @@ button.action::before {
   top: 0;
   right: 0;
   bottom: 0;
-  border-color: rgb(0 112 192);
+  border-color: var(--primary-button-color);
   opacity: 0;
   z-index: 0;
 }
 
 button.action.important,
 button.action.important:hover {
-  color: rgb(191 7 17);
-  border-color: rgb(191 7 17);
-  box-shadow: 0 0 0 0.05rem rgb(191 7 17);
+  color: var(--button-red);
+  border-color: var(--button-red);
+  box-shadow: 0 0 0 0.05rem var(--button-red);
 }
 
 button.action.important::before {
-  background-color: rgb(191 7 17);
+  background-color: var(--button-red);
 }
 
 button.action.secondary {
@@ -331,13 +333,32 @@ button.action.secondary:hover {
 }
 
 button.action.secondary:active {
-  border: 0.05rem solid rgba(140 145 150);
-  box-shadow: none;
   background: rgba(241 242 243);
 }
 
 button.action.secondary::before {
   background-color: #FFF;
+  opacity: .05;
+}
+
+button.action.activate {
+  color: var(--button-green);
+  background-color: transparent;
+  border-color: var(--button-green);
+  box-shadow: 0 0 0 0.05rem var(--button-green);
+  outline: 0.05rem solid transparent;
+}
+
+button.action.activate:hover {
+  background-color: rgba(246 246 247);
+}
+
+button.action.activate:active {
+  background: rgba(241 242 243);
+}
+
+button.action.activate::before {
+  background-color: var(--button-green);
   opacity: .05;
 }
 
@@ -690,9 +711,15 @@ main .video-wrap iframe {
   transition: background-color .2s ease-in-out;
 }
 
-.table-container table tbody td:nth-child(3) {
-  text-transform: capitalize;
+.table-container table tbody td.label-bold {
+  font-weight: bold;
   font-family: var(--ff-myradpro-semibold);
+  font-size: 16px;
+  color: #54565b;
+}
+
+.table-container table tbody td.label-capitalize {
+  text-transform: capitalize;
 }
 
 .table-container table tbody td > a {
