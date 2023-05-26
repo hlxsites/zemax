@@ -292,10 +292,8 @@ header nav[aria-expanded='true'] .nav-tools {
     vertical-align: middle;
   }
 
-  header .search-container::backdrop {
-    background: rgb(0 0 0 / 60%);
-  }
 
+  /* search is in a model dialog. */
   header .search-container {
     top: 0;
     left: 0;
@@ -304,6 +302,10 @@ header nav[aria-expanded='true'] .nav-tools {
     width: 110vw;
     height: 75px;
     border: 3px solid white;
+  }
+
+  header .search-container::backdrop {
+    background: rgb(0 0 0 / 60%);
   }
 
   header .search-container .search-wrapper {
@@ -570,36 +572,5 @@ header nav[aria-expanded='true'] .nav-tools {
   header nav .nav-menu > ul > li.menu-expandable[aria-expanded='true'] > .menu-nav-category .icon {
     transform: none;
   }
-
-  header .search-container[aria-expanded='true'] {
-    position: fixed;
-    z-index: 23;
-    background: var(--background-color);
-    height: var(--nav-height);
-    width: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-
-  header .search-container[aria-expanded='true'] .search-form {
-    flex: 1 1 100%;
-    display: flex;
-    position: relative;
-  }
-
-  header .search-container[aria-expanded='true'] .search-form form {
-    flex: 1 1 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-
-
-
-
-
-
 }
 
