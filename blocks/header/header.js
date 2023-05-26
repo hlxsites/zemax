@@ -46,7 +46,7 @@ function addDropdownIcon(element) {
   element.append(dropdownButton);
 }
 
-function addSearchForm(breakpoint) {
+function createSearchForm(breakpoint) {
   if (breakpoint === 'mobile') {
     const container = createTag('div', { class: 'mobile-search-container', 'aria-expanded': false }, `
       <div class='search-form'>
@@ -279,6 +279,7 @@ export default async function decorate(block) {
       } else {
         hamburger.innerHTML = '<span class="icon icon-mobile-menu"></span>';
       }
+      decorateIcons(hamburger);
     };
 
     hamburger.setAttribute('tabindex', '0');
@@ -355,9 +356,14 @@ export default async function decorate(block) {
     const navMenuUl = createTag('ul');
     const menus = [...nav.querySelectorAll('.nav-menu > div')];
 
+    // additional links
+    const additionalLinks = nav.querySelector(':scope .nav-tools div:nth-of-type(3)');
+    additionalLinks.classList.add('additional-links');
+    additionalLinks.querySelector('a').classList.add('button', 'secondary');
+
     // search form
     const searchli = createTag('li', { class: 'mobile-search' });
-    searchli.append(addSearchForm('mobile'));
+    searchli.append(createSearchForm('mobile'));
     navMenuUl.append(searchli);
 
     for (let i = 0; i < menus.length; i += 2) {
@@ -398,11 +404,10 @@ export default async function decorate(block) {
       navMenuUl.append(li);
     }
 
-    nav.querySelector('.nav-menu').innerHTML = '';
     nav.querySelector('.nav-menu').append(navMenuUl);
 
     decorateLinkedPictures(nav);
-    block.append(addSearchForm());
+    block.append(createSearchForm());
     block.append(nav);
     decorateIcons(block);
     // Handle different event listeners for mobile/desktop on window resize

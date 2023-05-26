@@ -236,10 +236,16 @@ header nav .nav-menu .menu-nav-dropdown {
   display: none;
 }
 
+header nav[aria-expanded="true"] > div {
+  grid-template:
+    'logo logo hamburger'
+    'menu menu menu'
+    'tools tools tools';
+}
+
 header nav[aria-expanded="true"] .nav-menu {
-  display: initial;
-  position: fixed;
-  margin-top: 25px;
+  grid-area: menu;
+  display: block;
   top: var(--nav-height);
   left: 0;
   right: 0;
@@ -250,7 +256,7 @@ header nav[aria-expanded="true"] .nav-menu {
 
 header nav .nav-hamburger {
   grid-area: hamburger;
-  justify-self: center;
+  justify-self: right;
   padding: 5px;
 }
 
@@ -260,7 +266,47 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
 
 header nav .nav-tools {
   display: none;
+  background: #fafafa;
 }
+
+header nav .nav-tools .login-wrapper  {
+  border-bottom: 1px solid #dad9d7;
+}
+
+
+header nav .nav-tools .login-wrapper p {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: var(--ff-myradpro-semibold);
+  color: var(--link-color);
+  padding-left: 40px;
+}
+
+header nav .nav-tools .additional-links {
+  padding: 0 40px;
+}
+
+header nav .nav-tools .login-wrapper p {
+  margin: 0;
+}
+header nav .nav-tools .login-wrapper[aria-expanded='false'] > p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+header nav .nav-tools .login-wrapper > ul {
+  display: none;
+}
+
+header nav .nav-tools .login-wrapper[aria-expanded='true'] > ul {
+  /*todo*/
+
+}
+
+
+
 
 header nav[aria-expanded='true'] .nav-tools .icon-search {
   display: none;
@@ -268,6 +314,10 @@ header nav[aria-expanded='true'] .nav-tools .icon-search {
 
 header nav[aria-expanded='true'] .nav-tools {
   display: block;
+
+
+
+
 }
 
 /* Tablet */
@@ -519,7 +569,7 @@ header nav[aria-expanded='true'] .nav-tools {
     font-family: var(--ff-myradpro-semibold);
   }
 
-  header nav .nav-tools > div > div:last-of-type {
+  header nav .nav-tools .additional-links a {
     width: 116px;
     height: 42px;
     border-radius: 15px;
@@ -528,18 +578,17 @@ header nav[aria-expanded='true'] .nav-tools {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 15px;
+    color: var(--background-color);
+    text-decoration: none;
+
   }
 
-  header nav .nav-tools > div > div:last-of-type:hover {
+  header nav .nav-tools .additional-links a:hover {
     background-color: var(--primary-button-color);
     cursor: pointer;
   }
 
-  header nav .nav-tools > div > div:last-of-type > a:last-of-type {
-    font-size: 15px;
-    color: var(--background-color);
-    text-decoration: none;
-  }
 
   header nav .nav-menu .menu-expandable[aria-expanded='true'] .menu-nav-dropdown {
     position: absolute;
