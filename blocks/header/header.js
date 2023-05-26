@@ -1,6 +1,6 @@
 import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
 import { createTag, decorateLinkedPictures, loadScript } from '../../scripts/scripts.js';
-import { domEl } from '../../scripts/dom-helpers.js';
+import { button, domEl, span } from '../../scripts/dom-helpers.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -25,7 +25,7 @@ function wrapChildren(element, newType) {
   element.append(wrapper);
 }
 
-function isExapndable(element) {
+function isExpandable(element) {
   let result = false;
   const adjacentElement = element.nextElementSibling;
   if (
@@ -38,12 +38,10 @@ function isExapndable(element) {
 }
 
 function addDropdownIcon(element) {
-  const dropdownButton = document.createElement('button');
-  const dropdownArrow = document.createElement('span');
-  dropdownArrow.classList.add('icon', 'icon-dropdown');
-  dropdownButton.append(dropdownArrow);
-  dropdownButton.classList.add('dropdown-button');
-  element.append(dropdownButton);
+  element.append(
+    button({ class: 'dropdown-button' },
+      span({ class: 'icon icon-dropdown' }),
+    ));
 }
 
 function createSearchForm(breakpoint) {
@@ -369,7 +367,7 @@ export default async function decorate(block) {
     for (let i = 0; i < menus.length; i += 2) {
       const li = createTag('li');
       const menuTitle = menus[i];
-      const expandable = isExapndable(menuTitle);
+      const expandable = isExpandable(menuTitle);
       if (!expandable) i -= 1;
 
       const menuDropdownList = menus[i + 1];
