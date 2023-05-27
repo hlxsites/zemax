@@ -291,18 +291,17 @@ header nav .nav-tools .additional-links {
 header nav .nav-tools .login-wrapper p {
   margin: 0;
 }
-header nav .nav-tools .login-wrapper[aria-expanded='false'] > p:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
 
 header nav .nav-tools .login-wrapper > ul {
   display: none;
 }
 
 header nav .nav-tools .login-wrapper[aria-expanded='true'] > ul {
-  /*todo*/
-
+  display: block;
+  list-style: none;
+  font-family: var(--ff-myradpro-semibold);
+  padding-top: 1px;
+  padding-bottom: 15px;
 }
 
 

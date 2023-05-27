@@ -82,9 +82,9 @@ function createSearchForm(breakpoint) {
 function addEventListenersMobile() {
   clearAllTabIndex();
 
-  const toggleMenu = (item) => {
+  const toggleMenuItem = (item) => {
     const expanded = item.getAttribute('aria-expanded') === 'true';
-    collapseAllSubmenus(item.closest('li'));
+    collapseAllSubmenus(item.closest('nav'));
     item.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   };
 
@@ -94,7 +94,7 @@ function addEventListenersMobile() {
       elementsWithEventListener.push(title);
       title.addEventListener('click', (e) => {
         e.stopPropagation();
-        toggleMenu(title);
+        toggleMenuItem(title);
       });
     });
 
@@ -105,7 +105,7 @@ function addEventListenersMobile() {
       if (e.key === ' ') {
         e.preventDefault();
         e.stopPropagation();
-        toggleMenu(dropdown.closest('.menu-expandable, .m-expandable-title'));
+        toggleMenuItem(dropdown.closest('.menu-expandable, .m-expandable-title'));
       }
     });
   });
@@ -180,7 +180,8 @@ function login() {
 }
 
 // logout call
-function logout() {
+function logout(e) {
+  e.preventDefault();
   localStorage.clear();
   if (webauth === undefined) {
     window.location.assign(`${window.location.origin}`);
@@ -192,14 +193,23 @@ function logout() {
   }
 }
 
+function isDesktopNavigation() {
+  return document.querySelector('nav').getAttribute('aria-expanded') !== 'true';
+}
+
 // utility to attach logout listeners
 function attachLogoutListener(ele) {
   ele.removeEventListener('click', login);
   ele.addEventListener('mouseenter', () => {
-    ele.setAttribute('aria-expanded', 'true');
+    // only do if not on mobile
+    if (isDesktopNavigation()) {
+      ele.setAttribute('aria-expanded', 'true');
+    }
   });
   ele.addEventListener('mouseleave', () => {
-    ele.setAttribute('aria-expanded', 'false');
+    if (isDesktopNavigation()) {
+      ele.setAttribute('aria-expanded', 'false');
+    }
   });
   const logoutLink = ele.querySelector('ul > li:nth-of-type(2)');
   logoutLink.addEventListener('click', logout);
@@ -240,10 +250,10 @@ function handleAuthentication(ele) {
 }
 
 // if user already authenticated
-function handleAuthenticated(ele) {
-  const logintxt = ele.querySelector('p');
+function handleAuthenticated(loginLinkWrapper) {
+  const logintxt = loginLinkWrapper.querySelector('p');
   logintxt.innerText = localStorage.getItem('displayname');
-  attachLogoutListener(ele);
+  attachLogoutListener(loginLinkWrapper);
 }
 
 function getRedirectUri() {
@@ -251,6 +261,20 @@ function getRedirectUri() {
     return window.location.origin + window.location.pathname;
   }
   return window.location.origin;
+}
+
+/**
+ *
+ * @param title {HTMLElement}
+ * @param content {HTMLElement}
+ */
+function makeExpandable(title, content) {
+  addDropdownIcon(title);
+  title.setAttribute('aria-expanded', 'false');
+  title.classList.add('m-expandable-title');
+  wrapChildren(title, 'span');
+
+  content.classList.add('m-expandable-list');
 }
 
 /**
@@ -332,8 +356,9 @@ export default async function decorate(block) {
 
     // adding login functionality
     const authtoken = localStorage.getItem('accessToken');
-    const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
-    loginLink.classList.add('login-wrapper');
+    const loginLinkWrapper = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
+    loginLinkWrapper.classList.add('login-wrapper', 'menu-expandable');
+
     const authScriptTagPromise = loadScriptPromise('/scripts/auth0.min.js', {
       type: 'text/javascript',
       charset: 'UTF-8',
@@ -345,12 +370,12 @@ export default async function decorate(block) {
     const responseType = placeholders.responsetype;
     const scopes = placeholders.scope;
     if (!authtoken) {
-      loginLink.setAttribute('aria-expanded', 'false');
+      loginLinkWrapper.setAttribute('aria-expanded', 'false');
       authScriptTagPromise.then(() => {
         // eslint-disable-next-line max-len
         webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
-        loginLink.addEventListener('click', login);
-        handleAuthentication(loginLink);
+        loginLinkWrapper.addEventListener('click', login);
+        handleAuthentication(loginLinkWrapper);
         if (window.location.pathname.startsWith('/pages/profile')) {
           login();
         }
@@ -360,7 +385,7 @@ export default async function decorate(block) {
         // eslint-disable-next-line max-len
         webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
       });
-      handleAuthenticated(loginLink);
+      handleAuthenticated(loginLinkWrapper);
     }
 
     // link section
@@ -403,12 +428,7 @@ export default async function decorate(block) {
           // Add second-level expansion even listener
           li.querySelectorAll('p + ul').forEach((subDropdown) => {
             const subDropdownTitle = subDropdown.previousElementSibling;
-            addDropdownIcon(subDropdownTitle);
-            subDropdownTitle.setAttribute('aria-expanded', 'false');
-            subDropdownTitle.classList.add('m-expandable-title');
-            wrapChildren(subDropdownTitle, 'span');
-            subDropdown.classList.add('m-expandable-list');
-            // addDropdownIcon(subDropdownTitle);
+            makeExpandable(subDropdownTitle, subDropdown);
           });
         });
       }
