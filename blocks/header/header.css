@@ -241,6 +241,8 @@ header nav[aria-expanded="true"] > div {
     'logo logo hamburger'
     'menu menu menu'
     'tools tools tools';
+  overflow: scroll;
+  height: 100vh;
 }
 
 header nav[aria-expanded="true"] .nav-menu {
@@ -250,7 +252,6 @@ header nav[aria-expanded="true"] .nav-menu {
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: scroll;
   background: #fafafa;
 }
 
