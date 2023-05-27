@@ -268,9 +268,9 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
 /* mobile and tablet only */
 @media only screen and (max-width: 1030px) {
   header nav .nav-tools {
+    grid-area: tools;
     display: none;
     background: #fafafa;
-    width: 100%;
   }
 
   header nav .nav-tools .login-wrapper  {
