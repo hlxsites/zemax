@@ -264,60 +264,59 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
   display: initial;
 }
 
-header nav .nav-tools {
-  display: none;
-  background: #fafafa;
-}
+/* mobile and tablet only */
+@media only screen and (max-width: 1030px) {
+  header nav .nav-tools {
+    display: none;
+    background: #fafafa;
+    width: 100%;
+  }
 
-header nav .nav-tools .login-wrapper  {
-  border-bottom: 1px solid #dad9d7;
-}
-
-
-header nav .nav-tools .login-wrapper p {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  font-size: 20px;
-  font-family: var(--ff-myradpro-semibold);
-  color: var(--link-color);
-  padding-left: 40px;
-}
-
-header nav .nav-tools .additional-links {
-  padding: 0 40px;
-}
-
-header nav .nav-tools .login-wrapper p {
-  margin: 0;
-}
-
-header nav .nav-tools .login-wrapper > ul {
-  display: none;
-}
-
-header nav .nav-tools .login-wrapper[aria-expanded='true'] > ul {
-  display: block;
-  list-style: none;
-  font-family: var(--ff-myradpro-semibold);
-  padding-top: 1px;
-  padding-bottom: 15px;
-}
+  header nav .nav-tools .login-wrapper  {
+    border-bottom: 1px solid #dad9d7;
+  }
 
 
+  header nav .nav-tools .login-wrapper p {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px;
+    font-family: var(--ff-myradpro-semibold);
+    color: var(--link-color);
+    padding-left: 40px;
+  }
 
+  header nav .nav-tools .additional-links {
+    padding: 0 40px;
+  }
 
-header nav[aria-expanded='true'] .nav-tools .icon-search {
-  display: none;
-}
+  header nav .nav-tools .login-wrapper p {
+    margin: 0;
+  }
 
-header nav[aria-expanded='true'] .nav-tools {
-  display: block;
+  header nav .nav-tools .login-wrapper > ul {
+    display: none;
+  }
 
+  header nav .nav-tools .login-wrapper[aria-expanded='true'] > ul {
+    display: block;
+    list-style: none;
+    font-family: var(--ff-myradpro-semibold);
+    padding-top: 1px;
+    padding-bottom: 15px;
+  }
 
+  header nav[aria-expanded='true'] .nav-tools .icon-search {
+    display: none;
+  }
 
+  header nav[aria-expanded='true'] .nav-tools {
+    display: block;
+  }
 
 }
+
 
 /* Tablet */
 @media only screen and (min-width: 480px) {

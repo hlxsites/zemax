@@ -125,7 +125,7 @@ function addEventListenersDesktop() {
     linkElement.setAttribute('tabindex', '0');
     linkElement.setAttribute(
       'aria-label',
-      `Expand the submenu for ${linkElement.querySelector('div').innerText}`,
+      `Expand the submenu for ${linkElement.querySelector('div, p').innerText}`,
     );
 
     linkElement.addEventListener('keydown', (e) => {
