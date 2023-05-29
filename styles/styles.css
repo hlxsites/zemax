@@ -26,7 +26,7 @@
 
 :root {
   /* nav height */
-  --nav-height: 50.5px;
+  --nav-height: 74px;
 
   /* fonts */
   --ff-myradpro-regular: "MyriadPro-Regular", "MyriadPro-Regular Fallback", sans-serif;
@@ -362,7 +362,7 @@ button.action.activate::before {
   opacity: .05;
 }
 
-button.action:hover::before, 
+button.action:hover::before,
 button.action:active::before {
   opacity: .05;
 }
@@ -611,7 +611,7 @@ main .video-wrap iframe {
   border-spacing: 0;
   border-collapse: collapse;
   background-color: var(--clr-white);
-  box-shadow: 0 0 5px #1718180D, 0 1px 2px #00000026; 
+  box-shadow: 0 0 5px #1718180D, 0 1px 2px #00000026;
   outline: 0.1rem solid transparent;
 }
 
@@ -851,7 +851,7 @@ main .video-wrap iframe {
 
   /* Section Layouts */
 main .section-wrapper.layout-75-25,
-main .section-wrapper.layout-25-75, 
+main .section-wrapper.layout-25-75,
 main .section-wrapper.layout-50-50,
 main .layout-33-33-33 {
   width: var(--section-width);

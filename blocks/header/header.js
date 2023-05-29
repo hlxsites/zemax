@@ -1,4 +1,5 @@
 import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
+import { button, domEl, span } from '../../scripts/dom-helpers.js';
 import { createTag, loadScriptPromise, decorateLinkedPictures } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
@@ -24,7 +25,7 @@ function wrapChildren(element, newType) {
   element.append(wrapper);
 }
 
-function isExapndable(element) {
+function isExpandable(element) {
   let result = false;
   const adjacentElement = element.nextElementSibling;
   if (
@@ -37,31 +38,53 @@ function isExapndable(element) {
 }
 
 function addDropdownIcon(element) {
-  const dropdownButton = document.createElement('button');
-  const dropdownArrow = document.createElement('span');
-  dropdownArrow.classList.add('icon', 'icon-dropdown');
-  dropdownButton.append(dropdownArrow);
-  dropdownButton.classList.add('dropdown-button');
-  element.append(dropdownButton);
+  element.append(
+    button({ class: 'dropdown-button' },
+      span({ class: 'icon icon-dropdown' }),
+    ));
 }
 
-function addSearchForm(breakpoint) {
-  const cssclass = breakpoint === 'mobile' ? 'mobile-search-container' : 'search-container';
-
-  let searchHTML = '<div class=\'search-form\'><form action=\'/search\' method=\'get\'><input type=\'text\' name=\'q\' class=\'search-input\'/><input type=\'hidden\' name=\'options[prefix]\' value=\'last\' aria-hidden=\'true\' /><button class=\'search-button\'><span class=\'icon icon-search\' ></span></button></form> </div><div class=\'search-close\'> <button type=\'button\' class=\'close-button\'> <span  class=\'icon icon-search-close\'></span></button></div>';
+function createSearchForm(breakpoint) {
   if (breakpoint === 'mobile') {
-    searchHTML = '<div class=\'search-form\'><form action=\'/search\' method=\'get\'><button class=\'search-button\'><span class=\'icon icon-search\' ></span></button><input type=\'text\' name=\'q\' class=\'search-input\'/><input type=\'hidden\' name=\'options[prefix]\' value=\'last\' aria-hidden=\'true\' /></form> </div><div class=\'search-close\'> <button type=\'button\' class=\'close-button\'> <span  class=\'icon icon-search-close\'></span></button></div>';
+    const container = createTag('div', { class: 'mobile-search-container', 'aria-expanded': false }, `
+      <div class='search-form'>
+        <form action='/search' method='get'>
+          <button class='search-button'><span class='icon icon-search'></span></button>
+          <input type='text' name='q' class='search-input' />
+          <input type='hidden' name='options[prefix]' value='last' aria-hidden='true' />
+        </form>
+      </div>
+      <div class='search-close'>
+        <button type='button' class='clear-input'><span class='icon icon-search-close'></span></button>
+      </div>`);
+    container.querySelector('.clear-input').addEventListener('click', () => {
+      container.querySelector('.search-input').value = '';
+      container.querySelector('.search-input').focus();
+    });
+    return container;
   }
-  const searchContainer = createTag('div', { class: cssclass, 'aria-expanded': false }, searchHTML);
-  return searchContainer;
+  // desktop
+  const dialog = domEl('dialog', { class: 'search-container', 'aria-expanded': false });
+  dialog.innerHTML = `
+    <div class='search-wrapper'>
+      <div class='search-form'>
+        <form action='/search' method='get'>
+          <input type='text' name='q' class='search-input' />
+          <input type='hidden' name='options[prefix]' value='last' aria-hidden='true' />
+          <button class='search-button'><span class='icon icon-search'></span></button>
+          <button type='button' class='close-button'><span class='icon icon-search-close'></span></button>
+        </form>
+      </div>
+    </div>`;
+  return dialog;
 }
 
 function addEventListenersMobile() {
   clearAllTabIndex();
 
-  const toggleMenu = (item) => {
+  const toggleMenuItem = (item) => {
     const expanded = item.getAttribute('aria-expanded') === 'true';
-    collapseAllSubmenus(item.closest('li'));
+    collapseAllSubmenus(item.closest('nav'));
     item.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   };
 
@@ -71,7 +94,7 @@ function addEventListenersMobile() {
       elementsWithEventListener.push(title);
       title.addEventListener('click', (e) => {
         e.stopPropagation();
-        toggleMenu(title);
+        toggleMenuItem(title);
       });
     });
 
@@ -82,7 +105,7 @@ function addEventListenersMobile() {
       if (e.key === ' ') {
         e.preventDefault();
         e.stopPropagation();
-        toggleMenu(dropdown.closest('.menu-expandable, .m-expandable-title'));
+        toggleMenuItem(dropdown.closest('.menu-expandable, .m-expandable-title'));
       }
     });
   });
@@ -102,7 +125,7 @@ function addEventListenersDesktop() {
     linkElement.setAttribute('tabindex', '0');
     linkElement.setAttribute(
       'aria-label',
-      `Expand the submenu for ${linkElement.querySelector('div').innerText}`,
+      `Expand the submenu for ${linkElement.querySelector('div, p').innerText}`,
     );
 
     linkElement.addEventListener('keydown', (e) => {
@@ -157,7 +180,8 @@ function login() {
 }
 
 // logout call
-function logout() {
+function logout(e) {
+  e.preventDefault();
   localStorage.clear();
   if (webauth === undefined) {
     window.location.assign(`${window.location.origin}`);
@@ -169,11 +193,24 @@ function logout() {
   }
 }
 
+function isDesktopNavigation() {
+  return document.querySelector('nav').getAttribute('aria-expanded') !== 'true';
+}
+
 // utility to attach logout listeners
 function attachLogoutListener(ele) {
   ele.removeEventListener('click', login);
-  ele.addEventListener('mouseenter', () => { ele.setAttribute('aria-expanded', 'true'); });
-  ele.addEventListener('mouseleave', () => { ele.setAttribute('aria-expanded', 'false'); });
+  ele.addEventListener('mouseenter', () => {
+    // only do if not on mobile
+    if (isDesktopNavigation()) {
+      ele.setAttribute('aria-expanded', 'true');
+    }
+  });
+  ele.addEventListener('mouseleave', () => {
+    if (isDesktopNavigation()) {
+      ele.setAttribute('aria-expanded', 'false');
+    }
+  });
   const logoutLink = ele.querySelector('ul > li:nth-of-type(2)');
   logoutLink.addEventListener('click', logout);
 }
@@ -213,10 +250,10 @@ function handleAuthentication(ele) {
 }
 
 // if user already authenticated
-function handleAuthenticated(ele) {
-  const logintxt = ele.querySelector('p');
+function handleAuthenticated(loginLinkWrapper) {
+  const logintxt = loginLinkWrapper.querySelector('p');
   logintxt.innerText = localStorage.getItem('displayname');
-  attachLogoutListener(ele);
+  attachLogoutListener(loginLinkWrapper);
 }
 
 function getRedirectUri() {
@@ -224,6 +261,20 @@ function getRedirectUri() {
     return window.location.origin + window.location.pathname;
   }
   return window.location.origin;
+}
+
+/**
+ *
+ * @param title {HTMLElement}
+ * @param content {HTMLElement}
+ */
+function makeExpandable(title, content) {
+  addDropdownIcon(title);
+  title.setAttribute('aria-expanded', 'false');
+  title.classList.add('m-expandable-title');
+  wrapChildren(title, 'span');
+
+  content.classList.add('m-expandable-list');
 }
 
 /**
@@ -236,16 +287,14 @@ export default async function decorate(block) {
   const resp = await fetch('/nav.plain.html');
 
   if (resp.ok) {
-    const html = await resp.text();
-
     // decorate nav DOM
     const nav = createTag('nav');
-    nav.innerHTML = html;
+    nav.innerHTML = await resp.text();
 
     // hamburger
     const hamburger = createTag('div');
     hamburger.classList.add('nav-hamburger');
-    hamburger.innerHTML = '<span class=\'icon icon-mobile-menu\'></span>';
+    hamburger.innerHTML = '<span class="icon icon-mobile-menu"></span>';
 
     const expandHamburger = () => {
       const expanded = nav.getAttribute('aria-expanded') === 'true';
@@ -254,8 +303,12 @@ export default async function decorate(block) {
       document.querySelector('main').style.visibility = expanded
         ? ''
         : 'hidden';
-      if (!expanded) hamburger.innerHTML = '<span class=\'icon icon-search-close\'><svg viewBox=\'0 0 40 40\'><path d=\'M23.868 20.015L39.117 4.78c1.11-1.108 1.11-2.77 0-3.877-1.109-1.108-2.773-1.108-3.882 0L19.986 16.137 4.737.904C3.628-.204 1.965-.204.856.904c-1.11 1.108-1.11 2.77 0 3.877l15.249 15.234L.855 35.248c-1.108 1.108-1.108 2.77 0 3.877.555.554 1.248.831 1.942.831s1.386-.277 1.94-.83l15.25-15.234 15.248 15.233c.555.554 1.248.831 1.941.831s1.387-.277 1.941-.83c1.11-1.109 1.11-2.77 0-3.878L23.868 20.015z\' class=\'layer\'></path></svg></span>';
-      else hamburger.innerHTML = '<span class=\'icon icon-mobile-menu\'><svg aria-hidden=\'true\' focusable=\'false\'  viewBox=\'0 0 37 40\'><path d=\'M33.5 25h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2zm0-11.5h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2zm0 23h-30c-1.1 0-2-.9-2-2s.9-2 2-2h30c1.1 0 2 .9 2 2s-.9 2-2 2z\'></path></svg></span>';
+      if (!expanded) {
+        hamburger.innerHTML = '<span class="icon icon-search-close"></span>';
+      } else {
+        hamburger.innerHTML = '<span class="icon icon-mobile-menu"></span>';
+      }
+      decorateIcons(hamburger);
     };
 
     hamburger.setAttribute('tabindex', '0');
@@ -275,20 +328,20 @@ export default async function decorate(block) {
 
     // add event to open search form
     const closeSearch = () => {
-      const searchContainer = block.querySelector('.search-container');
-      searchContainer.style.display = 'none';
+      block.querySelector('.search-container').close();
     };
     const showSearchForm = () => {
       const searchContainer = block.querySelector('.search-container');
-      if (searchContainer.style.display === 'flex') {
-        searchContainer.style.display = 'none';
-        searchContainer.setAttribute('aria-expanded', false);
-      } else {
-        searchContainer.style.display = 'flex';
-        searchContainer.setAttribute('aria-expanded', true);
-        const closeBtn = searchContainer.querySelector(':scope .search-close .close-button');
-        closeBtn.addEventListener('click', closeSearch);
-      }
+      searchContainer.showModal();
+      searchContainer.addEventListener('click', (event) => {
+        // only react to clicks outside the dialog. https://stackoverflow.com/a/70593278/79461
+        const dialogDimensions = searchContainer.getBoundingClientRect();
+        if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right
+          || event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
+          searchContainer.close();
+        }
+      });
+      searchContainer.querySelector('.close-button').addEventListener('click', closeSearch);
     };
 
     const searchIcon = nav.querySelector(':scope .nav-tools .icon-search');
@@ -303,8 +356,9 @@ export default async function decorate(block) {
 
     // adding login functionality
     const authtoken = localStorage.getItem('accessToken');
-    const loginLink = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
-    loginLink.classList.add('login-wrapper');
+    const loginLinkWrapper = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
+    loginLinkWrapper.classList.add('login-wrapper', 'menu-expandable');
+
     const authScriptTagPromise = loadScriptPromise('/scripts/auth0.min.js', {
       type: 'text/javascript',
       charset: 'UTF-8',
@@ -316,12 +370,12 @@ export default async function decorate(block) {
     const responseType = placeholders.responsetype;
     const scopes = placeholders.scope;
     if (!authtoken) {
-      loginLink.setAttribute('aria-expanded', 'false');
+      loginLinkWrapper.setAttribute('aria-expanded', 'false');
       authScriptTagPromise.then(() => {
         // eslint-disable-next-line max-len
         webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
-        loginLink.addEventListener('click', login);
-        handleAuthentication(loginLink);
+        loginLinkWrapper.addEventListener('click', login);
+        handleAuthentication(loginLinkWrapper);
         if (window.location.pathname.startsWith('/pages/profile')) {
           login();
         }
@@ -331,22 +385,27 @@ export default async function decorate(block) {
         // eslint-disable-next-line max-len
         webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
       });
-      handleAuthenticated(loginLink);
+      handleAuthenticated(loginLinkWrapper);
     }
 
     // link section
     const navMenuUl = createTag('ul');
     const menus = [...nav.querySelectorAll('.nav-menu > div')];
 
+    // additional links
+    const additionalLinks = nav.querySelector(':scope .nav-tools div:nth-of-type(3)');
+    additionalLinks.classList.add('additional-links');
+    additionalLinks.querySelector('a').classList.add('button', 'secondary');
+
     // search form
     const searchli = createTag('li', { class: 'mobile-search' });
-    searchli.append(addSearchForm('mobile'));
+    searchli.append(createSearchForm('mobile'));
     navMenuUl.append(searchli);
 
     for (let i = 0; i < menus.length; i += 2) {
       const li = createTag('li');
       const menuTitle = menus[i];
-      const expandable = isExapndable(menuTitle);
+      const expandable = isExpandable(menuTitle);
       if (!expandable) i -= 1;
 
       const menuDropdownList = menus[i + 1];
@@ -369,25 +428,19 @@ export default async function decorate(block) {
           // Add second-level expansion even listener
           li.querySelectorAll('p + ul').forEach((subDropdown) => {
             const subDropdownTitle = subDropdown.previousElementSibling;
-            addDropdownIcon(subDropdownTitle);
-            subDropdownTitle.setAttribute('aria-expanded', 'false');
-            subDropdownTitle.classList.add('m-expandable-title');
-            wrapChildren(subDropdownTitle, 'span');
-            subDropdown.classList.add('m-expandable-list');
-            // addDropdownIcon(subDropdownTitle);
+            makeExpandable(subDropdownTitle, subDropdown);
           });
         });
       }
       navMenuUl.append(li);
     }
 
-    nav.querySelector('.nav-menu').innerHTML = navMenuUl.outerHTML;
+    nav.querySelector('.nav-menu').append(navMenuUl);
 
-    decorateIcons(nav);
     decorateLinkedPictures(nav);
-    block.append(addSearchForm());
+    block.append(createSearchForm());
     block.append(nav);
-
+    decorateIcons(block);
     // Handle different event listeners for mobile/desktop on window resize
     const removeAllEventListeners = () => {
       elementsWithEventListener.forEach((el) => {
