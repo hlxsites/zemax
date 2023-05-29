@@ -39,6 +39,7 @@
   --clr-white: #fff;
   --clr-orange: #f77f00;
   --clr-green: #78be20;
+  --clr-purple: #871054;
   --text-color: #54565b;
   --color-text: #002f6d;
   --link-color: #002f6d;
@@ -451,7 +452,6 @@ main ol {
 }
 
 main li {
-  list-style-type: decimal;
   line-height: 1.5;
 }
 
@@ -461,7 +461,7 @@ main li>a {
 }
 
 main .default-content-wrapper li>a {
-  color: var(--clr-blue) !important;
+  color: var(--clr-blue);
 }
 
 main .category{
@@ -530,6 +530,19 @@ main .section.curved-top {
   border-top-left-radius: 100% 15%;
 }
 
+/* Themes */
+
+body.orange main a:any-link:not(.button) {
+  color: var(--clr-orange);
+}
+
+body.green main a:any-link:not(.button)  {
+  color: var(--clr-green);
+}
+
+body.purple main a:any-link:not(.button)  {
+  color: var(--clr-purple);
+}
 
 /* Section Layouts */
 main .section-wrapper.layout-75-25,
