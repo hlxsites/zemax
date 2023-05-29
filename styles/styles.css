@@ -40,6 +40,7 @@
   --clr-orange: #f77f00;
   --clr-green: #78be20;
   --text-color: #54565b;
+  --color-text: #002f6d;
   --link-color: #002f6d;
   --link-hover-color: #0070c0;
   --background-color: #fff;
@@ -123,7 +124,10 @@ h6 {
   scroll-margin: calc(var(--nav-height) + 1em);
 }
 
-h1 {font-size: var(--heading-font-size-m);}
+h1 {
+  font-size: var(--heading-font-size-m);
+  color: var(--color-text)
+}
 
 h2 {
   font-size: var(--heading-font-size-m);
@@ -499,7 +503,7 @@ main .section.background-blue {
   background-color: var(--clr-blue);
 }
 
-main .section.background-blue p{
+main .section.background-blue .default-content-wrapper p{
   color:var(--clr-white);
 }
 
