@@ -286,14 +286,11 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     font-family: var(--ff-myradpro-semibold);
     color: var(--link-color);
     padding-left: 40px;
+    margin: 0;
   }
 
   header nav .nav-tools .additional-links {
     padding: 0 40px;
-  }
-
-  header nav .nav-tools .login-wrapper p {
-    margin: 0;
   }
 
   header nav .nav-tools .login-wrapper > ul {
@@ -327,9 +324,9 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
   }
 
   header nav .nav-logo picture img {
-    /* width: 71px; */
-    /* height: 28px; */
-    /*TODO*/
+    /* width: 71px; 
+    height: 28px;
+    TODO */
   }
 
   header nav .nav-hamburger svg {
