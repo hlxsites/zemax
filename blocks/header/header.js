@@ -1,4 +1,4 @@
-import { decorateIcons, fetchPlaceholders } from '../../scripts/lib-franklin.js';
+import { decorateIcons, fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { button, domEl, span } from '../../scripts/dom-helpers.js';
 import { createTag, loadScriptPromise, decorateLinkedPictures } from '../../scripts/scripts.js';
 
@@ -369,6 +369,7 @@ export default async function decorate(block) {
     const audienceURI = placeholders.audienceuri;
     const responseType = placeholders.responsetype;
     const scopes = placeholders.scope;
+    const authRequired = getMetadata('authrequired');
     if (!authtoken) {
       loginLinkWrapper.setAttribute('aria-expanded', 'false');
       authScriptTagPromise.then(() => {
@@ -376,7 +377,7 @@ export default async function decorate(block) {
         webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
         loginLinkWrapper.addEventListener('click', login);
         handleAuthentication(loginLinkWrapper);
-        if (window.location.pathname.startsWith('/pages/profile')) {
+        if (authRequired) {
           login();
         }
       });
