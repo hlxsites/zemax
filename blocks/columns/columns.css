@@ -198,16 +198,33 @@ height:60px;
   left: 0;
   right: 0;
   margin: auto;
-  border-bottom: 4px solid var(--clr-orange);
+  border-bottom: 4px solid var(--clr-blue);
 }
 
 .columns.tabs a:hover {
   padding-bottom: 15px;
-  border-bottom: 4px solid var(--clr-orange);
+  border-bottom: 4px solid var(--clr-blue);
   text-decoration: none;
   color: var(--text-color);
   background: none;
 }
+
+body.orange main .columns.tabs a>code,
+body.orange main .columns.tabs a:hover{
+  border-bottom-color: var(--clr-orange);
+}
+
+body.green main .columns.tabs a>code,
+body.green main .columns.tabs a:hover{
+  border-bottom-color:  var(--clr-green);
+}
+
+body.purple main .columns.tabs a>code,
+body.purple main .columns.tabs a:hover{
+  border-bottom-color: var(--clr-purple);
+}
+
+
 
 @media screen and (min-width: 1030px) {
   .columns>div {

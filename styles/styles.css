@@ -39,7 +39,9 @@
   --clr-white: #fff;
   --clr-orange: #f77f00;
   --clr-green: #78be20;
+  --clr-purple: #871054;
   --text-color: #54565b;
+  --color-text: #002f6d;
   --link-color: #002f6d;
   --link-hover-color: #0070c0;
   --background-color: #fff;
@@ -123,7 +125,10 @@ h6 {
   scroll-margin: calc(var(--nav-height) + 1em);
 }
 
-h1 {font-size: var(--heading-font-size-m);}
+h1 {
+  font-size: var(--heading-font-size-m);
+  color: var(--color-text)
+}
 
 h2 {
   font-size: var(--heading-font-size-m);
@@ -447,7 +452,6 @@ main ol {
 }
 
 main li {
-  list-style-type: decimal;
   line-height: 1.5;
 }
 
@@ -457,7 +461,7 @@ main li>a {
 }
 
 main .default-content-wrapper li>a {
-  color: var(--clr-blue) !important;
+  color: var(--clr-blue);
 }
 
 main .category{
@@ -499,7 +503,7 @@ main .section.background-blue {
   background-color: var(--clr-blue);
 }
 
-main .section.background-blue p{
+main .section.background-blue .default-content-wrapper p{
   color:var(--clr-white);
 }
 
@@ -526,6 +530,19 @@ main .section.curved-top {
   border-top-left-radius: 100% 15%;
 }
 
+/* Themes */
+
+body.orange main a:any-link:not(.button) {
+  color: var(--clr-orange);
+}
+
+body.green main a:any-link:not(.button)  {
+  color: var(--clr-green);
+}
+
+body.purple main a:any-link:not(.button)  {
+  color: var(--clr-purple);
+}
 
 /* Section Layouts */
 main .section-wrapper.layout-75-25,

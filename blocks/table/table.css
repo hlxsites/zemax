@@ -43,6 +43,10 @@
   color: var(--clr-green);
 }
 
+.table.purple a.button:any-link, .table.purple a.button:any-link:hover {
+  color: var(--clr-purple);
+}
+
 /* striped variant */
 .table.striped tbody tr:nth-child(odd) {
   background-color: var(--overlay-background-color);
