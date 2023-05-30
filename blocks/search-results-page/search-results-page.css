@@ -25,6 +25,21 @@
   text-decoration: none;
 }
 
+.search-results-page-container .results-loading-spinner {
+  pointer-events: none;
+  width: 2.5em;
+  height: 2.5em;
+  border: 0.4em solid #eee;
+  border-top-color: #3E67EC;
+  border-radius: 50%;
+  animation: loadingspin 1s linear infinite;
+}
+
+@keyframes loadingspin {
+  100% {
+    transform: rotate(360deg)
+  }
+}
 
 .search-results-page-container  .search-result-section-header h3 {
   margin: 0;

@@ -18,31 +18,21 @@ export default async function decorate(block) {
   block.append(createTabs(params));
 
   if (params.view === '') {
-    // start all searches in parallel
-    const productInformationResultPromise = createProductInformationResult(params);
-    const resourceResultPromise = createResourceResult(params, false, 3);
-    const knowledgebaseResultPromise = createKnowledgebaseResult(params, false, 4);
-    const communityResultPromise = createCommunityResult(params, false);
-
-    // add blocks as they become available
-    block.append(await productInformationResultPromise);
-    block.append(await resourceResultPromise);
-    block.append(await knowledgebaseResultPromise);
-    block.append(await communityResultPromise);
+    block.append(createProductInformationResult(params));
+    block.append(createResourceResult(params, false, 3));
+    block.append(createKnowledgebaseResult(params, false, 4));
+    block.append(createCommunityResult(params, false));
   }
 
   if (params.view === 'resources') {
-    block.append(await createResourceResult(params));
+    block.append(createResourceResult(params));
   }
   if (params.view === 'knowledgebase') {
-    block.append(await createKnowledgebaseResult(params));
+    block.append(createKnowledgebaseResult(params));
   }
   if (params.view === 'community') {
-    block.append(await createCommunityResult(params));
+    block.append(createCommunityResult(params));
   }
-
-  // Decorate and load all the newly injected content
-  await loadBlocks(block);
 }
 
 function getSearchParams() {
@@ -152,30 +142,43 @@ function getPlainTextFromHtml(html) {
   return textBody;
 }
 
-async function createProductInformationResult(params) {
-  const result = await searchProducts(params);
-  const firstPage = result.slice(0, 3);
+function createProductInformationResult(params) {
+  const resultsDiv = div({ class: 'search-result-section productinformation' },
+    createSearchSectionTitle('Product Information'),
+    div({ class: 'results-loading-spinner' }));
 
-  const columnsRows = firstPage
-    .map((entry) => [
-      img({ src: entry.image, alt: entry.title }),
-      div(
-        h4(getPlainTextFromHtml(entry.title)),
-        p(entry.description),
-        a({ href: entry.path, class: 'button learn-more' }, 'Learn more'),
-      ),
-    ]);
+  searchProducts(params).then((result) => {
+    const firstPage = result.slice(0, 3);
 
-  const columnsWrapper = div();
-  const columnsBlock = buildBlock('columns', columnsRows);
-  columnsBlock.classList.add('columns', 'product-information');
-  columnsWrapper.append(columnsBlock);
-  decorateBlock(columnsBlock);
+    const columnsRows = firstPage
+      .map((entry) => [
+        img({ src: entry.image, alt: entry.title }),
+        div(
+          h4(getPlainTextFromHtml(entry.title)),
+          p(entry.description),
+          a({ href: entry.path, class: 'button learn-more' }, 'Learn more'),
+        ),
+      ]);
 
-  return div({ class: 'search-result-section productinformation' },
-    createSearchSectionTitle('Product Information', firstPage.length, result.length),
-    columnsWrapper,
-  );
+    const columnsWrapper = div();
+    const columnsBlock = buildBlock('columns', columnsRows);
+    columnsBlock.classList.add('columns', 'product-information');
+    columnsWrapper.append(columnsBlock);
+    decorateBlock(columnsBlock);
+
+    resultsDiv.textContent = '';
+    resultsDiv.append(
+      createSearchSectionTitle('Product Information', firstPage.length, result.length),
+      columnsWrapper,
+    );
+
+    // Decorate and load all the newly injected content
+    loadBlocks(resultsDiv);
+
+    // eslint-disable-next-line no-console
+  }).catch(console.error);
+
+  return resultsDiv;
 }
 
 /**
@@ -195,42 +198,53 @@ function createPagination(page, totalPages) {
   return wrapper;
 }
 
-async function createResourceResult(params, showPaginationBlock = true, perPage = 12) {
-  const result = await searchResources(params);
-  const firstPage = result.slice((params.page - 1) * perPage, params.page * perPage);
+function createResourceResult(params, showPaginationBlock = true, perPage = 12) {
+  const resultsDiv = div({ class: 'search-result-section resources' },
+    createSearchSectionTitle('Resources'),
+    div({ class: 'results-loading-spinner' }));
 
-  function getCategoryFromPath(path) {
-    if (path.startsWith('/blogs/news')) return 'News';
-    if (path.startsWith('/blogs/webinars')) return 'Webinar';
-    if (path.startsWith('/blogs/free-tutorials')) return 'Free Tutorials';
-    if (path.startsWith('/blogs/eguides')) return 'eGuide';
-    if (path.startsWith('/blogs/success-stories')) return 'Success Story';
-    return '';
-  }
+  searchResources(params).then((result) => {
+    const firstPage = result.slice((params.page - 1) * perPage, params.page * perPage);
 
-  const cardRows = firstPage
-    .map((entry) => [
-      createOptimizedPicture(entry.image, entry.title),
-      div(
-        h5(getCategoryFromPath(entry.path)),
-        p(entry.title),
-        p({ class: 'button-container' },
-          a({ href: entry.path, class: 'button' }, 'Learn more'),
+    function getCategoryFromPath(path) {
+      if (path.startsWith('/blogs/news')) return 'News';
+      if (path.startsWith('/blogs/webinars')) return 'Webinar';
+      if (path.startsWith('/blogs/free-tutorials')) return 'Free Tutorials';
+      if (path.startsWith('/blogs/eguides')) return 'eGuide';
+      if (path.startsWith('/blogs/success-stories')) return 'Success Story';
+      return '';
+    }
+
+    const cardRows = firstPage
+      .map((entry) => [
+        createOptimizedPicture(entry.image, entry.title),
+        div(
+          h5(getCategoryFromPath(entry.path)),
+          p(entry.title),
+          p({ class: 'button-container' },
+            a({ href: entry.path, class: 'button' }, 'Learn more'),
+          ),
         ),
-      ),
-    ]);
+      ]);
 
-  const cardsWrapper = div();
-  const cardsBlock = buildBlock('cards', cardRows);
-  cardsBlock.classList.add('layout-3-card', 'search-results', 'resource-center', 'curved-text', 'orange');
-  cardsWrapper.append(cardsBlock);
-  decorateBlock(cardsBlock);
+    const cardsWrapper = div();
+    const cardsBlock = buildBlock('cards', cardRows);
+    cardsBlock.classList.add('layout-3-card', 'search-results', 'resource-center', 'curved-text', 'orange');
+    cardsWrapper.append(cardsBlock);
+    decorateBlock(cardsBlock);
 
-  return div({ class: 'search-result-section resources' },
-    createSearchSectionTitle('Resources', firstPage.length, result.length),
-    cardsWrapper,
-    showPaginationBlock ? createPagination(params.page, Math.ceil(result.length / perPage)) : '',
-  );
+    resultsDiv.textContent = '';
+    resultsDiv.append(createSearchSectionTitle('Resources', firstPage.length, result.length));
+    resultsDiv.append(cardsWrapper);
+    if (showPaginationBlock) {
+      resultsDiv.append(createPagination(params.page, Math.ceil(result.length / perPage)));
+    }
+
+    // Decorate and load all the newly injected content
+    loadBlocks(resultsDiv);
+  }).catch(console.error);
+
+  return resultsDiv;
 }
 
 /**
@@ -378,45 +392,56 @@ function createSearchSectionTitle(title, resultCount, totalResultCount, moreLink
   );
 }
 
-async function createKnowledgebaseResult(params, showPaginationBlock = true, perPage = 12) {
-  let searchResults;
-  let resultDivs;
-  try {
-    searchResults = await searchKnowledgebase(params, perPage);
-    resultDivs = searchResults.results
-      .map((item) => {
-        const textBody = document.createElement('div');
-        textBody.innerHTML = item.body;
+function createKnowledgebaseResult(params, showPaginationBlock = true, perPage = 12) {
+  const resultsDiv = div({ class: 'search-result-section knowledgebase' },
+    createSearchSectionTitle('Knowledgebase'),
+    div({ class: 'results-loading-spinner' }));
 
-        return (div({ class: '' },
-          a({ href: item.html_url, target: '_blank' },
-            h4(item.title),
-            p(trimToLength(233, textBody.textContent)),
-          ),
-        ));
-      });
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-    resultDivs = [p('Unable to load results.')];
-  }
+  searchKnowledgebase(params, perPage).then((searchResults) => {
+    let resultElements;
+    try {
+      resultElements = searchResults.results
+        .map((item) => {
+          const textBody = document.createElement('div');
+          textBody.innerHTML = item.body;
 
-  const moreLink = a({
-    href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
-    class: 'learn-more learn-classNamearrow',
-    target: '_blank',
-    rel: 'null noopener',
-  }, 'Search the Knowledgebase');
+          return (div({ class: '' },
+            a({ href: item.html_url, target: '_blank' },
+              h4(item.title),
+              p(trimToLength(233, textBody.textContent)),
+            ),
+          ));
+        });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      resultElements = [p('Unable to load results.')];
+    }
 
-  return div({ class: 'search-result-section knowledgebase' },
-    // eslint-disable-next-line function-call-argument-newline
-    createSearchSectionTitle('Knowledgebase', searchResults?.results?.length, searchResults?.count, moreLink),
-    ...resultDivs,
-    showPaginationBlock ? createPagination(params.page, searchResults.page_count) : '',
-  );
+    const moreLink = a({
+      href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+      class: 'learn-more learn-classNamearrow',
+      target: '_blank',
+      rel: 'null noopener',
+    }, 'Search the Knowledgebase');
+
+    resultsDiv.textContent = '';
+    resultsDiv.append(createSearchSectionTitle('Knowledgebase', searchResults?.results?.length, searchResults?.count, moreLink));
+    resultsDiv.append(...resultElements,
+    );
+
+    if (showPaginationBlock) {
+      resultsDiv.append(createPagination(params.page, searchResults.page_count));
+    }
+
+    // Decorate and load all the newly injected content
+    loadBlocks(resultsDiv);
+  });
+
+  return resultsDiv;
 }
 
-async function createCommunityResult(params, paginate = true) {
+function createCommunityResult(params, paginate = true) {
   function convertToSlug(Text) {
     return Text
       .toLowerCase()
@@ -438,43 +463,52 @@ async function createCommunityResult(params, paginate = true) {
     return `${lastDay} ${day} ago`;
   }
 
-  let resultDivs;
-  let searchResults;
-  try {
-    searchResults = await searchCommunity(params);
-    resultDivs = searchResults
-      .map((item) => {
-        const categorySlug = `${convertToSlug(item.categoryName)}-${item.categoryId}`;
-        const postSlug = `${convertToSlug(item.title)}-${item.publicId}`;
-        const url = `https://community.zemax.com/${categorySlug}/${postSlug}`;
-        const link = a({ class: 'search-community-block', href: url, target: '_blank' },
-          h4(item.title),
-          p(),
-        );
+  const resultsDiv = div({ class: 'search-result-section community' },
+    createSearchSectionTitle('Community'),
+    div({ class: 'results-loading-spinner' }));
 
-        link.querySelector('p').innerHTML = `
+  searchCommunity(params).then((searchResults) => {
+    let resultElements;
+    try {
+      resultElements = searchResults
+        .map((item) => {
+          const categorySlug = `${convertToSlug(item.categoryName)}-${item.categoryId}`;
+          const postSlug = `${convertToSlug(item.title)}-${item.publicId}`;
+          const url = `https://community.zemax.com/${categorySlug}/${postSlug}`;
+          const link = a({ class: 'search-community-block', href: url, target: '_blank' },
+            h4(item.title),
+            p(),
+          );
+
+          link.querySelector('p').innerHTML = `
           Last Post: <strong>${(getRelativeDate(item.lastActivityAt))}</strong> 
           | Replies: <strong>${item.replyCount}</strong>`;
-        return link;
-      });
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-    resultDivs = [p('Unable to load results.')];
-  }
-  const moreLink = a({
-    href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
-    class: 'learn-more learn-classNamearrow',
-    target: '_blank',
-    rel: 'null noopener',
-  }, 'Search the Community');
-
-  return div({ class: 'search-result-section community' },
-    createSearchSectionTitle('Community', searchResults?.length, null, moreLink),
-    ...resultDivs,
-    paginate ? p({ class: 'button-container load-more' }, a({
-      class: 'button secondary',
+          return link;
+        });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      resultElements = [p('Unable to load results.')];
+    }
+    const moreLink = a({
       href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
-    }, 'Load More results')) : '',
-  );
+      class: 'learn-more learn-classNamearrow',
+      target: '_blank',
+      rel: 'null noopener',
+    }, 'Search the Community');
+
+    resultsDiv.textContent = '';
+    resultsDiv.append(createSearchSectionTitle('Community', searchResults?.length, null, moreLink));
+    resultsDiv.append(...resultElements);
+    if (paginate) {
+      resultsDiv.append(p({ class: 'button-container load-more' }, a({
+        class: 'button secondary',
+        href: `https://support.zemax.com/hc/en-us/search?query=${params.searchTerm}`,
+      }, 'Load More results')));
+    }
+    // Decorate and load all the newly injected content
+    loadBlocks(resultsDiv);
+  });
+
+  return resultsDiv;
 }
