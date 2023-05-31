@@ -62,11 +62,13 @@ header nav .nav-menu {
 
 header nav .nav-menu ul {
   list-style: none;
+  padding: 0 20px;
 }
 
 header nav .nav-menu .dropdown-button {
   background: none;
   border: none;
+  padding: 5px;
 }
 
 header nav .menu-nav-dropdown ul {
@@ -207,7 +209,8 @@ header nav[aria-expanded='true'] .nav-menu > ul > .mobile-search > .mobile-searc
 header nav .nav-menu ul .mobile-search-container button {
   background: none;
   border: none;
-  padding: 0;
+  padding: unset;
+  padding-right: 8px;
 }
 
 header nav .nav-menu ul .mobile-search-container .search-close {
@@ -242,7 +245,7 @@ header nav[aria-expanded="true"] > div {
     'menu menu menu'
     'tools tools tools';
   overflow: scroll;
-  height: 100vh;
+  height: 100%;
 }
 
 header nav[aria-expanded="true"] .nav-menu {
@@ -285,13 +288,25 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     font-size: 20px;
     font-family: var(--ff-myradpro-semibold);
     color: var(--link-color);
-    padding-left: 40px;
+    padding-left: 20px;
     margin: 0;
   }
 
   header nav .nav-tools .additional-links {
-    padding: 0 40px;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 24px;
+    z-index: 22;
+    margin: 0 auto;
+    width: 100%;
   }
+
+  header nav .nav-tools .additional-links a{
+    width: 100%;
+    margin: 0 20px;
+  }
+
 
   header nav .nav-tools .login-wrapper > ul {
     display: none;
@@ -311,6 +326,7 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
 
   header nav[aria-expanded='true'] .nav-tools {
     display: block;
+    height: 100vh;
   }
 
 }
@@ -497,7 +513,12 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     align-self: center;
     gap: 14px;
     padding-right: 15px;
+    background-color: inherit;
   }
+
+  header nav .nav-tools .login-wrapper {
+    border-bottom: inherit;
+}
 
   header nav .nav-tools .login-wrapper > p {
     font-family: var(--ff-myradpro-semibold);
@@ -563,6 +584,10 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
   header nav .nav-tools a {
     font-size: 16px;
     font-family: var(--ff-myradpro-semibold);
+  }
+
+  header nav .nav-tools .additional-links{
+    position: inherit;
   }
 
   header nav .nav-tools .additional-links a {
