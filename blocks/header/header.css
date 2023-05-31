@@ -466,6 +466,7 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     align-items: center;
     justify-content: space-evenly;
     justify-self: center;
+    padding: 0 40px;
   }
 
   header nav .nav-menu ul .mobile-search-container {
