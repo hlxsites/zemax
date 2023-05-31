@@ -1,4 +1,5 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
+import { a, button } from '../../scripts/dom-helpers.js';
 import {
   createModal, createTag, createGenericTable, hideModal, showModal,
 } from '../../scripts/scripts.js';
@@ -38,6 +39,26 @@ function createForm(config) {
   return form;
 }
 
+async function addColleague(event) {
+  event.preventDefault();
+  const firstName = event.target.parentNode.querySelector('#first-name').value;
+  const lastName = event.target.parentNode.querySelector('#last-name').value;
+  const email = event.target.parentNode.querySelector('#email').value;
+  const jobTitle = event.target.parentNode.querySelector('#jobtitle').value;
+  const phone = event.target.parentNode.querySelector('#phone').value;
+  const personalPhone = event.target.parentNode.querySelector('#personal-phone').value;
+  const parentcustomerid = localStorage.getItem('parentcustomerid');
+  const data = await execute('dynamics_add_colleague', `firstname=${firstName}&lastname=${lastName}&emailaddress1=${email}&jobtitle=${jobTitle}&telephone1=${phone}&mobilephone=${personalPhone}&parentcustomerid_account=${parentcustomerid}`, 'POST');
+  if (data?.status === 204) {
+    // TODO show success toast message
+    hideModal(event);
+    // Re render after the data is updated
+    // shoe(event);
+  } else {
+    console.log('error ', data);
+  }
+  // &firstname=Shehjad&lastname=test&emailaddress1=shehad07%40gmail.com&jobtitle=ss&telephone1=3126135908&mobilephone=3126135908&parentcustomerid_account=a5148401-c82e-e911-a96a-000d3a37870e
+}
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
   const licenseId = event.target.getAttribute('data-license-id');
@@ -72,14 +93,22 @@ async function updateUserInfo(event) {
   }
 }
 
+async function showAddColleagueModal(event) {
+  showModal(event);
+  const addColleagueSubmitButton = document.querySelector('#addColleagueSubmitButton');
+  if (addColleagueSubmitButton) {
+    addColleagueSubmitButton.addEventListener('click', addColleague);
+  }
+}
+
 async function showEditUserModal(event) {
-  const button = event.target;
-  const contactid = button.getAttribute('data-contactid');
-  const firstname = button.getAttribute('data-user-firstname');
-  const lastname = button.getAttribute('data-user-lastname');
-  const jobTitle = button.getAttribute('data-user-jobtitle');
-  const email = button.getAttribute('data-user-email');
-  const phone = button.getAttribute('data-user-phone');
+  const actionButton = event.target;
+  const contactid = actionButton.getAttribute('data-contactid');
+  const firstname = actionButton.getAttribute('data-user-firstname');
+  const lastname = actionButton.getAttribute('data-user-lastname');
+  const jobTitle = actionButton.getAttribute('data-user-jobtitle');
+  const email = actionButton.getAttribute('data-user-email');
+  const phone = actionButton.getAttribute('data-user-phone');
   const userEditForm = document.querySelector('#editUserEditForm');
   userEditForm.querySelector('#first-name').setAttribute('value', firstname);
   userEditForm.querySelector('#last-name').setAttribute('value', lastname);
@@ -172,19 +201,70 @@ async function createUser(event) {
   const deactivatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
   deactivatedUsersHeading.splice(7, 1);
 
+  // TODO createGenericTable rename to createGenericTable
   colleaguesTabsMapping.forEach((heading, index) => {
     if (index === 0) {
+      const tableContainer = createTag('div', { class: 'table-container' }, createGenericTable(activatedUsersHeading, activeColleagues));
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createGenericTable(activatedUsersHeading, activeColleagues).outerHTML),
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, tableContainer.outerHTML),
       );
     } else {
+      const tableContainer = createTag('div', { class: 'table-container' }, createGenericTable(deactivatedUsersHeading, inactiveColleagues));
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createGenericTable(deactivatedUsersHeading, inactiveColleagues).outerHTML),
+        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, tableContainer.outerHTML),
       );
     }
   });
 
+  licenseBlock.appendChild(
+    a(
+      {
+        href: 'https://support.zemax.com/hc/articles/1500008380761',
+        class: 'visit-knowledgebase secondary',
+        target: '_blank',
+        rel: 'noreferrer',
+      },
+      'Visit the Knowledgebase',
+    ),
+  );
+
+  licenseBlock.appendChild(
+    button(
+      {
+        class: 'add-colleague button primary',
+        id: 'addColleagueButton',
+        'data-modal-id': 'addColleagueModal',
+      },
+      'Add Colleague',
+    ),
+  );
   licenseBlock.appendChild(tabDiv);
+
+  // Add event for add Colleague
+  licenseBlock.querySelector('.add-colleague.primary').addEventListener('click', showAddColleagueModal);
+
+  // Add colleague modal
+  const configAddColleague = {
+    fields: [
+      { id: 'first-name', label: 'First Name' },
+      { id: 'last-name', label: 'Last Name' },
+      { id: 'job-title', label: 'Job Title' },
+      { id: 'email', label: 'Email' },
+      { id: 'phone', label: 'Business Phone' },
+      { id: 'personal-phone', label: 'Mobile Phone' },
+    ],
+    submitText: 'Add Colleague',
+    submitId: 'addColleagueSubmitButton',
+    submitClass: 'add-colleague-action-button primary button',
+    submitDataModalId: 'addColleagueModal',
+    formId: 'addColleagueEditForm',
+  };
+
+  const addColleagueModalContent = createForm(configAddColleague);
+  const addColleagueButtonsConfig = [];
+
+  const addColleagueModalDiv = createModal('Add Colleague', addColleagueModalContent, 'add-colleague-modal-content', 'add-colleague-container', 'addColleagueModal', 'add-colleague-modal', addColleagueButtonsConfig);
+  licenseBlock.appendChild(addColleagueModalDiv);
 
   // Reset password modal
   const modalResetUserPasswordDescription = createTag('p', '', 'Please confirm this action to generate the password reset email');
@@ -360,6 +440,12 @@ async function updateLicenseNickname() {
 
 function hideOtherUserLicenseInformation() {
   const sections = document.querySelectorAll('.section');
+  const moreInformationLink = document.querySelector('.more-info-access.secondary');
+
+  // Remove more information link
+  if (moreInformationLink) {
+    moreInformationLink.remove();
+  }
 
   sections.forEach((section) => {
     if (section.classList.contains('user-licenses-container')) {
@@ -438,7 +524,8 @@ async function displayLicenseDetails(event) {
     if (licenseUsers && licenseUsers.length > 0) {
       const licenseDetailsUsersTable = getLicenseDetailsUsersTable(licenseId);
       const tableElement = createGenericTable(licenseDetailsUsersTable, licenseUsers);
-      endUsersDetailsDiv.appendChild(tableElement);
+      const tableContainer = createTag('div', { class: 'table-container' }, tableElement);
+      endUsersDetailsDiv.appendChild(tableContainer);
 
       const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
       removeButtons.forEach((removeButton) => {
@@ -599,6 +686,7 @@ function createContentDiv(tabId, ariaLabelBy, isHidden, content) {
 }
 
 function createLicencesTable(rows) {
+  const tableContainer = createTag('div', { class: 'table-container' }, '');
   const tableElement = document.createElement('table');
 
   const thead = document.createElement('thead');
@@ -608,9 +696,9 @@ function createLicencesTable(rows) {
 
   tableHeadings.forEach((tableHeading) => {
     const tableHeadingElement = document.createElement('th');
-    const button = document.createElement('button');
-    button.innerHTML = tableHeading;
-    tableHeadingElement.appendChild(button);
+    const tableButton = document.createElement('button');
+    tableButton.innerHTML = tableHeading;
+    tableHeadingElement.appendChild(tableButton);
     tr.appendChild(tableHeadingElement);
   });
 
@@ -671,7 +759,8 @@ function createLicencesTable(rows) {
   });
 
   tableElement.appendChild(tbody);
-  return tableElement;
+  tableContainer.appendChild(tableElement);
+  return tableContainer;
 }
 
 // Activate a tab by ID
@@ -793,4 +882,15 @@ async function loadData(block) {
   block.append(tabDiv);
   addTabFeature();
   addManageLicenseFeature(block);
+  block.appendChild(
+    a(
+      {
+        href: 'https://support.zemax.com/hc/en-us/sections/1500001481261',
+        class: 'more-info-access secondary',
+        target: '_blank',
+        rel: 'noreferrer',
+      },
+      'More information about license management',
+    ),
+  );
 }
