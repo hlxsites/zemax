@@ -79,9 +79,11 @@ export function createModal(modalTitle, modalBodyInnerContent, modalContentClass
   }
   const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
   const modalTitleH3 = createTag('h3', '', modalTitle);
-  const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
+  const modalCloseButtonIcon = createTag('button', { class: 'modal-close', 'data-modal-id': modalId }, '');
   modalHeaderDiv.appendChild(modalTitleH3);
   modalHeaderDiv.appendChild(modalCloseButtonIcon);
+
+  modalCloseButtonIcon.addEventListener('click', hideModal);
 
   const modalContentDiv = createTag('div', { class: `modal-content ${modalContentClass}` }, modalHeaderDiv);
   const modalBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: modalBodyClass }, modalBodyInnerContentHtml));

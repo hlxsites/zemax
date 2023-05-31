@@ -26,6 +26,11 @@ export default async function decorate(block) {
         if (localStorage.getItem('contactid') === null || localStorage.getItem('contactid') === undefined) {
           localStorage.setItem('contactid', data.zemax_zendeskid);
         }
+
+        if (localStorage.getItem('parentcustomerid')) {
+          // eslint-disable-next-line no-underscore-dangle
+          localStorage.setItem('parentcustomerid', data.userdetails._parentcustomerid_value);
+        }
         if (webroles !== undefined) {
           localStorage.setItem('webroles', JSON.stringify(webroles));
         }

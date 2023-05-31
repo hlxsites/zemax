@@ -83,6 +83,7 @@ export default async function decorate(block) {
         block.appendChild(supportLinkDiv);
 
         if (data.length > 0) {
+          const tableContainer = createTag('div', { class: 'table-container' }, '');
           const tableElement = document.createElement('table');
           const thead = document.createElement('thead');
           const tr = document.createElement('tr');
@@ -138,8 +139,9 @@ export default async function decorate(block) {
           });
 
           tableElement.appendChild(tbody);
+          tableContainer.appendChild(tableElement);
 
-          block.append(tableElement);
+          block.append(tableContainer);
         } else {
           // TODO placeholder
           block.append(p({ class: 'no-tickets' }, getLocaleConfig('en_us', 'userTickets').noTicketDescription));
