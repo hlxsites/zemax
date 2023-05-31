@@ -23,11 +23,11 @@ export default async function decorate(block) {
         const { webroles } = data;
 
         // TODO handle cases where there is no response on webroles
-        if (localStorage.getItem('contactid') === null || localStorage.getItem('contactid') === undefined) {
+        if (!localStorage.getItem('contactid')) {
           localStorage.setItem('contactid', data.zemax_zendeskid);
         }
 
-        if (localStorage.getItem('parentcustomerid')) {
+        if (!localStorage.getItem('parentcustomerid')) {
           // eslint-disable-next-line no-underscore-dangle
           localStorage.setItem('parentcustomerid', data.userdetails._parentcustomerid_value);
         }
