@@ -154,6 +154,17 @@ function addEventListenersDesktop() {
 }
 
 function reAttachEventListeners() {
+  document.querySelectorAll('.menu-nav-category').forEach((title) => {
+    elementsWithEventListener.push(title);
+    title.addEventListener('click', (e) => {
+      const anchorLink = title.querySelector('a');
+      if (anchorLink && anchorLink.href) {
+        window.location.href = anchorLink.href;
+      }
+      e.stopPropagation();
+    });
+  });
+
   if (mql.matches) {
     addEventListenersDesktop();
   } else {

@@ -184,42 +184,51 @@ function snapScroll(el, dir = 1) {
  * @param carousel the carousel element
  */
 function makeCarouselDraggable(carousel) {
-  // make carousel draggable
   let isDown = false;
   let startX = 0;
   let startScroll = 0;
   let prevScroll = 0;
 
-  carousel.addEventListener('mousedown', (e) => {
+  carousel.addEventListener('mousedown', handleDragStart);
+  carousel.addEventListener('touchstart', handleDragStart);
+
+  carousel.addEventListener('mouseleave', handleDragEnd);
+  carousel.addEventListener('mouseup', handleDragEnd);
+  carousel.addEventListener('touchend', handleDragEnd);
+
+  carousel.addEventListener('mousemove', handleDragMove);
+  carousel.addEventListener('touchmove', handleDragMove);
+
+  function handleDragStart(e) {
     isDown = true;
-    startX = e.pageX - carousel.offsetLeft;
+    startX = getDragXPosition(e);
     startScroll = carousel.scrollLeft;
     prevScroll = startScroll;
-  });
+  }
 
-  carousel.addEventListener('mouseleave', () => {
+  function handleDragEnd() {
     if (isDown) {
       snapScroll(carousel, carousel.scrollLeft > startScroll ? 1 : -1);
     }
     isDown = false;
-  });
+  }
 
-  carousel.addEventListener('mouseup', () => {
-    if (isDown) {
-      snapScroll(carousel, carousel.scrollLeft > startScroll ? 1 : -1);
-    }
-    isDown = false;
-  });
-
-  carousel.addEventListener('mousemove', (e) => {
+  function handleDragMove(e) {
     if (!isDown) {
       return;
     }
     e.preventDefault();
-    const x = e.pageX - carousel.offsetLeft;
+    const x = getDragXPosition(e);
     const walk = x - startX;
     carousel.scrollLeft = prevScroll - walk;
-  });
+  }
+
+  function getDragXPosition(e) {
+    if (e.type.startsWith('touch')) {
+      return e.touches[0].pageX;
+    }
+    return e.pageX;
+  }
 }
 
 function calculateSlideShow(defaultVariant) {

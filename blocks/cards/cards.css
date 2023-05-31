@@ -60,12 +60,12 @@ transition: all 0.3s linear 0s;
 
 .cards.layout-75-25 > ul > li:nth-child(odd) .cards-card-image{
   height: 100%;
-  width: 124%;
+  width: 100%;
 
 } 
 
 .cards.layout-75-25 > ul > li:nth-child(odd) .cards-card-image img{
-  width: 81%;
+  width: 100%;
   height: 79px;
   object-fit: cover;
   margin-right: -6.5%;
@@ -84,12 +84,12 @@ transition: all 0.3s linear 0s;
 
 .cards.layout-25-75 > ul > li:nth-child(even) .cards-card-image{
   height: 100%;
-  width: 124%;
+  width: 100%;
 
 } 
 
 .cards.layout-25-75 > ul > li:nth-child(even) .cards-card-image img{
-  width: 81%;
+  width: 100%;
   height: 79px;
   object-fit: cover;
   margin-right: -6.5%;
