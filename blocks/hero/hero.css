@@ -154,9 +154,9 @@ main .hero .button.play::before {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 50%;
-    margin: 0 auto;
-    padding-top: 50px;
+    width: 100%;
+    max-width: 400px;
+    padding: 50px 15px 30px;
   }
 
   main .hero picture {
@@ -175,8 +175,8 @@ main .hero .button.play::before {
   main .hero h3 , 
   main .hero p:not(:first-child),
   main .hero p:not(:last-child) {
-        width: calc(var(--section-width)/2);
-        padding-left: calc((100vw - var(--section-width))/8);
+    max-width: 540px;
+    margin: 0;
   }
 
   main .hero .icon > svg{
@@ -198,4 +198,11 @@ main .hero .button.play::before {
   main .hero.white picture::after {
     height: 98%;
   }
+
+  main .hero >div > div{
+    max-width: 990px;
+    padding: 120px 15px 0;
+    margin: 0 auto;
+  }
+
 }
