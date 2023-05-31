@@ -41,18 +41,20 @@ function createForm(config) {
 
 async function addColleague(event) {
   event.preventDefault();
-  const firstName = event.target.parentNode.querySelector('#first-name').value;
-  const lastName = event.target.parentNode.querySelector('#last-name').value;
-  const email = event.target.parentNode.querySelector('#email').value;
-  const jobTitle = event.target.parentNode.querySelector('#jobtitle').value;
-  const phone = event.target.parentNode.querySelector('#phone').value;
-  const personalPhone = event.target.parentNode.querySelector('#personal-phone').value;
+  const formNode = event.target.parentNode;
+  const firstName = formNode.querySelector('#first-name').value;
+  const lastName = formNode.querySelector('#last-name').value;
+  const email = formNode.querySelector('#email').value;
+  const jobTitle = formNode.querySelector('#job-title').value;
+  const phone = formNode.querySelector('#phone').value;
+  const personalPhone = formNode.querySelector('#personal-phone').value;
   const parentcustomerid = localStorage.getItem('parentcustomerid');
-  const data = await execute('dynamics_add_colleague', `firstname=${firstName}&lastname=${lastName}&emailaddress1=${email}&jobtitle=${jobTitle}&telephone1=${phone}&mobilephone=${personalPhone}&parentcustomerid_account=${parentcustomerid}`, 'POST');
+  const data = await execute('dynamics_add_colleague', `&firstname=${firstName}&lastname=${lastName}&emailaddress1=${email}&jobtitle=${jobTitle}&telephone1=${phone}&mobilephone=${personalPhone}&parentcustomerid_account=${parentcustomerid}`, 'POST');
   if (data?.status === 204) {
     // TODO show success toast message
     hideModal(event);
     // Re render after the data is updated
+    createUser(event);
     // shoe(event);
   } else {
     console.log('error ', data);
