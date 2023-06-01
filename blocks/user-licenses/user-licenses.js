@@ -1,8 +1,9 @@
-/* eslint-disable object-shorthand */
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import { a, button } from '../../scripts/dom-helpers.js';
 import {
-  createModal, createTag, createGenericTable, hideModal, showModal,
+  createModal, createTag, createGenericDataTable, hideModal,
+  showModal, createForm, createTabLi, createTabContentDiv,
+  addTabFeature,
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 import {
@@ -17,37 +18,6 @@ import addColleagueFormConfiguration from '../../configs/forms/addColleagueFormC
 import editUserFormConfiguration from '../../configs/forms/editUserFormConfig.js';
 import getLicenseDetailsUsersTable from '../../configs/tables/licenseDetailsUsersTableConfig.js';
 import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicenseTableConfig.js';
-
-function createForm(config) {
-  const form = createTag('form', { id: config.formId }, '');
-
-  config.fields.forEach((field) => {
-    const label = createTag('label', { for: field.id }, field.label);
-    const input = createTag('input', { type: 'text', id: field.id }, '');
-
-    if (field.value) {
-      input.setAttribute('value', field.value);
-    }
-
-    if (field.readOnly) {
-      input.setAttribute('readonly', '');
-    }
-
-    if (field.disabled) {
-      input.setAttribute('disabled', '');
-    }
-
-    form.appendChild(label);
-    form.appendChild(input);
-  });
-
-  const submitButton = createTag('input', {
-    type: 'submit', id: config.submitId, class: config.submitClass, value: config.submitText, 'data-modal-id': config.submitDataModalId,
-  });
-  form.appendChild(submitButton);
-
-  return form;
-}
 
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
@@ -141,17 +111,16 @@ async function createUserView(event) {
   const deactivatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
   deactivatedUsersHeading.splice(7, 1);
 
-  // TODO createGenericTable rename to createGenericTable
   colleaguesTabsMapping.forEach((heading, index) => {
     if (index === 0) {
-      const tableContainer = createTag('div', { class: 'table-container' }, createGenericTable(activatedUsersHeading, activeColleagues));
+      const tableContainer = createTag('div', { class: 'table-container' }, createGenericDataTable(activatedUsersHeading, activeColleagues));
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, tableContainer.outerHTML),
+        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, tableContainer.outerHTML),
       );
     } else {
-      const tableContainer = createTag('div', { class: 'table-container' }, createGenericTable(deactivatedUsersHeading, inactiveColleagues));
+      const tableContainer = createTag('div', { class: 'table-container' }, createGenericDataTable(deactivatedUsersHeading, inactiveColleagues));
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, tableContainer.outerHTML),
+        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, tableContainer.outerHTML),
       );
     }
   });
@@ -243,13 +212,6 @@ async function createUserView(event) {
   addTabFeature();
 }
 
-function showAddUserTable(event) {
-  const licenseId = event.target.getAttribute('data-license-id');
-  const addUserActionButton = document.querySelector('.add-user-action-button');
-  addUserActionButton.setAttribute('data-license-id', licenseId);
-  showModal(event);
-}
-
 function updateAddUserId(event) {
   const addUserActionButton = document.querySelector('.add-user-action-button');
   addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
@@ -260,10 +222,11 @@ function updateChangeUserId(event) {
   addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
 }
 
-async function createAddUserToLicenseTable(checkboxClass) {
-  const data = await execute('dynamics_get_colleagues_view', '', 'GET');
-  const colleaguesData = await data.colleagues;
-  return createGenericTable(getAddUserToLicenseTableConfig(checkboxClass), colleaguesData);
+function showAddUserTable(event) {
+  const licenseId = event.target.getAttribute('data-license-id');
+  const addUserActionButton = document.querySelector('.add-user-action-button');
+  addUserActionButton.setAttribute('data-license-id', licenseId);
+  showModal(event);
 }
 
 async function addColleaguesToUserActionModal(
@@ -287,6 +250,12 @@ async function addColleaguesToUserActionModal(
   userCheckboxes.forEach((userCheckbox) => {
     userCheckbox.addEventListener('click', eventListenerMethoda);
   });
+}
+
+async function createAddUserToLicenseTable(checkboxClass) {
+  const data = await execute('dynamics_get_colleagues_view', '', 'GET');
+  const colleaguesData = await data.colleagues;
+  return createGenericDataTable(getAddUserToLicenseTableConfig(checkboxClass), colleaguesData);
 }
 
 function hideOtherUserLicenseInformation() {
@@ -374,7 +343,7 @@ async function displayLicenseDetailsView(event) {
 
     if (licenseUsers && licenseUsers.length > 0) {
       const licenseDetailsUsersTable = getLicenseDetailsUsersTable(licenseId);
-      const tableElement = createGenericTable(licenseDetailsUsersTable, licenseUsers);
+      const tableElement = createGenericDataTable(licenseDetailsUsersTable, licenseUsers);
       const tableContainer = createTag('div', { class: 'table-container' }, tableElement);
       endUsersDetailsDiv.appendChild(tableContainer);
 
@@ -413,8 +382,7 @@ async function addManageLicenseFeature(block) {
     }, {
       userAction: 'click',
       button: addUserButton,
-      // eslint-disable-next-line func-names
-      listenerMethod: function (eventAddUserToLicense) {
+      listenerMethod(eventAddUserToLicense) {
         addUserToALicense(eventAddUserToLicense, displayLicenseDetailsView);
       },
     }, {
@@ -436,8 +404,7 @@ async function addManageLicenseFeature(block) {
     {
       userAction: 'click',
       button: deleteUserButton,
-      // eslint-disable-next-line func-names
-      listenerMethod: function (eventRemoveUserFromLicense) {
+      listenerMethod(eventRemoveUserFromLicense) {
         removeUserFromLicense(eventRemoveUserFromLicense, displayLicenseDetailsView);
       },
     }, {
@@ -463,8 +430,7 @@ async function addManageLicenseFeature(block) {
     }, {
       userAction: 'click',
       button: changeUserButton,
-      // eslint-disable-next-line func-names
-      listenerMethod: function (eventChangeUser) {
+      listenerMethod(eventChangeUser) {
         changeUserForALicense(eventChangeUser, displayLicenseDetailsView);
       },
     }, {
@@ -509,40 +475,6 @@ function createTableHeaderMapping(data) {
     tableHeaderMapping.push(`${allLicenseTabHeadingMapping[4]}|academic_esp_licenses`);
   }
   return tableHeaderMapping;
-}
-
-function createTabLi(active, ariaControls, isSelected, tabText) {
-  const li = document.createElement('li');
-
-  const tabLink = createTag(
-    'a',
-    {
-      href: `#${ariaControls}`,
-      class: `tab-link ${active}`,
-      role: 'tab',
-      'aria-selected': isSelected,
-      'aria-controls': ariaControls,
-    },
-    tabText,
-  );
-  li.appendChild(tabLink);
-
-  return li;
-}
-
-function createContentDiv(tabId, ariaLabelBy, isHidden, content) {
-  const div = document.createElement('div');
-  div.setAttribute('id', tabId);
-  div.classList.add('tab-content');
-  div.setAttribute('role', 'tabpanel');
-  div.setAttribute('tabindex', '0');
-  div.setAttribute('aria-labelledby', ariaLabelBy);
-  div.innerHTML = content;
-  if (isHidden) {
-    div.setAttribute('hidden', '');
-  }
-
-  return div;
 }
 
 function createLicencesTable(rows) {
@@ -623,87 +555,6 @@ function createLicencesTable(rows) {
   return tableContainer;
 }
 
-// Activate a tab by ID
-function activateTab(tabId) {
-  const tabLinks = document.querySelectorAll('.tab-link');
-  const tabContents = document.querySelectorAll('.tab-content');
-
-  tabLinks.forEach((link) => {
-    link.classList.remove('active');
-    link.setAttribute('aria-selected', 'false');
-    link.setAttribute('tabindex', '-1');
-  });
-
-  // Hide all tab content elements
-  tabContents.forEach((content) => {
-    content.classList.remove('active');
-    content.classList.remove('show');
-    content.setAttribute('aria-hidden', 'true');
-    content.setAttribute('hidden', '');
-  });
-
-  // Activate the selected tab link
-  const tabLink = document.querySelector(`.tab-link[href="#${tabId}"]`);
-  tabLink.classList.add('active');
-  tabLink.setAttribute('aria-selected', 'true');
-  tabLink.setAttribute('tabindex', '0');
-
-  // Show the associated tab content element
-  const tabContent = document.getElementById(tabId);
-  tabContent.classList.add('active');
-  tabContent.classList.add('show');
-  tabContent.setAttribute('aria-hidden', 'false');
-}
-
-function addTabFeature() {
-  // Get all tab links and tab content elements
-  const tabLinks = document.querySelectorAll('.tab-link');
-
-  // Handle click event for each tab link
-  tabLinks.forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      // Get the ID of the clicked tab link
-      const tabId = link.getAttribute('href').substring(1);
-
-      activateTab(tabId);
-    });
-
-    // Handle keydown event for each tab link
-    link.addEventListener('keydown', (e) => {
-      let index = Array.from(tabLinks).indexOf(e.target);
-
-      switch (e.key) {
-        case 'ArrowLeft':
-          e.preventDefault();
-          index = index > 0 ? index - 1 : tabLinks.length - 1;
-          tabLinks[index].focus();
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          index = index < tabLinks.length - 1 ? index + 1 : 0;
-          tabLinks[index].focus();
-          break;
-        case 'Home':
-          e.preventDefault();
-          tabLinks[0].focus();
-          break;
-        case 'End':
-          e.preventDefault();
-          tabLinks[tabLinks.length - 1].focus();
-          break;
-        case 'Enter':
-        case ' ':
-          e.preventDefault();
-          activateTab(e.target.getAttribute('href').substring(1));
-          break;
-        default:
-      }
-    });
-  });
-}
-
 export default async function decorate(block) {
   // noinspection ES6MissingAwait
   loadData(block);
@@ -730,11 +581,11 @@ async function loadData(block) {
   licenseTableHeadingMapping.forEach((heading, index) => {
     if (index === 0) {
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
+        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
       );
     } else {
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
+        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
       );
     }
   });

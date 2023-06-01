@@ -1,15 +1,15 @@
 import execute from '../../scripts/zemax-api.js';
 import { hideModal } from '../../scripts/scripts.js';
 
-function processResponse(event, data, renderMethod, hideActionModal) {
+function processResponse(event, data, renderViewMethod, hideActionModal) {
   if (data?.status === 204) {
     // TODO show success toast message
     if (hideActionModal) {
       hideModal(event);
     }
     // Re render view after the data is updated
-    if (renderMethod) {
-      renderMethod(event);
+    if (renderViewMethod) {
+      renderViewMethod(event);
     }
   } else {
     console.log('error ', data);
@@ -51,7 +51,6 @@ export async function resetUserPassword(event) {
 
 export async function activateUser(event, callback) {
   const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
   const data = await execute('dynamics_activate_userid', `&contact_id=${contactid}`, 'PATCH');
 
   processResponse(event, data, callback, false);
@@ -59,7 +58,6 @@ export async function activateUser(event, callback) {
 
 export async function deactivateUser(event, callback) {
   const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
   const data = await execute('dynamics_deactivate_userid', `&contact_id=${contactid}`, 'PATCH');
 
   processResponse(event, data, callback, false);
