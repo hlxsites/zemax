@@ -1,12 +1,22 @@
+/* eslint-disable object-shorthand */
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import { a, button } from '../../scripts/dom-helpers.js';
 import {
   createModal, createTag, createGenericTable, hideModal, showModal,
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
+import {
+  addColleague, updateUserInfo, resetUserPassword,
+  activateUser, deactivateUser, updateLicenseNickname,
+  changeUserForALicense, addUserToALicense, removeUserFromLicense,
+} from './user-actions.js';
+
+// Load configurations
+import activatedDeactivatedColleaguesTable from '../../configs/tables/activatedDeactivatedColleaguesTableConfig.js';
+import addColleagueFormConfiguration from '../../configs/forms/addColleagueFormConfig.js';
+import editUserFormConfiguration from '../../configs/forms/editUserFormConfig.js';
 import getLicenseDetailsUsersTable from '../../configs/tables/licenseDetailsUsersTableConfig.js';
 import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicenseTableConfig.js';
-import activatedDeactivatedColleaguesTable from '../../configs/tables/activatedDeactivatedColleaguesTableConfig.js';
 
 function createForm(config) {
   const form = createTag('form', { id: config.formId }, '');
@@ -39,28 +49,6 @@ function createForm(config) {
   return form;
 }
 
-async function addColleague(event) {
-  event.preventDefault();
-  const formNode = event.target.parentNode;
-  const firstName = formNode.querySelector('#first-name').value;
-  const lastName = formNode.querySelector('#last-name').value;
-  const email = formNode.querySelector('#email').value;
-  const jobTitle = formNode.querySelector('#job-title').value;
-  const phone = formNode.querySelector('#phone').value;
-  const personalPhone = formNode.querySelector('#personal-phone').value;
-  const parentcustomerid = localStorage.getItem('parentcustomerid');
-  const data = await execute('dynamics_add_colleague', `&firstname=${firstName}&lastname=${lastName}&emailaddress1=${email}&jobtitle=${jobTitle}&telephone1=${phone}&mobilephone=${personalPhone}&parentcustomerid_account=${parentcustomerid}`, 'POST');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // Re render after the data is updated
-    createUser(event);
-    // shoe(event);
-  } else {
-    console.log('error ', data);
-  }
-  // &firstname=Shehjad&lastname=test&emailaddress1=shehad07%40gmail.com&jobtitle=ss&telephone1=3126135908&mobilephone=3126135908&parentcustomerid_account=a5148401-c82e-e911-a96a-000d3a37870e
-}
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
   const licenseId = event.target.getAttribute('data-license-id');
@@ -79,27 +67,13 @@ async function showResetUserPasswordModal(event) {
   userActionButton.setAttribute('data-contactid', contactid);
 }
 
-async function updateUserInfo(event) {
-  event.preventDefault();
-  const jobtitle = event.target.parentNode.querySelector('#job-title').value;
-  const telephone = event.target.parentNode.querySelector('#phone').value;
-  const contactid = event.target.getAttribute('data-contactid');
-  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobtitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // Re render after the data is updated
-    createUser(event);
-  } else {
-    console.log('error ', data);
-  }
-}
-
 async function showAddColleagueModal(event) {
   showModal(event);
   const addColleagueSubmitButton = document.querySelector('#addColleagueSubmitButton');
   if (addColleagueSubmitButton) {
-    addColleagueSubmitButton.addEventListener('click', addColleague);
+    addColleagueSubmitButton.addEventListener('click', (eventNew) => {
+      addColleague(eventNew, createUserView);
+    });
   }
 }
 
@@ -119,49 +93,13 @@ async function showEditUserModal(event) {
   userEditForm.querySelector('#phone').setAttribute('value', phone);
   const submitButton = userEditForm.querySelector('#userEditSubmitButton');
   submitButton.setAttribute('data-contactid', contactid);
-  submitButton.addEventListener('click', updateUserInfo);
+  submitButton.addEventListener('click', (eventNew) => {
+    updateUserInfo(eventNew, createUserView);
+  });
   showModal(event);
 }
 
-async function resetUserPassword(event) {
-  const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
-  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`, 'POST');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-  } else {
-    console.log('error ', data);
-  }
-}
-
-async function activateUser(event) {
-  const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
-  const data = await execute('dynamics_activate_userid', `&contact_id=${contactid}`, 'PATCH');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    // Re render after the data is updated
-    createUser(event);
-  } else {
-    console.log('error ', data);
-  }
-}
-
-async function deactivateUser(event) {
-  const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
-  const data = await execute('dynamics_deactivate_userid', `&contact_id=${contactid}`, 'PATCH');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    // Re render after the data is updated
-    createUser(event);
-  } else {
-    console.log('error ', data);
-  }
-}
-
-async function createUser(event) {
+async function createUserView(event) {
   hideModal(event);
   hideOtherUserLicenseInformation();
   const licenseDetailsDiv = document.querySelector('.license-details');
@@ -245,24 +183,7 @@ async function createUser(event) {
   // Add event for add Colleague
   licenseBlock.querySelector('.add-colleague.primary').addEventListener('click', showAddColleagueModal);
 
-  // Add colleague modal
-  const configAddColleague = {
-    fields: [
-      { id: 'first-name', label: 'First Name' },
-      { id: 'last-name', label: 'Last Name' },
-      { id: 'job-title', label: 'Job Title' },
-      { id: 'email', label: 'Email' },
-      { id: 'phone', label: 'Business Phone' },
-      { id: 'personal-phone', label: 'Mobile Phone' },
-    ],
-    submitText: 'Add Colleague',
-    submitId: 'addColleagueSubmitButton',
-    submitClass: 'add-colleague-action-button primary button',
-    submitDataModalId: 'addColleagueModal',
-    formId: 'addColleagueEditForm',
-  };
-
-  const addColleagueModalContent = createForm(configAddColleague);
+  const addColleagueModalContent = createForm(addColleagueFormConfiguration);
   const addColleagueButtonsConfig = [];
 
   const addColleagueModalDiv = createModal('Add Colleague', addColleagueModalContent, 'add-colleague-modal-content', 'add-colleague-container', 'addColleagueModal', 'add-colleague-modal', addColleagueButtonsConfig);
@@ -294,28 +215,7 @@ async function createUser(event) {
   });
 
   // Edit user modal
-  const config = {
-    fields: [
-      {
-        id: 'first-name', label: 'First Name', value: '', readOnly: true, disabled: true,
-      },
-      {
-        id: 'last-name', label: 'Last Name', value: '', readOnly: true, disabled: true,
-      },
-      { id: 'job-title', label: 'Job Title' },
-      {
-        id: 'email', label: 'Email', value: '', readOnly: true, disabled: true,
-      },
-      { id: 'phone', label: 'Business Phone' },
-    ],
-    submitText: 'Submit',
-    submitId: 'userEditSubmitButton',
-    submitClass: 'edit-user-action-button',
-    submitDataModalId: 'editUserModal',
-    formId: 'editUserEditForm',
-  };
-
-  const editUserModalContent = createForm(config);
+  const editUserModalContent = createForm(editUserFormConfiguration);
   const editUserButtonsConfig = [];
 
   const editUserModalDiv = createModal('Edit Colleague', editUserModalContent, 'edit-user-modal-content', 'edit-user-container', 'editUserModal', 'edit-user-modal', editUserButtonsConfig);
@@ -328,12 +228,16 @@ async function createUser(event) {
 
   const deactivateUserButtons = document.querySelectorAll('.license-user-deactivate-user.action');
   deactivateUserButtons.forEach((deactivateUserButton) => {
-    deactivateUserButton.addEventListener('click', deactivateUser);
+    deactivateUserButton.addEventListener('click', (eventNew) => {
+      deactivateUser(eventNew, createUserView);
+    });
   });
 
   const activateUserButtons = document.querySelectorAll('.license-user-activate-user.action');
   activateUserButtons.forEach((activateUserButton) => {
-    activateUserButton.addEventListener('click', activateUser);
+    activateUserButton.addEventListener('click', (eventNew) => {
+      activateUser(eventNew, createUserView);
+    });
   });
 
   addTabFeature();
@@ -346,20 +250,6 @@ function showAddUserTable(event) {
   showModal(event);
 }
 
-async function changeUserForALicense(event) {
-  const contactId = event.target.getAttribute('contactid');
-  const newProductUserId = event.target.getAttribute('data-new-productuserid');
-  const data = await execute('dynamics_change_enduser_license', `&contact_id=${contactId}&new_productuserid=${newProductUserId}`, 'PATCH');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // eslint-disable-next-line no-use-before-define
-    displayLicenseDetails(event);
-  } else {
-    console.log('error ', data);
-  }
-}
-
 function updateAddUserId(event) {
   const addUserActionButton = document.querySelector('.add-user-action-button');
   addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
@@ -368,21 +258,6 @@ function updateAddUserId(event) {
 function updateChangeUserId(event) {
   const addUserActionButton = document.querySelector('.change-user-action-button');
   addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
-}
-
-async function addUserToALicense(event) {
-  const contactId = event.target.getAttribute('contactid');
-  const licenseId = event.target.getAttribute('data-license-id');
-  const data = await execute('dynamics_add_end_user', `&contactId=${contactId}&licenseid=${licenseId}`, 'POST');
-
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // eslint-disable-next-line no-use-before-define
-    displayLicenseDetails(event);
-  } else {
-    console.log('error ', data);
-  }
 }
 
 async function createAddUserToLicenseTable(checkboxClass) {
@@ -414,32 +289,6 @@ async function addColleaguesToUserActionModal(
   });
 }
 
-async function removeUserFromLicense(event) {
-  const newproductuserid = event.target.getAttribute('data-new-productuserid');
-  const data = await execute('dynamics_remove_enduser_from_license', `&new_productuserid=${newproductuserid}`, 'DELETE');
-  // TODO handle response and add toast message
-
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // eslint-disable-next-line no-use-before-define
-    displayLicenseDetails(event);
-  } else {
-    console.log('error ', data);
-  }
-}
-
-async function updateLicenseNickname() {
-  const { value } = document.querySelector('.nickname');
-  if (value) {
-    const data = await execute('dynamics_set_license_nickname', `&id=97d53652-122f-e611-80ea-005056831cd4&nickname=${value}`, 'PATCH');
-    console.log('Updated license nickname ', data);
-  } else {
-    // TODO handle response and add toast message
-    alert('Provide nickname value before saving');
-  }
-}
-
 function hideOtherUserLicenseInformation() {
   const sections = document.querySelectorAll('.section');
   const moreInformationLink = document.querySelector('.more-info-access.secondary');
@@ -469,7 +318,7 @@ function hideOtherUserLicenseInformation() {
   });
 }
 
-async function displayLicenseDetails(event) {
+async function displayLicenseDetailsView(event) {
   hideOtherUserLicenseInformation();
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
@@ -560,11 +409,14 @@ async function addManageLicenseFeature(block) {
     {
       userAction: 'click',
       button: createUserButton,
-      listenerMethod: createUser,
+      listenerMethod: createUserView,
     }, {
       userAction: 'click',
       button: addUserButton,
-      listenerMethod: addUserToALicense,
+      // eslint-disable-next-line func-names
+      listenerMethod: function (eventAddUserToLicense) {
+        addUserToALicense(eventAddUserToLicense, displayLicenseDetailsView);
+      },
     }, {
       userAction: 'click',
       button: addUserModalCloseButton,
@@ -584,7 +436,10 @@ async function addManageLicenseFeature(block) {
     {
       userAction: 'click',
       button: deleteUserButton,
-      listenerMethod: removeUserFromLicense,
+      // eslint-disable-next-line func-names
+      listenerMethod: function (eventRemoveUserFromLicense) {
+        removeUserFromLicense(eventRemoveUserFromLicense, displayLicenseDetailsView);
+      },
     }, {
       userAction: 'click',
       button: deleteUserModalCloseButton,
@@ -604,11 +459,14 @@ async function addManageLicenseFeature(block) {
     {
       userAction: 'click',
       button: createUserButtonChangeUser,
-      listenerMethod: createUser,
+      listenerMethod: createUserView,
     }, {
       userAction: 'click',
       button: changeUserButton,
-      listenerMethod: changeUserForALicense,
+      // eslint-disable-next-line func-names
+      listenerMethod: function (eventChangeUser) {
+        changeUserForALicense(eventChangeUser, displayLicenseDetailsView);
+      },
     }, {
       userAction: 'click',
       button: changeUserModalCloseButton,
@@ -623,7 +481,7 @@ async function addManageLicenseFeature(block) {
 
   const manageButtons = document.querySelectorAll('.manage-view-license');
   manageButtons.forEach((manageButton) => {
-    manageButton.addEventListener('click', displayLicenseDetails);
+    manageButton.addEventListener('click', displayLicenseDetailsView);
   });
 }
 
