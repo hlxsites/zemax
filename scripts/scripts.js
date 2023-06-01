@@ -71,6 +71,153 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+export function createForm(config) {
+  const form = createTag('form', { id: config.formId }, '');
+
+  config.fields.forEach((field) => {
+    const label = createTag('label', { for: field.id }, field.label);
+    const input = createTag('input', { type: 'text', id: field.id }, '');
+
+    if (field.value) {
+      input.setAttribute('value', field.value);
+    }
+
+    if (field.readOnly) {
+      input.setAttribute('readonly', '');
+    }
+
+    if (field.disabled) {
+      input.setAttribute('disabled', '');
+    }
+
+    form.appendChild(label);
+    form.appendChild(input);
+  });
+
+  const submitButton = createTag('input', {
+    type: 'submit', id: config.submitId, class: config.submitClass, value: config.submitText, 'data-modal-id': config.submitDataModalId,
+  });
+  form.appendChild(submitButton);
+
+  return form;
+}
+
+// Methods for creating tabs
+export function createTabLi(active, ariaControls, isSelected, tabText) {
+  const li = document.createElement('li');
+
+  const tabLink = createTag(
+    'a',
+    {
+      href: `#${ariaControls}`,
+      class: `tab-link ${active}`,
+      role: 'tab',
+      'aria-selected': isSelected,
+      'aria-controls': ariaControls,
+    },
+    tabText,
+  );
+  li.appendChild(tabLink);
+
+  return li;
+}
+
+export function createTabContentDiv(tabId, ariaLabelBy, isHidden, content) {
+  const div = document.createElement('div');
+  div.setAttribute('id', tabId);
+  div.classList.add('tab-content');
+  div.setAttribute('role', 'tabpanel');
+  div.setAttribute('tabindex', '0');
+  div.setAttribute('aria-labelledby', ariaLabelBy);
+  div.innerHTML = content;
+  if (isHidden) {
+    div.setAttribute('hidden', '');
+  }
+
+  return div;
+}
+
+// Activate a tab by ID
+function activateTab(tabId) {
+  const tabLinks = document.querySelectorAll('.tab-link');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabLinks.forEach((link) => {
+    link.classList.remove('active');
+    link.setAttribute('aria-selected', 'false');
+    link.setAttribute('tabindex', '-1');
+  });
+
+  // Hide all tab content elements
+  tabContents.forEach((content) => {
+    content.classList.remove('active');
+    content.classList.remove('show');
+    content.setAttribute('aria-hidden', 'true');
+    content.setAttribute('hidden', '');
+  });
+
+  // Activate the selected tab link
+  const tabLink = document.querySelector(`.tab-link[href="#${tabId}"]`);
+  tabLink.classList.add('active');
+  tabLink.setAttribute('aria-selected', 'true');
+  tabLink.setAttribute('tabindex', '0');
+
+  // Show the associated tab content element
+  const tabContent = document.getElementById(tabId);
+  tabContent.classList.add('active');
+  tabContent.classList.add('show');
+  tabContent.setAttribute('aria-hidden', 'false');
+}
+
+export function addTabFeature() {
+  // Get all tab links and tab content elements
+  const tabLinks = document.querySelectorAll('.tab-link');
+
+  // Handle click event for each tab link
+  tabLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Get the ID of the clicked tab link
+      const tabId = link.getAttribute('href').substring(1);
+
+      activateTab(tabId);
+    });
+
+    // Handle keydown event for each tab link
+    link.addEventListener('keydown', (e) => {
+      let index = Array.from(tabLinks).indexOf(e.target);
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          index = index > 0 ? index - 1 : tabLinks.length - 1;
+          tabLinks[index].focus();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          index = index < tabLinks.length - 1 ? index + 1 : 0;
+          tabLinks[index].focus();
+          break;
+        case 'Home':
+          e.preventDefault();
+          tabLinks[0].focus();
+          break;
+        case 'End':
+          e.preventDefault();
+          tabLinks[tabLinks.length - 1].focus();
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          activateTab(e.target.getAttribute('href').substring(1));
+          break;
+        default:
+      }
+    });
+  });
+}
+
 export function createModal(modalTitle, modalBodyInnerContent, modalContentClass, modalBodyClass,
   modalId, modalContainerClass, buttonsConfig) {
   let modalBodyInnerContentHtml = '';
@@ -140,7 +287,7 @@ function findReplaceJSON(jsonObj, data) {
  * @property {array} attributes attributes to be added
  */
 
-export function createGenericTable(tableHeadings, rowData) {
+export function createGenericDataTable(tableHeadings, rowData) {
   const tableElement = document.createElement('table');
   const thead = document.createElement('thead');
   const tr = document.createElement('tr');
