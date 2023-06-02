@@ -190,14 +190,14 @@ function makeCarouselDraggable(carousel) {
   let prevScroll = 0;
 
   carousel.addEventListener('mousedown', handleDragStart);
-  carousel.addEventListener('touchstart', handleDragStart);
+  carousel.addEventListener('touchstart', handleDragStart, { passive: true });
 
   carousel.addEventListener('mouseleave', handleDragEnd);
   carousel.addEventListener('mouseup', handleDragEnd);
   carousel.addEventListener('touchend', handleDragEnd);
 
   carousel.addEventListener('mousemove', handleDragMove);
-  carousel.addEventListener('touchmove', handleDragMove);
+  carousel.addEventListener('touchmove', handleDragMove, { passive: true });
 
   function handleDragStart(e) {
     isDown = true;
