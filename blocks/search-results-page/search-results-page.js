@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { h1, span } from '../../scripts/dom-helpers.js';
+import { h1, span, img, p } from '../../scripts/dom-helpers.js';
 
 export default async function decorate(block) {
   const response = await fetch('https://zemaxportalfunctions.azurewebsites.net/api/insided_search?pageSize=3&page=1&q=optic',
@@ -17,6 +17,6 @@ export default async function decorate(block) {
 function addResults(result, block) {
   result.forEach((item) => {
     block.append(h1(item.title));
-    // block.append(span(item....));
+    // block.append(p(item.));
   });
 }
