@@ -14,7 +14,7 @@ const editUserFormConfiguration = {
   ],
   submitText: 'Submit',
   submitId: 'userEditSubmitButton',
-  submitClass: 'edit-user-action-button',
+  submitClass: 'edit-user-action-button form-action-button',
   submitDataModalId: 'editUserModal',
   formId: 'editUserEditForm',
 };
