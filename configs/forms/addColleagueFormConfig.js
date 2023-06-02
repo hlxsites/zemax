@@ -9,7 +9,7 @@ const addColleagueFormConfiguration = {
   ],
   submitText: 'Add Colleague',
   submitId: 'addColleagueSubmitButton',
-  submitClass: 'add-colleague-action-button primary button',
+  submitClass: 'add-colleague-action-button form-action-button',
   submitDataModalId: 'addColleagueModal',
   formId: 'addColleagueEditForm',
 };

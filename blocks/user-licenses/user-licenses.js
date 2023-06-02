@@ -69,6 +69,31 @@ async function showEditUserModal(event) {
   showModal(event);
 }
 
+function clearColleagueView() {
+  const userLicenseBlockDiv = document.querySelector('.user-licenses.block');
+  const tabs = userLicenseBlockDiv.querySelector('.tabs');
+  const backToProfileButton = userLicenseBlockDiv.querySelector('#backToAccountButton');
+  const visitKnowledgebaseLink = userLicenseBlockDiv.querySelector('.visit-knowledgebase.secondary');
+  const addColleagueButton = userLicenseBlockDiv.querySelector('#addColleagueButton');
+
+  if (tabs) {
+    tabs.remove();
+  }
+  if (backToProfileButton) {
+    backToProfileButton.remove();
+  }
+  if (visitKnowledgebaseLink) {
+    visitKnowledgebaseLink.remove();
+  }
+  if (addColleagueButton) {
+    addColleagueButton.remove();
+  }
+}
+async function manageUserView(event) {
+  clearColleagueView();
+  console.log('manageUserView');
+}
+
 async function createUserView(event) {
   hideModal(event);
   hideOtherUserLicenseInformation();
@@ -207,6 +232,11 @@ async function createUserView(event) {
     activateUserButton.addEventListener('click', (eventNew) => {
       activateUser(eventNew, createUserView);
     });
+  });
+
+  const manageUserButtons = document.querySelectorAll('.license-user-manage-user.action');
+  manageUserButtons.forEach((manageUserButton) => {
+    manageUserButton.addEventListener('click', manageUserView);
   });
 
   addTabFeature();
