@@ -628,6 +628,7 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     align-items: flex-start;
     justify-content: space-evenly;
     margin: 15px 35px 10px 25px;
+    padding: inherit;
   }
 
   header nav .menu-expandable[aria-expanded='true'] .menu-nav-dropdown ul > li {
