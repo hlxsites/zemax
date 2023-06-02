@@ -2,6 +2,8 @@ import { getEnvironmentConfig, getLocaleConfig } from '../../scripts/zemax-confi
 import { createTag } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
+  const mainDiv = document.querySelector('main');
+  mainDiv.classList.add('profile-page');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
   const fullName = localStorage.getItem('fullname');

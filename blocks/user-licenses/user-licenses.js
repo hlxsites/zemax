@@ -1,5 +1,5 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
-import { a, button } from '../../scripts/dom-helpers.js';
+import { a, button, div } from '../../scripts/dom-helpers.js';
 import {
   createModal, createTag, createGenericDataTable, hideModal,
   showModal, createForm, createTabLi, createTabContentDiv,
@@ -96,17 +96,13 @@ async function manageUserView(event) {
 
 async function createUserView(event) {
   hideModal(event);
-  hideOtherUserLicenseInformation();
-  const licenseDetailsDiv = document.querySelector('.license-details');
-  const endUserDetailsDiv = document.querySelector('.end-users-details');
-  const licenseBlock = document.querySelector('.user-licenses.block');
-  if (licenseDetailsDiv) {
-    licenseDetailsDiv.remove();
-  }
-  if (endUserDetailsDiv) {
-    endUserDetailsDiv.remove();
-  }
+  clearProfileLandingView();
+  window.scrollTo(0, 0);
+  const mainDiv = document.querySelector('main');
+  const createUserViewWrapperDiv = createTag('div', { class: 'create-user-view-wrapper' }, '');
+  const createUserViewDiv = createTag('div', { class: ' section user-licenses-container create-user-view', id: 'createUserView' }, createUserViewWrapperDiv);
 
+  mainDiv.insertBefore(createUserViewDiv, mainDiv.firstChild);
   const tabDiv = createTag('div', { class: 'tabs' });
   const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
   const colleaguesTabsMapping = ['Active Colleagues', 'Deactivated Colleagues'];
@@ -150,7 +146,27 @@ async function createUserView(event) {
     }
   });
 
-  licenseBlock.appendChild(
+  createUserViewWrapperDiv.appendChild(
+    div({ class: 'view-buttons' },
+      a(
+        {
+          class: 'button primary',
+          id: 'backToAccountButton',
+          href: '/pages/profile',
+        },
+        'Back to Account',
+      ),
+      button(
+        {
+          class: 'add-colleague button primary',
+          id: 'addColleagueButton',
+          'data-modal-id': 'addColleagueModal',
+        },
+        'Add Colleague',
+      )),
+  );
+
+  createUserViewWrapperDiv.appendChild(
     a(
       {
         href: 'https://support.zemax.com/hc/articles/1500008380761',
@@ -161,27 +177,16 @@ async function createUserView(event) {
       'Visit the Knowledgebase',
     ),
   );
-
-  licenseBlock.appendChild(
-    button(
-      {
-        class: 'add-colleague button primary',
-        id: 'addColleagueButton',
-        'data-modal-id': 'addColleagueModal',
-      },
-      'Add Colleague',
-    ),
-  );
-  licenseBlock.appendChild(tabDiv);
+  createUserViewWrapperDiv.appendChild(tabDiv);
 
   // Add event for add Colleague
-  licenseBlock.querySelector('.add-colleague.primary').addEventListener('click', showAddColleagueModal);
+  createUserViewWrapperDiv.querySelector('.add-colleague.primary').addEventListener('click', showAddColleagueModal);
 
   const addColleagueModalContent = createForm(addColleagueFormConfiguration);
   const addColleagueButtonsConfig = [];
 
   const addColleagueModalDiv = createModal('Add Colleague', addColleagueModalContent, 'add-colleague-modal-content', 'add-colleague-container', 'addColleagueModal', 'add-colleague-modal', addColleagueButtonsConfig);
-  licenseBlock.appendChild(addColleagueModalDiv);
+  createUserViewWrapperDiv.appendChild(addColleagueModalDiv);
 
   // Reset password modal
   const modalResetUserPasswordDescription = createTag('p', '', 'Please confirm this action to generate the password reset email');
@@ -201,7 +206,8 @@ async function createUserView(event) {
   ];
 
   const modalResetUserPasswordModalDiv = createModal('Confirmation Required', modalResetUserPasswordDescription, 'reset-user-password-modal-content', 'reset-user-password-container', 'resetUserPasswordModal', 'reset-user-password-modal', resetUserPasswordButtonsConfig);
-  licenseBlock.appendChild(modalResetUserPasswordModalDiv);
+  const allModalDiv = document.querySelector('.all-modal-content-container');
+  allModalDiv.appendChild(modalResetUserPasswordModalDiv);
 
   const resetButtons = document.querySelectorAll('.license-user-reset-password.action');
   resetButtons.forEach((resetButton) => {
@@ -213,7 +219,7 @@ async function createUserView(event) {
   const editUserButtonsConfig = [];
 
   const editUserModalDiv = createModal('Edit Colleague', editUserModalContent, 'edit-user-modal-content', 'edit-user-container', 'editUserModal', 'edit-user-modal', editUserButtonsConfig);
-  licenseBlock.appendChild(editUserModalDiv);
+  allModalDiv.appendChild(editUserModalDiv);
 
   const editUserButtons = document.querySelectorAll('.license-user-edit-user.action');
   editUserButtons.forEach((editUserButton) => {
@@ -288,45 +294,53 @@ async function createAddUserToLicenseTable(checkboxClass) {
   return createGenericDataTable(getAddUserToLicenseTableConfig(checkboxClass), colleaguesData);
 }
 
-function hideOtherUserLicenseInformation() {
-  const sections = document.querySelectorAll('.section');
-  const moreInformationLink = document.querySelector('.more-info-access.secondary');
-
-  // Remove more information link
-  if (moreInformationLink) {
-    moreInformationLink.remove();
-  }
+function clearProfileLandingView() {
+  const mainDiv = document.querySelector('main');
+  const sections = mainDiv.querySelectorAll('.section');
 
   sections.forEach((section) => {
-    if (section.classList.contains('user-licenses-container')) {
-      const tabsContent = section.querySelector('.tabs');
-      if (tabsContent) {
-        section.querySelector('.tabs').remove();
-      }
-      const licenseComponent = section.querySelector('.user-licenses.block');
-      licenseComponent.querySelector('h3').parentElement.parentElement.remove();
-
-      let backToProfileButton = licenseComponent.querySelector('#backToAccountButton');
-      if (!backToProfileButton) {
-        backToProfileButton = createTag('a', { href: '/pages/profile', class: 'button primary', id: 'backToAccountButton' }, 'Back to Account');
-        licenseComponent.insertBefore(backToProfileButton, licenseComponent.firstChild);
-      }
-    } else {
+    if (!section.classList.contains('profile-software-download')) {
       section.remove();
     }
   });
 }
 
+function clearLicenseDetailsView() {
+  const licenseDetailsView = document.querySelector('.license-details-view');
+  if (licenseDetailsView) {
+    licenseDetailsView.remove();
+  }
+}
+
 async function displayLicenseDetailsView(event) {
-  hideOtherUserLicenseInformation();
+  clearProfileLandingView();
+  // clearLicenseDetailsView();
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
+  const mainDiv = document.querySelector('main');
   if (userId && accessToken) {
     const data = await execute('dynamics_get_end_users_for_license', `&license_id=${licenseId}`, 'GET');
     // DOM creation
+    const licenseDetailsViewWrapperDiv = createTag('div', { class: 'license-details-view-wrapper' }, '');
+    const licenseDetailsViewDiv = createTag('div', { class: 'section user-licenses-container license-details-view', 'data-view-id': 'licenseDetailsView' }, licenseDetailsViewWrapperDiv);
+
+    const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
+    const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
+    licenseDetailsViewWrapperDiv.append(createTag('a', { class: 'button primary', id: 'backToAccountButton', href: '/pages/profile' }, 'Back to Account'));
+    licenseDetailsViewWrapperDiv.append(licenseDetailsDiv);
+    licenseDetailsViewWrapperDiv.append(endUsersDetailsDiv);
+    licenseDetailsViewWrapperDiv.append(createTag('a', {
+      class: 'more-info secondary',
+      href: 'https://support.zemax.com/hc/en-us/sections/1500001481261',
+      'aria-label': 'More information about license management',
+      target: '_blank',
+      rel: 'noreferrer',
+    }, 'More information about license management'));
+
+    mainDiv.insertBefore(licenseDetailsViewDiv, mainDiv.firstChild);
+
     const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
-    const licenseDetailsDiv = document.querySelector('.license-details');
     licenseDetailsDiv.innerHTML = '';
     licenseDetailsDiv.appendChild(manageLicenseH2);
     const licenseDetailsDataDiv = createTag('div', { class: 'license-details-data' }, '');
@@ -356,7 +370,6 @@ async function displayLicenseDetailsView(event) {
     licenseDetailsRow.appendChild(saveNicknameButton);
     licenseDetailsDataDiv.appendChild(licenseDetailsRow);
 
-    const endUsersDetailsDiv = document.querySelector('.end-users-details');
     endUsersDetailsDiv.innerHTML = '';
     const licenseUsers = data.users;
     const endUsersH2 = createTag('h2', '', 'End Users');
@@ -394,11 +407,8 @@ async function displayLicenseDetailsView(event) {
   }
 }
 
-async function addManageLicenseFeature(block) {
-  const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
-  const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
-  block.append(licenseDetailsDiv);
-  block.append(endUsersDetailsDiv);
+async function addManageLicenseFeature() {
+  const allModalContentContainerDiv = document.querySelector('.all-modal-content-container');
 
   // Add User Modal
   const createUserButton = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'addUserModal' }, 'Create User');
@@ -423,7 +433,7 @@ async function addManageLicenseFeature(block) {
   ];
 
   const modalAddUserDiv = createModal('Add End User to License', '', 'add-user-modal-content', 'add-user-container table-container', 'addUserModal', 'add-user-modal', buttonsConfig);
-  block.append(modalAddUserDiv);
+  allModalContentContainerDiv.append(modalAddUserDiv);
 
   // Delete User Modal
   const modalDeleteDescription = createTag('p', '', 'Please confirm this action to remove end user');
@@ -445,7 +455,7 @@ async function addManageLicenseFeature(block) {
   ];
 
   const modalDeleteUserModalDiv = createModal('Confirmation Required', modalDeleteDescription, 'delete-user-modal-content', 'delete-user-container table-container', 'deleteUserModal', 'delete-user-modal', deleteButtonsConfig);
-  block.append(modalDeleteUserModalDiv);
+  allModalContentContainerDiv.append(modalDeleteUserModalDiv);
 
   // Change User Modal
   const createUserButtonChangeUser = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Create User');
@@ -471,7 +481,7 @@ async function addManageLicenseFeature(block) {
   ];
 
   const modalChangeUserDiv = createModal('Choose a User', '', 'change-user-modal-content', 'change-user-container table-container', 'changeUserModal', 'change-user-modal', createUserButtonsConfig);
-  block.append(modalChangeUserDiv);
+  allModalContentContainerDiv.append(modalChangeUserDiv);
 
   await addColleaguesToUserActionModal('change-user-container', 'change-user-checkbox', updateChangeUserId);
 
@@ -592,6 +602,10 @@ export default async function decorate(block) {
 
 async function loadData(block) {
   const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
+  const mainDiv = document.querySelector('main');
+  // Placeholder for all modal content
+  const modalContainerDiv = createTag('div', { class: 'all-modal-content-container' }, '');
+  mainDiv.insertBefore(modalContainerDiv, mainDiv.firstChild);
 
   const licenseTableHeadingMapping = createTableHeaderMapping(data);
   const tabDiv = createTag('div', { class: 'tabs' });
@@ -622,12 +636,12 @@ async function loadData(block) {
 
   block.append(tabDiv);
   addTabFeature();
-  addManageLicenseFeature(block);
+  addManageLicenseFeature();
   block.appendChild(
     a(
       {
         href: 'https://support.zemax.com/hc/en-us/sections/1500001481261',
-        class: 'more-info-access secondary',
+        class: 'more-info secondary',
         target: '_blank',
         rel: 'noreferrer',
       },
