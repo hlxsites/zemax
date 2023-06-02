@@ -51,8 +51,9 @@ export default async function decorate(block) {
             {
               href: 'https://support.zemax.com/hc/en-us/sections/1500001481281',
               'aria-label': moreInformationAboutAccessButtonText,
-              class: 'more-info-access',
+              class: 'more-info secondary',
               target: '_blank',
+              rel: 'noreferrer',
             },
             moreInformationAboutAccessButtonText,
           ),
