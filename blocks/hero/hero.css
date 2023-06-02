@@ -99,6 +99,7 @@ main .hero img {
   max-height: 630px;
   border-bottom-right-radius: 80% 15%;
   border-bottom-left-radius: 80% 15%;
+  aspect-ratio: 4 / 3;
 }
 
 main .hero.white picture::after {

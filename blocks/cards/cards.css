@@ -49,6 +49,7 @@ transition: all 0.3s linear 0s;
   object-fit: cover;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
+  aspect-ratio: 4 / 3;
 }
 
 /* layout-75-25 */
