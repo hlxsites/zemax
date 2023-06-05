@@ -1,5 +1,7 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
-import { a, button, div } from '../../scripts/dom-helpers.js';
+import {
+  a, button, div, h2, h3,
+} from '../../scripts/dom-helpers.js';
 import {
   createModal, createTag, createGenericDataTable, hideModal,
   showModal, createForm, createTabLi, createTabContentDiv,
@@ -18,6 +20,9 @@ import addColleagueFormConfiguration from '../../configs/forms/addColleagueFormC
 import editUserFormConfiguration from '../../configs/forms/editUserFormConfig.js';
 import getLicenseDetailsUsersTable from '../../configs/tables/licenseDetailsUsersTableConfig.js';
 import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicenseTableConfig.js';
+import manageColleaguesAdminUserLicensesTable from '../../configs/tables/manageColleagueAdminUserLincensesTableConfig.js';
+import manageColleaguesEndUserLicensesTable from '../../configs/tables/manageColleagueEndUserLincensesTableConfig.js';
+import getAssignUserToLicenseTable from '../../configs/tables/assignUserToLicenseTableConfig.js';
 
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
@@ -69,28 +74,63 @@ async function showEditUserModal(event) {
   showModal(event);
 }
 
-function clearColleagueView() {
-  const userLicenseBlockDiv = document.querySelector('.user-licenses.block');
-  const tabs = userLicenseBlockDiv.querySelector('.tabs');
-  const backToProfileButton = userLicenseBlockDiv.querySelector('#backToAccountButton');
-  const visitKnowledgebaseLink = userLicenseBlockDiv.querySelector('.visit-knowledgebase.secondary');
-  const addColleagueButton = userLicenseBlockDiv.querySelector('#addColleagueButton');
-
-  if (tabs) {
-    tabs.remove();
-  }
-  if (backToProfileButton) {
-    backToProfileButton.remove();
-  }
-  if (visitKnowledgebaseLink) {
-    visitKnowledgebaseLink.remove();
-  }
-  if (addColleagueButton) {
-    addColleagueButton.remove();
-  }
+async function showAssignUserLicense(event) {
+  showModal(event);
 }
+
 async function manageUserView(event) {
-  clearColleagueView();
+  clearProfileLandingView();
+  window.scrollTo(0, 0);
+
+  // Create dom for user edit
+  const mainDiv = document.querySelector('main');
+  const manageUserViewWrapperDiv = createTag('div', { class: 'manage-user-view-wrapper' }, '');
+  const manageUserViewDiv = createTag('div', { class: ' section user-licenses-container manage-user-view', id: 'manageUserView' }, manageUserViewWrapperDiv);
+  mainDiv.insertBefore(manageUserViewDiv, mainDiv.firstChild);
+  manageUserViewWrapperDiv.append(h2('Manage Colleague'));
+
+  // License details
+  manageUserViewWrapperDiv.append(h2('License Details'));
+  manageUserViewWrapperDiv.append(h3('Licenses (Colleague is the License Administrator)'));
+  const data = await execute('dynamics_get_licenses_by_contactid', '&contactid=f659c65a-a6df-e911-b3b9-00155dd3c809', 'GET');
+  console.log(data);
+  const tableElement = createGenericDataTable(manageColleaguesAdminUserLicensesTable, data);
+  manageUserViewWrapperDiv.append(tableElement);
+
+  manageUserViewWrapperDiv.append(h3('Licenses (Colleague is End User)'));
+
+  const assignLicenseButton = button({ 'data-modal-id': 'assignUserLicense', class: 'primary action' }, 'Assign License');
+  manageUserViewWrapperDiv.append(assignLicenseButton);
+  const data2 = await execute('dynamics_get_licenses_for_assign', '&contactid=f659c65a-a6df-e911-b3b9-00155dd3c809', 'GET');
+
+  const assignUserLicenseButton = createTag('button', { class: 'action assign-user-license-action-button', 'data-modal-id': 'assignUserLicense' }, 'Assign License');
+  const assignUserLicenseModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'assignUserLicense' }, 'Close');
+  const buttonsConfig = [
+    {
+      userAction: 'click',
+      button: assignUserLicenseButton
+    }, {
+      userAction: 'click',
+      button: assignUserLicenseModalCloseButton,
+      listenerMethod: hideModal,
+    },
+  ];
+
+  const allModalContentContainerDiv = document.querySelector('.all-modal-content-container');
+  const assignTableElement = createGenericDataTable(getAssignUserToLicenseTable('assign-license-user'), data2);
+  console.log(assignTableElement);
+  const modalAssignUserLicenseDiv = createModal('Assign License', assignTableElement, 'assign-user-license-modal-content', 'assign-user-license-container table-container', 'assignUserLicense', 'assign-user-license-modal', buttonsConfig);
+  allModalContentContainerDiv.append(modalAssignUserLicenseDiv);
+
+  assignLicenseButton.addEventListener('click', showAssignUserLicense);
+
+  const data1 = await execute('dynamics_get_enduser_licenses_by_accountid', '&contactid=f659c65a-a6df-e911-b3b9-00155dd3c809', 'GET');
+  console.log(data1);
+  const tableElement1 = createGenericDataTable(manageColleaguesEndUserLicensesTable, data1);
+  manageUserViewWrapperDiv.append(tableElement1);
+
+  //
+
   console.log('manageUserView');
 }
 
@@ -315,6 +355,7 @@ function clearLicenseDetailsView() {
 async function displayLicenseDetailsView(event) {
   clearProfileLandingView();
   // clearLicenseDetailsView();
+  window.scrollTo(0, 0);
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
