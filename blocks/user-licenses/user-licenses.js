@@ -102,8 +102,7 @@ async function updateColleagueInfo(event) {
   const jobTitle = colleagueDataDiv.querySelector('.colleague-job-title').value;
   const telephone = colleagueDataDiv.querySelector('.colleague-bussiness-phone').value;
   const contactId = event.target.getAttribute('data-contact-id');
-  const data = execute('dynamics_edit_colleague', `&jobtitle=${jobTitle}&telephone1=${telephone}&contactid=${contactId}`, 'PATCH');
-  console.log(data);
+  execute('dynamics_edit_colleague', `&jobtitle=${jobTitle}&telephone1=${telephone}&contactid=${contactId}`, 'PATCH');
 }
 
 async function activateDeactivateUser(event) {
@@ -140,11 +139,13 @@ async function manageUserView(event) {
 
   const buttonText = currentColleague[0].statecode === 0 ? 'Deactivate Colleague' : 'Activate Colleague';
   const currentState = currentColleague[0].statecode === 0 ? 'Active' : 'Inactive';
+  const buttonClass = currentColleague[0].statecode === 0 ? 'important' : 'activate';
 
   const activateDeactivateButton = createTag('button', {
     'data-contactid': contactid,
     'data-action-id': 'activateDeactivateUser',
     'data-current-state': currentState,
+    class: `action ${buttonClass}`,
   }, buttonText);
   manageUserViewWrapperDiv.append(activateDeactivateButton);
   activateDeactivateButton.addEventListener('click', activateDeactivateUser);
@@ -255,6 +256,10 @@ async function createUserView(event) {
   hideModal(event);
   clearProfileLandingView();
   window.scrollTo(0, 0);
+  let viewAccess = event.target.getAttribute('data-view-access');
+  if (!viewAccess) {
+    viewAccess = 'manage';
+  }
   const mainDiv = document.querySelector('main');
   const createUserViewWrapperDiv = createTag('div', { class: 'create-user-view-wrapper' }, '');
   const createUserViewDiv = createTag('div', { class: ' section user-licenses-container create-user-view', id: 'createUserView' }, createUserViewWrapperDiv);
@@ -267,15 +272,17 @@ async function createUserView(event) {
   const data = await execute('dynamics_get_colleagues_manage', '', 'GET');
 
   // Render tab headings
-  colleaguesTabsMapping.forEach((heading, index) => {
-    if (index === 0) {
-      tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading));
-    } else {
-      tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading));
-    }
-  });
+  if (viewAccess === 'manage') {
+    colleaguesTabsMapping.forEach((heading, index) => {
+      if (index === 0) {
+        tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading));
+      } else {
+        tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading));
+      }
+    });
 
-  tabDiv.appendChild(tabListUl);
+    tabDiv.appendChild(tabListUl);
+  }
 
   const allColleagues = data.colleagues;
 
@@ -289,38 +296,50 @@ async function createUserView(event) {
   const deactivatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
   deactivatedUsersHeading.splice(7, 1);
 
-  colleaguesTabsMapping.forEach((heading, index) => {
-    if (index === 0) {
-      const tableContainer = createTag('div', { class: 'table-container' }, createGenericDataTable(activatedUsersHeading, activeColleagues));
-      tabDiv.append(
-        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, tableContainer.outerHTML),
-      );
-    } else {
-      const tableContainer = createTag('div', { class: 'table-container' }, createGenericDataTable(deactivatedUsersHeading, inactiveColleagues));
-      tabDiv.append(
-        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, tableContainer.outerHTML),
-      );
-    }
-  });
+  if (viewAccess === 'manage') {
+    colleaguesTabsMapping.forEach((heading, index) => {
+      if (index === 0) {
+        const tableContainer = createTag('div', { class: 'table-container' }, createGenericDataTable(activatedUsersHeading, activeColleagues));
+        tabDiv.append(
+          createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, tableContainer.outerHTML),
+        );
+      } else if (viewAccess === 'manage') {
+        const tableContainer = createTag('div', { class: 'table-container' }, createGenericDataTable(deactivatedUsersHeading, inactiveColleagues));
+        tabDiv.append(
+          createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, tableContainer.outerHTML),
+        );
+      }
+    });
+  } else {
+    activatedUsersHeading.splice(5, 4);
+    tabDiv.append(createTag('div', { class: 'table-container' }, createGenericDataTable(activatedUsersHeading, activeColleagues)));
+  }
+
+  const shouldRenderAddColleagueButton = viewAccess === 'manage';
+
+  const backToProfileLink = a(
+    {
+      class: 'button primary',
+      id: 'backToAccountButton',
+      href: '/pages/profile',
+    },
+    'Back to Account',
+  );
+
+  const addColleagueButton = button(
+    {
+      class: 'add-colleague button primary',
+      id: 'addColleagueButton',
+      'data-modal-id': 'addColleagueModal',
+    },
+    'Add Colleague',
+  );
 
   createUserViewWrapperDiv.appendChild(
     div({ class: 'view-buttons' },
-      a(
-        {
-          class: 'button primary',
-          id: 'backToAccountButton',
-          href: '/pages/profile',
-        },
-        'Back to Account',
-      ),
-      button(
-        {
-          class: 'add-colleague button primary',
-          id: 'addColleagueButton',
-          'data-modal-id': 'addColleagueModal',
-        },
-        'Add Colleague',
-      )),
+      backToProfileLink,
+      shouldRenderAddColleagueButton ? addColleagueButton : '',
+    ),
   );
 
   createUserViewWrapperDiv.appendChild(
@@ -465,6 +484,7 @@ function clearProfileLandingView() {
 async function displayLicenseDetailsView(event) {
   clearProfileLandingView();
   window.scrollTo(0, 0);
+  const viewAccess = event.target.getAttribute('data-view-access');
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
@@ -511,31 +531,44 @@ async function displayLicenseDetailsView(event) {
         licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
       }
     });
-
     const nickNameSetValue = data.license_detail[0].zemax_nickname ?? '';
-    const nickNameTextField = createTag('input', { class: 'nickname', value: nickNameSetValue }, '');
-    licenseDetailsRow.appendChild(nickNameTextField);
-    const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button' }, 'Save');
-    saveNicknameButton.addEventListener('click', updateLicenseNickname);
-    licenseDetailsRow.appendChild(saveNicknameButton);
+
+    if (viewAccess === 'manage') {
+      const nickNameTextField = createTag('input', { class: 'nickname', value: nickNameSetValue }, '');
+      licenseDetailsRow.appendChild(nickNameTextField);
+      const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button' }, 'Save');
+      saveNicknameButton.addEventListener('click', updateLicenseNickname);
+      licenseDetailsRow.appendChild(saveNicknameButton);
+    } else {
+      const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
+      const elementDetailCellHeading = createTag('h3', { class: 'element-detail-cell-heading' }, 'Nickname');
+      const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, nickNameSetValue);
+      elementDetailCellDiv.appendChild(elementDetailCellHeading);
+      elementDetailCellDiv.appendChild(elementDetailCellDataPara);
+      licenseDetailsRow.appendChild(elementDetailCellDiv);
+    }
     licenseDetailsDataDiv.appendChild(licenseDetailsRow);
 
     endUsersDetailsDiv.innerHTML = '';
     const licenseUsers = data.users;
     const endUsersH2 = createTag('h2', '', 'End Users');
     endUsersDetailsDiv.appendChild(endUsersH2);
-    const addUserButton = createTag('button', {
-      class: 'add-user-to-license action', type: 'button', 'data-modal-id': 'addUserModal', 'data-license-id': licenseId,
-    }, 'Add End User');
 
     await addColleaguesToUserActionModal('add-user-container', 'add-user-checkbox', updateAddUserId);
 
-    // TODO add condition
-    endUsersDetailsDiv.appendChild(addUserButton);
-    addUserButton.addEventListener('click', showAddUserTable);
+    if (viewAccess === 'manage') {
+      const addUserButton = createTag('button', {
+        class: 'add-user-to-license action', type: 'button', 'data-modal-id': 'addUserModal', 'data-license-id': licenseId,
+      }, 'Add End User');
+      endUsersDetailsDiv.appendChild(addUserButton);
+      addUserButton.addEventListener('click', showAddUserTable);
+    }
 
     if (licenseUsers && licenseUsers.length > 0) {
       const licenseDetailsUsersTable = getLicenseDetailsUsersTable(licenseId);
+      if (viewAccess === 'view') {
+        licenseDetailsUsersTable.splice(4, 2);
+      }
       const tableElement = createGenericDataTable(licenseDetailsUsersTable, licenseUsers);
       const tableContainer = createTag('div', { class: 'table-container' }, tableElement);
       endUsersDetailsDiv.appendChild(tableContainer);
@@ -693,7 +726,9 @@ function createLicencesTable(rows) {
 
     // TODO add logic for manage or view
     const tdManageOrView = document.createElement('td');
-    const manageOrViewButton = createTag('button', { class: 'manage-view-license action', type: 'button', 'data-license-id': row.new_licensesid }, 'Manage');
+    const manageOrViewButton = createTag('button', {
+      class: 'manage-view-license action', type: 'button', 'data-license-id': row.new_licensesid, 'data-view-access': 'manage',
+    }, 'Manage');
     tdManageOrView.appendChild(manageOrViewButton);
     trBody.appendChild(tdManageOrView);
 
@@ -752,11 +787,14 @@ export default async function decorate(block) {
 
 async function loadData(block) {
   const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
+  const viewAccessMatrix = calculateViewMatrix(JSON.parse(localStorage.getItem('webroles')));
   const mainDiv = document.querySelector('main');
   // Placeholder for all modal content
   const modalContainerDiv = createTag('div', { class: 'all-modal-content-container' }, '');
   mainDiv.insertBefore(modalContainerDiv, mainDiv.firstChild);
-
+  const viewAllColleagueButton = createTag('button', { class: 'view-all-colleague action primary-license-action-button' }, 'View All Colleague');
+  viewAllColleagueButton.addEventListener('click', createUserView);
+  block.append(viewAllColleagueButton);
   const licenseTableHeadingMapping = createTableHeaderMapping(data);
   const tabDiv = createTag('div', { class: 'tabs' });
   const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
@@ -798,4 +836,69 @@ async function loadData(block) {
       'More information about license management',
     ),
   );
+  updateViewButtonPerAccess(viewAccessMatrix);
 }
+
+function calculateViewMatrix(webroles) {
+  let viewAccess = 'none';
+  if (!webroles) {
+    localStorage.setItem('viewAccess', 'view');
+    return 'view';
+  }
+
+  webroles.forEach((webrole) => {
+    if (viewAccess === 'manage') {
+      return;
+    }
+    if (webrole.adx_name === 'Customer Self Service Admin') {
+      viewAccess = 'manage';
+      return;
+    } if (webrole.adx_name === 'Supported Users ZOV') {
+      viewAccess = 'view';
+    } else if (viewAccess !== 'manage' || viewAccess !== 'view') {
+      viewAccess = 'none';
+    }
+  });
+  console.log(viewAccess);
+  localStorage.setItem('viewAccess', viewAccess);
+  return viewAccess;
+}
+
+function updateViewButtonPerAccess(viewAccess) {
+  const manageOrViewButtons = document.querySelectorAll('.manage-view-license.action');
+  const primaryLicenseActionButton = document.querySelector('.primary-license-action-button');
+
+  manageOrViewButtons.forEach((manageOrViewButton) => {
+    if (viewAccess === 'none') {
+      manageOrViewButton.remove();
+      if (primaryLicenseActionButton) {
+        primaryLicenseActionButton.remove();
+      }
+    } else if (viewAccess === 'view') {
+      manageOrViewButton.setAttribute('data-view-access', 'view');
+      manageOrViewButton.textContent = 'View';
+      if (primaryLicenseActionButton) {
+        primaryLicenseActionButton.setAttribute('data-view-access', 'view');
+        primaryLicenseActionButton.textContent = 'View All Colleague';
+      }
+    } else if (viewAccess === 'manage') {
+      manageOrViewButton.setAttribute('data-view-access', 'manage');
+      manageOrViewButton.textContent = 'Manage';
+      if (primaryLicenseActionButton) {
+        primaryLicenseActionButton.setAttribute('data-view-access', 'manage');
+        primaryLicenseActionButton.textContent = 'Manage All Colleague';
+      }
+    }
+  });
+}
+// Function to listen for the storage event
+function storageEventHandler(event) {
+  if (event.storageArea === localStorage && event.key === 'webroles') {
+    calculateViewMatrix(localStorage.getItem('webroles'));
+  }
+  if (event.storageArea === localStorage && event.key === 'viewAccess') {
+    updateViewButtonPerAccess(localStorage.getItem('viewAccess'));
+  }
+}
+
+window.addEventListener('storage', storageEventHandler);
