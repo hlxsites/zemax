@@ -7,7 +7,7 @@ export default function getAssignUserToLicenseTable(checkboxClass) {
       htmlAttributes: {
         class: `${checkboxClass}`,
         type: 'checkbox',
-        id: '{{new_licensesid}}',
+        'data-license-id': '{{new_licensesid}}',
       },
     },
     {

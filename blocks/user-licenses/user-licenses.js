@@ -12,6 +12,7 @@ import {
   addColleague, updateUserInfo, resetUserPassword,
   activateUser, deactivateUser, updateLicenseNickname,
   changeUserForALicense, addUserToALicense, removeUserFromLicense,
+  assignLicenseToUser,
 } from './user-actions.js';
 
 // Load configurations
@@ -74,14 +75,36 @@ async function showEditUserModal(event) {
   showModal(event);
 }
 
+async function updateAssignLicenseButton(event) {
+  const contactId = event.target.getAttribute('data-contact-id');
+  const licenseId = event.target.getAttribute('data-license-id');
+  const assignLicenseButton = document.querySelector('.action.assign-user-license-action-button');
+  assignLicenseButton.setAttribute('data-contact-id', contactId);
+  assignLicenseButton.setAttribute('data-license-id', licenseId);
+  assignLicenseButton.addEventListener('click', (eventNew) => {
+    assignLicenseToUser(eventNew, manageUserView);
+  });
+}
+
 async function showAssignUserLicense(event) {
   showModal(event);
+
+  const contactId = event.target.getAttribute('data-contact-id');
+  const assignUserCheckboxes = document.querySelectorAll('.assign-license-user');
+  assignUserCheckboxes.forEach((assignUserCheckbox) => {
+    assignUserCheckbox.setAttribute('data-contact-id', contactId);
+    assignUserCheckbox.addEventListener('click', updateAssignLicenseButton);
+  });
 }
 
 async function manageUserView(event) {
   clearProfileLandingView();
   window.scrollTo(0, 0);
 
+  let contactid = event.target.getAttribute('data-contactid');
+  if (!contactid) {
+    contactid = event.target.getAttribute('data-contact-id');
+  }
   // Create dom for user edit
   const mainDiv = document.querySelector('main');
   const manageUserViewWrapperDiv = createTag('div', { class: 'manage-user-view-wrapper' }, '');
@@ -92,23 +115,23 @@ async function manageUserView(event) {
   // License details
   manageUserViewWrapperDiv.append(h2('License Details'));
   manageUserViewWrapperDiv.append(h3('Licenses (Colleague is the License Administrator)'));
-  const data = await execute('dynamics_get_licenses_by_contactid', '&contactid=f659c65a-a6df-e911-b3b9-00155dd3c809', 'GET');
-  console.log(data);
-  const tableElement = createGenericDataTable(manageColleaguesAdminUserLicensesTable, data);
+  const adminUserLicensedata = await execute('dynamics_get_licenses_by_contactid', `&contactid=${contactid}`, 'GET');
+  const tableElement = createGenericDataTable(manageColleaguesAdminUserLicensesTable,
+    adminUserLicensedata);
   manageUserViewWrapperDiv.append(tableElement);
 
   manageUserViewWrapperDiv.append(h3('Licenses (Colleague is End User)'));
 
-  const assignLicenseButton = button({ 'data-modal-id': 'assignUserLicense', class: 'primary action' }, 'Assign License');
+  const assignLicenseButton = button({ 'data-modal-id': 'assignUserLicense', class: 'primary action', 'data-contact-id': contactid }, 'Assign License');
   manageUserViewWrapperDiv.append(assignLicenseButton);
-  const data2 = await execute('dynamics_get_licenses_for_assign', '&contactid=f659c65a-a6df-e911-b3b9-00155dd3c809', 'GET');
+  const assignLicenseUserData = await execute('dynamics_get_licenses_for_assign', `&contactid=${contactid}`, 'GET');
 
   const assignUserLicenseButton = createTag('button', { class: 'action assign-user-license-action-button', 'data-modal-id': 'assignUserLicense' }, 'Assign License');
   const assignUserLicenseModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'assignUserLicense' }, 'Close');
   const buttonsConfig = [
     {
       userAction: 'click',
-      button: assignUserLicenseButton
+      button: assignUserLicenseButton,
     }, {
       userAction: 'click',
       button: assignUserLicenseModalCloseButton,
@@ -117,21 +140,17 @@ async function manageUserView(event) {
   ];
 
   const allModalContentContainerDiv = document.querySelector('.all-modal-content-container');
-  const assignTableElement = createGenericDataTable(getAssignUserToLicenseTable('assign-license-user'), data2);
-  console.log(assignTableElement);
+  const assignTableElement = createGenericDataTable(getAssignUserToLicenseTable('assign-license-user'), assignLicenseUserData);
   const modalAssignUserLicenseDiv = createModal('Assign License', assignTableElement, 'assign-user-license-modal-content', 'assign-user-license-container table-container', 'assignUserLicense', 'assign-user-license-modal', buttonsConfig);
   allModalContentContainerDiv.append(modalAssignUserLicenseDiv);
 
   assignLicenseButton.addEventListener('click', showAssignUserLicense);
 
-  const data1 = await execute('dynamics_get_enduser_licenses_by_accountid', '&contactid=f659c65a-a6df-e911-b3b9-00155dd3c809', 'GET');
-  console.log(data1);
-  const tableElement1 = createGenericDataTable(manageColleaguesEndUserLicensesTable, data1);
-  manageUserViewWrapperDiv.append(tableElement1);
-
-  //
-
-  console.log('manageUserView');
+  const endUserLicensesData = await execute('dynamics_get_enduser_licenses_by_accountid', `&contactid=${contactid}`, 'GET');
+  const manageColleaguesEndUsertableElement = createGenericDataTable(
+    manageColleaguesEndUserLicensesTable,
+    endUserLicensesData);
+  manageUserViewWrapperDiv.append(manageColleaguesEndUsertableElement);
 }
 
 async function createUserView(event) {

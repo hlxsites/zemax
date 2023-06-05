@@ -88,7 +88,7 @@ const activatedDeactivatedColleaguesTable = [{
     class: 'license-user-manage-user action secondary',
     type: 'button',
     'data-new-productuserid': 'test',
-    'data-license-id': 'test2',
+    'data-contactid': '{{contactid}}',
     'data-next-action-class': 'manage-user-action-button',
   },
 },
