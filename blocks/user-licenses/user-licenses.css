@@ -1,5 +1,12 @@
 .user-licenses-container {
   margin-top: 60px;
+  margin-bottom: 80px;
+}
+
+.user-licenses > a.more-info {
+  display: block;
+  margin-top: 2rem;
+  text-align: right;
 }
 
 div.tabs {
@@ -60,7 +67,6 @@ ul.tabs-nav li a.active::before {
   border-top-right-radius: .4rem;
   background-color: #0070c0;
 }
-
 
 /* Tabs Content Table */
 .tab-content {
@@ -267,148 +273,19 @@ button.save-nickname {
 /* End User Details */
 .end-users-details {
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+}
+
+.license-details-view-wrapper > a.more-info {
+  display: block;
+  margin-top: 2rem;
+  text-align: right;
 }
 
 button.add-user-to-license {
   position: absolute;
+  top: 0;
   right: 0;
   padding: .2rem 1.3rem;
-}
-
-.end-users-details table {
-  margin-bottom: 0;
-  font-size: 14px;
-  font-family: var(--ff-myradpro-regular);
-  width: 100%;
-  border-spacing: 0;
-  border-collapse: collapse;
-  border-radius: 10px;
-  background-color: var(--clr-white);
-  box-shadow: 0 0 5px #1718180D, 0 1px 2px #00000026;
-  outline: 0.1rem solid transparent;
-}
-
-.end-users-details table thead tr {
-  background: #f6f6f7;
-}
-
-.end-users-details table tbody tr:hover td {
-  background: #f6f6f7;
-}
-
-.end-users-details table th, .end-users-details table td {
-  border: 1px solid var(--color-border);
-}
-
-.end-users-details table th {
-  padding: 0.45rem 0.7rem;
-  font-weight: bold;
-  font-family: var(--ff-myradpro-semibold);
-  font-size: 16px;
-  vertical-align: top;
-  border-bottom: 0.05rem solid #8c9196;
-  border-top: 0;
-  max-height: 40px;
-  text-align: left;
-  white-space: normal;
-}
-
-.end-users-details table tbody td {
-  padding: 0.45rem;
-  vertical-align: top;
-  white-space: nowrap;
-  text-align: left;
-  transition: background-color .2s ease-in-out;
-}
-
-
-
-/* Modal Container */
-.modal-container {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #00000080;
-  z-index: 9999;
-}
-
-.modal-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #FFF;
-  text-align: center;
-  border-radius: 8px;
-  max-height: calc(100vh - 60px);
-}
-
-.modal-header {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-shrink: 0;
-  padding: 10px 20px;
-  border-bottom: 0.1rem solid rgba(225 227 229);
-}
-
-.modal-header > button.modal-close {
-  display: flex;
-  cursor: pointer;
-  position: relative;
-  margin: 5px -5px 0 0;
-  padding: 0.5rem;
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  background: none;
-  border: none;
-}
-
-.modal-header > button.modal-close:hover {
-  background: rgba(246 246 247 / 100%);
-}
-
-.modal-header > button.modal-close svg {
-  fill: rgba(92 95 98 / 100%);
-}
-
-.modal-header > button.modal-close:hover svg {
-  fill: rgba(26 28 29 / 100%);
-}
-
-.modal-header h3 {
-  margin: 0.3em 0;
-  font-size: 20px;
-  line-height: 2.8rem;
-  font-family: var(--ff-myradpro-regular);
-  font-weight: 400;
-  letter-spacing: 0.18px;
-  color: #54565b;
-  text-transform: none;
-  text-align: left;
-}
-
-.modal-body {
-  padding: 0 20px;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-  padding: 40px 20px 20px;
-  border-top: 0.1rem solid rgba(225 227 229);
-}
-
-.modal-footer > button {
-  margin: 0 8px;
 }
 
 
@@ -457,24 +334,29 @@ button.add-user-to-license {
 }
 
 
-/* Edit User Modal Content */
-.edit-user-modal-content {
-  max-width: 39rem;
+/* Edit User and Add Colleague
+/* Modal Content */
+.edit-user-modal-content,
+.add-colleague-modal-content {
+  max-width: 26rem;
   width: 100%;
 }
 
-.edit-user-modal-content .modal-footer {
+.edit-user-modal-content .modal-footer,
+.add-colleague-modal-content .modal-footer {
   display: none;
 }
 
-.edit-user-container form {
+.edit-user-container form,
+.add-colleague-modal-content form {
   display: flex;
   flex-direction: column;
   margin: 1.2rem 0;
   text-align: left;
 }
 
-.edit-user-container form label {
+.edit-user-container form label,
+.add-colleague-container form label {
   font-weight: 400;
   font-size: 14px;
   line-height: 2rem;
@@ -483,7 +365,8 @@ button.add-user-to-license {
   display: block;
 }
 
-.edit-user-container form > input {
+.edit-user-container form > input[type='text'],
+.add-colleague-container form > input[type='text'] {
     font-size: 14px;
     font-weight: 400;
     line-height: 1.6rem;
@@ -500,7 +383,7 @@ button.add-user-to-license {
     margin: 0 0 .75rem;
     padding: 0.25rem .8rem;
     background: none;
-    border-radius: 2px;
+    border-radius: 3px;
     border: 1px solid rgba(201 204 207);
     border-top-color: rgba(174 180 185);
     font-family: inherit;
@@ -510,21 +393,24 @@ button.add-user-to-license {
     -webkit-font-smoothing: antialiased;
 }
 
-.edit-user-container form > input:focus {
+.edit-user-container form > input[type='text']:focus,
+.add-colleague-container form > input[type='text']:focus {
   outline: none;
   border-color: #b3b3b3;
 }
 
-.edit-user-container form > input[disabled] {
+.edit-user-container form > input[type='text']:disabled,
+.add-colleague-container form > input[type='text']:disabled {
   cursor: default;
   background: rgba(250 251 251);
-  color:  rgba(32 34 35);
+  color: rgba(32 34 35);
   opacity: .5;
   -webkit-text-fill-color: rgba(32 34 35);
-  border-color: rgba(210 213 216);
+  border-color: #f4f4f4;
+  border: 1px solid rgba(201 204 207);
 }
 
-.edit-user-container form > input[type="submit"] {
+input.form-action-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -553,13 +439,14 @@ button.add-user-to-license {
   letter-spacing: initial;
 }
 
-.edit-user-container form > input[type="submit"]:hover {
+input.form-action-button:hover {
   color: var(--primary-button-color);
   background: rgba(246 246 247 / 100%);
   outline: 0.1rem solid transparent;
+  border: 1px solid #0070c0;
 }
 
-.edit-user-container form > input[type="submit"]::before {
+input.form-action-button::before {
   content: "";
   position: absolute;
   top: 0;
@@ -568,4 +455,21 @@ button.add-user-to-license {
   border-color: var(--primary-button-color);
   opacity: 0;
   z-index: 0;
+}
+
+
+/* Create User */
+.create-user-view-wrapper > .view-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-user-view-wrapper > .view-buttons .button {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+a.visit-knowledgebase {
+  display: block;
+  margin-top: 2rem;
 }

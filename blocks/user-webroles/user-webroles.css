@@ -12,7 +12,7 @@
 
 .user-webroles h3,
 .user-webroles p {
-    margin-left: 2rem;
+    margin-left: 1.5rem;
 }
 
 .user-webroles ul {
@@ -22,7 +22,7 @@
 
 .user-webroles ul li {
     margin-bottom: 30px;
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 1.5rem;
     list-style: none;
     background-color: #F6F6F7;
     border-radius: .8rem;
@@ -54,4 +54,16 @@
 
 .user-webroles a.more-info-access:hover {
     text-decoration: underline;
+}
+
+.user-webroles .more-info {
+    margin-left: 1.5rem;
+}
+
+a.more-info,
+a.visit-knowledgebase {
+    color: #0070c0!important;
+    text-decoration: none;
+    font-family: -apple-system,BlinkMacSystemFont,San Francisco,Segoe UI,Roboto,Helvetica Neue,sans-serif;
+    font-size: 16px;
 }
