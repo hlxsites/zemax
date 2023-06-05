@@ -97,3 +97,12 @@ export async function removeUserFromLicense(event, callback) {
   // TODO handle response and add toast message
   processResponse(event, data, callback, true);
 }
+
+export async function assignLicenseToUser(event, callback) {
+  const contactId = event.target.getAttribute('data-contact-id');
+  const licenseId = event.target.getAttribute('data-license-id');
+  const data = await execute('dynamics_add_end_user', `&contactId=${contactId}&licenseid=${licenseId}`, 'POST');
+
+  // TODO handle response and add toast message
+  processResponse(event, data, callback, true);
+}
