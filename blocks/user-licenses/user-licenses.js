@@ -5,7 +5,7 @@ import {
 import {
   createModal, createTag, createGenericDataTable, hideModal,
   showModal, createForm, createTabLi, createTabContentDiv,
-  addTabFeature,
+  addTabFeature, findReplaceJSON,
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 import {
@@ -97,6 +97,23 @@ async function showAssignUserLicense(event) {
   });
 }
 
+async function updateColleagueInfo(event) {
+  const colleagueDataDiv = document.querySelector('.colleague-details-data');
+  const jobTitle = colleagueDataDiv.querySelector('.colleague-job-title').value;
+  const telephone = colleagueDataDiv.querySelector('.colleague-bussiness-phone').value;
+  const contactId = event.target.getAttribute('data-contact-id');
+  const data = execute('dynamics_edit_colleague', `&jobtitle=${jobTitle}&telephone1=${telephone}&contactid=${contactId}`, 'PATCH');
+  console.log(data);
+}
+
+async function activateDeactivateUser(event) {
+  if (event.target.getAttribute('data-current-state') === 'Active') {
+    deactivateUser(event, manageUserView);
+  } else {
+    activateUser(event, manageUserView);
+  }
+}
+
 async function manageUserView(event) {
   clearProfileLandingView();
   window.scrollTo(0, 0);
@@ -110,8 +127,83 @@ async function manageUserView(event) {
   const manageUserViewWrapperDiv = createTag('div', { class: 'manage-user-view-wrapper' }, '');
   const manageUserViewDiv = createTag('div', { class: ' section user-licenses-container manage-user-view', id: 'manageUserView' }, manageUserViewWrapperDiv);
   mainDiv.insertBefore(manageUserViewDiv, mainDiv.firstChild);
-  manageUserViewWrapperDiv.append(h2('Manage Colleague'));
 
+  const backToColleagueButton = createTag('button', { class: 'button primary', id: 'backToColleaguesButton' }, 'Back to Colleagues');
+  manageUserViewWrapperDiv.append(backToColleagueButton);
+  backToColleagueButton.addEventListener('click', createUserView);
+  manageUserViewWrapperDiv.append(h2('Colleague Details'));
+
+  const allColleaguesData = await execute('dynamics_get_colleagues_manage', '', 'GET');
+  const { colleagues } = allColleaguesData;
+
+  const currentColleague = colleagues.filter((colleague) => (colleague.contactid === contactid));
+
+  const buttonText = currentColleague[0].statecode === 0 ? 'Deactivate Colleague' : 'Activate Colleague';
+  const currentState = currentColleague[0].statecode === 0 ? 'Active' : 'Inactive';
+
+  const activateDeactivateButton = createTag('button', {
+    'data-contactid': contactid,
+    'data-action-id': 'activateDeactivateUser',
+    'data-current-state': currentState,
+  }, buttonText);
+  manageUserViewWrapperDiv.append(activateDeactivateButton);
+  activateDeactivateButton.addEventListener('click', activateDeactivateUser);
+
+  const colleagueDetailsConfig = [
+    {
+      label: 'Full Name',
+      value: ['{{firstname}}', ' ', '{{lastname}}'],
+    },
+    {
+      label: 'Job Title',
+      value: ['{{jobtitle}}'],
+      html: 'input',
+      'data-action-id': 'updateColleagueInfo',
+      inputClass: 'colleague-job-title',
+    },
+    {
+      label: 'Email',
+      value: ['{{emailaddress1}}'],
+    },
+    {
+      label: 'Business Phone',
+      value: ['{{telephone1}}'],
+      html: 'input',
+      'data-action-id': 'updateColleagueInfo',
+      inputClass: 'colleague-bussiness-phone',
+
+    },
+  ];
+
+  const colleagueDetailsDataDiv = createTag('div', { class: 'colleague-details-data' }, '');
+  let colleagueDetailsRow = createTag('div', { class: 'colleague-details-row layout-50-50' }, '');
+  colleagueDetailsConfig.forEach((heading, index) => {
+    const clonedHeading = JSON.parse(JSON.stringify(heading));
+    findReplaceJSON(clonedHeading, currentColleague[0]);
+    const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
+    const elementDetailCellHeading = createTag('h3', { class: 'element-detail-cell-heading' }, clonedHeading.label);
+    elementDetailCellDiv.appendChild(elementDetailCellHeading);
+    if (clonedHeading.html === 'input') {
+      elementDetailCellDiv.appendChild(createTag('input', { class: clonedHeading.inputClass, value: clonedHeading.value.join('') }, ''));
+      elementDetailCellDiv.appendChild(createTag('button', { 'data-contact-id': contactid, 'data-action-id': clonedHeading['data-action-id'] }, 'Save'));
+    } else {
+      const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, clonedHeading.value.join(''));
+      elementDetailCellDiv.appendChild(elementDetailCellDataPara);
+    }
+
+    colleagueDetailsRow.appendChild(elementDetailCellDiv);
+
+    if (index % 2 === 1) {
+      colleagueDetailsDataDiv.appendChild(colleagueDetailsRow);
+      colleagueDetailsRow = createTag('div', { class: 'colleague-details-row layout-50-50' }, '');
+    }
+  });
+
+  manageUserViewWrapperDiv.append(colleagueDetailsDataDiv);
+  const saveButtons = colleagueDetailsDataDiv.querySelectorAll('[data-action-id="updateColleagueInfo"]');
+  saveButtons.forEach((saveButton) => {
+    saveButton.addEventListener('click', updateColleagueInfo);
+  });
   // License details
   manageUserViewWrapperDiv.append(h2('License Details'));
   manageUserViewWrapperDiv.append(h3('Licenses (Colleague is the License Administrator)'));
@@ -370,16 +462,8 @@ function clearProfileLandingView() {
   });
 }
 
-function clearLicenseDetailsView() {
-  const licenseDetailsView = document.querySelector('.license-details-view');
-  if (licenseDetailsView) {
-    licenseDetailsView.remove();
-  }
-}
-
 async function displayLicenseDetailsView(event) {
   clearProfileLandingView();
-  // clearLicenseDetailsView();
   window.scrollTo(0, 0);
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
@@ -520,7 +604,7 @@ async function addManageLicenseFeature() {
     },
   ];
 
-  const modalDeleteUserModalDiv = createModal('Confirmation Required', modalDeleteDescription, 'delete-user-modal-content', 'delete-user-container table-container', 'deleteUserModal', 'delete-user-modal', deleteButtonsConfig);
+  const modalDeleteUserModalDiv = createModal('Confirmation Required', modalDeleteDescription, 'delete-user-modal-content', 'delete-user-container', 'deleteUserModal', 'delete-user-modal', deleteButtonsConfig);
   allModalContentContainerDiv.append(modalDeleteUserModalDiv);
 
   // Change User Modal
