@@ -264,7 +264,8 @@ export function hideModal(event) {
   }
 }
 
-function findReplaceJSON(jsonObj, data) {
+
+export function findReplaceJSON(jsonObj, data) {
   Object.keys(jsonObj).forEach((key) => {
     if (typeof jsonObj[key] === 'object' && jsonObj[key] !== null) {
       findReplaceJSON(jsonObj[key], data);
