@@ -234,7 +234,7 @@ button.secondary:focus {
 
 a.button:any-link,
 button {
-  font-family: var(--body-font-family);
+  font-family: var(--ff-myradpro-semibold);
   font-size: var(--body-font-size-s);
   font-style: normal;
   font-weight: var(--font-weight-400);
