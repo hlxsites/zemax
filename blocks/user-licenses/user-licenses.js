@@ -1,6 +1,6 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import {
-  a, button, div, h2, h3,
+  a, button, div, h2, h3, p,
 } from '../../scripts/dom-helpers.js';
 import {
   createModal, createTag, createGenericDataTable, hideModal,
@@ -116,11 +116,13 @@ async function manageUserView(event) {
   manageUserViewWrapperDiv.append(h2('License Details'));
   manageUserViewWrapperDiv.append(h3('Licenses (Colleague is the License Administrator)'));
   const adminUserLicensedata = await execute('dynamics_get_licenses_by_contactid', `&contactid=${contactid}`, 'GET');
-  const tableElement = createGenericDataTable(manageColleaguesAdminUserLicensesTable,
-    adminUserLicensedata);
-  manageUserViewWrapperDiv.append(tableElement);
-
-  manageUserViewWrapperDiv.append(h3('Licenses (Colleague is End User)'));
+  if (adminUserLicensedata && adminUserLicensedata.length > 0) {
+    const tableElement = createGenericDataTable(manageColleaguesAdminUserLicensesTable,
+      adminUserLicensedata);
+    manageUserViewWrapperDiv.append(tableElement);
+  } else {
+    manageUserViewWrapperDiv.append(p('There are no records to display.'));
+  }
 
   const assignLicenseButton = button({ 'data-modal-id': 'assignUserLicense', class: 'primary action', 'data-contact-id': contactid }, 'Assign License');
   manageUserViewWrapperDiv.append(assignLicenseButton);
@@ -145,12 +147,16 @@ async function manageUserView(event) {
   allModalContentContainerDiv.append(modalAssignUserLicenseDiv);
 
   assignLicenseButton.addEventListener('click', showAssignUserLicense);
-
+  manageUserViewWrapperDiv.append(h3('Licenses (Colleague is End User)'));
   const endUserLicensesData = await execute('dynamics_get_enduser_licenses_by_accountid', `&contactid=${contactid}`, 'GET');
-  const manageColleaguesEndUsertableElement = createGenericDataTable(
-    manageColleaguesEndUserLicensesTable,
-    endUserLicensesData);
-  manageUserViewWrapperDiv.append(manageColleaguesEndUsertableElement);
+  if (endUserLicensesData && endUserLicensesData.length > 0) {
+    const manageColleaguesEndUsertableElement = createGenericDataTable(
+      manageColleaguesEndUserLicensesTable,
+      endUserLicensesData);
+    manageUserViewWrapperDiv.append(manageColleaguesEndUsertableElement);
+  } else {
+    manageUserViewWrapperDiv.append(p('There are no records to display.'));
+  }
 }
 
 async function createUserView(event) {
