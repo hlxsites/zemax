@@ -56,6 +56,7 @@
   --color-border: #ebebeb;
   --button-green: #005800;
   --button-red: #bf0711;
+  --button-hover-orange: #d45500;
 
   /* gradients */
   --linear-gradient: linear-gradient(to left, #871054, #78be20 53%, #f77f00 100%);
@@ -206,6 +207,10 @@ button.primary {
   color: var(--primary-button-color);
   background-color: var(--background-color);
   border: solid 2.5px var(--primary-button-color);
+}
+
+main .section.button-hover-orange .button:hover {
+  background-color: var(--button-hover-orange);
 }
 
 a.button.primary:hover,
@@ -476,12 +481,15 @@ main .category{
   display: block;
 }
 
-/* center aligned sections */
-
 main .section.center-aligned {
   text-align: center;
   margin: 0 auto;
 }
+
+main .section.h2-center-aligned h2 {
+  text-align: center;
+}
+
 
 main .section.center-aligned .default-content-wrapper>p {
   margin: inherit;
