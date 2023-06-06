@@ -558,7 +558,7 @@ main .section-wrapper.layout-50-50 {
 
 main .section-wrapper.layout-75-25 > div,
 main .section-wrapper.layout-25-75 > div,
-main .section-wrapper.layout-50-50 {
+main .section-wrapper.layout-50-50 > div {
   width: 100%;
   padding:unset;
 }
@@ -791,6 +791,7 @@ main .video-wrap iframe {
   text-align: center;
   border-radius: 8px;
   max-height: calc(100vh - 60px);
+  overflow-y: auto;
 }
 
 .modal-header {
@@ -967,6 +968,7 @@ main .video-wrap iframe {
   main .section-wrapper.layout-75-25,
   main .section-wrapper.layout-25-75,
   main .section-wrapper.layout-50-50,
+  main .layout-50-50,
   main .layout-33-33-33 {
     width: var(--section-width);
     display: grid;
@@ -985,7 +987,8 @@ main .video-wrap iframe {
     grid-template-columns: 25% 75%;
   }
 
-  main .section-wrapper.layout-50-50 {
+  main .section-wrapper.layout-50-50,
+  main .layout-50-50 {
     grid-template-columns: 50% 50%;
   }
 
@@ -998,19 +1001,25 @@ main .video-wrap iframe {
   }
 
   .snackbar {
-    visibility: hidden;
+    visibility: visible;
     min-width: 250px;
-    margin-left: -125px;
+    width: 26em;
+    margin-left: -14em;
     background-color: #333;
     color: #fff;
     text-align: center;
-    border-radius: 2px;
+    border-radius: 8px;
     padding: 16px;
     position: fixed;
     z-index: 1;
     left: 50%;
     bottom: 30px;
     font-size: 14px;
+  }
+
+  .snackbar.error {
+    background-color: rgba(253 87 73 / 100%);
+    font-size: 20px;
   }
 
   /* CSS animation for the snackbar */
