@@ -16,10 +16,10 @@ function processResponse(event, data, renderViewMethod, hideActionModal,
       renderViewMethod(event);
     }
     if (successToastMessage) {
-      showSnackbar(successToastMessage);
+      showSnackbar(successToastMessage, '');
     }
   } else {
-    showSnackbar(data.message);
+    showSnackbar(data.message, 'error');
   }
 }
 
