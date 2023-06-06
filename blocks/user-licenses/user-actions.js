@@ -19,14 +19,10 @@ function processResponse(event, data, renderViewMethod, hideActionModal) {
 export async function addColleague(event, callback) {
   event.preventDefault();
   const formNode = event.target.parentNode;
-  const firstName = formNode.querySelector('#first-name').value;
-  const lastName = formNode.querySelector('#last-name').value;
-  const email = formNode.querySelector('#email').value;
-  const jobTitle = formNode.querySelector('#job-title').value;
-  const phone = formNode.querySelector('#phone').value;
-  const personalPhone = formNode.querySelector('#personal-phone').value;
-  const parentcustomerid = localStorage.getItem('parentcustomerid');
-  const data = await execute('dynamics_add_colleague', `&firstname=${firstName}&lastname=${lastName}&emailaddress1=${email}&jobtitle=${jobTitle}&telephone1=${phone}&mobilephone=${personalPhone}&parentcustomerid_account=${parentcustomerid}`, 'POST');
+  const formData = new FormData(formNode);
+  formData.append('parentcustomerid_account', localStorage.getItem('parentcustomerid'));
+  const urlParams = new URLSearchParams(formData).toString();
+  const data = await execute('dynamics_add_colleague', `&${urlParams}`, 'POST');
 
   processResponse(event, data, callback, true);
 }

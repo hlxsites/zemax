@@ -1,16 +1,16 @@
 const editUserFormConfiguration = {
   fields: [
     {
-      id: 'first-name', label: 'First Name', value: '', readOnly: true, disabled: true,
+      id: 'first-name', name: 'first-name', label: 'First Name', value: '', readOnly: true, disabled: true,
     },
     {
-      id: 'last-name', label: 'Last Name', value: '', readOnly: true, disabled: true,
+      id: 'last-name', name: 'last-name', label: 'Last Name', value: '', readOnly: true, disabled: true,
     },
-    { id: 'job-title', label: 'Job Title' },
+    { id: 'job-title', name: 'job-title', label: 'Job Title' },
     {
-      id: 'email', label: 'Email', value: '', readOnly: true, disabled: true,
+      id: 'email', name: 'email', label: 'Email', value: '', readOnly: true, disabled: true,
     },
-    { id: 'phone', label: 'Business Phone' },
+    { id: 'phone', name: 'phone', label: 'Business Phone' },
   ],
   submitText: 'Submit',
   submitId: 'userEditSubmitButton',
