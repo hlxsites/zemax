@@ -71,6 +71,22 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+export function showSnackbar(message) {
+  const snackbar = document.createElement('div');
+  snackbar.className = 'snackbar';
+  snackbar.textContent = message;
+
+  document.body.appendChild(snackbar);
+
+  setTimeout(() => {
+    snackbar.classList.add('show');
+    setTimeout(() => {
+      snackbar.classList.remove('show');
+      snackbar.remove();
+    }, 2500);
+  }, 100);
+}
+
 export function createForm(config) {
   const form = createTag('form', { id: config.formId }, '');
 
