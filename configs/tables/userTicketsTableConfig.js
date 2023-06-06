@@ -1,5 +1,3 @@
-import { formatDateProfilePage } from '../../scripts/scripts.js';
-
 const userTicketsTable = [
   {
     label: 'Case Number',
@@ -30,3 +28,12 @@ const userTicketsTable = [
 ];
 
 export default userTicketsTable;
+
+function formatDateProfilePage(clonedHeading) {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  const dateCreated = new Date(clonedHeading.value);
+  clonedHeading.value.length = 0;
+  clonedHeading.value.push(dateCreated.toLocaleDateString('en-US', options));
+
+  return clonedHeading;
+}

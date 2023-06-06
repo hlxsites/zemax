@@ -347,9 +347,12 @@ export function createGenericDataTable(tableHeadings, rowData) {
   rowData.forEach((row) => {
     const trValue = document.createElement('tr');
     tableHeadings.forEach((heading) => {
-      const clonedHeading = deepCopy(heading);
+      let clonedHeading = deepCopy(heading);
       findReplaceJSON(clonedHeading, row);
-      const elementValue = clonedHeading.processValueMethod ? clonedHeading.processValueMethod(clonedHeading.value.join('')) : clonedHeading.value.join('');
+      if (clonedHeading.processValueMethod) {
+        clonedHeading = clonedHeading.processValueMethod(clonedHeading);
+      }
+      const elementValue = clonedHeading.value.join('');
       if (clonedHeading && clonedHeading.html && clonedHeading.html !== 'td') {
         trValue.appendChild(createTag('td', '', createTag(clonedHeading.html, clonedHeading.htmlAttributes ?? '', elementValue)));
       } else {
@@ -361,13 +364,6 @@ export function createGenericDataTable(tableHeadings, rowData) {
 
   tableElement.appendChild(tbody);
   return tableElement;
-}
-
-export function formatDateProfilePage(rawDate) {
-  const options = { year: 'numeric', month: 'short', day: 'numeric' };
-  const dateCreated = new Date(rawDate);
-
-  return dateCreated.toLocaleDateString('en-US', options);
 }
 
 export async function searchResults(index, category) {

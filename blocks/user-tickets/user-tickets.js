@@ -1,6 +1,6 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import { p, a } from '../../scripts/dom-helpers.js';
-import { createTag, createGenericDataTable} from '../../scripts/scripts.js';
+import { createTag, createGenericDataTable } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 import userTicketsTable from '../../configs/tables/userTicketsTableConfig.js';
 

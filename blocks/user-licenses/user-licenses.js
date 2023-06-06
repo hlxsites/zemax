@@ -24,6 +24,7 @@ import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicens
 import manageColleaguesAdminUserLicensesTable from '../../configs/tables/manageColleagueAdminUserLincensesTableConfig.js';
 import manageColleaguesEndUserLicensesTable from '../../configs/tables/manageColleagueEndUserLincensesTableConfig.js';
 import getAssignUserToLicenseTable from '../../configs/tables/assignUserToLicenseTableConfig.js';
+import userLicensesTable from '../../configs/tables/userLicensesTableConfig.js';
 
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
@@ -701,80 +702,7 @@ function createTableHeaderMapping(data) {
 
 function createLicencesTable(rows) {
   const tableContainer = createTag('div', { class: 'table-container' }, '');
-  const tableElement = document.createElement('table');
-
-  const thead = document.createElement('thead');
-  const tr = document.createElement('tr');
-
-  const { tableHeadings } = getLocaleConfig('en_us', 'userLicenses');
-
-  tableHeadings.forEach((tableHeading) => {
-    const tableHeadingElement = document.createElement('th');
-    const tableButton = document.createElement('button');
-    tableButton.innerHTML = tableHeading;
-    tableHeadingElement.appendChild(tableButton);
-    tr.appendChild(tableHeadingElement);
-  });
-
-  thead.appendChild(tr);
-  tableElement.appendChild(thead);
-
-  const tbody = document.createElement('tbody');
-  rows.forEach((row) => {
-    const trBody = document.createElement('tr');
-
-    // TODO add logic for manage or view
-    const tdManageOrView = document.createElement('td');
-    const manageOrViewButton = createTag('button', {
-      class: 'manage-view-license action', type: 'button', 'data-license-id': row.new_licensesid, 'data-view-access': 'manage',
-    }, 'Manage');
-    tdManageOrView.appendChild(manageOrViewButton);
-    trBody.appendChild(tdManageOrView);
-
-    const date = new Date(row.new_supportexpires);
-    // subtract one day from the date
-    date.setDate(date.getDate() - 1);
-
-    // format the resulting date into the desired string format
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    const supportExpiryDate = date.toLocaleDateString('en-US', options);
-    let licenseActive = 'Expired';
-
-    if (date.getTime() > Date.now()) {
-      licenseActive = 'Active';
-    }
-
-    const headingValueMapping = [
-      licenseActive,
-      supportExpiryDate,
-      row.new_licenseid,
-      row.zemax_nickname,
-      row['_new_product_value@OData.Community.Display.V1.FormattedValue'],
-      row['zemax_seattype@OData.Community.Display.V1.FormattedValue'],
-      row.new_usercount,
-      row.new_endusercount,
-      row['_new_registereduser_value@OData.Community.Display.V1.FormattedValue'],
-    ];
-
-    headingValueMapping.forEach((headingValue, index) => {
-      const td = document.createElement('td');
-      if (index === 0) {
-        const spanClass = (headingValue === 'Active') ? 'active-license' : 'expired-license';
-        const spanStatus = createTag('span', { class: spanClass }, headingValue);
-        td.appendChild(spanStatus);
-      } else if (index === 2) {
-        const licenseLink = createTag('a', { href: '#' }, headingValue);
-        td.appendChild(licenseLink);
-      } else {
-        td.innerText = headingValue ?? '';
-      }
-      trBody.appendChild(td);
-    });
-
-    tbody.appendChild(trBody);
-  });
-
-  tableElement.appendChild(tbody);
+  const tableElement = createGenericDataTable(userLicensesTable, rows);
   tableContainer.appendChild(tableElement);
   return tableContainer;
 }
