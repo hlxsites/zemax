@@ -12,7 +12,7 @@ import {
   addColleague, updateUserInfo, resetUserPassword,
   activateUser, deactivateUser, updateLicenseNickname,
   changeUserForALicense, addUserToALicense, removeUserFromLicense,
-  assignLicenseToUser,
+  assignLicenseToUser, updateColleagueInfo,
 } from './user-actions.js';
 
 // Load configurations
@@ -95,14 +95,6 @@ async function showAssignUserLicense(event) {
     assignUserCheckbox.setAttribute('data-contact-id', contactId);
     assignUserCheckbox.addEventListener('click', updateAssignLicenseButton);
   });
-}
-
-async function updateColleagueInfo(event) {
-  const colleagueDataDiv = document.querySelector('.colleague-details-data');
-  const jobTitle = colleagueDataDiv.querySelector('.colleague-job-title').value;
-  const telephone = colleagueDataDiv.querySelector('.colleague-bussiness-phone').value;
-  const contactId = event.target.getAttribute('data-contact-id');
-  execute('dynamics_edit_colleague', `&jobtitle=${jobTitle}&telephone1=${telephone}&contactid=${contactId}`, 'PATCH');
 }
 
 async function activateDeactivateUser(event) {
@@ -484,7 +476,10 @@ function clearProfileLandingView() {
 async function displayLicenseDetailsView(event) {
   clearProfileLandingView();
   window.scrollTo(0, 0);
-  const viewAccess = event.target.getAttribute('data-view-access');
+  let viewAccess = await event.target.getAttribute('data-view-access');
+  if (viewAccess) {
+    viewAccess = 'manage';
+  }
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
@@ -558,7 +553,11 @@ async function displayLicenseDetailsView(event) {
 
     if (viewAccess === 'manage') {
       const addUserButton = createTag('button', {
-        class: 'add-user-to-license action', type: 'button', 'data-modal-id': 'addUserModal', 'data-license-id': licenseId,
+        class: 'add-user-to-license action',
+        type: 'button',
+        'data-modal-id': 'addUserModal',
+        'data-license-id': licenseId,
+        'data-view-access': 'manage',
       }, 'Add End User');
       endUsersDetailsDiv.appendChild(addUserButton);
       addUserButton.addEventListener('click', showAddUserTable);
@@ -595,7 +594,7 @@ async function addManageLicenseFeature() {
 
   // Add User Modal
   const createUserButton = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'addUserModal' }, 'Create User');
-  const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
+  const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal', 'data-view-access': 'manage' }, 'Add User');
   const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
   const buttonsConfig = [
     {
@@ -620,7 +619,7 @@ async function addManageLicenseFeature() {
 
   // Delete User Modal
   const modalDeleteDescription = createTag('p', '', 'Please confirm this action to remove end user');
-  const deleteUserButton = createTag('button', { class: 'action important delete-user-action-button', 'data-modal-id': 'deleteUserModal' }, 'Yes, remove End User');
+  const deleteUserButton = createTag('button', { class: 'action important delete-user-action-button', 'data-modal-id': 'deleteUserModal', 'data-view-access': 'manage' }, 'Yes, remove End User');
   const deleteUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
 
   const deleteButtonsConfig = [
@@ -642,7 +641,7 @@ async function addManageLicenseFeature() {
 
   // Change User Modal
   const createUserButtonChangeUser = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Create User');
-  const changeUserButton = createTag('button', { class: 'action change-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Change User');
+  const changeUserButton = createTag('button', { class: 'action change-user-action-button', 'data-modal-id': 'changeUserModal', 'data-view-access': 'manage' }, 'Change User');
   const changeUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'changeUserModal' }, 'Close');
 
   const createUserButtonsConfig = [
