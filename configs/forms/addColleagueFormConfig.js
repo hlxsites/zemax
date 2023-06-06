@@ -1,11 +1,11 @@
 const addColleagueFormConfiguration = {
   fields: [
-    { id: 'first-name', label: 'First Name' },
-    { id: 'last-name', label: 'Last Name' },
-    { id: 'job-title', label: 'Job Title' },
-    { id: 'email', label: 'Email' },
-    { id: 'phone', label: 'Business Phone' },
-    { id: 'personal-phone', label: 'Mobile Phone' },
+    { id: 'firstname', name: 'firstname', label: 'First Name' },
+    { id: 'lastname', name: 'lastname', label: 'Last Name' },
+    { id: 'jobtitle', name: 'jobtitle', label: 'Job Title' },
+    { id: 'emailaddress1', name: 'emailaddress1', label: 'Email' },
+    { id: 'telephone1', name: 'telephone1', label: 'Business Phone' },
+    { id: 'mobilephone', name: 'mobilephone', label: 'Mobile Phone' },
   ],
   submitText: 'Add Colleague',
   submitId: 'addColleagueSubmitButton',

@@ -76,7 +76,7 @@ export function createForm(config) {
 
   config.fields.forEach((field) => {
     const label = createTag('label', { for: field.id }, field.label);
-    const input = createTag('input', { type: 'text', id: field.id }, '');
+    const input = createTag('input', { type: 'text', id: field.id, name: field.name }, '');
 
     if (field.value) {
       input.setAttribute('value', field.value);
