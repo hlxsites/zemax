@@ -858,7 +858,6 @@ function calculateViewMatrix(webroles) {
       viewAccess = 'none';
     }
   });
-  console.log(viewAccess);
   localStorage.setItem('viewAccess', viewAccess);
   return viewAccess;
 }

@@ -295,6 +295,31 @@ export function findReplaceJSON(jsonObj, data) {
   return jsonObj;
 }
 
+// Custom recursive deep copy function
+function deepCopy(obj) {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj;
+  }
+
+  let copy;
+
+  if (Array.isArray(obj)) {
+    copy = [];
+    for (let i = 0; i < obj.length; i += 1) {
+      copy[i] = deepCopy(obj[i]);
+    }
+  } else {
+    copy = {};
+    Object.keys(obj).forEach((key) => {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        copy[key] = deepCopy(obj[key]);
+      }
+    });
+  }
+
+  return copy;
+}
+
 /**
  * @typedef {Object} tableHeadings
  * @property {string} label - table heading label text.
@@ -310,7 +335,8 @@ export function createGenericDataTable(tableHeadings, rowData) {
 
   tableHeadings.forEach((heading) => {
     const { label } = heading;
-    const tableHeadingElement = createTag('th', { class: '' }, label);
+
+    const tableHeadingElement = createTag('th', heading.headingAttributes ?? '', label);
     tr.appendChild(tableHeadingElement);
   });
   thead.appendChild(tr);
@@ -321,13 +347,13 @@ export function createGenericDataTable(tableHeadings, rowData) {
   rowData.forEach((row) => {
     const trValue = document.createElement('tr');
     tableHeadings.forEach((heading) => {
-      const clonedHeading = JSON.parse(JSON.stringify(heading));
+      const clonedHeading = deepCopy(heading);
       findReplaceJSON(clonedHeading, row);
+      const elementValue = clonedHeading.processValueMethod ? clonedHeading.processValueMethod(clonedHeading.value.join('')) : clonedHeading.value.join('');
       if (clonedHeading && clonedHeading.html && clonedHeading.html !== 'td') {
-        const tagLabel = clonedHeading.htmlTagLabel ? clonedHeading.htmlTagLabel : '';
-        trValue.appendChild(createTag('td', '', createTag(clonedHeading.html, clonedHeading.htmlAttributes, tagLabel)));
+        trValue.appendChild(createTag('td', '', createTag(clonedHeading.html, clonedHeading.htmlAttributes ?? '', elementValue)));
       } else {
-        trValue.appendChild(createTag('td', clonedHeading.htmlAttributes, clonedHeading.value.join('')));
+        trValue.appendChild(createTag('td', clonedHeading.htmlAttributes ?? '', elementValue));
       }
     });
     tbody.appendChild(trValue);
@@ -335,6 +361,13 @@ export function createGenericDataTable(tableHeadings, rowData) {
 
   tableElement.appendChild(tbody);
   return tableElement;
+}
+
+export function formatDateProfilePage(rawDate) {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  const dateCreated = new Date(rawDate);
+
+  return dateCreated.toLocaleDateString('en-US', options);
 }
 
 export async function searchResults(index, category) {

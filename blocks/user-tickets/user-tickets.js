@@ -1,7 +1,8 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import { p, a } from '../../scripts/dom-helpers.js';
-import { createTag } from '../../scripts/scripts.js';
+import { createTag, createGenericDataTable} from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
+import userTicketsTable from '../../configs/tables/userTicketsTableConfig.js';
 
 export default async function decorate(block) {
   const userId = localStorage.getItem('auth0_id');
@@ -84,66 +85,11 @@ async function renderUserTickets(userEmail, contactid, block) {
 
   if (data.length > 0) {
     const tableContainer = createTag('div', { class: 'table-container' }, '');
-    const tableElement = document.createElement('table');
-    const thead = document.createElement('thead');
-    const tr = document.createElement('tr');
-
-    const { tableHeadings } = getLocaleConfig('en_us', 'userTickets');
-    tableHeadings.forEach((heading) => {
-      const tableHeadingElement = document.createElement('th');
-      const button = document.createElement('button');
-      button.innerHTML = heading;
-      tableHeadingElement.appendChild(button);
-      tr.appendChild(tableHeadingElement);
-    });
-
-    thead.appendChild(tr);
-    tableElement.appendChild(thead);
-
-    const tbody = document.createElement('tbody');
-
-    data.forEach((ticket) => {
-      const trBody = document.createElement('tr');
-      const tdCaseNumber = document.createElement('td');
-      const caseLink = document.createElement('a');
-      caseLink.setAttribute('href', ticket.url);
-      const caseIdText = document.createTextNode(ticket.id);
-      caseLink.appendChild(caseIdText);
-      tdCaseNumber.appendChild(caseLink);
-      trBody.appendChild(tdCaseNumber);
-
-      const tdCaseTitle = document.createElement('td');
-      tdCaseTitle.innerText = ticket.raw_subject;
-      trBody.appendChild(tdCaseTitle);
-
-      const tdCaseStatus = document.createElement('td');
-      tdCaseStatus.innerText = ticket.status;
-      trBody.appendChild(tdCaseStatus);
-
-      const options = { year: 'numeric', month: 'short', day: 'numeric' };
-      const dateCreatedString = ticket.created_at;
-      const dateCreated = new Date(dateCreatedString);
-
-      const formattedDateCreated = dateCreated.toLocaleDateString('en-US', options);
-      const tdCaseCreated = document.createElement('td');
-      tdCaseCreated.innerText = formattedDateCreated;
-      trBody.appendChild(tdCaseCreated);
-
-      const dateUpdatedString = ticket.updated_at;
-      const dateUpdated = new Date(dateUpdatedString);
-      const formattedDateUpdated = dateUpdated.toLocaleDateString('en-US', options);
-      const tdCaseLastUpdated = document.createElement('td');
-      tdCaseLastUpdated.innerText = formattedDateUpdated;
-      trBody.appendChild(tdCaseLastUpdated);
-      tbody.appendChild(trBody);
-    });
-
-    tableElement.appendChild(tbody);
+    const tableElement = createGenericDataTable(userTicketsTable, data);
     tableContainer.appendChild(tableElement);
 
     block.append(tableContainer);
   } else {
-    // TODO placeholder
     block.append(p({ class: 'no-tickets' }, getLocaleConfig('en_us', 'userTickets').noTicketDescription));
   }
 }

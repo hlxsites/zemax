@@ -28,9 +28,8 @@ const activatedDeactivatedColleaguesTable = [{
 },
 {
   label: '',
-  value: [''],
+  value: ['Edit User'],
   html: 'button',
-  htmlTagLabel: 'Edit User',
   htmlAttributes: {
     class: 'license-user-edit-user action secondary',
     type: 'button',
@@ -46,9 +45,8 @@ const activatedDeactivatedColleaguesTable = [{
 },
 {
   label: '',
-  value: [''],
+  value: ['Reset Password'],
   html: 'button',
-  htmlTagLabel: 'Reset Password',
   htmlAttributes: {
     class: 'license-user-reset-password action secondary',
     type: 'button',
@@ -59,9 +57,8 @@ const activatedDeactivatedColleaguesTable = [{
 },
 {
   label: 'User Status',
-  value: [''],
+  value: ['Deactivate User'],
   html: 'button',
-  htmlTagLabel: 'Deactivate User',
   htmlAttributes: {
     class: 'license-user-deactivate-user action important',
     type: 'button',
@@ -70,9 +67,8 @@ const activatedDeactivatedColleaguesTable = [{
 },
 {
   label: 'User Status',
-  value: [''],
+  value: ['Activate User'],
   html: 'button',
-  htmlTagLabel: 'Activate User',
   htmlAttributes: {
     class: 'license-user-activate-user action activate',
     type: 'button',
@@ -81,9 +77,8 @@ const activatedDeactivatedColleaguesTable = [{
 },
 {
   label: '',
-  value: [''],
+  value: ['Manage'],
   html: 'button',
-  htmlTagLabel: 'Manage',
   htmlAttributes: {
     class: 'license-user-manage-user action secondary',
     type: 'button',
