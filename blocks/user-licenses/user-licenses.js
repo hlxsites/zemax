@@ -204,7 +204,8 @@ async function manageUserView(event) {
   if (adminUserLicensedata && adminUserLicensedata.length > 0) {
     const tableElement = createGenericDataTable(manageColleaguesAdminUserLicensesTable,
       adminUserLicensedata);
-    manageUserViewWrapperDiv.append(tableElement);
+    const tableContainer = createTag('div', { class: 'table-container' }, tableElement);
+    manageUserViewWrapperDiv.append(tableContainer);
   } else {
     manageUserViewWrapperDiv.append(p('There are no records to display.'));
   }
@@ -228,7 +229,8 @@ async function manageUserView(event) {
 
   const allModalContentContainerDiv = document.querySelector('.all-modal-content-container');
   const assignTableElement = createGenericDataTable(getAssignUserToLicenseTable('assign-license-user'), assignLicenseUserData);
-  const modalAssignUserLicenseDiv = createModal('Assign License', assignTableElement, 'assign-user-license-modal-content', 'assign-user-license-container table-container', 'assignUserLicense', 'assign-user-license-modal', buttonsConfig);
+  const assignTableContainer = createTag('div', { class: 'table-container' }, assignTableElement);
+  const modalAssignUserLicenseDiv = createModal('Assign License', assignTableContainer, 'assign-user-license-modal-content', 'assign-user-license-container table-container', 'assignUserLicense', 'assign-user-license-modal', buttonsConfig);
   allModalContentContainerDiv.append(modalAssignUserLicenseDiv);
 
   assignLicenseButton.addEventListener('click', showAssignUserLicense);
@@ -238,7 +240,8 @@ async function manageUserView(event) {
     const manageColleaguesEndUsertableElement = createGenericDataTable(
       manageColleaguesEndUserLicensesTable,
       endUserLicensesData);
-    manageUserViewWrapperDiv.append(manageColleaguesEndUsertableElement);
+    const tableContainer = createTag('div', { class: 'table-container' }, manageColleaguesEndUsertableElement);
+    manageUserViewWrapperDiv.append(tableContainer);
   } else {
     manageUserViewWrapperDiv.append(p('There are no records to display.'));
   }
