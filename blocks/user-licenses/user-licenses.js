@@ -179,7 +179,7 @@ async function manageUserView(event) {
     elementDetailCellDiv.appendChild(elementDetailCellHeading);
     if (clonedHeading.html === 'input') {
       elementDetailCellDiv.appendChild(createTag('input', { class: clonedHeading.inputClass, value: clonedHeading.value.join('') }, ''));
-      elementDetailCellDiv.appendChild(createTag('button', { 'data-contact-id': contactid, 'data-action-id': clonedHeading['data-action-id'] }, 'Save'));
+      elementDetailCellDiv.appendChild(createTag('button', { class: 'action update-user-info', 'data-contact-id': contactid, 'data-action-id': clonedHeading['data-action-id'] }, 'Save'));
     } else {
       const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, clonedHeading.value.join(''));
       elementDetailCellDiv.appendChild(elementDetailCellDataPara);

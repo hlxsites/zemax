@@ -70,7 +70,7 @@ function createButtonAsPerWebroles(webroles, block) {
       {
         href: 'https://community.zemax.com/ssoproxy/login?ssoType=openidconnect',
         'aria-label': askCommunityButtonText,
-        class: 'more-info-access button secondary',
+        class: 'more-info-access button primary',
         target: '_blank',
       },
       askCommunityButtonText,
