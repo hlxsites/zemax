@@ -22,9 +22,8 @@ export default function getLicenseDetailsUsersTable(licenseId) {
     },
     {
       label: '',
-      value: ['{{contact1.fullname}}'],
+      value: ['Remove User'],
       html: 'button',
-      htmlTagLabel: 'Remove User',
       htmlAttributes: {
         class: 'license-user-remove-user action important',
         type: 'button',
@@ -37,9 +36,8 @@ export default function getLicenseDetailsUsersTable(licenseId) {
     },
     {
       label: '',
-      value: ['{{contact1.fullname}}'],
+      value: ['Change End User'],
       html: 'button',
-      htmlTagLabel: 'Change End User',
       htmlAttributes: {
         class: 'license-user-change-user action',
         type: 'button',
