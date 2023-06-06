@@ -9,6 +9,13 @@
 
 .user-tickets .support-links a:last-of-type {
     margin-right: 0;
+    background-color: var(--clr-blue);
+    color: var(--clr-white);
+}
+
+.user-tickets .support-links a:last-of-type:hover {
+    background-color: var(--clr-white);
+    color: var(--clr-blue);
 }
 
 a.button.primary {

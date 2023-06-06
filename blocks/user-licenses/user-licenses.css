@@ -9,6 +9,13 @@
   text-align: right;
 }
 
+
+
+.user-licenses > .primary-license-action-button {
+  float: right;
+  margin-top: -4rem;
+}
+
 div.tabs {
   box-shadow: 0 0 5px #1718180D, 0 1px 2px #00000026;
   outline: 0.1rem solid transparent;
@@ -296,7 +303,7 @@ button.add-user-to-license {
   max-width: 60rem;
   width: 100%;
   display: flex;
-  flex-flow: column wrap;
+  flex-flow: column nowrap;
 }
 
 .add-user-modal-content > .modal-body,
@@ -338,7 +345,7 @@ button.add-user-to-license {
 /* Modal Content */
 .edit-user-modal-content,
 .add-colleague-modal-content {
-  max-width: 26rem;
+  max-width: 38rem;
   width: 100%;
 }
 
@@ -472,4 +479,39 @@ input.form-action-button::before {
 a.visit-knowledgebase {
   display: block;
   margin-top: 2rem;
+}
+
+
+/* Manage User */
+.manage-user-view-wrapper {
+
+}
+
+.manage-user-view-wrapper > h2 {
+  margin: 0.3em 0;
+  font-size: 34px;
+  line-height: 1em;
+  font-weight: 600;
+}
+
+.manage-user-view-wrapper > h3 {
+  margin: 0.3em 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: normal;
+  font-family: MyriadPro-Regular, sans-serif
+}
+
+.manage-user-view-wrapper > p {
+  margin: 0;
+  margin-bottom: 60px;
+  font-size: 14px;
+  line-height: 1.6em;
+  letter-spacing: 0.2px;
+  font-weight: normal;
+  font-family: MyriadPro-Regular, sans-serif
+}
+
+.manage-user-view-wrapper > button.primary.action {
+  float: right;
 }
