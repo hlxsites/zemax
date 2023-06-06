@@ -207,7 +207,7 @@ footer .footer-sub-links select.locale {
   }
 }
 
-/* Tablet and larger*/
+/* Tablet and larger */
 @media only screen and (min-width: 768px) {
   .hide-on-tablet {
     display: none !important;

@@ -1,8 +1,9 @@
-import { div, img, span } from '../../scripts/dom-helpers.js';
+import { div, img } from '../../scripts/dom-helpers.js';
 
 /**
  * @param {teaser} $block
  */
+
 export default function decorateTeaser(block) {
   const closeIcon = div({ class: 'close' },
     img({ src: '/icons/icon-close.png', alt: 'close icon' }),
