@@ -340,7 +340,7 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
   }
 
   header nav .nav-logo picture img {
-    /* width: 71px; 
+    /* width: 71px;
     height: 28px;
     TODO */
   }
@@ -616,7 +616,7 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     position: absolute;
     top: calc(var(--nav-height) - 25px);
     border-radius: 20px;
-    box-shadow: 0 4px 11px -1px #262729;
+    box-shadow: 0 4px 11px -1px rgb(38 39 41 / 13%);
     border: 1px solid #ebebeb;
     background: var(--background-color);
     display: flex;

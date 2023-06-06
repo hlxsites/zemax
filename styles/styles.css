@@ -56,6 +56,7 @@
   --color-border: #ebebeb;
   --button-green: #005800;
   --button-red: #bf0711;
+  --button-hover-orange: #d45500;
 
   /* gradients */
   --linear-gradient: linear-gradient(to left, #871054, #78be20 53%, #f77f00 100%);
@@ -208,6 +209,10 @@ button.primary {
   border: solid 2.5px var(--primary-button-color);
 }
 
+main .section.button-hover-orange .button:hover {
+  background-color: var(--button-hover-orange);
+}
+
 a.button.primary:hover,
 a.button.primary:focus,
 button.primary:hover,
@@ -234,14 +239,14 @@ button.secondary:focus {
 
 a.button:any-link,
 button {
-  font-family: var(--body-font-family);
+  font-family: var(--ff-myradpro-semibold);
   font-size: var(--body-font-size-s);
   font-style: normal;
   font-weight: var(--font-weight-400);
   display: inline-block;
   box-sizing: border-box;
   text-decoration: none;
-  padding: 5px 30px;
+  padding: 10px 30px;
   text-align: center;
   cursor: pointer;
   margin: 16px 0;
@@ -476,12 +481,15 @@ main .category{
   display: block;
 }
 
-/* center aligned sections */
-
 main .section.center-aligned {
   text-align: center;
   margin: 0 auto;
 }
+
+main .section.h2-center-aligned h2 {
+  text-align: center;
+}
+
 
 main .section.center-aligned .default-content-wrapper>p {
   margin: inherit;
