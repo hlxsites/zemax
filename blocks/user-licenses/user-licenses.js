@@ -476,10 +476,7 @@ function clearProfileLandingView() {
 async function displayLicenseDetailsView(event) {
   clearProfileLandingView();
   window.scrollTo(0, 0);
-  let viewAccess = await event.target.getAttribute('data-view-access');
-  if (viewAccess) {
-    viewAccess = 'manage';
-  }
+  const viewAccess = await event.target.getAttribute('data-view-access');
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
