@@ -486,18 +486,16 @@ main .section.center-aligned {
   margin: 0 auto;
 }
 
-
-
 main .section.h2-center-aligned h2 {
   text-align: center;
 }
-
 
 main .section.center-aligned .default-content-wrapper>p {
   margin: 0 auto;
   font-size: var(--body-font-size-xxl);
   text-align: center;
   line-height: 36px;
+  max-width: 700px;
 }
 
 
