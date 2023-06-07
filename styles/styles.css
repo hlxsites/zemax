@@ -490,6 +490,12 @@ main .section.h2-center-aligned h2 {
   text-align: center;
 }
 
+main .section.h2-font-34 h2{
+  font-size: var(--heading-font-size-x);
+  font-family: var(--ff-myradpro-regular);
+  margin-bottom: 0;
+}
+
 main .section.center-aligned .default-content-wrapper>p {
   margin: 0 auto;
   font-size: var(--body-font-size-xxl);
