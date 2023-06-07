@@ -52,3 +52,35 @@ export function getResetUserPasswordDialog() {
 `;
   return resetUserPasswordDialog;
 }
+
+export function getAddColleagueDialog() {
+  const addColleagueDialog = domEl('dialog', { class: 'add-colleague-modal-container', 'aria-expanded': false, id: 'addColleagueModal' });
+  addColleagueDialog.innerHTML = `
+  <div class="modal-container add-colleague-modal">
+   <div class="modal-content add-colleague-modal-content">
+      <div class="modal-header">
+         <h3>Add Colleague</h3>
+         <button class="modal-close" data-modal-id="addColleagueModal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="add-colleague-container">
+          <form id="addColleagueEditForm">
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" name="firstname">
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" name="lastname">
+            <label for="jobtitle">Job Title</label>
+            <input type="text" id="jobtitle" name="jobtitle">
+            <label for="emailaddress1">Email</label><input type="text" id="emailaddress1" name="emailaddress1">
+            <label for="telephone1">Business Phone</label><input type="text" id="telephone1" name="telephone1">
+            <label for="mobilephone">Mobile Phone</label><input type="text" id="mobilephone" name="mobilephone">
+            <input type="submit" id="addColleagueSubmitButton" class="add-colleague-action-button form-action-button" value="Add Colleague" data-modal-id="addColleagueModal">
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer"></div>
+   </div>
+  </div>
+`;
+  return addColleagueDialog;
+}

@@ -73,7 +73,6 @@ export function createTag(tag, attributes, html) {
 
 export function showSnackbar(message, typeClass) {
   const snackbar = document.createElement('div');
-  debugger;
   snackbar.classList.add('snackbar', typeClass);
   snackbar.textContent = message;
 

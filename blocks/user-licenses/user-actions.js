@@ -26,10 +26,9 @@ function processResponse(event, data, renderViewMethod, hideActionModal,
 export async function addColleague(event, callback) {
   event.preventDefault();
   const formNode = event.target.parentNode;
-  const formData = new FormData(formNode);
-  formData.append('parentcustomerid_account', localStorage.getItem('parentcustomerid'));
-  const urlParams = new URLSearchParams(formData).toString();
-  const data = await execute('dynamics_add_colleague', `&${urlParams}`, 'POST');
+  const urlConfig = new FormData(formNode);
+  urlConfig.append('parentcustomerid_account', localStorage.getItem('parentcustomerid'));
+  const data = await execute('dynamics_add_colleague', urlConfig, 'POST');
 
   processResponse(event, data, callback, true, 'Colleague was added successfully');
 }
@@ -37,72 +36,81 @@ export async function addColleague(event, callback) {
 export async function updateUserInfo(event, callback) {
   event.preventDefault();
   const jobtitle = event.target.parentNode.querySelector('#job-title').value;
-  const telephone = event.target.parentNode.querySelector('#phone').value;
+  const telephone1 = event.target.parentNode.querySelector('#phone').value;
   const contactid = event.target.getAttribute('data-contactid');
-  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobtitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
+  const urlConfig = { jobtitle, telephone1, contactid };
+  const data = await execute('dynamics_edit_colleague', urlConfig, 'PATCH');
 
   processResponse(event, data, callback, true, 'Information updated');
 }
 
 export async function resetUserPassword(event) {
   const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
-  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`, 'POST');
+  const urlConfig = { contactid };
+  const data = await execute('dynamics_resetpassword_contactid', urlConfig, 'POST');
 
   processResponse(event, data, false, true, 'Reset Email was sent successfully', 200);
 }
 
 export async function activateUser(event, callback) {
   const contactid = event.target.getAttribute('data-contactid');
-  const data = await execute('dynamics_activate_userid', `&contact_id=${contactid}`, 'PATCH');
+  const urlConfig = { contactid };
+  const data = await execute('dynamics_activate_userid', urlConfig, 'PATCH');
 
   processResponse(event, data, callback, false, 'User was activated successfully');
 }
 
 export async function deactivateUser(event, callback) {
   const contactid = event.target.getAttribute('data-contactid');
-  const data = await execute('dynamics_deactivate_userid', `&contact_id=${contactid}`, 'PATCH');
+  const urlConfig = { contactid };
+  const data = await execute('dynamics_deactivate_userid', urlConfig, 'PATCH');
 
   processResponse(event, data, callback, false, 'User was deactivated successfully');
 }
 
-export async function updateLicenseNickname() {
+export async function updateLicenseNickname(event) {
+  const id = event.target.getAttribute('data-license-id');
   const { value } = document.querySelector('.nickname');
+  const urlConfig = { id, nickname: value };
   if (value) {
-    await execute('dynamics_set_license_nickname', `&id=97d53652-122f-e611-80ea-005056831cd4&nickname=${value}`, 'PATCH');
-    showSnackbar('Nickname updated successfully');
+    await execute('dynamics_set_license_nickname', urlConfig, 'PATCH');
+    showSnackbar('Nickname updated successfully', 'success');
   } else {
-    showSnackbar('Error while updating nickname');
+    showSnackbar('Error while updating nickname', 'error');
   }
 }
 
 export async function changeUserForALicense(event, callback) {
   const contactId = event.target.getAttribute('contactid');
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
-  const data = await execute('dynamics_change_enduser_license', `&contact_id=${contactId}&new_productuserid=${newProductUserId}`, 'PATCH');
+  const urlConfig = { contact_id: contactId, new_productuserid: newProductUserId };
+  const data = await execute('dynamics_change_enduser_license', urlConfig, 'PATCH');
 
   processResponse(event, data, callback, true, 'User was changed successfully');
 }
 
 export async function addUserToALicense(event, callback) {
   const contactId = event.target.getAttribute('contactid');
-  const licenseId = event.target.getAttribute('data-license-id');
-  const data = await execute('dynamics_add_end_user', `&contactId=${contactId}&licenseid=${licenseId}`, 'POST');
+  const licenseid = event.target.getAttribute('data-license-id');
+  const urlConfig = { contactId, licenseid };
+  const data = await execute('dynamics_add_end_user', urlConfig, 'POST');
 
   processResponse(event, data, callback, true, 'User added successfully');
 }
 
 export async function removeUserFromLicense(event, callback) {
   const newproductuserid = event.target.getAttribute('data-new-productuserid');
-  const data = await execute('dynamics_remove_enduser_from_license', `&new_productuserid=${newproductuserid}`, 'DELETE');
+  const urlConfig = { new_productuserid: newproductuserid };
+  const data = await execute('dynamics_remove_enduser_from_license', urlConfig, 'DELETE');
 
   processResponse(event, data, callback, true, 'User was removed from license');
 }
 
 export async function assignLicenseToUser(event, callback) {
   const contactId = event.target.getAttribute('data-contact-id');
-  const licenseId = event.target.getAttribute('data-license-id');
-  const data = await execute('dynamics_add_end_user', `&contactId=${contactId}&licenseid=${licenseId}`, 'POST');
+  const licenseid = event.target.getAttribute('data-license-id');
+  const urlConfig = { contactId, licenseid };
+  const data = await execute('dynamics_add_end_user', urlConfig, 'POST');
 
   // TODO handle response and add toast message
   processResponse(event, data, callback, true);
@@ -110,10 +118,11 @@ export async function assignLicenseToUser(event, callback) {
 
 export async function updateColleagueInfo(event) {
   const colleagueDataDiv = document.querySelector('.colleague-details-data');
-  const jobTitle = colleagueDataDiv.querySelector('.colleague-job-title').value;
-  const telephone = colleagueDataDiv.querySelector('.colleague-bussiness-phone').value;
-  const contactId = event.target.getAttribute('data-contact-id');
-  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobTitle}&telephone1=${telephone}&contactid=${contactId}`, 'PATCH');
+  const jobtitle = colleagueDataDiv.querySelector('.colleague-job-title').value;
+  const telephone1 = colleagueDataDiv.querySelector('.colleague-bussiness-phone').value;
+  const contactid = event.target.getAttribute('data-contact-id');
+  const urlConfig = { jobtitle, telephone1, contactid };
+  const data = await execute('dynamics_edit_colleague', urlConfig, 'PATCH');
 
   processResponse(event, data, false, false, 'Information updated');
 }
