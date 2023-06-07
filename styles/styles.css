@@ -548,6 +548,8 @@ main .section.curved-top {
   border-top-left-radius: 100% 15%;
 }
 
+
+
 /* Themes */
 
 body.orange main a:any-link:not(.button) {
@@ -848,6 +850,19 @@ main .video-wrap iframe {
     width: 620px;
     height: 375px;
   }
+
+  main .section.training > .default-content-wrapper h2 {
+    font-size: 48px; 
+    margin-bottom: 0;
+    margin-top: 75px;
+  }
+
+
+  main .section.training .cards-card-body h3,
+  main .section.training .cards-card-body p {
+    text-align: left;
+  }
+
 }
 
 /* Desktop */
