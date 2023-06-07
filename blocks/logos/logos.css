@@ -1,4 +1,8 @@
 /** logos section styling */
+.logos-container .default-content-wrapper h3 {
+    font-family: var(--ff-myradpro-regular);
+    margin-bottom: 17.5px;
+}
 
 .logos-wrapper {
     width: 100% ;
@@ -14,6 +18,7 @@
     padding: 0 20px;
     margin: 0 auto;
     text-align: center;
+    margin-left: 47px;
 }
 
 /* logos-slide-container */
