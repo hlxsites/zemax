@@ -1,5 +1,5 @@
 import execute from '../../scripts/zemax-api.js';
-import { hideModal, showSnackbar } from '../../scripts/scripts.js';
+import { closeModal, showSnackbar } from '../../scripts/scripts.js';
 
 function processResponse(event, data, renderViewMethod, hideActionModal,
   successToastMessage, successResponseCode) {
@@ -9,14 +9,14 @@ function processResponse(event, data, renderViewMethod, hideActionModal,
   }
   if (data?.status === successCode) {
     if (hideActionModal) {
-      hideModal(event);
+      closeModal(event);
     }
     // Re render view after the data is updated
     if (renderViewMethod) {
       renderViewMethod(event);
     }
     if (successToastMessage) {
-      showSnackbar(successToastMessage, '');
+      showSnackbar(successToastMessage, 'success');
     }
   } else {
     showSnackbar(data.message, 'error');

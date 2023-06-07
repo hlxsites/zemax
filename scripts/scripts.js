@@ -73,6 +73,7 @@ export function createTag(tag, attributes, html) {
 
 export function showSnackbar(message, typeClass) {
   const snackbar = document.createElement('div');
+  debugger;
   snackbar.classList.add('snackbar', typeClass);
   snackbar.textContent = message;
 
@@ -269,10 +270,18 @@ export function createModal(modalTitle, modalBodyInnerContent, modalContentClass
 export function showModal(event) {
   const modalId = event.target.getAttribute('data-modal-id');
   if (modalId && document.getElementById(modalId)) {
-    document.getElementById(modalId).style.display = 'block';
+    document.getElementById(modalId).showModal();
   }
 }
 
+export function closeModal(event) {
+  const modalId = event.target.getAttribute('data-modal-id');
+  if (modalId && document.getElementById(modalId)) {
+    document.getElementById(modalId).close();
+  }
+}
+
+// TODO remove this
 export function hideModal(event) {
   const modalId = event.target.getAttribute('data-modal-id');
   if (modalId && document.getElementById(modalId)) {

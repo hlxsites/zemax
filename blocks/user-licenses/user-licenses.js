@@ -1,11 +1,11 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import {
-  a, button, div, h2, h3, p,
+  a, button, div, h2, h3, p, domEl,
 } from '../../scripts/dom-helpers.js';
 import {
   createModal, createTag, createGenericDataTable, hideModal,
   showModal, createForm, createTabLi, createTabContentDiv,
-  addTabFeature, findReplaceJSON,
+  addTabFeature, findReplaceJSON, closeModal,
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 import {
@@ -25,6 +25,8 @@ import manageColleaguesAdminUserLicensesTable from '../../configs/tables/manageC
 import manageColleaguesEndUserLicensesTable from '../../configs/tables/manageColleagueEndUserLincensesTableConfig.js';
 import getAssignUserToLicenseTable from '../../configs/tables/assignUserToLicenseTableConfig.js';
 import userLicensesTable from '../../configs/tables/userLicensesTableConfig.js';
+import { getAddUserDialog, getDeleteUserDialog, getChangeUserDialog } from '../../configs/modals/displayLicenseViewModalConfig.js';
+import { getEditUserDialog, getResetUserPasswordDialog } from '../../configs/modals/createUserViewModalConfig.js';
 
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
@@ -249,7 +251,7 @@ async function manageUserView(event) {
 }
 
 async function createUserView(event) {
-  hideModal(event);
+  closeModal(event);
   clearProfileLandingView();
   window.scrollTo(0, 0);
   let viewAccess = event.target.getAttribute('data-view-access');
@@ -358,28 +360,17 @@ async function createUserView(event) {
   const addColleagueButtonsConfig = [];
 
   const addColleagueModalDiv = createModal('Add Colleague', addColleagueModalContent, 'add-colleague-modal-content', 'add-colleague-container', 'addColleagueModal', 'add-colleague-modal', addColleagueButtonsConfig);
-  createUserViewWrapperDiv.appendChild(addColleagueModalDiv);
+  // createUserViewWrapperDiv.appendChild(addColleagueModalDiv);
 
   // Reset password modal
-  const modalResetUserPasswordDescription = createTag('p', '', 'Please confirm this action to generate the password reset email');
-  const resetUserPasswordModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'resetUserPasswordModal' }, 'Cancel');
-  const resetUserPasswordModalButton = createTag('button', { class: 'action important reset-user-password-action-button', 'data-modal-id': 'resetUserPasswordModal' }, 'Send Password Reset Email');
-
-  const resetUserPasswordButtonsConfig = [
-    {
-      userAction: 'click',
-      button: resetUserPasswordModalCloseButton,
-      listenerMethod: hideModal,
-    }, {
-      userAction: 'click',
-      button: resetUserPasswordModalButton,
-      listenerMethod: resetUserPassword,
-    },
-  ];
-
-  const modalResetUserPasswordModalDiv = createModal('Confirmation Required', modalResetUserPasswordDescription, 'reset-user-password-modal-content', 'reset-user-password-container', 'resetUserPasswordModal', 'reset-user-password-modal', resetUserPasswordButtonsConfig);
+  const resetUserPasswordDialog = getResetUserPasswordDialog();
   const allModalDiv = document.querySelector('.all-modal-content-container');
-  allModalDiv.appendChild(modalResetUserPasswordModalDiv);
+  allModalDiv.appendChild(resetUserPasswordDialog);
+  const resetUserPasswordModalButton = resetUserPasswordDialog.querySelector('.action.reset-user-password-action-button');
+  resetUserPasswordModalButton.addEventListener('click', resetUserPassword);
+  const resetUserPasswordModalCloseButton = resetUserPasswordDialog.querySelector('.action.reset-user-password-close-button');
+  resetUserPasswordModalCloseButton.addEventListener('click', closeModal);
+  // END
 
   const resetButtons = document.querySelectorAll('.license-user-reset-password.action');
   resetButtons.forEach((resetButton) => {
@@ -387,16 +378,14 @@ async function createUserView(event) {
   });
 
   // Edit user modal
-  const editUserModalContent = createForm(editUserFormConfiguration);
-  const editUserButtonsConfig = [];
-
-  const editUserModalDiv = createModal('Edit Colleague', editUserModalContent, 'edit-user-modal-content', 'edit-user-container', 'editUserModal', 'edit-user-modal', editUserButtonsConfig);
-  allModalDiv.appendChild(editUserModalDiv);
+  const editUserDialog = getEditUserDialog();
+  allModalDiv.appendChild(editUserDialog);
 
   const editUserButtons = document.querySelectorAll('.license-user-edit-user.action');
   editUserButtons.forEach((editUserButton) => {
     editUserButton.addEventListener('click', showEditUserModal);
   });
+  // END
 
   const deactivateUserButtons = document.querySelectorAll('.license-user-deactivate-user.action');
   deactivateUserButtons.forEach((deactivateUserButton) => {
@@ -578,7 +567,7 @@ async function displayLicenseDetailsView(event) {
         removeButton.addEventListener('click', showUserActionModal);
       });
 
-      const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user ');
+      const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user');
       changeUserLicenseButtons.forEach((changeUserLicenseButton) => {
         changeUserLicenseButton.addEventListener('click', showUserActionModal);
       });
@@ -593,78 +582,46 @@ async function displayLicenseDetailsView(event) {
 async function addManageLicenseFeature() {
   const allModalContentContainerDiv = document.querySelector('.all-modal-content-container');
 
-  // Add User Modal
-  const createUserButton = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'addUserModal' }, 'Create User');
-  const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal', 'data-view-access': 'manage' }, 'Add User');
-  const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
-  const buttonsConfig = [
-    {
-      userAction: 'click',
-      button: createUserButton,
-      listenerMethod: createUserView,
-    }, {
-      userAction: 'click',
-      button: addUserButton,
-      listenerMethod(eventAddUserToLicense) {
-        addUserToALicense(eventAddUserToLicense, displayLicenseDetailsView);
-      },
-    }, {
-      userAction: 'click',
-      button: addUserModalCloseButton,
-      listenerMethod: hideModal,
-    },
-  ];
+  // START Add User Modal
+  const addUserDialog = getAddUserDialog();
 
-  const modalAddUserDiv = createModal('Add End User to License', '', 'add-user-modal-content', 'add-user-container table-container', 'addUserModal', 'add-user-modal', buttonsConfig);
-  allModalContentContainerDiv.append(modalAddUserDiv);
+  allModalContentContainerDiv.append(addUserDialog);
+  const createUserButtonAddUser = addUserDialog.querySelector('.action.create-user-action-button');
+  const addUserButton = addUserDialog.querySelector('.action.add-user-action-button');
+  const addUserCancelButton = addUserDialog.querySelector('.action.add-user-cancel-button');
+  createUserButtonAddUser.addEventListener('click', createUserView);
+  addUserButton.addEventListener('click', (eventAddUserToLicense) => {
+    addUserToALicense(eventAddUserToLicense, displayLicenseDetailsView);
+  });
+  addUserCancelButton.addEventListener('click', closeModal);
+  createUserButtonAddUser.addEventListener('click', closeModal);
+  // END Add User Modal
 
-  // Delete User Modal
-  const modalDeleteDescription = createTag('p', '', 'Please confirm this action to remove end user');
-  const deleteUserButton = createTag('button', { class: 'action important delete-user-action-button', 'data-modal-id': 'deleteUserModal', 'data-view-access': 'manage' }, 'Yes, remove End User');
-  const deleteUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
+  // START Delete User Modal
+  const deleteUserDialog = getDeleteUserDialog();
 
-  const deleteButtonsConfig = [
-    {
-      userAction: 'click',
-      button: deleteUserButton,
-      listenerMethod(eventRemoveUserFromLicense) {
-        removeUserFromLicense(eventRemoveUserFromLicense, displayLicenseDetailsView);
-      },
-    }, {
-      userAction: 'click',
-      button: deleteUserModalCloseButton,
-      listenerMethod: hideModal,
-    },
-  ];
+  allModalContentContainerDiv.append(deleteUserDialog);
+  const deleteUserButton = deleteUserDialog.querySelector('.delete-user-action-button');
+  const deleteUserModalCloseButton = deleteUserDialog.querySelector('.delete-user-cancel-button');
+  deleteUserButton.addEventListener('click', (eventRemoveUserFromLicense) => {
+    removeUserFromLicense(eventRemoveUserFromLicense, displayLicenseDetailsView);
+  });
+  deleteUserModalCloseButton.addEventListener('click', closeModal);
+  allModalContentContainerDiv.append(deleteUserDialog);
+  // END Delete User Modal
 
-  const modalDeleteUserModalDiv = createModal('Confirmation Required', modalDeleteDescription, 'delete-user-modal-content', 'delete-user-container', 'deleteUserModal', 'delete-user-modal', deleteButtonsConfig);
-  allModalContentContainerDiv.append(modalDeleteUserModalDiv);
-
-  // Change User Modal
-  const createUserButtonChangeUser = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Create User');
-  const changeUserButton = createTag('button', { class: 'action change-user-action-button', 'data-modal-id': 'changeUserModal', 'data-view-access': 'manage' }, 'Change User');
-  const changeUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'changeUserModal' }, 'Close');
-
-  const createUserButtonsConfig = [
-    {
-      userAction: 'click',
-      button: createUserButtonChangeUser,
-      listenerMethod: createUserView,
-    }, {
-      userAction: 'click',
-      button: changeUserButton,
-      listenerMethod(eventChangeUser) {
-        changeUserForALicense(eventChangeUser, displayLicenseDetailsView);
-      },
-    }, {
-      userAction: 'click',
-      button: changeUserModalCloseButton,
-      listenerMethod: hideModal,
-    },
-  ];
-
-  const modalChangeUserDiv = createModal('Choose a User', '', 'change-user-modal-content', 'change-user-container table-container', 'changeUserModal', 'change-user-modal', createUserButtonsConfig);
-  allModalContentContainerDiv.append(modalChangeUserDiv);
+  // START Change User Modal
+  const changeUserDialog = getChangeUserDialog();
+  allModalContentContainerDiv.append(changeUserDialog);
+  const createUserButtonChangeUser = changeUserDialog.querySelector('.action.create-user-action-button');
+  const changeUserButton = allModalContentContainerDiv.querySelector('.action.change-user-action-button');
+  const changeUserCancelButton = allModalContentContainerDiv.querySelector('.action.change-user-cancel-button');
+  createUserButtonChangeUser.addEventListener('click', createUserView);
+  changeUserButton.addEventListener('click', (eventChangeUserForALicense) => {
+    changeUserForALicense(eventChangeUserForALicense, displayLicenseDetailsView);
+  });
+  changeUserCancelButton.addEventListener('click', closeModal);
+  // END Change User Modal
 
   await addColleaguesToUserActionModal('change-user-container', 'change-user-checkbox', updateChangeUserId);
 
