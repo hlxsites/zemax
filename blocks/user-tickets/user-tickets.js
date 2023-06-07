@@ -81,7 +81,8 @@ function createButtonAsPerWebroles(webroles, block) {
 }
 
 async function renderUserTickets(userEmail, contactid, block) {
-  const data = await execute('zendesk_tickets_by_id', `&user_email=${userEmail}&zemax_zendeskid=${contactid}`, 'GET');
+  const urlConfig = { user_email: userEmail, zemax_zendeskid: contactid };
+  const data = await execute('zendesk_tickets_by_id', urlConfig, 'GET');
 
   if (data.length > 0) {
     const tableContainer = createTag('div', { class: 'table-container' }, '');
