@@ -62,7 +62,7 @@
 
 a.more-info,
 a.visit-knowledgebase {
-    color: #0070c0!important;
+    color: var(--clr-blue)!important;
     text-decoration: none;
     font-family: -apple-system,BlinkMacSystemFont, 'San Francisco', 'Segoe UI,Roboto', 'Helvetica Neue', sans-serif;
     font-size: 16px;
