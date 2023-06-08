@@ -154,16 +154,22 @@ function addEventListenersDesktop() {
 }
 
 function reAttachEventListeners() {
-  document.querySelectorAll('.menu-nav-category').forEach((title) => {
-    elementsWithEventListener.push(title);
-    title.addEventListener('click', (e) => {
-      const anchorLink = title.querySelector('a');
-      if (anchorLink && anchorLink.href) {
-        window.location.href = anchorLink.href;
-      }
-      e.stopPropagation();
-    });
-  });
+  const categoryDivs = document.querySelectorAll('.menu-nav-category');
+  for (let i = 0; i < categoryDivs.length; i += 1) {
+    const categoryDiv = categoryDivs[i];
+
+    const dropdownDiv = categoryDiv.nextElementSibling;
+    if (!(dropdownDiv && dropdownDiv.classList.contains('menu-nav-dropdown'))) {
+      elementsWithEventListener.push(categoryDiv);
+      categoryDiv.addEventListener('click', (e) => {
+        const anchorLink = categoryDiv.querySelector('a');
+        if (anchorLink && anchorLink.href) {
+          window.location.href = anchorLink.href;
+        }
+        e.stopPropagation();
+      });
+    }
+  }
 
   if (mql.matches) {
     addEventListenersDesktop();

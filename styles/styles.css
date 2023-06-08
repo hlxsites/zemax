@@ -442,7 +442,7 @@ main img {
 
 main .section>div {
   margin: 0 auto;
-  width: 100%;
+  width: calc(100vw - 20px);
   padding: 10px 0 ;
 }
 
@@ -818,7 +818,7 @@ main .video-wrap iframe {
   }
 
   main .section>div {
-    padding: 10px 0;
+    padding: 20px 0;
 
   }
 

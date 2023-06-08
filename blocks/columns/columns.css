@@ -1,3 +1,4 @@
+/* stylelint-disable color-function-notation */
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -153,8 +154,28 @@ height:60px;
 }
 
 
-  @media only screen and (max-width: 1030px) {
+.columns.application-zemax > div{
+  flex-direction: column-reverse;
+  padding: 30px 0;
+  align-items: flex-start;
+}
+
+.columns.application-zemax img{
+  border-radius: 16px;
+    box-shadow: 0 0 5px 0 rgba(38,39,41,20%);
+}
+
+.columns.application-zemax p {
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  font-family: var(--ff-myradpro-regular);
+}
+
+.columns.application-zemax h4{
+  margin-top: 20px;
   }
+
 
 
 @media screen and (max-width: 1030px) {
@@ -243,7 +264,22 @@ body.purple main .columns.tabs a:hover{
   border-bottom-color: var(--clr-purple);
 }
 
+@media screen and (min-width: 768px) {
+  .columns>div>div {
+    flex: 1;
+    order: unset;
+  }
+  
+  .columns.application-zemax > div{
+    flex-direction: inherit;
+    gap: 32px;
+  }
 
+
+  .columns.application-zemax h4{
+    margin: inherit;
+    }
+}
 
 @media screen and (min-width: 1030px) {
   .columns>div {
@@ -252,11 +288,10 @@ body.purple main .columns.tabs a:hover{
     gap: 32px;
   }
 
-  .columns>div>div {
-    flex: 1;
-    order: unset;
-  }
+
 }
+
+
 
 
 /* search result: Product Information */
