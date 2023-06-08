@@ -538,6 +538,10 @@ main .section.curved-top {
   border-top-left-radius: 100% 15%;
 }
 
+main .section.fixed-width {
+  width: var(--section-width);
+}
+
 /* Themes */
 
 body.orange main a:any-link:not(.button) {
