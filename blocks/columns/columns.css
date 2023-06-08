@@ -121,6 +121,24 @@
   margin-bottom: 35px;
 }
 
+.columns.featured > div  {
+  display: flex;
+  gap: 20px;
+  flex-flow: row wrap;
+}
+
+.columns.featured > div > div  {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.columns.featured > div > div h5 {
+  text-align: left;
+  width: 180px;
+}
+
+
 .columns.featured p{
   line-height: 1.5;
   letter-spacing: normal;
@@ -133,6 +151,10 @@
 width: 61px;
 height:60px;
 }
+
+
+  @media only screen and (max-width: 1030px) {
+  }
 
 
 @media screen and (max-width: 1030px) {

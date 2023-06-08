@@ -15,4 +15,12 @@ export default function decorate(block) {
       }
     });
   });
+
+  // merge feature columns into one row, as they wrap automatically
+  if (block.classList.contains('featured')) {
+    const cells = block.querySelectorAll(':scope > div:not(:first-child) > div');
+    cells.forEach((cell) => {
+      block.firstElementChild.appendChild(cell);
+    });
+  }
 }
