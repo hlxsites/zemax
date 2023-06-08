@@ -732,7 +732,7 @@ function calculateViewMatrix(webroles) {
     if (webrole.adx_name === 'Customer Self Service Admin') {
       viewAccess = 'manage';
       return;
-    } if (webrole.adx_name === 'Supported Users ZOV') {
+    } if (webrole.adx_name === 'Supported Users ZOV' || webrole.adx_name === 'Supported Users ZOS') {
       viewAccess = 'view';
     } else if (viewAccess !== 'manage' || viewAccess !== 'view') {
       viewAccess = 'none';
