@@ -1,14 +1,7 @@
 .teaser-container {
   background: linear-gradient(to left, #002F6D, #005898 100%);
-  display: block;
-  width: 100%;
+  padding-top: 10px;
 }
-
-.section.teaser-container > .teaser-wrapper {
-  padding: 16px;
-  box-sizing: border-box;
-}
-
 
 .teaser {
   display: grid;
@@ -19,7 +12,6 @@
   line-height: var(--line-height-18);
   color: var(--background-color);
   text-align: center;
-  padding-left: 0.4em;
   gap: 0.5em;
 }
 
@@ -39,7 +31,6 @@
   transform: rotate(45deg) translate(2px, -3px);
 }
 
-
 .teaser .hidden {
   display: none;
 }
@@ -49,10 +40,8 @@
   width: 17px;
 }
 
-.close {
-  width: 17px;
-  padding: 0;
+.teaser .close {
   cursor: pointer;
-
+  margin-top: 5px;
 }
 
