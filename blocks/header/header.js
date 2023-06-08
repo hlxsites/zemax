@@ -1,6 +1,6 @@
 import { decorateIcons, fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { button, domEl, span } from '../../scripts/dom-helpers.js';
-import { createTag, loadScriptPromise, decorateLinkedPictures } from '../../scripts/scripts.js';
+import { createTag, decorateLinkedPictures, loadScriptPromise } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -178,29 +178,16 @@ function reAttachEventListeners() {
   }
 }
 
-// authentication related functions
-function initializeAuth(domain, clientID, audience, responseType, scope, redirectUri) {
-  // eslint-disable-next-line no-undef
-  return new auth0.WebAuth({
-    domain: `${domain}`,
-    clientID: `${clientID}`,
-    redirectUri: `${redirectUri}`,
-    audience: `${audience}`,
-    responseType: `${responseType}`,
-    scope: `${scope}`,
-  });
-}
-
-// login call
-function login() {
+async function login() {
+  await initializeAuthLibrary();
   webauth.authorize();
 }
 
-// logout call
-function logout(e) {
+async function logout(e) {
   e.preventDefault();
   localStorage.clear();
-  if (webauth === undefined) {
+  await initializeAuthLibrary();
+  if (!webauth) {
     window.location.assign(`${window.location.origin}`);
   } else {
     webauth.logout({
@@ -233,7 +220,9 @@ function attachLogoutListener(ele) {
 }
 
 // manage user info in local storage and attach events
-function handleAuthentication(ele) {
+async function handleAuthenticationTokens(loginLinkWrapper) {
+  await initializeAuthLibrary();
+
   webauth.parseHash((err, authResult) => {
     if (authResult && authResult.accessToken && authResult.idToken) {
       // Successful login, store tokens in localStorage
@@ -251,14 +240,13 @@ function handleAuthentication(ele) {
           .join(''),
       );
       const userData = JSON.parse(jsonPayload);
-      const logintxt = ele.querySelector('p');
-      const displayname = `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`;
-      logintxt.innerText = displayname;
-      localStorage.setItem('displayname', displayname);
+      localStorage.setItem('displayname', `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`);
       localStorage.setItem('auth0_id', userData.sub);
       localStorage.setItem('email', userData.email);
       localStorage.setItem('fullname', userData.name);
-      attachLogoutListener(ele);
+      attachLogoutListener(loginLinkWrapper);
+
+      handleAuthenticated(loginLinkWrapper);
     } else if (err) {
       // eslint-disable-next-line no-console
       console.log(`Unable to authenticate with error ${err}`);
@@ -268,8 +256,7 @@ function handleAuthentication(ele) {
 
 // if user already authenticated
 function handleAuthenticated(loginLinkWrapper) {
-  const logintxt = loginLinkWrapper.querySelector('p');
-  logintxt.innerText = localStorage.getItem('displayname');
+  loginLinkWrapper.querySelector('p').innerText = localStorage.getItem('displayname');
   attachLogoutListener(loginLinkWrapper);
 }
 
@@ -294,6 +281,25 @@ function makeExpandable(title, content) {
   content.classList.add('m-expandable-list');
 }
 
+async function initializeAuthLibrary() {
+  const placeholders = await fetchPlaceholders();
+  const domain = placeholders.auth0domain;
+  const clientID = placeholders.clientid;
+  const audience = placeholders.audienceuri;
+  const responseType = placeholders.responsetype;
+  const { scope } = placeholders;
+
+  await loadScriptPromise('/scripts/auth0.min.js', {
+    type: 'text/javascript',
+    charset: 'UTF-8',
+  });
+  // eslint-disable-next-line no-undef
+  webauth = new auth0.WebAuth({
+    domain, clientID, redirectUri: getRedirectUri(), audience, responseType, scope,
+  });
+}
+
+// authentication related functions
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -371,39 +377,23 @@ export default async function decorate(block) {
       }
     });
 
-    // adding login functionality
-    const authtoken = localStorage.getItem('accessToken');
+    // handle login
     const loginLinkWrapper = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLinkWrapper.classList.add('login-wrapper', 'menu-expandable');
-
-    const authScriptTagPromise = loadScriptPromise('/scripts/auth0.min.js', {
-      type: 'text/javascript',
-      charset: 'UTF-8',
-    });
-    const placeholders = await fetchPlaceholders();
-    const domain = placeholders.auth0domain;
-    const clientID = placeholders.clientid;
-    const audienceURI = placeholders.audienceuri;
-    const responseType = placeholders.responsetype;
-    const scopes = placeholders.scope;
-    const authRequired = getMetadata('authrequired');
-    if (!authtoken) {
-      loginLinkWrapper.setAttribute('aria-expanded', 'false');
-      authScriptTagPromise.then(() => {
-        // eslint-disable-next-line max-len
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
-        loginLinkWrapper.addEventListener('click', login);
-        handleAuthentication(loginLinkWrapper);
-        if (authRequired) {
-          login();
-        }
-      });
-    } else {
-      authScriptTagPromise.then(() => {
-        // eslint-disable-next-line max-len
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
-      });
+    if (localStorage.getItem('accessToken')) {
       handleAuthenticated(loginLinkWrapper);
+    } else {
+      loginLinkWrapper.setAttribute('aria-expanded', 'false');
+
+      if (window.location.hash.includes('access_token') || window.location.hash.includes('error')) {
+        // noinspection ES6MissingAwait
+        handleAuthenticationTokens(loginLinkWrapper);
+      }
+      loginLinkWrapper.addEventListener('click', login);
+      if (getMetadata('authrequired')) {
+        // noinspection ES6MissingAwait
+        login();
+      }
     }
 
     // link section
