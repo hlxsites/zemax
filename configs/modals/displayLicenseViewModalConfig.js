@@ -7,7 +7,9 @@ export function getAddUserDialog() {
       <div class="modal-content add-user-modal-content">
          <div class="modal-header">
             <h3>Add End User to License</h3>
-            <button class="modal-close"></button>
+            <button class="modal-close">
+              <svg data-modal-id="addUserModal" viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M11.414 10l6.293-6.293a1 1 0 1 0-1.414-1.414L10 8.586 3.707 2.293a1 1 0 0 0-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 1 0 1.414 1.414L10 11.414l6.293 6.293A.998.998 0 0 0 18 17a.999.999 0 0 0-.293-.707L11.414 10z"></path></svg>
+            </button>
          </div>
          <div class="modal-body">
             <div class="add-user-container table-container">
@@ -32,6 +34,9 @@ export function getDeleteUserDialog() {
     <div class="modal-content delete-user-modal-content">
       <div class="modal-header">
         <h3>Confirmation Required</h3>
+        <button class="modal-close">
+          <svg data-modal-id="deleteUserModal" viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M11.414 10l6.293-6.293a1 1 0 1 0-1.414-1.414L10 8.586 3.707 2.293a1 1 0 0 0-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 1 0 1.414 1.414L10 11.414l6.293 6.293A.998.998 0 0 0 18 17a.999.999 0 0 0-.293-.707L11.414 10z"></path></svg>
+        </button>
       </div>
       <div class="modal-body">
         <div class="delete-user-container">
@@ -55,6 +60,9 @@ export function getChangeUserDialog() {
    <div class="modal-content change-user-modal-content">
       <div class="modal-header">
          <h3>Choose a User</h3>
+         <button class="modal-close">
+           <svg data-modal-id="changeUserModal" viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M11.414 10l6.293-6.293a1 1 0 1 0-1.414-1.414L10 8.586 3.707 2.293a1 1 0 0 0-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 1 0 1.414 1.414L10 11.414l6.293 6.293A.998.998 0 0 0 18 17a.999.999 0 0 0-.293-.707L11.414 10z"></path></svg>
+         </button>
       </div>
       <div class="modal-body">
          <div class="change-user-container table-container">

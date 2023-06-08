@@ -7,7 +7,9 @@ export function getEditUserDialog() {
     <div class="modal-content edit-user-modal-content">
       <div class="modal-header">
           <h3>Edit Colleague</h3>
-          <button class="modal-close"></button>
+          <button class="modal-close">
+            <svg data-modal-id="editUserModal" viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M11.414 10l6.293-6.293a1 1 0 1 0-1.414-1.414L10 8.586 3.707 2.293a1 1 0 0 0-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 1 0 1.414 1.414L10 11.414l6.293 6.293A.998.998 0 0 0 18 17a.999.999 0 0 0-.293-.707L11.414 10z"></path></svg>
+          </button>
       </div>
       <div class="modal-body">
         <div class="edit-user-container">
@@ -36,7 +38,9 @@ export function getResetUserPasswordDialog() {
    <div class="modal-content reset-user-password-modal-content">
       <div class="modal-header">
          <h3>Confirmation Required</h3>
-         <button class="modal-close"></button>
+         <button class="modal-close">
+          <svg data-modal-id="resetUserPasswordModal" viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M11.414 10l6.293-6.293a1 1 0 1 0-1.414-1.414L10 8.586 3.707 2.293a1 1 0 0 0-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 1 0 1.414 1.414L10 11.414l6.293 6.293A.998.998 0 0 0 18 17a.999.999 0 0 0-.293-.707L11.414 10z"></path></svg>
+         </button>
       </div>
       <div class="modal-body">
          <div class="reset-user-password-container">
@@ -60,7 +64,9 @@ export function getAddColleagueDialog() {
    <div class="modal-content add-colleague-modal-content">
       <div class="modal-header">
          <h3>Add Colleague</h3>
-         <button class="modal-close" data-modal-id="addColleagueModal"></button>
+         <button class="modal-close">
+           <svg data-modal-id="addColleagueModal" viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M11.414 10l6.293-6.293a1 1 0 1 0-1.414-1.414L10 8.586 3.707 2.293a1 1 0 0 0-1.414 1.414L8.586 10l-6.293 6.293a1 1 0 1 0 1.414 1.414L10 11.414l6.293 6.293A.998.998 0 0 0 18 17a.999.999 0 0 0-.293-.707L11.414 10z"></path></svg>
+         </button>
       </div>
       <div class="modal-body">
         <div class="add-colleague-container">
