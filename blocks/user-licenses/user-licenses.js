@@ -1,42 +1,31 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import {
-  createModal, createTag, createGenericTable, hideModal, showModal,
+  a, button, div, h2, h3, p,
+} from '../../scripts/dom-helpers.js';
+import {
+  createTag, createGenericDataTable,
+  showModal, createTabLi, createTabContentDiv,
+  addTabFeature, findReplaceJSON, closeModal,
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
+import {
+  addColleague, updateUserInfo, resetUserPassword,
+  activateUser, deactivateUser, updateLicenseNickname,
+  changeUserForALicense, addUserToALicense, removeUserFromLicense,
+  assignLicenseToUser, updateColleagueInfo,
+} from './user-actions.js';
+
+// Load configurations
+import activatedDeactivatedColleaguesTable from '../../configs/tables/activatedDeactivatedColleaguesTableConfig.js';
 import getLicenseDetailsUsersTable from '../../configs/tables/licenseDetailsUsersTableConfig.js';
 import getAddUserToLicenseTableConfig from '../../configs/tables/addUserToLicenseTableConfig.js';
-import activatedDeactivatedColleaguesTable from '../../configs/tables/activatedDeactivatedColleaguesTableConfig.js';
-
-function createForm(config) {
-  const form = createTag('form', { id: config.formId }, '');
-
-  config.fields.forEach((field) => {
-    const label = createTag('label', { for: field.id }, field.label);
-    const input = createTag('input', { type: 'text', id: field.id }, '');
-
-    if (field.value) {
-      input.setAttribute('value', field.value);
-    }
-
-    if (field.readOnly) {
-      input.setAttribute('readonly', '');
-    }
-
-    if (field.disabled) {
-      input.setAttribute('disabled', '');
-    }
-
-    form.appendChild(label);
-    form.appendChild(input);
-  });
-
-  const submitButton = createTag('input', {
-    type: 'submit', id: config.submitId, class: config.submitClass, value: config.submitText, 'data-modal-id': config.submitDataModalId,
-  });
-  form.appendChild(submitButton);
-
-  return form;
-}
+import manageColleaguesAdminUserLicensesTable from '../../configs/tables/manageColleagueAdminUserLincensesTableConfig.js';
+import manageColleaguesEndUserLicensesTable from '../../configs/tables/manageColleagueEndUserLincensesTableConfig.js';
+import getAssignUserToLicenseTable from '../../configs/tables/assignUserToLicenseTableConfig.js';
+import userLicensesTable from '../../configs/tables/userLicensesTableConfig.js';
+import { getAddUserDialog, getDeleteUserDialog, getChangeUserDialog } from '../../configs/modals/displayLicenseViewModalConfig.js';
+import { getEditUserDialog, getResetUserPasswordDialog, getAddColleagueDialog } from '../../configs/modals/createUserViewModalConfig.js';
+import getAssignLicenseDialog from '../../configs/modals/manageUserViewModalConfig.js';
 
 function showUserActionModal(event) {
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
@@ -56,30 +45,24 @@ async function showResetUserPasswordModal(event) {
   userActionButton.setAttribute('data-contactid', contactid);
 }
 
-async function updateUserInfo(event) {
-  event.preventDefault();
-  const jobtitle = event.target.parentNode.querySelector('#job-title').value;
-  const telephone = event.target.parentNode.querySelector('#phone').value;
-  const contactid = event.target.getAttribute('data-contactid');
-  const data = await execute('dynamics_edit_colleague', `&jobtitle=${jobtitle}&telephone1=${telephone}&contactid=${contactid}`, 'PATCH');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // Re render after the data is updated
-    createUser(event);
-  } else {
-    console.log('error ', data);
+async function showAddColleagueModal(event) {
+  showModal(event);
+  const addColleagueSubmitButton = document.querySelector('#addColleagueSubmitButton');
+  if (addColleagueSubmitButton) {
+    addColleagueSubmitButton.addEventListener('click', (eventNew) => {
+      addColleague(eventNew, createUserView);
+    });
   }
 }
 
 async function showEditUserModal(event) {
-  const button = event.target;
-  const contactid = button.getAttribute('data-contactid');
-  const firstname = button.getAttribute('data-user-firstname');
-  const lastname = button.getAttribute('data-user-lastname');
-  const jobTitle = button.getAttribute('data-user-jobtitle');
-  const email = button.getAttribute('data-user-email');
-  const phone = button.getAttribute('data-user-phone');
+  const actionButton = event.target;
+  const contactid = actionButton.getAttribute('data-contactid');
+  const firstname = actionButton.getAttribute('data-user-firstname');
+  const lastname = actionButton.getAttribute('data-user-lastname');
+  const jobTitle = actionButton.getAttribute('data-user-jobtitle');
+  const email = actionButton.getAttribute('data-user-email');
+  const phone = actionButton.getAttribute('data-user-phone');
   const userEditForm = document.querySelector('#editUserEditForm');
   userEditForm.querySelector('#first-name').setAttribute('value', firstname);
   userEditForm.querySelector('#last-name').setAttribute('value', lastname);
@@ -88,61 +71,189 @@ async function showEditUserModal(event) {
   userEditForm.querySelector('#phone').setAttribute('value', phone);
   const submitButton = userEditForm.querySelector('#userEditSubmitButton');
   submitButton.setAttribute('data-contactid', contactid);
-  submitButton.addEventListener('click', updateUserInfo);
+  submitButton.addEventListener('click', (eventNew) => {
+    updateUserInfo(eventNew, createUserView);
+  });
   showModal(event);
 }
 
-async function resetUserPassword(event) {
-  const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
-  const data = await execute('dynamics_resetpassword_contactid', `&contactid=${contactid}`, 'POST');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
+async function updateAssignLicenseButton(event) {
+  const contactId = event.target.getAttribute('data-contact-id');
+  const licenseId = event.target.getAttribute('data-license-id');
+  const assignLicenseButton = document.querySelector('.action.assign-user-license-action-button');
+  assignLicenseButton.setAttribute('data-contact-id', contactId);
+  assignLicenseButton.setAttribute('data-license-id', licenseId);
+  assignLicenseButton.addEventListener('click', (eventNew) => {
+    assignLicenseToUser(eventNew, manageUserView);
+  });
+}
+
+async function showAssignUserLicense(event) {
+  showModal(event);
+
+  const contactId = event.target.getAttribute('data-contact-id');
+  const assignUserCheckboxes = document.querySelectorAll('.assign-license-user');
+  assignUserCheckboxes.forEach((assignUserCheckbox) => {
+    assignUserCheckbox.setAttribute('data-contact-id', contactId);
+    assignUserCheckbox.addEventListener('click', updateAssignLicenseButton);
+  });
+}
+
+async function activateDeactivateUser(event) {
+  if (event.target.getAttribute('data-current-state') === 'Active') {
+    deactivateUser(event, manageUserView);
   } else {
-    console.log('error ', data);
+    activateUser(event, manageUserView);
   }
 }
 
-async function activateUser(event) {
-  const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
-  const data = await execute('dynamics_activate_userid', `&contact_id=${contactid}`, 'PATCH');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    // Re render after the data is updated
-    createUser(event);
+async function manageUserView(event) {
+  clearProfileLandingView();
+  window.scrollTo(0, 0);
+
+  let contactid = event.target.getAttribute('data-contactid');
+  if (!contactid) {
+    contactid = event.target.getAttribute('data-contact-id');
+  }
+  // Create dom for user edit
+  const mainDiv = document.querySelector('main');
+  const manageUserViewWrapperDiv = createTag('div', { class: 'manage-user-view-wrapper' }, '');
+  const manageUserViewDiv = createTag('div', { class: ' section user-licenses-container manage-user-view', id: 'manageUserView' }, manageUserViewWrapperDiv);
+  mainDiv.insertBefore(manageUserViewDiv, mainDiv.firstChild);
+
+  const backToColleagueButton = createTag('button', { class: 'button primary', id: 'backToColleaguesButton' }, 'Back to Colleagues');
+  manageUserViewWrapperDiv.append(backToColleagueButton);
+  backToColleagueButton.addEventListener('click', createUserView);
+  manageUserViewWrapperDiv.append(h2('Colleague Details'));
+
+  const allColleaguesData = await execute('dynamics_get_colleagues_manage', '', 'GET');
+  const { colleagues } = allColleaguesData;
+
+  const currentColleague = colleagues.filter((colleague) => (colleague.contactid === contactid));
+
+  const buttonText = currentColleague[0].statecode === 0 ? 'Deactivate Colleague' : 'Activate Colleague';
+  const currentState = currentColleague[0].statecode === 0 ? 'Active' : 'Inactive';
+  const buttonClass = currentColleague[0].statecode === 0 ? 'important' : 'activate';
+
+  const activateDeactivateButton = createTag('button', {
+    'data-contactid': contactid,
+    'data-action-id': 'activateDeactivateUser',
+    'data-current-state': currentState,
+    class: `action ${buttonClass}`,
+  }, buttonText);
+  manageUserViewWrapperDiv.append(activateDeactivateButton);
+  activateDeactivateButton.addEventListener('click', activateDeactivateUser);
+
+  const colleagueDetailsConfig = [
+    {
+      label: 'Full Name',
+      value: ['{{firstname}}', ' ', '{{lastname}}'],
+    },
+    {
+      label: 'Job Title',
+      value: ['{{jobtitle}}'],
+      html: 'input',
+      'data-action-id': 'updateColleagueInfo',
+      inputClass: 'colleague-job-title',
+    },
+    {
+      label: 'Email',
+      value: ['{{emailaddress1}}'],
+    },
+    {
+      label: 'Business Phone',
+      value: ['{{telephone1}}'],
+      html: 'input',
+      'data-action-id': 'updateColleagueInfo',
+      inputClass: 'colleague-bussiness-phone',
+
+    },
+  ];
+
+  const colleagueDetailsDataDiv = createTag('div', { class: 'colleague-details-data' }, '');
+  let colleagueDetailsRow = createTag('div', { class: 'colleague-details-row layout-50-50' }, '');
+  colleagueDetailsConfig.forEach((heading, index) => {
+    const clonedHeading = JSON.parse(JSON.stringify(heading));
+    findReplaceJSON(clonedHeading, currentColleague[0]);
+    const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
+    const elementDetailCellHeading = createTag('h3', { class: 'element-detail-cell-heading' }, clonedHeading.label);
+    elementDetailCellDiv.appendChild(elementDetailCellHeading);
+    if (clonedHeading.html === 'input') {
+      elementDetailCellDiv.appendChild(createTag('input', { class: clonedHeading.inputClass, value: clonedHeading.value.join('') }, ''));
+      elementDetailCellDiv.appendChild(createTag('button', { class: 'action update-user-info', 'data-contact-id': contactid, 'data-action-id': clonedHeading['data-action-id'] }, 'Save'));
+    } else {
+      const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, clonedHeading.value.join(''));
+      elementDetailCellDiv.appendChild(elementDetailCellDataPara);
+    }
+
+    colleagueDetailsRow.appendChild(elementDetailCellDiv);
+
+    if (index % 2 === 1) {
+      colleagueDetailsDataDiv.appendChild(colleagueDetailsRow);
+      colleagueDetailsRow = createTag('div', { class: 'colleague-details-row layout-50-50' }, '');
+    }
+  });
+
+  manageUserViewWrapperDiv.append(colleagueDetailsDataDiv);
+  const saveButtons = colleagueDetailsDataDiv.querySelectorAll('[data-action-id="updateColleagueInfo"]');
+  saveButtons.forEach((saveButton) => {
+    saveButton.addEventListener('click', updateColleagueInfo);
+  });
+  // License details
+  manageUserViewWrapperDiv.append(h2('License Details'));
+  manageUserViewWrapperDiv.append(h3('Licenses (Colleague is the License Administrator)'));
+  const urlConfig = { contactid };
+  const adminUserLicensedata = await execute('dynamics_get_licenses_by_contactid', urlConfig, 'GET');
+  if (adminUserLicensedata && adminUserLicensedata.length > 0) {
+    const tableElement = createGenericDataTable(manageColleaguesAdminUserLicensesTable,
+      adminUserLicensedata);
+    const tableContainer = createTag('div', { class: 'table-container' }, tableElement);
+    manageUserViewWrapperDiv.append(tableContainer);
   } else {
-    console.log('error ', data);
+    manageUserViewWrapperDiv.append(p('There are no records to display.'));
+  }
+
+  const assignLicenseButton = button({ 'data-modal-id': 'assignUserLicense', class: 'primary action', 'data-contact-id': contactid }, 'Assign License');
+  manageUserViewWrapperDiv.append(assignLicenseButton);
+  const assignLicenseUserData = await execute('dynamics_get_licenses_for_assign', urlConfig, 'GET');
+
+  const allModalContentContainerDiv = document.querySelector('.all-modal-content-container');
+  const assignTableElement = createGenericDataTable(getAssignUserToLicenseTable('assign-license-user'), assignLicenseUserData);
+  const assignLicenseDialog = getAssignLicenseDialog();
+  allModalContentContainerDiv.append(assignLicenseDialog);
+  assignLicenseDialog.querySelector('.assign-user-license-container.table-container').append(assignTableElement);
+  const assignUserLicenseModalCloseButton = assignLicenseDialog.querySelector('.action.assign-user-license-close-button');
+
+  assignLicenseButton.addEventListener('click', showAssignUserLicense);
+  assignUserLicenseModalCloseButton.addEventListener('click', closeModal);
+  assignLicenseDialog.querySelector('svg').addEventListener('click', closeModal);
+
+  manageUserViewWrapperDiv.append(h3('Licenses (Colleague is End User)'));
+  const endUserLicensesData = await execute('dynamics_get_enduser_licenses_by_accountid', urlConfig, 'GET');
+  if (endUserLicensesData && endUserLicensesData.length > 0) {
+    const manageColleaguesEndUsertableElement = createGenericDataTable(
+      manageColleaguesEndUserLicensesTable,
+      endUserLicensesData);
+    const tableContainer = createTag('div', { class: 'table-container' }, manageColleaguesEndUsertableElement);
+    manageUserViewWrapperDiv.append(tableContainer);
+  } else {
+    manageUserViewWrapperDiv.append(p('There are no records to display.'));
   }
 }
 
-async function deactivateUser(event) {
-  const contactid = event.target.getAttribute('data-contactid');
-  // TODO check method type
-  const data = await execute('dynamics_deactivate_userid', `&contact_id=${contactid}`, 'PATCH');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    // Re render after the data is updated
-    createUser(event);
-  } else {
-    console.log('error ', data);
+async function createUserView(event) {
+  closeModal(event);
+  clearProfileLandingView();
+  window.scrollTo(0, 0);
+  let viewAccess = event.target.getAttribute('data-view-access');
+  if (!viewAccess) {
+    viewAccess = 'manage';
   }
-}
+  const mainDiv = document.querySelector('main');
+  const createUserViewWrapperDiv = createTag('div', { class: 'create-user-view-wrapper' }, '');
+  const createUserViewDiv = createTag('div', { class: ' section user-licenses-container create-user-view', id: 'createUserView' }, createUserViewWrapperDiv);
 
-async function createUser(event) {
-  hideModal(event);
-  hideOtherUserLicenseInformation();
-  const licenseDetailsDiv = document.querySelector('.license-details');
-  const endUserDetailsDiv = document.querySelector('.end-users-details');
-  const licenseBlock = document.querySelector('.user-licenses.block');
-  if (licenseDetailsDiv) {
-    licenseDetailsDiv.remove();
-  }
-  if (endUserDetailsDiv) {
-    endUserDetailsDiv.remove();
-  }
-
+  mainDiv.insertBefore(createUserViewDiv, mainDiv.firstChild);
   const tabDiv = createTag('div', { class: 'tabs' });
   const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
   const colleaguesTabsMapping = ['Active Colleagues', 'Deactivated Colleagues'];
@@ -150,15 +261,17 @@ async function createUser(event) {
   const data = await execute('dynamics_get_colleagues_manage', '', 'GET');
 
   // Render tab headings
-  colleaguesTabsMapping.forEach((heading, index) => {
-    if (index === 0) {
-      tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading));
-    } else {
-      tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading));
-    }
-  });
+  if (viewAccess === 'manage') {
+    colleaguesTabsMapping.forEach((heading, index) => {
+      if (index === 0) {
+        tabListUl.append(createTabLi('active', `tab${index + 1}`, 'false', heading));
+      } else {
+        tabListUl.append(createTabLi('', `tab${index + 1}`, 'true', heading));
+      }
+    });
 
-  tabDiv.appendChild(tabListUl);
+    tabDiv.appendChild(tabListUl);
+  }
 
   const allColleagues = data.colleagues;
 
@@ -172,39 +285,82 @@ async function createUser(event) {
   const deactivatedUsersHeading = activatedDeactivatedColleaguesTable.slice();
   deactivatedUsersHeading.splice(7, 1);
 
-  colleaguesTabsMapping.forEach((heading, index) => {
-    if (index === 0) {
-      tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createGenericTable(activatedUsersHeading, activeColleagues).outerHTML),
-      );
-    } else {
-      tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createGenericTable(deactivatedUsersHeading, inactiveColleagues).outerHTML),
-      );
-    }
-  });
+  if (viewAccess === 'manage') {
+    colleaguesTabsMapping.forEach((heading, index) => {
+      if (index === 0) {
+        const tableContainer = createTag('div', { class: 'table-container' }, createGenericDataTable(activatedUsersHeading, activeColleagues));
+        tabDiv.append(
+          createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, tableContainer.outerHTML),
+        );
+      } else if (viewAccess === 'manage') {
+        const tableContainer = createTag('div', { class: 'table-container' }, createGenericDataTable(deactivatedUsersHeading, inactiveColleagues));
+        tabDiv.append(
+          createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, tableContainer.outerHTML),
+        );
+      }
+    });
+  } else {
+    activatedUsersHeading.splice(5, 4);
+    tabDiv.append(createTag('div', { class: 'table-container' }, createGenericDataTable(activatedUsersHeading, activeColleagues)));
+  }
 
-  licenseBlock.appendChild(tabDiv);
+  const shouldRenderAddColleagueButton = viewAccess === 'manage';
+
+  const backToProfileLink = a(
+    {
+      class: 'button primary',
+      id: 'backToAccountButton',
+      href: '/pages/profile',
+    },
+    'Back to Account',
+  );
+
+  const addColleagueButton = button(
+    {
+      class: 'add-colleague button primary',
+      id: 'addColleagueButton',
+      'data-modal-id': 'addColleagueModal',
+    },
+    'Add Colleague',
+  );
+
+  createUserViewWrapperDiv.appendChild(
+    div({ class: 'view-buttons' },
+      backToProfileLink,
+      shouldRenderAddColleagueButton ? addColleagueButton : '',
+    ),
+  );
+
+  createUserViewWrapperDiv.appendChild(
+    a(
+      {
+        href: 'https://support.zemax.com/hc/articles/1500008380761',
+        class: 'visit-knowledgebase secondary',
+        target: '_blank',
+        rel: 'noreferrer',
+      },
+      'Visit the Knowledgebase',
+    ),
+  );
+  createUserViewWrapperDiv.appendChild(tabDiv);
+
+  // Add event for add Colleague
+  createUserViewWrapperDiv.querySelector('.add-colleague.primary').addEventListener('click', showAddColleagueModal);
+
+  const addColleagueDialog = getAddColleagueDialog();
+  createUserViewWrapperDiv.appendChild(addColleagueDialog);
+  addColleagueDialog.querySelector('svg').addEventListener('click', closeModal);
 
   // Reset password modal
-  const modalResetUserPasswordDescription = createTag('p', '', 'Please confirm this action to generate the password reset email');
-  const resetUserPasswordModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'resetUserPasswordModal' }, 'Cancel');
-  const resetUserPasswordModalButton = createTag('button', { class: 'action important reset-user-password-action-button', 'data-modal-id': 'resetUserPasswordModal' }, 'Send Password Reset Email');
-
-  const resetUserPasswordButtonsConfig = [
-    {
-      userAction: 'click',
-      button: resetUserPasswordModalCloseButton,
-      listenerMethod: hideModal,
-    }, {
-      userAction: 'click',
-      button: resetUserPasswordModalButton,
-      listenerMethod: resetUserPassword,
-    },
-  ];
-
-  const modalResetUserPasswordModalDiv = createModal('Confirmation Required', modalResetUserPasswordDescription, 'reset-user-password-modal-content', 'reset-user-password-container', 'resetUserPasswordModal', 'reset-user-password-modal', resetUserPasswordButtonsConfig);
-  licenseBlock.appendChild(modalResetUserPasswordModalDiv);
+  const resetUserPasswordDialog = getResetUserPasswordDialog();
+  const allModalDiv = document.querySelector('.all-modal-content-container');
+  allModalDiv.appendChild(resetUserPasswordDialog);
+  const resetUserPasswordModalButton = resetUserPasswordDialog.querySelector('.action.reset-user-password-action-button');
+  resetUserPasswordModalButton.addEventListener('click', resetUserPassword);
+  const resetUserPasswordModalCloseButton = resetUserPasswordDialog.querySelector('.action.reset-user-password-close-button');
+  resetUserPasswordModalCloseButton.addEventListener('click', closeModal);
+  resetUserPasswordDialog.querySelector('svg').addEventListener('click', closeModal);
+  // END
 
   const resetButtons = document.querySelectorAll('.license-user-reset-password.action');
   resetButtons.forEach((resetButton) => {
@@ -212,70 +368,36 @@ async function createUser(event) {
   });
 
   // Edit user modal
-  const config = {
-    fields: [
-      {
-        id: 'first-name', label: 'First Name', value: '', readOnly: true, disabled: true,
-      },
-      {
-        id: 'last-name', label: 'Last Name', value: '', readOnly: true, disabled: true,
-      },
-      { id: 'job-title', label: 'Job Title' },
-      {
-        id: 'email', label: 'Email', value: '', readOnly: true, disabled: true,
-      },
-      { id: 'phone', label: 'Business Phone' },
-    ],
-    submitText: 'Submit',
-    submitId: 'userEditSubmitButton',
-    submitClass: 'edit-user-action-button',
-    submitDataModalId: 'editUserModal',
-    formId: 'editUserEditForm',
-  };
-
-  const editUserModalContent = createForm(config);
-  const editUserButtonsConfig = [];
-
-  const editUserModalDiv = createModal('Edit Colleague', editUserModalContent, 'edit-user-modal-content', 'edit-user-container', 'editUserModal', 'edit-user-modal', editUserButtonsConfig);
-  licenseBlock.appendChild(editUserModalDiv);
+  const editUserDialog = getEditUserDialog();
+  allModalDiv.appendChild(editUserDialog);
 
   const editUserButtons = document.querySelectorAll('.license-user-edit-user.action');
   editUserButtons.forEach((editUserButton) => {
     editUserButton.addEventListener('click', showEditUserModal);
   });
+  editUserDialog.querySelector('svg').addEventListener('click', closeModal);
+  // END
 
   const deactivateUserButtons = document.querySelectorAll('.license-user-deactivate-user.action');
   deactivateUserButtons.forEach((deactivateUserButton) => {
-    deactivateUserButton.addEventListener('click', deactivateUser);
+    deactivateUserButton.addEventListener('click', (eventNew) => {
+      deactivateUser(eventNew, createUserView);
+    });
   });
 
   const activateUserButtons = document.querySelectorAll('.license-user-activate-user.action');
   activateUserButtons.forEach((activateUserButton) => {
-    activateUserButton.addEventListener('click', activateUser);
+    activateUserButton.addEventListener('click', (eventNew) => {
+      activateUser(eventNew, createUserView);
+    });
+  });
+
+  const manageUserButtons = document.querySelectorAll('.license-user-manage-user.action');
+  manageUserButtons.forEach((manageUserButton) => {
+    manageUserButton.addEventListener('click', manageUserView);
   });
 
   addTabFeature();
-}
-
-function showAddUserTable(event) {
-  const licenseId = event.target.getAttribute('data-license-id');
-  const addUserActionButton = document.querySelector('.add-user-action-button');
-  addUserActionButton.setAttribute('data-license-id', licenseId);
-  showModal(event);
-}
-
-async function changeUserForALicense(event) {
-  const contactId = event.target.getAttribute('contactid');
-  const newProductUserId = event.target.getAttribute('data-new-productuserid');
-  const data = await execute('dynamics_change_enduser_license', `&contact_id=${contactId}&new_productuserid=${newProductUserId}`, 'PATCH');
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // eslint-disable-next-line no-use-before-define
-    displayLicenseDetails(event);
-  } else {
-    console.log('error ', data);
-  }
 }
 
 function updateAddUserId(event) {
@@ -288,25 +410,11 @@ function updateChangeUserId(event) {
   addUserActionButton.setAttribute('contactId', event.target.getAttribute('id'));
 }
 
-async function addUserToALicense(event) {
-  const contactId = event.target.getAttribute('contactid');
+function showAddUserTable(event) {
   const licenseId = event.target.getAttribute('data-license-id');
-  const data = await execute('dynamics_add_end_user', `&contactId=${contactId}&licenseid=${licenseId}`, 'POST');
-
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // eslint-disable-next-line no-use-before-define
-    displayLicenseDetails(event);
-  } else {
-    console.log('error ', data);
-  }
-}
-
-async function createAddUserToLicenseTable(checkboxClass) {
-  const data = await execute('dynamics_get_colleagues_view', '', 'GET');
-  const colleaguesData = await data.colleagues;
-  return createGenericTable(getAddUserToLicenseTableConfig(checkboxClass), colleaguesData);
+  const addUserActionButton = document.querySelector('.add-user-action-button');
+  addUserActionButton.setAttribute('data-license-id', licenseId);
+  showModal(event);
 }
 
 async function addColleaguesToUserActionModal(
@@ -332,65 +440,54 @@ async function addColleaguesToUserActionModal(
   });
 }
 
-async function removeUserFromLicense(event) {
-  const newproductuserid = event.target.getAttribute('data-new-productuserid');
-  const data = await execute('dynamics_remove_enduser_from_license', `&new_productuserid=${newproductuserid}`, 'DELETE');
-  // TODO handle response and add toast message
-
-  if (data?.status === 204) {
-    // TODO show success toast message
-    hideModal(event);
-    // eslint-disable-next-line no-use-before-define
-    displayLicenseDetails(event);
-  } else {
-    console.log('error ', data);
-  }
+async function createAddUserToLicenseTable(checkboxClass) {
+  const data = await execute('dynamics_get_colleagues_view', '', 'GET');
+  const colleaguesData = await data.colleagues;
+  return createGenericDataTable(getAddUserToLicenseTableConfig(checkboxClass), colleaguesData);
 }
 
-async function updateLicenseNickname() {
-  const { value } = document.querySelector('.nickname');
-  if (value) {
-    const data = await execute('dynamics_set_license_nickname', `&id=97d53652-122f-e611-80ea-005056831cd4&nickname=${value}`, 'PATCH');
-    console.log('Updated license nickname ', data);
-  } else {
-    // TODO handle response and add toast message
-    alert('Provide nickname value before saving');
-  }
-}
-
-function hideOtherUserLicenseInformation() {
-  const sections = document.querySelectorAll('.section');
+function clearProfileLandingView() {
+  const mainDiv = document.querySelector('main');
+  const sections = mainDiv.querySelectorAll('.section');
 
   sections.forEach((section) => {
-    if (section.classList.contains('user-licenses-container')) {
-      const tabsContent = section.querySelector('.tabs');
-      if (tabsContent) {
-        section.querySelector('.tabs').remove();
-      }
-      const licenseComponent = section.querySelector('.user-licenses.block');
-      licenseComponent.querySelector('h3').parentElement.parentElement.remove();
-
-      let backToProfileButton = licenseComponent.querySelector('#backToAccountButton');
-      if (!backToProfileButton) {
-        backToProfileButton = createTag('a', { href: '/pages/profile', class: 'button primary', id: 'backToAccountButton' }, 'Back to Account');
-        licenseComponent.insertBefore(backToProfileButton, licenseComponent.firstChild);
-      }
-    } else {
+    if (!section.classList.contains('profile-software-download')) {
       section.remove();
     }
   });
 }
 
-async function displayLicenseDetails(event) {
-  hideOtherUserLicenseInformation();
+async function displayLicenseDetailsView(event) {
+  clearProfileLandingView();
+  window.scrollTo(0, 0);
+  const viewAccess = await event.target.getAttribute('data-view-access');
   const licenseId = event.target.getAttribute('data-license-id');
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
+  const mainDiv = document.querySelector('main');
   if (userId && accessToken) {
-    const data = await execute('dynamics_get_end_users_for_license', `&license_id=${licenseId}`, 'GET');
+    const urlConfig = { license_id: licenseId };
+    const data = await execute('dynamics_get_end_users_for_license', urlConfig, 'GET');
     // DOM creation
+    const licenseDetailsViewWrapperDiv = createTag('div', { class: 'license-details-view-wrapper' }, '');
+    const licenseDetailsViewDiv = createTag('div', { class: 'section user-licenses-container license-details-view', 'data-view-id': 'licenseDetailsView' }, licenseDetailsViewWrapperDiv);
+
+    const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
+    const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
+    licenseDetailsViewWrapperDiv.append(createTag('a', { class: 'button primary', id: 'backToAccountButton', href: '/pages/profile' }, 'Back to Account'));
+    licenseDetailsViewWrapperDiv.append(licenseDetailsDiv);
+    licenseDetailsViewWrapperDiv.append(endUsersDetailsDiv);
+    licenseDetailsViewWrapperDiv.append(createTag('a', {
+      class: 'more-info secondary',
+      href: 'https://support.zemax.com/hc/en-us/sections/1500001481261',
+      'aria-label': 'More information about license management',
+      target: '_blank',
+      rel: 'noreferrer',
+    }, 'More information about license management'));
+
+    mainDiv.insertBefore(licenseDetailsViewDiv, mainDiv.firstChild);
+
     const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
-    const licenseDetailsDiv = document.querySelector('.license-details');
     licenseDetailsDiv.innerHTML = '';
     licenseDetailsDiv.appendChild(manageLicenseH2);
     const licenseDetailsDataDiv = createTag('div', { class: 'license-details-data' }, '');
@@ -411,41 +508,58 @@ async function displayLicenseDetails(event) {
         licenseDetailsRow = createTag('div', { class: 'license-details-row layout-33-33-33' }, '');
       }
     });
-
     const nickNameSetValue = data.license_detail[0].zemax_nickname ?? '';
-    const nickNameTextField = createTag('input', { class: 'nickname', value: nickNameSetValue }, '');
-    licenseDetailsRow.appendChild(nickNameTextField);
-    const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button' }, 'Save');
-    saveNicknameButton.addEventListener('click', updateLicenseNickname);
-    licenseDetailsRow.appendChild(saveNicknameButton);
+
+    if (viewAccess === 'manage') {
+      const nickNameTextField = createTag('input', { class: 'nickname', value: nickNameSetValue }, '');
+      licenseDetailsRow.appendChild(nickNameTextField);
+      const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button', 'data-license-id': data.license_detail[0].new_licensesid }, 'Save');
+      saveNicknameButton.addEventListener('click', updateLicenseNickname);
+      licenseDetailsRow.appendChild(saveNicknameButton);
+    } else {
+      const elementDetailCellDiv = createTag('div', { class: 'element-detail-cell' });
+      const elementDetailCellHeading = createTag('h3', { class: 'element-detail-cell-heading' }, 'Nickname');
+      const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, nickNameSetValue);
+      elementDetailCellDiv.appendChild(elementDetailCellHeading);
+      elementDetailCellDiv.appendChild(elementDetailCellDataPara);
+      licenseDetailsRow.appendChild(elementDetailCellDiv);
+    }
     licenseDetailsDataDiv.appendChild(licenseDetailsRow);
 
-    const endUsersDetailsDiv = document.querySelector('.end-users-details');
     endUsersDetailsDiv.innerHTML = '';
     const licenseUsers = data.users;
     const endUsersH2 = createTag('h2', '', 'End Users');
     endUsersDetailsDiv.appendChild(endUsersH2);
-    const addUserButton = createTag('button', {
-      class: 'add-user-to-license action', type: 'button', 'data-modal-id': 'addUserModal', 'data-license-id': licenseId,
-    }, 'Add End User');
 
     await addColleaguesToUserActionModal('add-user-container', 'add-user-checkbox', updateAddUserId);
 
-    // TODO add condition
-    endUsersDetailsDiv.appendChild(addUserButton);
-    addUserButton.addEventListener('click', showAddUserTable);
+    if (viewAccess === 'manage') {
+      const addUserButton = createTag('button', {
+        class: 'add-user-to-license action',
+        type: 'button',
+        'data-modal-id': 'addUserModal',
+        'data-license-id': licenseId,
+        'data-view-access': 'manage',
+      }, 'Add End User');
+      endUsersDetailsDiv.appendChild(addUserButton);
+      addUserButton.addEventListener('click', showAddUserTable);
+    }
 
     if (licenseUsers && licenseUsers.length > 0) {
       const licenseDetailsUsersTable = getLicenseDetailsUsersTable(licenseId);
-      const tableElement = createGenericTable(licenseDetailsUsersTable, licenseUsers);
-      endUsersDetailsDiv.appendChild(tableElement);
+      if (viewAccess === 'view') {
+        licenseDetailsUsersTable.splice(4, 2);
+      }
+      const tableElement = createGenericDataTable(licenseDetailsUsersTable, licenseUsers);
+      const tableContainer = createTag('div', { class: 'table-container' }, tableElement);
+      endUsersDetailsDiv.appendChild(tableContainer);
 
       const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
       removeButtons.forEach((removeButton) => {
         removeButton.addEventListener('click', showUserActionModal);
       });
 
-      const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user ');
+      const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user');
       changeUserLicenseButtons.forEach((changeUserLicenseButton) => {
         changeUserLicenseButton.addEventListener('click', showUserActionModal);
       });
@@ -457,84 +571,58 @@ async function displayLicenseDetails(event) {
   }
 }
 
-async function addManageLicenseFeature(block) {
-  const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
-  const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
-  block.append(licenseDetailsDiv);
-  block.append(endUsersDetailsDiv);
+async function addManageLicenseFeature() {
+  const allModalContentContainerDiv = document.querySelector('.all-modal-content-container');
 
-  // Add User Modal
-  const createUserButton = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'addUserModal' }, 'Create User');
-  const addUserButton = createTag('button', { class: 'action add-user-action-button', 'data-modal-id': 'addUserModal' }, 'Add User');
-  const addUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'addUserModal' }, 'Close');
-  const buttonsConfig = [
-    {
-      userAction: 'click',
-      button: createUserButton,
-      listenerMethod: createUser,
-    }, {
-      userAction: 'click',
-      button: addUserButton,
-      listenerMethod: addUserToALicense,
-    }, {
-      userAction: 'click',
-      button: addUserModalCloseButton,
-      listenerMethod: hideModal,
-    },
-  ];
+  // START Add User Modal
+  const addUserDialog = getAddUserDialog();
 
-  const modalAddUserDiv = createModal('Add End User to License', '', 'add-user-modal-content', 'add-user-container table-container', 'addUserModal', 'add-user-modal', buttonsConfig);
-  block.append(modalAddUserDiv);
+  allModalContentContainerDiv.append(addUserDialog);
+  const createUserButtonAddUser = addUserDialog.querySelector('.action.create-user-action-button');
+  const addUserButton = addUserDialog.querySelector('.action.add-user-action-button');
+  const addUserCancelButton = addUserDialog.querySelector('.action.add-user-cancel-button');
+  createUserButtonAddUser.addEventListener('click', createUserView);
+  addUserButton.addEventListener('click', (eventAddUserToLicense) => {
+    addUserToALicense(eventAddUserToLicense, displayLicenseDetailsView);
+  });
+  addUserCancelButton.addEventListener('click', closeModal);
+  createUserButtonAddUser.addEventListener('click', closeModal);
+  addUserDialog.querySelector('svg').addEventListener('click', closeModal);
+  // END Add User Modal
 
-  // Delete User Modal
-  const modalDeleteDescription = createTag('p', '', 'Please confirm this action to remove end user');
-  const deleteUserButton = createTag('button', { class: 'action important delete-user-action-button', 'data-modal-id': 'deleteUserModal' }, 'Yes, remove End User');
-  const deleteUserModalCloseButton = createTag('button', { class: 'action secondary', 'data-modal-id': 'deleteUserModal' }, 'Cancel');
+  // START Delete User Modal
+  const deleteUserDialog = getDeleteUserDialog();
 
-  const deleteButtonsConfig = [
-    {
-      userAction: 'click',
-      button: deleteUserButton,
-      listenerMethod: removeUserFromLicense,
-    }, {
-      userAction: 'click',
-      button: deleteUserModalCloseButton,
-      listenerMethod: hideModal,
-    },
-  ];
+  allModalContentContainerDiv.append(deleteUserDialog);
+  const deleteUserButton = deleteUserDialog.querySelector('.delete-user-action-button');
+  const deleteUserModalCloseButton = deleteUserDialog.querySelector('.delete-user-cancel-button');
+  deleteUserButton.addEventListener('click', (eventRemoveUserFromLicense) => {
+    removeUserFromLicense(eventRemoveUserFromLicense, displayLicenseDetailsView);
+  });
+  deleteUserModalCloseButton.addEventListener('click', closeModal);
+  deleteUserDialog.querySelector('svg').addEventListener('click', closeModal);
+  allModalContentContainerDiv.append(deleteUserDialog);
+  // END Delete User Modal
 
-  const modalDeleteUserModalDiv = createModal('Confirmation Required', modalDeleteDescription, 'delete-user-modal-content', 'delete-user-container table-container', 'deleteUserModal', 'delete-user-modal', deleteButtonsConfig);
-  block.append(modalDeleteUserModalDiv);
-
-  // Change User Modal
-  const createUserButtonChangeUser = createTag('button', { class: 'action secondary create-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Create User');
-  const changeUserButton = createTag('button', { class: 'action change-user-action-button', 'data-modal-id': 'changeUserModal' }, 'Change User');
-  const changeUserModalCloseButton = createTag('button', { class: 'action', 'data-modal-id': 'changeUserModal' }, 'Close');
-
-  const createUserButtonsConfig = [
-    {
-      userAction: 'click',
-      button: createUserButtonChangeUser,
-      listenerMethod: createUser,
-    }, {
-      userAction: 'click',
-      button: changeUserButton,
-      listenerMethod: changeUserForALicense,
-    }, {
-      userAction: 'click',
-      button: changeUserModalCloseButton,
-      listenerMethod: hideModal,
-    },
-  ];
-
-  const modalChangeUserDiv = createModal('Choose a User', '', 'change-user-modal-content', 'change-user-container table-container', 'changeUserModal', 'change-user-modal', createUserButtonsConfig);
-  block.append(modalChangeUserDiv);
+  // START Change User Modal
+  const changeUserDialog = getChangeUserDialog();
+  allModalContentContainerDiv.append(changeUserDialog);
+  const createUserButtonChangeUser = changeUserDialog.querySelector('.action.create-user-action-button');
+  const changeUserButton = allModalContentContainerDiv.querySelector('.action.change-user-action-button');
+  const changeUserCancelButton = allModalContentContainerDiv.querySelector('.action.change-user-cancel-button');
+  createUserButtonChangeUser.addEventListener('click', createUserView);
+  changeUserButton.addEventListener('click', (eventChangeUserForALicense) => {
+    changeUserForALicense(eventChangeUserForALicense, displayLicenseDetailsView);
+  });
+  changeUserCancelButton.addEventListener('click', closeModal);
+  changeUserDialog.querySelector('svg').addEventListener('click', closeModal);
+  // END Change User Modal
 
   await addColleaguesToUserActionModal('change-user-container', 'change-user-checkbox', updateChangeUserId);
 
   const manageButtons = document.querySelectorAll('.manage-view-license');
   manageButtons.forEach((manageButton) => {
-    manageButton.addEventListener('click', displayLicenseDetails);
+    manageButton.addEventListener('click', displayLicenseDetailsView);
   });
 }
 
@@ -564,195 +652,11 @@ function createTableHeaderMapping(data) {
   return tableHeaderMapping;
 }
 
-function createTabLi(active, ariaControls, isSelected, tabText) {
-  const li = document.createElement('li');
-
-  const tabLink = createTag(
-    'a',
-    {
-      href: `#${ariaControls}`,
-      class: `tab-link ${active}`,
-      role: 'tab',
-      'aria-selected': isSelected,
-      'aria-controls': ariaControls,
-    },
-    tabText,
-  );
-  li.appendChild(tabLink);
-
-  return li;
-}
-
-function createContentDiv(tabId, ariaLabelBy, isHidden, content) {
-  const div = document.createElement('div');
-  div.setAttribute('id', tabId);
-  div.classList.add('tab-content');
-  div.setAttribute('role', 'tabpanel');
-  div.setAttribute('tabindex', '0');
-  div.setAttribute('aria-labelledby', ariaLabelBy);
-  div.innerHTML = content;
-  if (isHidden) {
-    div.setAttribute('hidden', '');
-  }
-
-  return div;
-}
-
 function createLicencesTable(rows) {
-  const tableElement = document.createElement('table');
-
-  const thead = document.createElement('thead');
-  const tr = document.createElement('tr');
-
-  const { tableHeadings } = getLocaleConfig('en_us', 'userLicenses');
-
-  tableHeadings.forEach((tableHeading) => {
-    const tableHeadingElement = document.createElement('th');
-    const button = document.createElement('button');
-    button.innerHTML = tableHeading;
-    tableHeadingElement.appendChild(button);
-    tr.appendChild(tableHeadingElement);
-  });
-
-  thead.appendChild(tr);
-  tableElement.appendChild(thead);
-
-  const tbody = document.createElement('tbody');
-  rows.forEach((row) => {
-    const trBody = document.createElement('tr');
-
-    // TODO add logic for manage or view
-    const tdManageOrView = document.createElement('td');
-    const manageOrViewButton = createTag('button', { class: 'manage-view-license action', type: 'button', 'data-license-id': row.new_licensesid }, 'Manage');
-    tdManageOrView.appendChild(manageOrViewButton);
-    trBody.appendChild(tdManageOrView);
-
-    const date = new Date(row.new_supportexpires);
-    // subtract one day from the date
-    date.setDate(date.getDate() - 1);
-
-    // format the resulting date into the desired string format
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    const supportExpiryDate = date.toLocaleDateString('en-US', options);
-    let licenseActive = 'Expired';
-
-    if (date.getTime() > Date.now()) {
-      licenseActive = 'Active';
-    }
-
-    const headingValueMapping = [
-      licenseActive,
-      supportExpiryDate,
-      row.new_licenseid,
-      row.zemax_nickname,
-      row['_new_product_value@OData.Community.Display.V1.FormattedValue'],
-      row['zemax_seattype@OData.Community.Display.V1.FormattedValue'],
-      row.new_usercount,
-      row.new_endusercount,
-      row['_new_registereduser_value@OData.Community.Display.V1.FormattedValue'],
-    ];
-
-    headingValueMapping.forEach((headingValue, index) => {
-      const td = document.createElement('td');
-      if (index === 0) {
-        const spanClass = (headingValue === 'Active') ? 'active-license' : 'expired-license';
-        const spanStatus = createTag('span', { class: spanClass }, headingValue);
-        td.appendChild(spanStatus);
-      } else if (index === 2) {
-        const licenseLink = createTag('a', { href: '#' }, headingValue);
-        td.appendChild(licenseLink);
-      } else {
-        td.innerText = headingValue ?? '';
-      }
-      trBody.appendChild(td);
-    });
-
-    tbody.appendChild(trBody);
-  });
-
-  tableElement.appendChild(tbody);
-  return tableElement;
-}
-
-// Activate a tab by ID
-function activateTab(tabId) {
-  const tabLinks = document.querySelectorAll('.tab-link');
-  const tabContents = document.querySelectorAll('.tab-content');
-
-  tabLinks.forEach((link) => {
-    link.classList.remove('active');
-    link.setAttribute('aria-selected', 'false');
-    link.setAttribute('tabindex', '-1');
-  });
-
-  // Hide all tab content elements
-  tabContents.forEach((content) => {
-    content.classList.remove('active');
-    content.classList.remove('show');
-    content.setAttribute('aria-hidden', 'true');
-    content.setAttribute('hidden', '');
-  });
-
-  // Activate the selected tab link
-  const tabLink = document.querySelector(`.tab-link[href="#${tabId}"]`);
-  tabLink.classList.add('active');
-  tabLink.setAttribute('aria-selected', 'true');
-  tabLink.setAttribute('tabindex', '0');
-
-  // Show the associated tab content element
-  const tabContent = document.getElementById(tabId);
-  tabContent.classList.add('active');
-  tabContent.classList.add('show');
-  tabContent.setAttribute('aria-hidden', 'false');
-}
-
-function addTabFeature() {
-  // Get all tab links and tab content elements
-  const tabLinks = document.querySelectorAll('.tab-link');
-
-  // Handle click event for each tab link
-  tabLinks.forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      // Get the ID of the clicked tab link
-      const tabId = link.getAttribute('href').substring(1);
-
-      activateTab(tabId);
-    });
-
-    // Handle keydown event for each tab link
-    link.addEventListener('keydown', (e) => {
-      let index = Array.from(tabLinks).indexOf(e.target);
-
-      switch (e.key) {
-        case 'ArrowLeft':
-          e.preventDefault();
-          index = index > 0 ? index - 1 : tabLinks.length - 1;
-          tabLinks[index].focus();
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          index = index < tabLinks.length - 1 ? index + 1 : 0;
-          tabLinks[index].focus();
-          break;
-        case 'Home':
-          e.preventDefault();
-          tabLinks[0].focus();
-          break;
-        case 'End':
-          e.preventDefault();
-          tabLinks[tabLinks.length - 1].focus();
-          break;
-        case 'Enter':
-        case ' ':
-          e.preventDefault();
-          activateTab(e.target.getAttribute('href').substring(1));
-          break;
-        default:
-      }
-    });
-  });
+  const tableContainer = createTag('div', { class: 'table-container' }, '');
+  const tableElement = createGenericDataTable(userLicensesTable, rows);
+  tableContainer.appendChild(tableElement);
+  return tableContainer;
 }
 
 export default async function decorate(block) {
@@ -762,7 +666,14 @@ export default async function decorate(block) {
 
 async function loadData(block) {
   const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
-
+  const viewAccessMatrix = calculateViewMatrix(JSON.parse(localStorage.getItem('webroles')));
+  const mainDiv = document.querySelector('main');
+  // Placeholder for all modal content
+  const modalContainerDiv = createTag('div', { class: 'all-modal-content-container' }, '');
+  mainDiv.insertBefore(modalContainerDiv, mainDiv.firstChild);
+  const viewAllColleagueButton = createTag('button', { class: 'view-all-colleague action primary-license-action-button' }, 'View All Colleague');
+  viewAllColleagueButton.addEventListener('click', createUserView);
+  block.append(viewAllColleagueButton);
   const licenseTableHeadingMapping = createTableHeaderMapping(data);
   const tabDiv = createTag('div', { class: 'tabs' });
   const tabListUl = createTag('ul', { class: 'tabs-nav', role: 'tablist' });
@@ -781,16 +692,91 @@ async function loadData(block) {
   licenseTableHeadingMapping.forEach((heading, index) => {
     if (index === 0) {
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
+        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
       );
     } else {
       tabDiv.append(
-        createContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
+        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
       );
     }
   });
 
   block.append(tabDiv);
   addTabFeature();
-  addManageLicenseFeature(block);
+  addManageLicenseFeature();
+  block.appendChild(
+    a(
+      {
+        href: 'https://support.zemax.com/hc/en-us/sections/1500001481261',
+        class: 'more-info secondary',
+        target: '_blank',
+        rel: 'noreferrer',
+      },
+      'More information about license management',
+    ),
+  );
+  updateViewButtonPerAccess(viewAccessMatrix);
 }
+
+function calculateViewMatrix(webroles) {
+  let viewAccess = 'none';
+  if (!webroles) {
+    localStorage.setItem('viewAccess', 'view');
+    return 'view';
+  }
+
+  webroles.forEach((webrole) => {
+    if (viewAccess === 'manage') {
+      return;
+    }
+    if (webrole.adx_name === 'Customer Self Service Admin') {
+      viewAccess = 'manage';
+      return;
+    } if (webrole.adx_name === 'Supported Users ZOV' || webrole.adx_name === 'Supported Users ZOS') {
+      viewAccess = 'view';
+    } else if (viewAccess !== 'manage' || viewAccess !== 'view') {
+      viewAccess = 'none';
+    }
+  });
+  localStorage.setItem('viewAccess', viewAccess);
+  return viewAccess;
+}
+
+function updateViewButtonPerAccess(viewAccess) {
+  const manageOrViewButtons = document.querySelectorAll('.manage-view-license.action');
+  const primaryLicenseActionButton = document.querySelector('.primary-license-action-button');
+
+  manageOrViewButtons.forEach((manageOrViewButton) => {
+    if (viewAccess === 'none') {
+      manageOrViewButton.remove();
+      if (primaryLicenseActionButton) {
+        primaryLicenseActionButton.remove();
+      }
+    } else if (viewAccess === 'view') {
+      manageOrViewButton.setAttribute('data-view-access', 'view');
+      manageOrViewButton.textContent = 'View';
+      if (primaryLicenseActionButton) {
+        primaryLicenseActionButton.setAttribute('data-view-access', 'view');
+        primaryLicenseActionButton.textContent = 'View All Colleague';
+      }
+    } else if (viewAccess === 'manage') {
+      manageOrViewButton.setAttribute('data-view-access', 'manage');
+      manageOrViewButton.textContent = 'Manage';
+      if (primaryLicenseActionButton) {
+        primaryLicenseActionButton.setAttribute('data-view-access', 'manage');
+        primaryLicenseActionButton.textContent = 'Manage All Colleague';
+      }
+    }
+  });
+}
+// Function to listen for the storage event
+function storageEventHandler(event) {
+  if (event.storageArea === localStorage && event.key === 'webroles') {
+    calculateViewMatrix(localStorage.getItem('webroles'));
+  }
+  if (event.storageArea === localStorage && event.key === 'viewAccess') {
+    updateViewButtonPerAccess(localStorage.getItem('viewAccess'));
+  }
+}
+
+window.addEventListener('storage', storageEventHandler);

@@ -23,8 +23,13 @@ export default async function decorate(block) {
         const { webroles } = data;
 
         // TODO handle cases where there is no response on webroles
-        if (localStorage.getItem('contactid') === null || localStorage.getItem('contactid') === undefined) {
+        if (!localStorage.getItem('contactid')) {
           localStorage.setItem('contactid', data.zemax_zendeskid);
+        }
+
+        if (!localStorage.getItem('parentcustomerid')) {
+          // eslint-disable-next-line no-underscore-dangle
+          localStorage.setItem('parentcustomerid', data.userdetails._parentcustomerid_value);
         }
         if (webroles !== undefined) {
           localStorage.setItem('webroles', JSON.stringify(webroles));
@@ -35,8 +40,9 @@ export default async function decorate(block) {
             { class: 'webroles-container' },
             ...webroles.map((webrole) => li(
               { class: 'webrole' },
-              h3(roleHeadingDescription[webrole.adx_name].heading),
-              p({ class: 'webrole-description' }, roleHeadingDescription[webrole.adx_name].description),
+              h3(roleHeadingDescription[webrole.adx_name]
+                ? roleHeadingDescription[webrole.adx_name].heading : webrole.adx_name),
+              p({ class: 'webrole-description' }, roleHeadingDescription[webrole.adx_name] ? roleHeadingDescription[webrole.adx_name].description : ''),
             )),
           ),
         );
@@ -46,8 +52,9 @@ export default async function decorate(block) {
             {
               href: 'https://support.zemax.com/hc/en-us/sections/1500001481281',
               'aria-label': moreInformationAboutAccessButtonText,
-              class: 'more-info-access',
+              class: 'more-info secondary',
               target: '_blank',
+              rel: 'noreferrer',
             },
             moreInformationAboutAccessButtonText,
           ),

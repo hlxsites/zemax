@@ -71,51 +71,153 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
-export function createModal(modalTitle, modalBodyInnerContent, modalContentClass, modalBodyClass,
-  modalId, modalContainerClass, buttonsConfig) {
-  let modalBodyInnerContentHtml = '';
-  if (modalBodyInnerContent !== '') {
-    modalBodyInnerContentHtml = modalBodyInnerContent.outerHTML;
+export function showSnackbar(message, typeClass) {
+  const snackbar = document.createElement('div');
+  snackbar.classList.add('snackbar', typeClass);
+  snackbar.textContent = message;
+
+  document.body.appendChild(snackbar);
+
+  setTimeout(() => {
+    snackbar.classList.add('show');
+    setTimeout(() => {
+      snackbar.classList.remove('show');
+      snackbar.remove();
+    }, 2500);
+  }, 100);
+}
+
+// Methods for creating tabs
+export function createTabLi(active, ariaControls, isSelected, tabText) {
+  const li = document.createElement('li');
+
+  const tabLink = createTag(
+    'a',
+    {
+      href: `#${ariaControls}`,
+      class: `tab-link ${active}`,
+      role: 'tab',
+      'aria-selected': isSelected,
+      'aria-controls': ariaControls,
+    },
+    tabText,
+  );
+  li.appendChild(tabLink);
+
+  return li;
+}
+
+export function createTabContentDiv(tabId, ariaLabelBy, isHidden, content) {
+  const div = document.createElement('div');
+  div.setAttribute('id', tabId);
+  div.classList.add('tab-content');
+  div.setAttribute('role', 'tabpanel');
+  div.setAttribute('tabindex', '0');
+  div.setAttribute('aria-labelledby', ariaLabelBy);
+  div.innerHTML = content;
+  if (isHidden) {
+    div.setAttribute('hidden', '');
   }
-  const modalHeaderDiv = createTag('div', { class: 'modal-header' }, '');
-  const modalTitleH3 = createTag('h3', '', modalTitle);
-  const modalCloseButtonIcon = createTag('button', { class: 'modal-close' }, '');
-  modalHeaderDiv.appendChild(modalTitleH3);
-  modalHeaderDiv.appendChild(modalCloseButtonIcon);
 
-  const modalContentDiv = createTag('div', { class: `modal-content ${modalContentClass}` }, modalHeaderDiv);
-  const modalBodyDiv = createTag('div', { class: 'modal-body' }, createTag('div', { class: modalBodyClass }, modalBodyInnerContentHtml));
-  modalContentDiv.appendChild(modalBodyDiv);
+  return div;
+}
 
-  const modalFooterDiv = createTag('div', { class: 'modal-footer' }, '');
+// Activate a tab by ID
+function activateTab(tabId) {
+  const tabLinks = document.querySelectorAll('.tab-link');
+  const tabContents = document.querySelectorAll('.tab-content');
 
-  buttonsConfig.forEach((buttonConfig) => {
-    const { button, userAction, listenerMethod } = buttonConfig;
-    button.addEventListener(userAction, listenerMethod);
-    modalFooterDiv.appendChild(button);
+  tabLinks.forEach((link) => {
+    link.classList.remove('active');
+    link.setAttribute('aria-selected', 'false');
+    link.setAttribute('tabindex', '-1');
   });
 
-  modalContentDiv.appendChild(modalFooterDiv);
+  // Hide all tab content elements
+  tabContents.forEach((content) => {
+    content.classList.remove('active');
+    content.classList.remove('show');
+    content.setAttribute('aria-hidden', 'true');
+    content.setAttribute('hidden', '');
+  });
 
-  const modalModalDiv = createTag('div', { class: `modal-container ${modalContainerClass}`, id: modalId }, modalContentDiv);
-  return modalModalDiv;
+  // Activate the selected tab link
+  const tabLink = document.querySelector(`.tab-link[href="#${tabId}"]`);
+  tabLink.classList.add('active');
+  tabLink.setAttribute('aria-selected', 'true');
+  tabLink.setAttribute('tabindex', '0');
+
+  // Show the associated tab content element
+  const tabContent = document.getElementById(tabId);
+  tabContent.classList.add('active');
+  tabContent.classList.add('show');
+  tabContent.setAttribute('aria-hidden', 'false');
+}
+
+export function addTabFeature() {
+  // Get all tab links and tab content elements
+  const tabLinks = document.querySelectorAll('.tab-link');
+
+  // Handle click event for each tab link
+  tabLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Get the ID of the clicked tab link
+      const tabId = link.getAttribute('href').substring(1);
+
+      activateTab(tabId);
+    });
+
+    // Handle keydown event for each tab link
+    link.addEventListener('keydown', (e) => {
+      let index = Array.from(tabLinks).indexOf(e.target);
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          index = index > 0 ? index - 1 : tabLinks.length - 1;
+          tabLinks[index].focus();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          index = index < tabLinks.length - 1 ? index + 1 : 0;
+          tabLinks[index].focus();
+          break;
+        case 'Home':
+          e.preventDefault();
+          tabLinks[0].focus();
+          break;
+        case 'End':
+          e.preventDefault();
+          tabLinks[tabLinks.length - 1].focus();
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          activateTab(e.target.getAttribute('href').substring(1));
+          break;
+        default:
+      }
+    });
+  });
 }
 
 export function showModal(event) {
   const modalId = event.target.getAttribute('data-modal-id');
   if (modalId && document.getElementById(modalId)) {
-    document.getElementById(modalId).style.display = 'block';
+    document.getElementById(modalId).showModal();
   }
 }
 
-export function hideModal(event) {
+export function closeModal(event) {
   const modalId = event.target.getAttribute('data-modal-id');
   if (modalId && document.getElementById(modalId)) {
-    document.getElementById(modalId).style.display = 'none';
+    document.getElementById(modalId).close();
   }
 }
 
-function findReplaceJSON(jsonObj, data) {
+export function findReplaceJSON(jsonObj, data) {
   Object.keys(jsonObj).forEach((key) => {
     if (typeof jsonObj[key] === 'object' && jsonObj[key] !== null) {
       findReplaceJSON(jsonObj[key], data);
@@ -130,6 +232,31 @@ function findReplaceJSON(jsonObj, data) {
   return jsonObj;
 }
 
+// Custom recursive deep copy function
+function deepCopy(obj) {
+  if (typeof obj !== 'object' || obj === null) {
+    return obj;
+  }
+
+  let copy;
+
+  if (Array.isArray(obj)) {
+    copy = [];
+    for (let i = 0; i < obj.length; i += 1) {
+      copy[i] = deepCopy(obj[i]);
+    }
+  } else {
+    copy = {};
+    Object.keys(obj).forEach((key) => {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        copy[key] = deepCopy(obj[key]);
+      }
+    });
+  }
+
+  return copy;
+}
+
 /**
  * @typedef {Object} tableHeadings
  * @property {string} label - table heading label text.
@@ -138,14 +265,15 @@ function findReplaceJSON(jsonObj, data) {
  * @property {array} attributes attributes to be added
  */
 
-export function createGenericTable(tableHeadings, rowData) {
+export function createGenericDataTable(tableHeadings, rowData) {
   const tableElement = document.createElement('table');
   const thead = document.createElement('thead');
   const tr = document.createElement('tr');
 
   tableHeadings.forEach((heading) => {
     const { label } = heading;
-    const tableHeadingElement = createTag('th', { class: '' }, label);
+
+    const tableHeadingElement = createTag('th', heading.headingAttributes ?? '', label);
     tr.appendChild(tableHeadingElement);
   });
   thead.appendChild(tr);
@@ -156,13 +284,16 @@ export function createGenericTable(tableHeadings, rowData) {
   rowData.forEach((row) => {
     const trValue = document.createElement('tr');
     tableHeadings.forEach((heading) => {
-      const clonedHeading = JSON.parse(JSON.stringify(heading));
+      let clonedHeading = deepCopy(heading);
       findReplaceJSON(clonedHeading, row);
+      if (clonedHeading.processValueMethod) {
+        clonedHeading = clonedHeading.processValueMethod(clonedHeading);
+      }
+      const elementValue = clonedHeading.value.join('');
       if (clonedHeading && clonedHeading.html && clonedHeading.html !== 'td') {
-        const tagLabel = clonedHeading.htmlTagLabel ? clonedHeading.htmlTagLabel : '';
-        trValue.appendChild(createTag('td', '', createTag(clonedHeading.html, clonedHeading.htmlAttributes, tagLabel)));
+        trValue.appendChild(createTag('td', '', createTag(clonedHeading.html, clonedHeading.htmlAttributes ?? '', elementValue)));
       } else {
-        trValue.appendChild(createTag('td', clonedHeading.htmlAttributes, clonedHeading.value.join('')));
+        trValue.appendChild(createTag('td', clonedHeading.htmlAttributes ?? '', elementValue));
       }
     });
     tbody.appendChild(trValue);

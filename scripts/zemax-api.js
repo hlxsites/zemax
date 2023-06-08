@@ -1,7 +1,11 @@
 import { getEnvironmentConfig } from './zemax-config.js';
 
-export default async function execute(actionName, urlParams, methodType) {
+export default async function execute(actionName, urlConfig, methodType) {
   try {
+    let urlParams = urlConfig ? new URLSearchParams(urlConfig).toString() : '';
+    if (urlParams) {
+      urlParams = `&${urlParams}`;
+    }
     const userId = localStorage.getItem('auth0_id');
     const accessToken = localStorage.getItem('accessToken');
     const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
