@@ -4,9 +4,30 @@
   min-height: unset;
   margin: 0 auto;
   width: auto;
-  padding: 0 20px;
+  padding: 0;
 }
 
+.tabcordion .tabpanel p {
+  font-size: var(--body-font-size-s);
+}
+
+@media only screen and (min-width: 1030px) {
+  .tabcordion .tabpanel p {
+    font-size: var(--body-font-size-s);
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .tabcordion .tabpanel p {
+    font-size: var(--body-font-size-s);
+  }
+}
+
+@media only screen and (min-width: 480px) {
+  .tabcordion .tabpanel p {
+    font-size: var(--body-font-size-s);
+  }
+}
 
 .tabcordion[data-block-status="loaded"] div[role="tablist"] {
   position: relative;
@@ -28,21 +49,19 @@
   flex-direction: column;
 }
 
-.tabcordion div[role="tablist"] .tablist-container>a {
+.tabcordion div[role="tablist"] .tablist-container > a {
   border-radius: 6px;
   border: 1px solid #dad9d7;
   text-align: left;
   margin-bottom: 11px;
 }
 
-.tabcordion div[role="tablist"] .tablist-container>a:hover {
+.tabcordion div[role="tablist"] .tablist-container > a:hover {
   color: #f77f00;
   border-radius: 6px;
   border: 1px solid #dad9d7;
 
 }
-
-
 
 
 .tabcordion div[role="tablist"] a {
@@ -91,7 +110,7 @@
   color: #002f6d;
 }
 
-.tabcordion .tablist-container div.section>* {
+.tabcordion .tablist-container div.section > * {
   padding: unset;
 }
 
@@ -99,7 +118,7 @@
   display: none;
 }
 
-.tabcordion .tablist-container>.tabpanel {
+.tabcordion .tablist-container > .tabpanel {
   margin-bottom: 11px;
   transition: all 0.3s linear 0s;
 }
@@ -108,13 +127,13 @@
   display: none;
 }
 
-.tabcordion .tabpanel>div>div img {
+.tabcordion .tabpanel > div > div img {
   width: 100%;
   border-radius: 16px;
   box-shadow: 0 0 5px 0 color(38, 39, 41, 20%);
 }
 
-.tabcordion .tabpanel>div>div:has(picture) {
+.tabcordion .tabpanel > div > div:has(picture) {
   margin: 15px auto;
 }
 
@@ -133,12 +152,12 @@
     text-align: center;
   }
 
-  .tabcordion div[role="tablist"] .tablist-container>a,
-  .tabcordion div[role="tablist"] .tablist-container>a:hover {
+  .tabcordion div[role="tablist"] .tablist-container > a,
+  .tabcordion div[role="tablist"] .tablist-container > a:hover {
     border: none
   }
 
-  .tabcordion div[role="tablist"] .tablist-container>a:hover {
+  .tabcordion div[role="tablist"] .tablist-container > a:hover {
     color: #898b8e;
   }
 
@@ -150,23 +169,23 @@
     display: block;
   }
 
-  .tabcordion .tablist-container>.tabpanel {
+  .tabcordion .tablist-container > .tabpanel {
     display: none;
   }
 
-  .tabcordion .tabpanel>div {
+  .tabcordion .tabpanel > div {
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
   }
 
-  .tabcordion .tabpanel>div>div {
+  .tabcordion .tabpanel > div > div {
     flex: 1;
   }
 
 
-  .tabcordion .tabpanel>div>div:has(picture) {
+  .tabcordion .tabpanel > div > div:has(picture) {
     margin: 25px 10px;
   }
 
@@ -175,7 +194,7 @@
   }
 
 
-  .tabcordion div[role="tablist"] .tablist-container>a[aria-selected="true"], .tabcordion div[role="tablist"] .tablist-container>a:hover {
+  .tabcordion div[role="tablist"] .tablist-container > a[aria-selected="true"], .tabcordion div[role="tablist"] .tablist-container > a:hover {
     border-bottom: 4px solid #f77f00;
     border-radius: unset;
     margin: unset;

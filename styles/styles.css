@@ -490,7 +490,7 @@ main .section.h2-center-aligned h2 {
   text-align: center;
 }
 
-main .section.title-font-34 h2, 
+main .section.title-font-34 h2,
 main .section.subtitle-font-34 h3{
   font-size: var(--heading-font-size-x);
   font-family: var(--ff-myradpro-regular);
@@ -548,7 +548,9 @@ main .section.curved-top {
   border-top-left-radius: 100% 15%;
 }
 
-
+main .section.fixed-width {
+  width: var(--section-width);
+}
 
 /* Themes */
 
@@ -852,7 +854,7 @@ main .video-wrap iframe {
   }
 
   main .section.training > .default-content-wrapper h2 {
-    font-size: 48px; 
+    font-size: 48px;
     margin-bottom: 0;
     margin-top: 75px;
   }
