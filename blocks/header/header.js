@@ -178,18 +178,6 @@ function reAttachEventListeners() {
   }
 }
 
-// authentication related functions
-function initializeAuth(domain, clientID, audience, responseType, scope, redirectUri) {
-  // eslint-disable-next-line no-undef
-  return new auth0.WebAuth({
-    domain: `${domain}`,
-    clientID: `${clientID}`,
-    redirectUri: `${redirectUri}`,
-    audience: `${audience}`,
-    responseType: `${responseType}`,
-    scope: `${scope}`,
-  });
-}
 
 // login call
 async function login() {
@@ -309,6 +297,21 @@ async function initializeAuthLibrary() {
   await authScriptTagPromise;
   webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
 }
+
+
+// authentication related functions
+function initializeAuth(domain, clientID, audience, responseType, scope, redirectUri) {
+  // eslint-disable-next-line no-undef
+  return new auth0.WebAuth({
+    domain: `${domain}`,
+    clientID: `${clientID}`,
+    redirectUri: `${redirectUri}`,
+    audience: `${audience}`,
+    responseType: `${responseType}`,
+    scope: `${scope}`,
+  });
+}
+
 
 /**
  * decorates the header, mainly the nav
