@@ -93,17 +93,17 @@ main .hero img {
 }
 
 main .hero .button.play::before {
-    content: "";
-    position: relative;
-    padding-left: 10px;
-    top: 12px;
-    left: 12px;
-    width: 20px;
-    height: 20px;
-    transform: translate(-50%, -50%);
-    background: url("/icons/icon-play.png") center/20px no-repeat;
-    display: inline-block;
-  }
+  content: "";
+  position: relative;
+  padding-left: 10px;
+  top: 12px;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  background: url("/icons/icon-play.png") center/20px no-repeat;
+  display: inline-block;
+}
 
 
 /* Mobile */
@@ -112,7 +112,7 @@ main .hero .button.play::before {
   main .hero h2,
   main .hero h3, 
   main .hero p:not(:first-child){
-  padding: 0 20px;
+    padding: 0 20px;
   }
 }
 
@@ -145,6 +145,15 @@ main .hero .button.play::before {
   main .hero p:not(:last-child) {
     max-width: 540px;
     margin: 0;
+  }
+
+  main .hero h1 {
+    margin-bottom: 4px;
+    letter-spacing: 0.18px;
+  }
+
+  main .hero p.button-container {
+    margin-top: 16px;
   }
 
   main .hero .icon > svg{
