@@ -1,6 +1,6 @@
 import { decorateIcons, fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { button, domEl, span } from '../../scripts/dom-helpers.js';
-import { createTag, loadScriptPromise, decorateLinkedPictures } from '../../scripts/scripts.js';
+import { createTag, decorateLinkedPictures, loadScriptPromise } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -192,7 +192,8 @@ function initializeAuth(domain, clientID, audience, responseType, scope, redirec
 }
 
 // login call
-function login() {
+async function login() {
+  await initializeAuthLibrary();
   webauth.authorize();
 }
 
@@ -294,6 +295,21 @@ function makeExpandable(title, content) {
   content.classList.add('m-expandable-list');
 }
 
+async function initializeAuthLibrary() {
+  const authScriptTagPromise = loadScriptPromise('/scripts/auth0.min.js', {
+    type: 'text/javascript',
+    charset: 'UTF-8',
+  });
+  const placeholders = await fetchPlaceholders();
+  const domain = placeholders.auth0domain;
+  const clientID = placeholders.clientid;
+  const audienceURI = placeholders.audienceuri;
+  const responseType = placeholders.responsetype;
+  const scopes = placeholders.scope;
+  await authScriptTagPromise;
+  webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -371,39 +387,25 @@ export default async function decorate(block) {
       }
     });
 
-    // adding login functionality
-    const authtoken = localStorage.getItem('accessToken');
+    // handle login
     const loginLinkWrapper = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLinkWrapper.classList.add('login-wrapper', 'menu-expandable');
-
-    const authScriptTagPromise = loadScriptPromise('/scripts/auth0.min.js', {
-      type: 'text/javascript',
-      charset: 'UTF-8',
-    });
-    const placeholders = await fetchPlaceholders();
-    const domain = placeholders.auth0domain;
-    const clientID = placeholders.clientid;
-    const audienceURI = placeholders.audienceuri;
-    const responseType = placeholders.responsetype;
-    const scopes = placeholders.scope;
-    const authRequired = getMetadata('authrequired');
-    if (!authtoken) {
-      loginLinkWrapper.setAttribute('aria-expanded', 'false');
-      authScriptTagPromise.then(() => {
-        // eslint-disable-next-line max-len
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
-        loginLinkWrapper.addEventListener('click', login);
-        handleAuthentication(loginLinkWrapper);
-        if (authRequired) {
-          login();
-        }
+    if (localStorage.getItem('accessToken')) {
+      initializeAuthLibrary().then(() => {
+        handleAuthenticated(loginLinkWrapper);
       });
     } else {
-      authScriptTagPromise.then(() => {
-        // eslint-disable-next-line max-len
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
-      });
-      handleAuthenticated(loginLinkWrapper);
+      loginLinkWrapper.setAttribute('aria-expanded', 'false');
+
+      if (window.location.hash.includes('access_token') || window.location.hash.includes('error')) {
+        initializeAuthLibrary().then(() => {
+          handleAuthentication(loginLinkWrapper);
+        });
+      }
+      loginLinkWrapper.addEventListener('click', login);
+      if (getMetadata('authrequired')) {
+        login();
+      }
     }
 
     // link section
