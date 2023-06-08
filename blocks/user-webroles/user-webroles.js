@@ -40,8 +40,9 @@ export default async function decorate(block) {
             { class: 'webroles-container' },
             ...webroles.map((webrole) => li(
               { class: 'webrole' },
-              h3(roleHeadingDescription[webrole.adx_name].heading),
-              p({ class: 'webrole-description' }, roleHeadingDescription[webrole.adx_name].description),
+              h3(roleHeadingDescription[webrole.adx_name]
+                ? roleHeadingDescription[webrole.adx_name].heading : webrole.adx_name),
+              p({ class: 'webrole-description' }, roleHeadingDescription[webrole.adx_name] ? roleHeadingDescription[webrole.adx_name].description : ''),
             )),
           ),
         );
