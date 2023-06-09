@@ -223,7 +223,7 @@ function attachLogoutListener(ele) {
 async function handleAuthenticationTokens(loginLinkWrapper) {
   await initializeAuthLibrary();
 
-  await new Promise((resolve, reject) => {
+  await new Promise((resolve) => {
     webauth.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         // Successful login, store tokens in localStorage
@@ -263,12 +263,6 @@ async function handleAuthenticationTokens(loginLinkWrapper) {
       }
     });
   });
-}
-
-// if user already authenticated
-function handleAuthenticated(loginLinkWrapper) {
-  loginLinkWrapper.querySelector('p').innerText = localStorage.getItem('displayname');
-  attachLogoutListener(loginLinkWrapper);
 }
 
 function getRedirectUri() {
