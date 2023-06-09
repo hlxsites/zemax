@@ -6,12 +6,7 @@ import userTicketsTable from '../../configs/tables/userTicketsTableConfig.js';
 
 export default async function decorate(block) {
   const userId = localStorage.getItem('auth0_id');
-  if(!userId) {
-    console.log('User not logged in, not loading user-tickets module');
-    return;
-  }
   const accessToken = localStorage.getItem('accessToken');
-
 
   const webRolesData = await execute('dynamics_get_webrole', '', 'GET');
   const userEmail = localStorage.getItem('email');
