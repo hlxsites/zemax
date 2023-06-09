@@ -228,6 +228,7 @@ async function manageUserView(event) {
   assignLicenseButton.addEventListener('click', showAssignUserLicense);
   assignUserLicenseModalCloseButton.addEventListener('click', closeModal);
   assignLicenseDialog.querySelector('svg').addEventListener('click', closeModal);
+  attachBackDropEventHandle(assignLicenseDialog);
 
   manageUserViewWrapperDiv.append(h3('Licenses (Colleague is End User)'));
   const endUserLicensesData = await execute('dynamics_get_enduser_licenses_by_accountid', urlConfig, 'GET');
@@ -351,7 +352,7 @@ async function createUserView(event) {
   const addColleagueDialog = getAddColleagueDialog();
   createUserViewWrapperDiv.appendChild(addColleagueDialog);
   addColleagueDialog.querySelector('svg').addEventListener('click', closeModal);
-
+  attachBackDropEventHandle(addColleagueDialog);
   // Reset password modal
   const resetUserPasswordDialog = getResetUserPasswordDialog();
   const allModalDiv = document.querySelector('.all-modal-content-container');
@@ -361,6 +362,7 @@ async function createUserView(event) {
   const resetUserPasswordModalCloseButton = resetUserPasswordDialog.querySelector('.action.reset-user-password-close-button');
   resetUserPasswordModalCloseButton.addEventListener('click', closeModal);
   resetUserPasswordDialog.querySelector('svg').addEventListener('click', closeModal);
+  attachBackDropEventHandle(resetUserPasswordDialog);
   // END
 
   const resetButtons = document.querySelectorAll('.license-user-reset-password.action');
@@ -377,6 +379,7 @@ async function createUserView(event) {
     editUserButton.addEventListener('click', showEditUserModal);
   });
   editUserDialog.querySelector('svg').addEventListener('click', closeModal);
+  attachBackDropEventHandle(editUserDialog);
   // END
 
   const deactivateUserButtons = document.querySelectorAll('.license-user-deactivate-user.action');
@@ -589,6 +592,8 @@ async function addManageLicenseFeature() {
   addUserCancelButton.addEventListener('click', closeModal);
   createUserButtonAddUser.addEventListener('click', closeModal);
   addUserDialog.querySelector('svg').addEventListener('click', closeModal);
+  attachBackDropEventHandle(addUserDialog);
+
   // END Add User Modal
 
   // START Delete User Modal
@@ -603,10 +608,8 @@ async function addManageLicenseFeature() {
   deleteUserModalCloseButton.addEventListener('click', closeModal);
   deleteUserDialog.querySelector('svg').addEventListener('click', closeModal);
   allModalContentContainerDiv.append(deleteUserDialog);
-  deleteUserDialog.addEventListener('click', (eventHandleBackDrop) => {
-    handleBackDrop(eventHandleBackDrop, deleteUserDialog);
-  });
-  // END Delete User Modal 
+  attachBackDropEventHandle(deleteUserDialog);
+  // END Delete User Modal
 
   // START Change User Modal
   const changeUserDialog = getChangeUserDialog();
@@ -620,6 +623,7 @@ async function addManageLicenseFeature() {
   });
   changeUserCancelButton.addEventListener('click', closeModal);
   changeUserDialog.querySelector('svg').addEventListener('click', closeModal);
+  attachBackDropEventHandle(changeUserDialog);
   // END Change User Modal
 
   await addColleaguesToUserActionModal('change-user-container', 'change-user-checkbox', updateChangeUserId);
@@ -783,4 +787,9 @@ function storageEventHandler(event) {
   }
 }
 
+function attachBackDropEventHandle(dialog) {
+  dialog.addEventListener('click', (eventHandleBackDrop) => {
+    handleBackDrop(eventHandleBackDrop, dialog);
+  });
+}
 window.addEventListener('storage', storageEventHandler);
