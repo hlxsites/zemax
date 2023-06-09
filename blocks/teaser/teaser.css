@@ -3,6 +3,10 @@
   padding-top: 10px;
 }
 
+.section.teaser-container.hidden {
+  display:none;
+}
+
 .teaser {
   display: grid;
   grid-template-columns: 6fr 1fr;
@@ -31,7 +35,7 @@
   transform: rotate(45deg) translate(2px, -3px);
 }
 
-.teaser .hidden {
+.teaser.block.hidden {
   display: none;
 }
 
