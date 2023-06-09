@@ -1,5 +1,6 @@
 import execute from '../../scripts/zemax-api.js';
 import { closeModal, showSnackbar } from '../../scripts/scripts.js';
+import { span } from '../../scripts/dom-helpers.js';
 
 function processResponse(event, data, renderViewMethod, hideActionModal,
   successToastMessage, successResponseCode) {
@@ -69,15 +70,22 @@ export async function deactivateUser(event, callback) {
 }
 
 export async function updateLicenseNickname(event) {
+  const saveButton = event.target;
+  saveButton.classList.add('disabled');
+  saveButton.innerHTML = '';
+  saveButton.appendChild(span({ class: 'save-nickname loading-icon' }, ''));
   const id = event.target.getAttribute('data-license-id');
   const { value } = document.querySelector('.nickname');
   const urlConfig = { id, nickname: value };
   if (value) {
-    await execute('dynamics_set_license_nickname', urlConfig, 'PATCH');
+    await execute('dynamics_set_license_nickname', urlConfig, 'PATCH', '.save-nickname.loading-icon');
     showSnackbar('Nickname updated successfully', 'success');
   } else {
     showSnackbar('Error while updating nickname', 'error');
   }
+
+  saveButton.classList.remove('disabled');
+  saveButton.innerHTML = 'Save';
 }
 
 export async function changeUserForALicense(event, callback) {
