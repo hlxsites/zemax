@@ -90,6 +90,10 @@ header nav[aria-expanded="true"] .m-expandable-list > li a {
   display: block;
 }
 
+header nav .nav-menu ul .menu-nav-category:hover {
+  text-decoration: underline;
+}
+
 header nav .nav-menu ul .menu-nav-category > div > a {
   height: 56px;
 }
@@ -290,6 +294,10 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     color: var(--link-color);
     padding-left: 20px;
     margin: 0;
+  }
+
+  header nav .nav-tools .login-wrapper p:hover {
+    text-decoration: underline;
   }
 
   header nav .nav-tools .additional-links {
@@ -519,7 +527,7 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
 
   header nav .nav-tools .login-wrapper {
     border-bottom: inherit;
-}
+  }
 
   header nav .nav-tools .login-wrapper > p {
     font-family: var(--ff-myradpro-semibold);
