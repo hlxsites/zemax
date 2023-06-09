@@ -78,6 +78,20 @@ export function handleBackDrop(event, container) {
   }
 }
 
+export function showLoadingIcon(loadingIconClassSelector) {
+  const loadinIconDiv = document.querySelector(loadingIconClassSelector);
+  if (loadinIconDiv) {
+    loadinIconDiv.style.display = 'block';
+  }
+}
+
+export function hideLoadingIcon(loadingIconClassSelector) {
+  const loadinIconDiv = document.querySelector(loadingIconClassSelector);
+  if (loadinIconDiv) {
+    loadinIconDiv.style.display = 'none';
+  }
+}
+
 export function showSnackbar(message, typeClass) {
   const snackbar = document.createElement('div');
   snackbar.classList.add('snackbar', typeClass);

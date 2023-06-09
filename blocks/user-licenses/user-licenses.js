@@ -470,14 +470,13 @@ async function displayLicenseDetailsView(event) {
   const accessToken = localStorage.getItem('accessToken');
   const mainDiv = document.querySelector('main');
   if (userId && accessToken) {
-    const urlConfig = { license_id: licenseId };
-    const data = await execute('dynamics_get_end_users_for_license', urlConfig, 'GET');
     // DOM creation
     const licenseDetailsViewWrapperDiv = createTag('div', { class: 'license-details-view-wrapper' }, '');
     const licenseDetailsViewDiv = createTag('div', { class: 'section user-licenses-container license-details-view', 'data-view-id': 'licenseDetailsView' }, licenseDetailsViewWrapperDiv);
 
     const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
     const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
+    licenseDetailsViewWrapperDiv.append(div({ class: 'license-details-view loading-icon' }, ''));
     licenseDetailsViewWrapperDiv.append(createTag('a', { class: 'button primary', id: 'backToAccountButton', href: '/pages/profile' }, 'Back to Account'));
     licenseDetailsViewWrapperDiv.append(licenseDetailsDiv);
     licenseDetailsViewWrapperDiv.append(endUsersDetailsDiv);
@@ -490,6 +489,8 @@ async function displayLicenseDetailsView(event) {
     }, 'More information about license management'));
 
     mainDiv.insertBefore(licenseDetailsViewDiv, mainDiv.firstChild);
+    const urlConfig = { license_id: licenseId };
+    const data = await execute('dynamics_get_end_users_for_license', urlConfig, 'GET', '.license-details-view.loading-icon');
 
     const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
     licenseDetailsDiv.innerHTML = '';
@@ -669,11 +670,12 @@ function createLicencesTable(rows) {
 
 export default async function decorate(block) {
   // noinspection ES6MissingAwait
+  block.append(div({ class: 'user-licenses loading-icon' }, ''));
   loadData(block);
 }
 
 async function loadData(block) {
-  const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
+  const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET', '.user-licenses.loading-icon');
   const viewAccessMatrix = calculateViewMatrix(JSON.parse(localStorage.getItem('webroles')));
   const mainDiv = document.querySelector('main');
   // Placeholder for all modal content
