@@ -233,46 +233,52 @@ function attachLogoutListener(ele) {
 }
 
 // manage user info in local storage and attach events
-function handleAuthentication(ele) {
-  webauth.parseHash((err, authResult) => {
-    if (authResult && authResult.accessToken && authResult.idToken) {
-      // Successful login, store tokens in localStorage
-      window.location.hash = '';
-      window.location.pathname = '/';
-      localStorage.setItem('accessToken', authResult.accessToken);
-      localStorage.setItem('idToken', authResult.idToken);
-      const base64Url = authResult.idToken.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        window
-          .atob(base64)
-          .split('')
-          .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
-          .join(''),
-      );
-      const userData = JSON.parse(jsonPayload);
-      const logintxt = ele.querySelector('p');
-      const displayname = `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`;
-      logintxt.innerText = displayname;
-      localStorage.setItem('displayname', displayname);
-      localStorage.setItem('auth0_id', userData.sub);
-      localStorage.setItem('email', userData.email);
-      localStorage.setItem('fullname', userData.name);
-      attachLogoutListener(ele);
-    } else if (err) {
-      // eslint-disable-next-line no-console
-      console.log(`Unable to authenticate with error ${err}`);
-    }
+async function handleAuthenticationTokens(loginLinkWrapper) {
+  await initializeAuthLibrary();
+
+  await new Promise((resolve, reject) => {
+    webauth.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        // Successful login, store tokens in localStorage
+        localStorage.setItem('accessToken', authResult.accessToken);
+        localStorage.setItem('idToken', authResult.idToken);
+        const base64Url = authResult.idToken.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+          window
+            .atob(base64)
+            .split('')
+            .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
+            .join('')
+        );
+        const userData = JSON.parse(jsonPayload);
+        localStorage.setItem('displayname', `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`);
+        localStorage.setItem('auth0_id', userData.sub);
+        localStorage.setItem('email', userData.email);
+        localStorage.setItem('fullname', userData.name);
+        attachLogoutListener(loginLinkWrapper);
+
+        // remove auth tokens from url, then reload page, so that stored auth tokes are used in all blocks
+        window.location.hash = '';
+        window.location.reload();
+
+        resolve();
+      } else if (err) {
+        // eslint-disable-next-line no-console
+        console.warn(`Unable to authenticate user:`, err);
+
+        // remove auth tokens from url, then reload page, so that stored auth tokes are used in all blocks
+        window.location.hash = '';
+        window.location.reload();
+
+        // ignoring the error, it might be from a user reloading the page
+        resolve(err);
+      }
+    });
   });
 }
 
 // if user already authenticated
-function handleAuthenticated(loginLinkWrapper) {
-  const logintxt = loginLinkWrapper.querySelector('p');
-  logintxt.innerText = localStorage.getItem('displayname');
-  attachLogoutListener(loginLinkWrapper);
-}
-
 function getRedirectUri() {
   if (window.location.pathname.startsWith('/pages/profile')) {
     return window.location.origin + window.location.pathname;
@@ -375,35 +381,20 @@ export default async function decorate(block) {
     const authtoken = localStorage.getItem('accessToken');
     const loginLinkWrapper = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLinkWrapper.classList.add('login-wrapper', 'menu-expandable');
-
-    const authScriptTagPromise = loadScriptPromise('/scripts/auth0.min.js', {
-      type: 'text/javascript',
-      charset: 'UTF-8',
-    });
-    const placeholders = await fetchPlaceholders();
-    const domain = placeholders.auth0domain;
-    const clientID = placeholders.clientid;
-    const audienceURI = placeholders.audienceuri;
-    const responseType = placeholders.responsetype;
-    const scopes = placeholders.scope;
-    const authRequired = getMetadata('authrequired');
-    if (!authtoken) {
-      loginLinkWrapper.setAttribute('aria-expanded', 'false');
-      authScriptTagPromise.then(() => {
-        // eslint-disable-next-line max-len
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
-        loginLinkWrapper.addEventListener('click', login);
-        handleAuthentication(loginLinkWrapper);
-        if (authRequired) {
-          login();
-        }
-      });
+    if (window.location.hash.includes('access_token') || window.location.hash.includes('error')) {
+      // noinspection ES6MissingAwait
+      await handleAuthenticationTokens(loginLinkWrapper);
+    }
+    if (localStorage.getItem('accessToken')) {
+      loginLinkWrapper.querySelector('p').innerText = localStorage.getItem('displayname');
+      attachLogoutListener(loginLinkWrapper);
     } else {
-      authScriptTagPromise.then(() => {
-        // eslint-disable-next-line max-len
-        webauth = initializeAuth(domain, clientID, audienceURI, responseType, scopes, getRedirectUri());
-      });
-      handleAuthenticated(loginLinkWrapper);
+      loginLinkWrapper.setAttribute('aria-expanded', 'false');
+      loginLinkWrapper.addEventListener('click', login);
+      if (getMetadata('authrequired')) {
+        // noinspection ES6MissingAwait
+        login();
+      }
     }
 
     // link section
