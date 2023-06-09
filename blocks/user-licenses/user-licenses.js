@@ -6,6 +6,7 @@ import {
   createTag, createGenericDataTable,
   showModal, createTabLi, createTabContentDiv,
   addTabFeature, findReplaceJSON, closeModal,
+  handleBackDrop,
 } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 import {
@@ -602,7 +603,10 @@ async function addManageLicenseFeature() {
   deleteUserModalCloseButton.addEventListener('click', closeModal);
   deleteUserDialog.querySelector('svg').addEventListener('click', closeModal);
   allModalContentContainerDiv.append(deleteUserDialog);
-  // END Delete User Modal
+  deleteUserDialog.addEventListener('click', (eventHandleBackDrop) => {
+    handleBackDrop(eventHandleBackDrop, deleteUserDialog);
+  });
+  // END Delete User Modal 
 
   // START Change User Modal
   const changeUserDialog = getChangeUserDialog();
