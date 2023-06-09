@@ -33,11 +33,14 @@ header nav .nav-logo div {
 header nav .nav-logo p {
   width: 100%;
   height: 100%;
+  margin-top: 11px;
+  margin-bottom: inherit;
 }
 
 header nav .nav-logo picture img {
   width: auto;
-  height: 47px;
+  height: 28px;
+  max-width: 120px;
 }
 
 header nav .nav-hamburger svg {
@@ -276,9 +279,6 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     background: #fafafa;
   }
 
-  header nav .nav-tools .login-wrapper  {
-    border-bottom: 1px solid #dad9d7;
-  }
 
 
   header nav .nav-tools .login-wrapper p {
@@ -340,9 +340,8 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
   }
 
   header nav .nav-logo picture img {
-    /* width: 71px;
-    height: 28px;
-    TODO */
+    width: 120px;
+    height: 47px;
   }
 
   header nav .nav-hamburger svg {
@@ -431,9 +430,12 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
 
 /* Tablet styles */
 @media only screen and (min-width: 768px) {
-  header nav .nav-logo picture img {
-    width: 120px;
-    height: 46.8px;
+  header nav[aria-expanded='false']{
+    margin-bottom: 23px;
+  }
+
+  header nav[aria-expanded="true"] .nav-menu{
+    margin-top: 23px;
   }
 }
 
