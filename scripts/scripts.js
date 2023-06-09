@@ -71,6 +71,13 @@ export function createTag(tag, attributes, html) {
   return el;
 }
 
+export function handleBackDrop(event, container) {
+  const eventLocation = event.target.getBoundingClientRect();
+  if (eventLocation.x === 0 && eventLocation.y === 0) {
+    container.close();
+  }
+}
+
 export function showSnackbar(message, typeClass) {
   const snackbar = document.createElement('div');
   snackbar.classList.add('snackbar', typeClass);
