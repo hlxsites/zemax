@@ -39,7 +39,7 @@ function isExpandable(element) {
 
 function addDropdownIcon(element) {
   element.append(
-    button({ class: 'dropdown-button' },
+    button({ class: 'dropdown-button', 'aria-label': 'menu drop down button' },
       span({ class: 'icon icon-dropdown' }),
     ));
 }
@@ -384,6 +384,8 @@ export default async function decorate(block) {
       handleAuthenticated(loginLinkWrapper);
     } else {
       loginLinkWrapper.setAttribute('aria-expanded', 'false');
+      loginLinkWrapper.setAttribute('role', 'link');
+      loginLinkWrapper.setAttribute('aria-label', 'click on link to login');
 
       if (window.location.hash.includes('access_token') || window.location.hash.includes('error')) {
         // noinspection ES6MissingAwait
