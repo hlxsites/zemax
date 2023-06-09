@@ -92,7 +92,7 @@ export async function changeUserForALicense(event, callback) {
   const contactId = event.target.getAttribute('contactid');
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
   const urlConfig = { contact_id: contactId, new_productuserid: newProductUserId };
-  const data = await execute('dynamics_change_enduser_license', urlConfig, 'PATCH');
+  const data = await execute('dynamics_change_enduser_license', urlConfig, 'PATCH', '.change-user.loading-icon');
 
   processResponse(event, data, callback, true, 'User was changed successfully');
 }
@@ -101,7 +101,7 @@ export async function addUserToALicense(event, callback) {
   const contactId = event.target.getAttribute('contactid');
   const licenseid = event.target.getAttribute('data-license-id');
   const urlConfig = { contactId, licenseid };
-  const data = await execute('dynamics_add_end_user', urlConfig, 'POST');
+  const data = await execute('dynamics_add_end_user', urlConfig, 'POST', '.add-user.loading-icon');
 
   processResponse(event, data, callback, true, 'User added successfully');
 }
@@ -111,7 +111,7 @@ export async function removeUserFromLicense(event, callback) {
   const urlConfig = { new_productuserid: newproductuserid };
   const data = await execute('dynamics_remove_enduser_from_license', urlConfig, 'DELETE');
 
-  processResponse(event, data, callback, true, 'User was removed from license');
+  processResponse(event, data, callback, true, 'User was removed from license', '.delete-user.loading-icon');
 }
 
 export async function assignLicenseToUser(event, callback) {
