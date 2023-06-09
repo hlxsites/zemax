@@ -267,7 +267,11 @@ max-width: inherit;
 
 /* layout-75-25 */
 .cards.layout-75-25 > ul {
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: calc(100% - 315px) 295px;
+}
+
+.cards.layout-75-25 > ul p {
+font-size: 20px;
 }
 
 }
