@@ -339,11 +339,6 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     padding-left: 15px;
   }
 
-  header nav .nav-logo picture img {
-    width: 120px;
-    height: 47px;
-  }
-
   header nav .nav-hamburger svg {
     width: 22px;
     height: 24px;
@@ -430,12 +425,9 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
 
 /* Tablet styles */
 @media only screen and (min-width: 768px) {
-  header nav[aria-expanded='false']{
-    margin-bottom: 23px;
-  }
-
-  header nav[aria-expanded="true"] .nav-menu{
-    margin-top: 23px;
+  header nav .nav-logo picture img {
+    width: 120px;
+    height: 47px;
   }
 }
 
@@ -446,6 +438,10 @@ header nav .nav-menu ul > li[aria-expanded="true"] .menu-nav-dropdown {
     margin-top: 25px;
     max-width: var(--nav-width);
     width: 100%;
+  }
+
+  header nav[aria-expanded='false']{
+    margin-bottom: inherit;
   }
 
   header nav > div {
