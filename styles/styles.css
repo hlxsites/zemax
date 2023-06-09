@@ -892,7 +892,6 @@ main .video-wrap iframe {
 @media only screen and (min-width: 480px) {
   :root {
     --section-width: 440px;
-    --nav-height: 74px;
   }
 
   main .section>div {
@@ -925,6 +924,7 @@ main .video-wrap iframe {
 @media only screen and (min-width: 768px) {
   :root {
     --section-width: 738px;
+    --nav-height: 93px;
   }
 
   main .section>div {
