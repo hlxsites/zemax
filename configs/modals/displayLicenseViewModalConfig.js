@@ -17,7 +17,10 @@ export function getAddUserDialog() {
             </div>
          </div>
          <div class="modal-footer">
-            <button class="action secondary create-user-action-button" data-modal-id="addUserModal" data-view-access="manage">Create User</button>
+            <button class="action secondary create-user-action-button" data-modal-id="addUserModal" data-view-access="manage">
+              Create User
+              <span class="loading-icon add-user"></span>
+            </button>
             <button class="action add-user-action-button" data-modal-id="addUserModal" data-view-access="manage">Add User</button>
             <button class="action add-user-cancel-button" data-modal-id="addUserModal">Close</button>
          </div>
@@ -44,7 +47,10 @@ export function getDeleteUserDialog() {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="action important delete-user-action-button" data-modal-id="deleteUserModal" data-view-access="manage">Yes, remove End User</button>
+        <button class="action important delete-user-action-button" data-modal-id="deleteUserModal" data-view-access="manage">
+          Yes, remove End User
+          <span class="loading-icon delete-user"></span>
+        </button>
         <button class="action secondary delete-user-cancel-button" data-modal-id="deleteUserModal">Cancel</button>
       </div>
     </div>
@@ -71,7 +77,10 @@ export function getChangeUserDialog() {
       </div>
       <div class="modal-footer">
         <button class="action secondary create-user-action-button" data-modal-id="changeUserModal" data-access-view="manage">Create User</button>
-        <button class="action change-user-action-button" data-modal-id="changeUserModal" data-access-view="manage">Change User</button>
+        <button class="action change-user-action-button" data-modal-id="changeUserModal" data-access-view="manage">
+          Change User
+          <span class="loading-icon change-user"></span>
+        </button>
         <button class="action change-user-cancel-button" data-modal-id="changeUserModal">Close</button>
       </div>
    </div>
