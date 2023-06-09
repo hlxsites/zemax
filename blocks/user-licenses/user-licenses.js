@@ -673,6 +673,12 @@ export default async function decorate(block) {
 }
 
 async function loadData(block) {
+  const userId = localStorage.getItem('auth0_id');
+  if(!userId) {
+    console.log('User not logged in, not loading user-licenses module');
+    return;
+  }
+
   const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
   const viewAccessMatrix = calculateViewMatrix(JSON.parse(localStorage.getItem('webroles')));
   const mainDiv = document.querySelector('main');
