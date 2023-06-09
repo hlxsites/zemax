@@ -1,6 +1,7 @@
 .teaser-container {
-  background: linear-gradient(to left, #002F6D, #005898 100%);
-  padding-top: 10px;
+  background-color: #002f6d;
+  background-image: linear-gradient(to left, #002F6D, #005898 100%);
+  padding: 16px 0;
 }
 
 .teaser {

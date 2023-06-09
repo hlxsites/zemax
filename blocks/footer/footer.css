@@ -87,14 +87,15 @@ footer .footer-sub-links > div > div{
 /* footer copyright */
 footer .footer-copyright{
   font-size: 12px;
-  padding-top: 25px;
+  
+  /* padding-top: 25px; */
   padding-bottom: 25px;
 }
 
 footer .footer-brand-and-social-media {
   display: flex;
   flex-flow: row wrap;
-  margin-top: 41px;
+  margin-top: 30px;
 }
 
 footer .footer-brand-and-social-media > p:first-child{
