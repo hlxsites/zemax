@@ -1,6 +1,6 @@
 import { decorateIcons, fetchPlaceholders, getMetadata } from '../../scripts/lib-franklin.js';
 import { button, domEl, span } from '../../scripts/dom-helpers.js';
-import { createTag, loadScriptPromise, decorateLinkedPictures } from '../../scripts/scripts.js';
+import { createTag, decorateLinkedPictures, loadScriptPromise } from '../../scripts/scripts.js';
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
@@ -178,29 +178,16 @@ function reAttachEventListeners() {
   }
 }
 
-// authentication related functions
-function initializeAuth(domain, clientID, audience, responseType, scope, redirectUri) {
-  // eslint-disable-next-line no-undef
-  return new auth0.WebAuth({
-    domain: `${domain}`,
-    clientID: `${clientID}`,
-    redirectUri: `${redirectUri}`,
-    audience: `${audience}`,
-    responseType: `${responseType}`,
-    scope: `${scope}`,
-  });
-}
-
-// login call
-function login() {
+async function login() {
+  await initializeAuthLibrary();
   webauth.authorize();
 }
 
-// logout call
-function logout(e) {
+async function logout(e) {
   e.preventDefault();
   localStorage.clear();
-  if (webauth === undefined) {
+  await initializeAuthLibrary();
+  if (!webauth) {
     window.location.assign(`${window.location.origin}`);
   } else {
     webauth.logout({
@@ -279,6 +266,11 @@ async function handleAuthenticationTokens(loginLinkWrapper) {
 }
 
 // if user already authenticated
+function handleAuthenticated(loginLinkWrapper) {
+  loginLinkWrapper.querySelector('p').innerText = localStorage.getItem('displayname');
+  attachLogoutListener(loginLinkWrapper);
+}
+
 function getRedirectUri() {
   if (window.location.pathname.startsWith('/pages/profile')) {
     return window.location.origin + window.location.pathname;
@@ -300,6 +292,25 @@ function makeExpandable(title, content) {
   content.classList.add('m-expandable-list');
 }
 
+async function initializeAuthLibrary() {
+  const placeholders = await fetchPlaceholders();
+  const domain = placeholders.auth0domain;
+  const clientID = placeholders.clientid;
+  const audience = placeholders.audienceuri;
+  const responseType = placeholders.responsetype;
+  const { scope } = placeholders;
+
+  await loadScriptPromise('/scripts/auth0.min.js', {
+    type: 'text/javascript',
+    charset: 'UTF-8',
+  });
+  // eslint-disable-next-line no-undef
+  webauth = new auth0.WebAuth({
+    domain, clientID, redirectUri: getRedirectUri(), audience, responseType, scope,
+  });
+}
+
+// authentication related functions
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -377,8 +388,7 @@ export default async function decorate(block) {
       }
     });
 
-    // adding login functionality
-    const authtoken = localStorage.getItem('accessToken');
+    // handle login
     const loginLinkWrapper = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLinkWrapper.classList.add('login-wrapper', 'menu-expandable');
     if (window.location.hash.includes('access_token') || window.location.hash.includes('error')) {

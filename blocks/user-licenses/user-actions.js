@@ -54,7 +54,7 @@ export async function resetUserPassword(event) {
 
 export async function activateUser(event, callback) {
   const contactid = event.target.getAttribute('data-contactid');
-  const urlConfig = { contactid };
+  const urlConfig = { contact_id: contactid };
   const data = await execute('dynamics_activate_userid', urlConfig, 'PATCH');
 
   processResponse(event, data, callback, false, 'User was activated successfully');
@@ -62,7 +62,7 @@ export async function activateUser(event, callback) {
 
 export async function deactivateUser(event, callback) {
   const contactid = event.target.getAttribute('data-contactid');
-  const urlConfig = { contactid };
+  const urlConfig = { contact_id: contactid };
   const data = await execute('dynamics_deactivate_userid', urlConfig, 'PATCH');
 
   processResponse(event, data, callback, false, 'User was deactivated successfully');
