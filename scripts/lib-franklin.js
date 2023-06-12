@@ -479,8 +479,8 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
       img.setAttribute('alt', alt);
       picture.appendChild(img);
       img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
-      img.setAttribute('width', `${br.width}`);
-      img.setAttribute('height', `${br.height}`);
+      if (br.width) img.setAttribute('width', `${br.width}`);
+      if (br.height) img.setAttribute('height', `${br.height}`);
     }
   });
 
