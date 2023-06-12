@@ -494,6 +494,8 @@ async function displayLicenseDetailsView(event) {
     const urlConfig = { license_id: licenseId };
     const data = await execute('dynamics_get_end_users_for_license', urlConfig, 'GET', '.license-details-view.loading-icon');
 
+    const licenseType = data?.license_detail[0]?.['zemax_seattype@OData.Community.Display.V1.FormattedValue'];
+
     const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
     licenseDetailsDiv.innerHTML = '';
     licenseDetailsDiv.appendChild(manageLicenseH2);
@@ -541,16 +543,18 @@ async function displayLicenseDetailsView(event) {
 
     await addColleaguesToUserActionModal('add-user-container', 'add-user-checkbox', updateAddUserId);
 
-    if (viewAccess === 'manage') {
-      const addUserButton = createTag('button', {
-        class: 'add-user-to-license action',
-        type: 'button',
-        'data-modal-id': 'addUserModal',
-        'data-license-id': licenseId,
-        'data-view-access': 'manage',
-      }, 'Add End User');
-      endUsersDetailsDiv.appendChild(addUserButton);
-      addUserButton.addEventListener('click', showAddUserTable);
+    if (licenseType !== 'Individual') {
+      if (viewAccess === 'manage') {
+        const addUserButton = createTag('button', {
+          class: 'add-user-to-license action',
+          type: 'button',
+          'data-modal-id': 'addUserModal',
+          'data-license-id': licenseId,
+          'data-view-access': 'manage',
+        }, 'Add End User');
+        endUsersDetailsDiv.appendChild(addUserButton);
+        addUserButton.addEventListener('click', showAddUserTable);
+      }
     }
 
     if (licenseUsers && licenseUsers.length > 0) {
@@ -564,13 +568,57 @@ async function displayLicenseDetailsView(event) {
 
       const removeButtons = tableElement.querySelectorAll('.license-user-remove-user');
       removeButtons.forEach((removeButton) => {
-        removeButton.addEventListener('click', showUserActionModal);
+        if (licenseType === 'Individual') {
+          removeButton.classList.add('disabled');
+        } else {
+          removeButton.addEventListener('click', showUserActionModal);
+        }
       });
 
       const changeUserLicenseButtons = tableElement.querySelectorAll('.license-user-change-user');
       changeUserLicenseButtons.forEach((changeUserLicenseButton) => {
-        changeUserLicenseButton.addEventListener('click', showUserActionModal);
+        if (licenseType === 'Individual') {
+          changeUserLicenseButton.classList.add('disabled');
+        } else {
+          changeUserLicenseButton.addEventListener('click', showUserActionModal);
+        }
       });
+
+      if (licenseType === 'Individual') {
+        const userDisclaimerDiv = div({ class: 'user-disclaimer' }, '');
+        userDisclaimerDiv.innerHTML = `
+          <span class="user-disclaimer-icon">
+            <svg viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+            <path fill-rule="evenodd" d="M10 20c5.514 0 10-4.486 10-10S15.514 0 10 0 0 4.486 0 10s4.486 10 10 10zm1-6a1 1 0 1 1-2 0v-4a1 1 0 1 1 2 0v4zm-1-9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>
+            </svg>
+          </span>
+          <p>
+            Note: A new end user can only be assigned to this license once every 30 calendar days.
+          </p>
+       `;
+        endUsersDetailsDiv.append(userDisclaimerDiv);
+
+        const lastModifiedDateString = data?.users[0]?.['zemax_lastassigned@OData.Community.Display.V1.FormattedValue'];
+        const parts = lastModifiedDateString.split('/');
+        const lastModifiedDate = new Date(parts[2], parts[0] - 1, parts[1]);
+
+        if (lastModifiedDate && !isCurrentDate30DaysAhead(lastModifiedDate)) {
+          const userDisclaimerDateDiv = div({ class: 'user-disclaimer' }, '');
+          userDisclaimerDateDiv.innerHTML = `
+            <span class="user-disclaimer-icon">
+              <svg viewBox="0 0 20 20" focusable="false" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 20c5.514 0 10-4.486 10-10S15.514 0 10 0 0 4.486 0 10s4.486 10 10 10zm1-6a1 1 0 1 1-2 0v-4a1 1 0 1 1 2 0v4zm-1-9a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"></path>
+              </svg>
+            </span>
+            <p>
+              This license is locked against the current end user and will not be available to reassign until <span class="editable-date"></span>
+            </p>
+         `;
+          userDisclaimerDateDiv.querySelector('.editable-date').innerHTML = getDate29DaysAfter(lastModifiedDate);
+
+          endUsersDetailsDiv.append(userDisclaimerDateDiv);
+        }
+      }
     } else {
       endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
     }
@@ -805,3 +853,32 @@ function attachBackDropEventHandle(dialog) {
   });
 }
 window.addEventListener('storage', storageEventHandler);
+
+function isCurrentDate30DaysAhead(particularDateObj) {
+  const currentDateObj = new Date();
+
+  // Calculate the difference in milliseconds between the current date and the particular date
+  const differenceInMilliseconds = currentDateObj.getTime() - particularDateObj.getTime();
+
+  // Convert the difference to days
+  const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+  // Check if the difference is equal to or greater than 30
+  if (differenceInDays >= 30) {
+    return true;
+  }
+  return false;
+}
+
+function getDate29DaysAfter(date) {
+  const currentDay = date.getDate();
+
+  // Set the day of the month to the current day plus 30
+  date.setDate(currentDay + 29);
+
+  // Format the date as "MMM DD, YYYY"
+  const options = { month: 'short', day: 'numeric', year: 'numeric' };
+  const formattedDate = date.toLocaleDateString('en-US', options);
+
+  return formattedDate;
+}
