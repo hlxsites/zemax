@@ -1,6 +1,5 @@
 import execute from '../../scripts/zemax-api.js';
 import { closeModal, showSnackbar } from '../../scripts/scripts.js';
-import { span } from '../../scripts/dom-helpers.js';
 
 function processResponse(event, data, renderViewMethod, hideActionModal,
   successToastMessage, successResponseCode) {
