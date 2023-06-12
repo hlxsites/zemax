@@ -1,5 +1,4 @@
-import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { createYoutubeModal } from '../../scripts/scripts.js';
+import { createOptimizedPicture, createYoutubeModal } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
   /* change to ul, li */
