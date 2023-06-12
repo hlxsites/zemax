@@ -4,6 +4,10 @@
   padding: 16px 0;
 }
 
+.teaser-container.hidden {
+  display: none;
+}
+
 .teaser {
   display: grid;
   grid-template-columns: 6fr 1fr;
