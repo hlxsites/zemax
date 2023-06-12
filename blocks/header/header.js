@@ -223,41 +223,48 @@ function attachLogoutListener(ele) {
 async function handleAuthenticationTokens(loginLinkWrapper) {
   await initializeAuthLibrary();
 
-  webauth.parseHash((err, authResult) => {
-    if (authResult && authResult.accessToken && authResult.idToken) {
-      // Successful login, store tokens in localStorage
-      window.location.hash = '';
-      window.location.pathname = '/';
-      localStorage.setItem('accessToken', authResult.accessToken);
-      localStorage.setItem('idToken', authResult.idToken);
-      const base64Url = authResult.idToken.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        window
-          .atob(base64)
-          .split('')
-          .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
-          .join(''),
-      );
-      const userData = JSON.parse(jsonPayload);
-      localStorage.setItem('displayname', `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`);
-      localStorage.setItem('auth0_id', userData.sub);
-      localStorage.setItem('email', userData.email);
-      localStorage.setItem('fullname', userData.name);
-      attachLogoutListener(loginLinkWrapper);
+  await new Promise((resolve) => {
+    webauth.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        // Successful login, store tokens in localStorage
+        localStorage.setItem('accessToken', authResult.accessToken);
+        localStorage.setItem('idToken', authResult.idToken);
+        const base64Url = authResult.idToken.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+          window
+            .atob(base64)
+            .split('')
+            .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
+            .join(''),
+        );
+        const userData = JSON.parse(jsonPayload);
+        localStorage.setItem('displayname', `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`);
+        localStorage.setItem('auth0_id', userData.sub);
+        localStorage.setItem('email', userData.email);
+        localStorage.setItem('fullname', userData.name);
+        attachLogoutListener(loginLinkWrapper);
 
-      handleAuthenticated(loginLinkWrapper);
-    } else if (err) {
-      // eslint-disable-next-line no-console
-      console.log(`Unable to authenticate with error ${err}`);
-    }
+        // remove auth tokens from url, then reload page, so that stored
+        // auth tokes are used in all blocks
+        window.location.hash = '';
+        window.location.reload();
+
+        resolve();
+      } else if (err) {
+        // eslint-disable-next-line no-console
+        console.warn('Unable to authenticate user:', err);
+
+        // remove auth tokens from url, then reload page,
+        // so that stored auth tokes are used in all blocks
+        window.location.hash = '';
+        window.location.reload();
+
+        // ignoring the error, it might be from a user reloading the page
+        resolve(err);
+      }
+    });
   });
-}
-
-// if user already authenticated
-function handleAuthenticated(loginLinkWrapper) {
-  loginLinkWrapper.querySelector('p').innerText = localStorage.getItem('displayname');
-  attachLogoutListener(loginLinkWrapper);
 }
 
 function getRedirectUri() {
@@ -380,17 +387,18 @@ export default async function decorate(block) {
     // handle login
     const loginLinkWrapper = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLinkWrapper.classList.add('login-wrapper', 'menu-expandable');
+    if (window.location.hash.includes('access_token') || window.location.hash.includes('error')) {
+      // noinspection ES6MissingAwait
+      await handleAuthenticationTokens(loginLinkWrapper);
+    }
     if (localStorage.getItem('accessToken')) {
-      handleAuthenticated(loginLinkWrapper);
+      loginLinkWrapper.querySelector('p').innerText = localStorage.getItem('displayname');
+      attachLogoutListener(loginLinkWrapper);
     } else {
       loginLinkWrapper.setAttribute('aria-expanded', 'false');
       loginLinkWrapper.setAttribute('role', 'link');
       loginLinkWrapper.setAttribute('aria-label', 'click on link to login');
 
-      if (window.location.hash.includes('access_token') || window.location.hash.includes('error')) {
-        // noinspection ES6MissingAwait
-        handleAuthenticationTokens(loginLinkWrapper);
-      }
       loginLinkWrapper.addEventListener('click', login);
       if (getMetadata('authrequired')) {
         // noinspection ES6MissingAwait

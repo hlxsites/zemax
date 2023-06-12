@@ -36,6 +36,7 @@ export default async function execute(actionName, urlConfig, methodType, loading
     if (loadingIconClassSelector) {
       hideLoadingIcon(loadingIconClassSelector);
     }
+    // eslint-disable-next-line no-console
     console.error('Error:', error);
     throw error;
   }

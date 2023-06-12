@@ -242,6 +242,7 @@ function createResourceResult(params, showPaginationBlock = true, perPage = 12) 
 
     // Decorate and load all the newly injected content
     loadBlocks(resultsDiv);
+    // eslint-disable-next-line no-console
   }).catch(console.error);
 
   return resultsDiv;
