@@ -2,8 +2,9 @@ import {
   a, div, h2, h3, h4, h5, img, p, span,
 } from '../../scripts/dom-helpers.js';
 import {
-  buildBlock, createOptimizedPicture, decorateBlock, loadBlocks,
+  buildBlock, decorateBlock, loadBlocks,
 } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const params = getSearchParams();
