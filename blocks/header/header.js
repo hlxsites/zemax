@@ -236,7 +236,7 @@ async function handleAuthenticationTokens(loginLinkWrapper) {
             .atob(base64)
             .split('')
             .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
-            .join('')
+            .join(''),
         );
         const userData = JSON.parse(jsonPayload);
         localStorage.setItem('displayname', `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`);
@@ -245,16 +245,18 @@ async function handleAuthenticationTokens(loginLinkWrapper) {
         localStorage.setItem('fullname', userData.name);
         attachLogoutListener(loginLinkWrapper);
 
-        // remove auth tokens from url, then reload page, so that stored auth tokes are used in all blocks
+        // remove auth tokens from url, then reload page, so that stored
+        // auth tokes are used in all blocks
         window.location.hash = '';
         window.location.reload();
 
         resolve();
       } else if (err) {
         // eslint-disable-next-line no-console
-        console.warn(`Unable to authenticate user:`, err);
+        console.warn('Unable to authenticate user:', err);
 
-        // remove auth tokens from url, then reload page, so that stored auth tokes are used in all blocks
+        // remove auth tokens from url, then reload page,
+        // so that stored auth tokes are used in all blocks
         window.location.hash = '';
         window.location.reload();
 

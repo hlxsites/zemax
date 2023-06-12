@@ -680,6 +680,7 @@ export default async function decorate(block) {
 async function loadData(block) {
   const userId = localStorage.getItem('auth0_id');
   if (!userId) {
+    // eslint-disable-next-line no-console
     console.log('User not logged in, not loading user-licenses module');
     return;
   }

@@ -8,6 +8,7 @@ export default async function decorate(block) {
   block.append(div({ class: 'user-tickets loading-icon' }, ''));
   const userId = localStorage.getItem('auth0_id');
   if (!userId) {
+    // eslint-disable-next-line no-console
     console.log('User not logged in, not loading user-tickets module');
     return;
   }
