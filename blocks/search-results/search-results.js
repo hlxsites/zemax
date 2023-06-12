@@ -1,6 +1,6 @@
-import { createOptimizedPicture, readBlockConfig } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import {
-  createTag, createYoutubeModal, getMetadata, searchResults,
+  createTag, createYoutubeModal, getMetadata, searchResults, createOptimizedPicture,
 } from '../../scripts/scripts.js';
 
 const CARDS_PER_PAGE = 12;
