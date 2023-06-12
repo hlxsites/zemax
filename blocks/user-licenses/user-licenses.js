@@ -1,6 +1,6 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import {
-  a, button, div, h2, h3, p,
+  a, button, div, h2, h3, p, span,
 } from '../../scripts/dom-helpers.js';
 import {
   createTag, createGenericDataTable,
@@ -181,7 +181,9 @@ async function manageUserView(event) {
     elementDetailCellDiv.appendChild(elementDetailCellHeading);
     if (clonedHeading.html === 'input') {
       elementDetailCellDiv.appendChild(createTag('input', { class: clonedHeading.inputClass, value: clonedHeading.value.join('') }, ''));
-      elementDetailCellDiv.appendChild(createTag('button', { class: 'action update-user-info', 'data-contact-id': contactid, 'data-action-id': clonedHeading['data-action-id'] }, 'Save'));
+      const saveButton = createTag('button', { class: 'action update-user-info', 'data-contact-id': contactid, 'data-action-id': clonedHeading['data-action-id'] }, 'Save');
+      saveButton.append(span({ class: 'update-colleague-info loading-icon' }, ''));
+      elementDetailCellDiv.appendChild(saveButton);
     } else {
       const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, clonedHeading.value.join(''));
       elementDetailCellDiv.appendChild(elementDetailCellDataPara);
@@ -470,14 +472,13 @@ async function displayLicenseDetailsView(event) {
   const accessToken = localStorage.getItem('accessToken');
   const mainDiv = document.querySelector('main');
   if (userId && accessToken) {
-    const urlConfig = { license_id: licenseId };
-    const data = await execute('dynamics_get_end_users_for_license', urlConfig, 'GET');
     // DOM creation
     const licenseDetailsViewWrapperDiv = createTag('div', { class: 'license-details-view-wrapper' }, '');
     const licenseDetailsViewDiv = createTag('div', { class: 'section user-licenses-container license-details-view', 'data-view-id': 'licenseDetailsView' }, licenseDetailsViewWrapperDiv);
 
     const licenseDetailsDiv = createTag('div', { class: 'license-details' }, '');
     const endUsersDetailsDiv = createTag('div', { class: 'end-users-details' }, '');
+    licenseDetailsViewWrapperDiv.append(div({ class: 'license-details-view loading-icon' }, ''));
     licenseDetailsViewWrapperDiv.append(createTag('a', { class: 'button primary', id: 'backToAccountButton', href: '/pages/profile' }, 'Back to Account'));
     licenseDetailsViewWrapperDiv.append(licenseDetailsDiv);
     licenseDetailsViewWrapperDiv.append(endUsersDetailsDiv);
@@ -490,6 +491,8 @@ async function displayLicenseDetailsView(event) {
     }, 'More information about license management'));
 
     mainDiv.insertBefore(licenseDetailsViewDiv, mainDiv.firstChild);
+    const urlConfig = { license_id: licenseId };
+    const data = await execute('dynamics_get_end_users_for_license', urlConfig, 'GET', '.license-details-view.loading-icon');
 
     const manageLicenseH2 = createTag('h2', '', `Manage License #${data.licenseid}`);
     licenseDetailsDiv.innerHTML = '';
@@ -518,6 +521,7 @@ async function displayLicenseDetailsView(event) {
       const nickNameTextField = createTag('input', { class: 'nickname', value: nickNameSetValue }, '');
       licenseDetailsRow.appendChild(nickNameTextField);
       const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button', 'data-license-id': data.license_detail[0].new_licensesid }, 'Save');
+      saveNicknameButton.append(span({ class: 'save-nickname loading-icon' }, ''));
       saveNicknameButton.addEventListener('click', updateLicenseNickname);
       licenseDetailsRow.appendChild(saveNicknameButton);
     } else {
@@ -669,11 +673,12 @@ function createLicencesTable(rows) {
 
 export default async function decorate(block) {
   // noinspection ES6MissingAwait
+  block.append(div({ class: 'user-licenses loading-icon' }, ''));
   loadData(block);
 }
 
 async function loadData(block) {
-  const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET');
+  const data = await execute('dynamics_get_licenses_by_auth0id', '', 'GET', '.user-licenses.loading-icon');
   const viewAccessMatrix = calculateViewMatrix(JSON.parse(localStorage.getItem('webroles')));
   const mainDiv = document.querySelector('main');
   // Placeholder for all modal content

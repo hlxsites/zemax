@@ -1,7 +1,11 @@
 import { getEnvironmentConfig } from './zemax-config.js';
+import { showLoadingIcon, hideLoadingIcon } from './scripts.js';
 
-export default async function execute(actionName, urlConfig, methodType) {
+export default async function execute(actionName, urlConfig, methodType, loadingIconClassSelector) {
   try {
+    if (loadingIconClassSelector) {
+      showLoadingIcon(loadingIconClassSelector);
+    }
     let urlParams = urlConfig ? new URLSearchParams(urlConfig).toString() : '';
     if (urlParams) {
       urlParams = `&${urlParams}`;
@@ -17,11 +21,21 @@ export default async function execute(actionName, urlConfig, methodType) {
       },
     });
     if (!response.ok) {
+      if (loadingIconClassSelector) {
+        hideLoadingIcon(loadingIconClassSelector);
+      }
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
+
+    if (loadingIconClassSelector) {
+      hideLoadingIcon(loadingIconClassSelector);
+    }
     return data;
   } catch (error) {
+    if (loadingIconClassSelector) {
+      hideLoadingIcon(loadingIconClassSelector);
+    }
     console.error('Error:', error);
     throw error;
   }

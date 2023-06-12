@@ -1,14 +1,15 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
-import { p, a } from '../../scripts/dom-helpers.js';
+import { p, a, div } from '../../scripts/dom-helpers.js';
 import { createTag, createGenericDataTable } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 import userTicketsTable from '../../configs/tables/userTicketsTableConfig.js';
 
 export default async function decorate(block) {
+  block.append(div({ class: 'user-tickets loading-icon' }, ''));
   const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
 
-  const webRolesData = await execute('dynamics_get_webrole', '', 'GET');
+  const webRolesData = await execute('dynamics_get_webrole', '', 'GET', '.user-tickets.loading-icon');
   const userEmail = localStorage.getItem('email');
   const contactid = localStorage.getItem('contactid');
   createButtonAsPerWebroles(webRolesData.webroles, block);
@@ -82,11 +83,12 @@ function createButtonAsPerWebroles(webroles, block) {
 
 async function renderUserTickets(userEmail, contactid, block) {
   const urlConfig = { user_email: userEmail, zemax_zendeskid: contactid };
-  const data = await execute('zendesk_tickets_by_id', urlConfig, 'GET');
+  const data = await execute('zendesk_tickets_by_id', urlConfig, 'GET', '.user-tickets.loading-icon');
+  const publicTickets = data.filter((ticket) => (ticket.is_public));
 
   if (data.length > 0) {
     const tableContainer = createTag('div', { class: 'table-container' }, '');
-    const tableElement = createGenericDataTable(userTicketsTable, data);
+    const tableElement = createGenericDataTable(userTicketsTable, publicTickets);
     tableContainer.appendChild(tableElement);
 
     block.append(tableContainer);
