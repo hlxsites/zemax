@@ -139,7 +139,6 @@ function buildSlide(slide, index) {
   slide.classList.add('cards-carousel-slide');
   // accessibility
   slide.setAttribute('role', 'tabpanel');
-  slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
   slide.setAttribute('aria-describedby', `${SLIDE_CONTROL_ID_PREFIX}${index}`);
   if (index !== 0) {
     slide.setAttribute('tabindex', '-1');

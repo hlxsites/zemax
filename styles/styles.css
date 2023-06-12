@@ -521,7 +521,7 @@ main .section.larger-paragraph-text p {
   display: flex;
 }
 
-main .center-aligned-buttons p.button-container {
+main .center-aligned-buttons .default-content-wrapper p.button-container {
   text-align: center;
 }
 
@@ -932,11 +932,11 @@ main .video-wrap iframe {
   }
 
   main .section.title-font-34 h2,
-main .section.subtitle-font-34 h3{
-  font-size: var(--heading-font-size-x);
-  font-family: var(--ff-myradpro-regular);
-  margin-bottom: 0;
-}
+  main .section.subtitle-font-34 h3{
+    font-size: var(--heading-font-size-x);
+    font-family: var(--ff-myradpro-regular);
+    margin-bottom: 0;
+  }
 
   h1 {font-size: var(--heading-font-size-xl)}
   h2 {font-size: var(--heading-font-size-l)}
