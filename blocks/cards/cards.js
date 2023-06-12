@@ -1,5 +1,4 @@
-import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { createYoutubeModal } from '../../scripts/scripts.js';
+import { createOptimizedPicture, createYoutubeModal } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
   /* change to ul, li */
@@ -13,7 +12,7 @@ export default function decorate(block) {
     });
     ul.append(li);
   });
-  ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
+  ul.querySelectorAll('img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ media: '(min-width: 480px)', width: img.getAttribute('width'), height: img.getAttribute('height') }, { media: '(min-width: 768px)', width: img.getAttribute('width'), height: img.getAttribute('height') }, { media: '(min-width: 1030px)', width: img.getAttribute('width'), height: img.getAttribute('height') }])));
   block.textContent = '';
   block.append(ul);
 
