@@ -5,6 +5,15 @@
 
 .cards.software .cards-card-body a:any-link{
   font-size : 20px;
+  text-decoration: underline;
+}
+
+.cards.software .cards-card-body{
+  padding: 15px 0;
+}
+
+.cards.software h2{
+  font-size: var(--heading-font-size-l);
 }
 
 /* featured-news */
@@ -41,16 +50,22 @@
   font-size : 14px;
 }
 
-
-
 /* stories */
 .cards.stories .cards-card-image {
   font-size: 16px;
   padding: 0 20px;
+  padding-bottom: 28px;
 }
 
 .cards.stories .cards-card-image img {
   margin: 28px auto 0;
+}
+
+.cards.stories .cards-card-body a:any-link{
+  color: inherit;
+  border-radius: unset;
+  border: unset;
+  padding: unset;
 }
 
 .section.bigger-cards .cards-wrapper,
@@ -64,6 +79,8 @@
 /* Training */
 .section.training h2 {
   color: #fff;
+  padding-top: 20px;
+  margin-bottom: inherit;
 }
 
 .section.training {

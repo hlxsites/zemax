@@ -35,12 +35,13 @@ export async function addColleague(event, callback) {
 
 export async function updateUserInfo(event, callback) {
   event.preventDefault();
+  event.target.classList.add('disabled');
   const jobtitle = event.target.parentNode.querySelector('#job-title').value;
   const telephone1 = event.target.parentNode.querySelector('#phone').value;
   const contactid = event.target.getAttribute('data-contactid');
   const urlConfig = { jobtitle, telephone1, contactid };
-  const data = await execute('dynamics_edit_colleague', urlConfig, 'PATCH');
-
+  const data = await execute('dynamics_edit_colleague', urlConfig, 'PATCH', '.edit-user.loading-icon');
+  event.target.classList.remove('disabled');
   processResponse(event, data, callback, true, 'Information updated');
 }
 
@@ -69,40 +70,49 @@ export async function deactivateUser(event, callback) {
 }
 
 export async function updateLicenseNickname(event) {
+  const saveButton = event.target;
+  saveButton.classList.add('disabled');
   const id = event.target.getAttribute('data-license-id');
   const { value } = document.querySelector('.nickname');
   const urlConfig = { id, nickname: value };
   if (value) {
-    await execute('dynamics_set_license_nickname', urlConfig, 'PATCH');
+    await execute('dynamics_set_license_nickname', urlConfig, 'PATCH', '.save-nickname.loading-icon');
     showSnackbar('Nickname updated successfully', 'success');
   } else {
     showSnackbar('Error while updating nickname', 'error');
   }
+
+  saveButton.classList.remove('disabled');
 }
 
 export async function changeUserForALicense(event, callback) {
+  event.target.classList.add('disabled');
   const contactId = event.target.getAttribute('contactid');
   const newProductUserId = event.target.getAttribute('data-new-productuserid');
   const urlConfig = { contact_id: contactId, new_productuserid: newProductUserId };
-  const data = await execute('dynamics_change_enduser_license', urlConfig, 'PATCH');
+  const data = await execute('dynamics_change_enduser_license', urlConfig, 'PATCH', '.change-user.loading-icon');
+  event.target.classList.remove('disabled');
 
   processResponse(event, data, callback, true, 'User was changed successfully');
 }
 
 export async function addUserToALicense(event, callback) {
+  event.target.classList.add('disabled');
   const contactId = event.target.getAttribute('contactid');
   const licenseid = event.target.getAttribute('data-license-id');
   const urlConfig = { contactId, licenseid };
-  const data = await execute('dynamics_add_end_user', urlConfig, 'POST');
+  const data = await execute('dynamics_add_end_user', urlConfig, 'POST', '.add-user.loading-icon');
+  event.target.classList.remove('disabled');
 
   processResponse(event, data, callback, true, 'User added successfully');
 }
 
 export async function removeUserFromLicense(event, callback) {
+  event.target.classList.add('disabled');
   const newproductuserid = event.target.getAttribute('data-new-productuserid');
   const urlConfig = { new_productuserid: newproductuserid };
-  const data = await execute('dynamics_remove_enduser_from_license', urlConfig, 'DELETE');
-
+  const data = await execute('dynamics_remove_enduser_from_license', urlConfig, 'DELETE', '.delete-user.loading-icon');
+  event.target.classList.remove('disabled');
   processResponse(event, data, callback, true, 'User was removed from license');
 }
 
@@ -117,12 +127,15 @@ export async function assignLicenseToUser(event, callback) {
 }
 
 export async function updateColleagueInfo(event) {
+  const saveButton = event.target;
+  saveButton.classList.add('disabled');
   const colleagueDataDiv = document.querySelector('.colleague-details-data');
   const jobtitle = colleagueDataDiv.querySelector('.colleague-job-title').value;
   const telephone1 = colleagueDataDiv.querySelector('.colleague-bussiness-phone').value;
   const contactid = event.target.getAttribute('data-contact-id');
   const urlConfig = { jobtitle, telephone1, contactid };
-  const data = await execute('dynamics_edit_colleague', urlConfig, 'PATCH');
+  const data = await execute('dynamics_edit_colleague', urlConfig, 'PATCH', '.update-colleague-info.loading-icon');
 
+  saveButton.classList.remove('disabled');
   processResponse(event, data, false, false, 'Information updated');
 }

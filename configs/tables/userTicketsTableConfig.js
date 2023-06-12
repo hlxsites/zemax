@@ -4,8 +4,9 @@ const userTicketsTable = [
     value: ['{{id}}'],
     html: 'a',
     htmlAttributes: {
-      href: '{{url}}',
+      href: 'https://zemax.zendesk.com/agent/tickets/',
     },
+    processValueMethod: updateTicketUrl,
   },
   {
     label: 'Case Title',
@@ -14,6 +15,10 @@ const userTicketsTable = [
   {
     label: 'Status',
     value: ['{{status}}'],
+    processValueMethod: changeToUpper,
+    htmlAttributes: {
+      class: 'label-bold',
+    },
   },
   {
     label: 'Created',
@@ -35,5 +40,19 @@ function formatDateProfilePage(clonedHeading) {
   clonedHeading.value.length = 0;
   clonedHeading.value.push(dateCreated.toLocaleDateString('en-US', options));
 
+  return clonedHeading;
+}
+
+function changeToUpper(clonedHeading) {
+  const { value } = clonedHeading;
+  const ticketStatus = value[0];
+  clonedHeading.value.length = 0;
+  clonedHeading.value.push(ticketStatus.charAt(0).toUpperCase() + ticketStatus.slice(1));
+  return clonedHeading;
+}
+
+function updateTicketUrl(clonedHeading) {
+  const { value } = clonedHeading;
+  clonedHeading.htmlAttributes.href = `${clonedHeading.htmlAttributes.href}${value}`;
   return clonedHeading;
 }

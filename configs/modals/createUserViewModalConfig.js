@@ -20,7 +20,7 @@ export function getEditUserDialog() {
             <label for="job-title">Job Title</label><input type="text" id="job-title" value="">
             <label for="email">Email</label><input type="text" id="email" readonly="" disabled="" value="">
             <label for="phone">Business Phone</label><input type="text" id="phone" value="">
-            <input type="submit" id="userEditSubmitButton" class="edit-user-action-button" value="Submit" data-modal-id="editUserModal">
+            <input type="submit" id="userEditSubmitButton" class="edit-user-action-button" value="Save Information" data-modal-id="editUserModal">
           </form>
         </div>
       </div>
@@ -49,7 +49,10 @@ export function getResetUserPasswordDialog() {
       </div>
       <div class="modal-footer">
         <button class="action secondary reset-user-password-close-button" data-modal-id="resetUserPasswordModal">Cancel</button>
-        <button class="action important reset-user-password-action-button" data-modal-id="resetUserPasswordModal" data-view-access="manage">Send Password Reset Email</button>
+        <button class="action important reset-user-password-action-button" data-modal-id="resetUserPasswordModal" data-view-access="manage">
+          Send Password Reset Email
+          <span class="loading-icon reset-user-password"></span>
+        </button>
       </div>
    </div>
  </div>
