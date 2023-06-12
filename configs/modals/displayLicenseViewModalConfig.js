@@ -19,9 +19,11 @@ export function getAddUserDialog() {
          <div class="modal-footer">
             <button class="action secondary create-user-action-button" data-modal-id="addUserModal" data-view-access="manage">
               Create User
+            </button>
+            <button class="action add-user-action-button" data-modal-id="addUserModal" data-view-access="manage">
+              Add User
               <span class="loading-icon add-user"></span>
             </button>
-            <button class="action add-user-action-button" data-modal-id="addUserModal" data-view-access="manage">Add User</button>
             <button class="action add-user-cancel-button" data-modal-id="addUserModal">Close</button>
          </div>
       </div>

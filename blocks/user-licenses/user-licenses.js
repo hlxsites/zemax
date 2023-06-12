@@ -1,6 +1,6 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import {
-  a, button, div, h2, h3, p,
+  a, button, div, h2, h3, p, span,
 } from '../../scripts/dom-helpers.js';
 import {
   createTag, createGenericDataTable,
@@ -181,7 +181,9 @@ async function manageUserView(event) {
     elementDetailCellDiv.appendChild(elementDetailCellHeading);
     if (clonedHeading.html === 'input') {
       elementDetailCellDiv.appendChild(createTag('input', { class: clonedHeading.inputClass, value: clonedHeading.value.join('') }, ''));
-      elementDetailCellDiv.appendChild(createTag('button', { class: 'action update-user-info', 'data-contact-id': contactid, 'data-action-id': clonedHeading['data-action-id'] }, 'Save'));
+      const saveButton = createTag('button', { class: 'action update-user-info', 'data-contact-id': contactid, 'data-action-id': clonedHeading['data-action-id'] }, 'Save');
+      saveButton.append(span({ class: 'update-colleague-info loading-icon' }, ''));
+      elementDetailCellDiv.appendChild(saveButton);
     } else {
       const elementDetailCellDataPara = createTag('p', { class: 'element-detail-cell-data' }, clonedHeading.value.join(''));
       elementDetailCellDiv.appendChild(elementDetailCellDataPara);
@@ -519,6 +521,7 @@ async function displayLicenseDetailsView(event) {
       const nickNameTextField = createTag('input', { class: 'nickname', value: nickNameSetValue }, '');
       licenseDetailsRow.appendChild(nickNameTextField);
       const saveNicknameButton = createTag('button', { class: 'save-nickname action', type: 'button', 'data-license-id': data.license_detail[0].new_licensesid }, 'Save');
+      saveNicknameButton.append(span({ class: 'save-nickname loading-icon' }, ''));
       saveNicknameButton.addEventListener('click', updateLicenseNickname);
       licenseDetailsRow.appendChild(saveNicknameButton);
     } else {

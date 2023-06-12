@@ -84,10 +84,11 @@ function createButtonAsPerWebroles(webroles, block) {
 async function renderUserTickets(userEmail, contactid, block) {
   const urlConfig = { user_email: userEmail, zemax_zendeskid: contactid };
   const data = await execute('zendesk_tickets_by_id', urlConfig, 'GET', '.user-tickets.loading-icon');
+  const publicTickets = data.filter((ticket) => (ticket.is_public));
 
   if (data.length > 0) {
     const tableContainer = createTag('div', { class: 'table-container' }, '');
-    const tableElement = createGenericDataTable(userTicketsTable, data);
+    const tableElement = createGenericDataTable(userTicketsTable, publicTickets);
     tableContainer.appendChild(tableElement);
 
     block.append(tableContainer);
