@@ -268,10 +268,7 @@ async function handleAuthenticationTokens(loginLinkWrapper) {
 }
 
 function getRedirectUri() {
-  if (window.location.pathname.startsWith('/pages/profile')) {
-    return window.location.origin + window.location.pathname;
-  }
-  return window.location.origin;
+  return `${window.location.origin}/pages/profile`;
 }
 
 /**
