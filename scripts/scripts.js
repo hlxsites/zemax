@@ -342,10 +342,6 @@ function getValue(cell, dataType) {
       Nov: 10,
       Dec: 11,
     }[month];
-    console.log(dateValue);
-    console.log('year', year);
-    console.log('monthIndex', monthIndex);
-    console.log('day', day);
     return new Date(year, monthIndex, day).getTime();
   } if (dataType === 'integer') {
     return parseInt(cell.textContent.trim(), 10);
@@ -357,9 +353,10 @@ function getValue(cell, dataType) {
 function updateSortIndicator(sortOrder, currentSortIndicator, currentTable) {
   const indicators = currentTable.getElementsByClassName('sort-indicator');
 
-  for (let i = 0; i < indicators.length; i++) {
+  for (let i = 0; i < indicators.length;) {
     indicators[i].classList.remove('sort-asc');
     indicators[i].classList.remove('sort-desc');
+    i += 1;
   }
 
   const indicator = currentSortIndicator;
