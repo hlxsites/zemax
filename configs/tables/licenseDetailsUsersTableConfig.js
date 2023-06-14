@@ -2,6 +2,17 @@ export default function getLicenseDetailsUsersTable(licenseId) {
   const licenseDetailsUsersTable = [
     {
       label: 'Name',
+      headingAttributes: {
+        role: 'columnheader',
+        tabindex: '0',
+      },
+      headingInnerTag: {
+        tagName: 'span',
+        htmlAttributes: {
+          id: 'sortIndicator0',
+          class: 'sort-indicator',
+        },
+      },
       value: ['{{contact1.fullname}}'],
       html: 'td',
       htmlAttributes: {
@@ -10,18 +21,54 @@ export default function getLicenseDetailsUsersTable(licenseId) {
     },
     {
       label: 'Email',
+      headingAttributes: {
+        role: 'columnheader',
+        tabindex: '1',
+      },
+      headingInnerTag: {
+        tagName: 'span',
+        htmlAttributes: {
+          id: 'sortIndicator1',
+          class: 'sort-indicator',
+        },
+      },
       value: ['{{contact1.emailaddress1}}'],
     },
     {
       label: 'Job Title',
+      headingAttributes: {
+        role: 'columnheader',
+        tabindex: '2',
+      },
+      headingInnerTag: {
+        tagName: 'span',
+        htmlAttributes: {
+          id: 'sortIndicator2',
+          class: 'sort-indicator',
+        },
+      },
       value: ['{{contact1.jobtitle}}'],
     },
     {
       label: 'Phone',
+      headingAttributes: {
+        role: 'columnheader',
+        tabindex: '3',
+      },
+      headingInnerTag: {
+        tagName: 'span',
+        htmlAttributes: {
+          id: 'sortIndicator3',
+          class: 'sort-indicator',
+        },
+      },
       value: ['{{contact1.telephone1}}'],
     },
     {
       label: '',
+      headingAttributes: {
+        'data-action-type': 'button-action',
+      },
       value: ['Remove User'],
       html: 'button',
       htmlAttributes: {
@@ -36,6 +83,9 @@ export default function getLicenseDetailsUsersTable(licenseId) {
     },
     {
       label: '',
+      headingAttributes: {
+        'data-action-type': 'button-action',
+      },
       value: ['Change End User'],
       html: 'button',
       htmlAttributes: {

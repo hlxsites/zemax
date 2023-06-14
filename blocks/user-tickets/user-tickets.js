@@ -1,6 +1,6 @@
 import { getLocaleConfig } from '../../scripts/zemax-config.js';
 import { p, a, div } from '../../scripts/dom-helpers.js';
-import { createTag, createGenericDataTable } from '../../scripts/scripts.js';
+import { createTag, createGenericDataTable, addSortFeatureToTable } from '../../scripts/scripts.js';
 import execute from '../../scripts/zemax-api.js';
 import userTicketsTable from '../../configs/tables/userTicketsTableConfig.js';
 
@@ -93,10 +93,10 @@ async function renderUserTickets(userEmail, contactid, block) {
 
   if (data.length > 0) {
     const tableContainer = createTag('div', { class: 'table-container' }, '');
-    const tableElement = createGenericDataTable(userTicketsTable, publicTickets);
+    const tableElement = createGenericDataTable(userTicketsTable, publicTickets, { role: 'table', 'data-table-type': 'userTicketsTable' });
     tableContainer.appendChild(tableElement);
-
     block.append(tableContainer);
+    addSortFeatureToTable('userTicketsTable');
   } else {
     block.append(p({ class: 'no-tickets' }, getLocaleConfig('en_us', 'userTickets').noTicketDescription));
   }

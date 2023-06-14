@@ -4,6 +4,17 @@
  */
 const activatedDeactivatedColleaguesTable = [{
   label: 'Firstname',
+  headingAttributes: {
+    role: 'columnheader',
+    tabindex: '0',
+  },
+  headingInnerTag: {
+    tagName: 'span',
+    htmlAttributes: {
+      id: 'sortIndicator0',
+      class: 'sort-indicator',
+    },
+  },
   value: ['{{firstname}}'],
   html: 'td',
   htmlAttributes: {
@@ -12,14 +23,47 @@ const activatedDeactivatedColleaguesTable = [{
 },
 {
   label: 'lastname',
+  headingAttributes: {
+    role: 'columnheader',
+    tabindex: '1',
+  },
+  headingInnerTag: {
+    tagName: 'span',
+    htmlAttributes: {
+      id: 'sortIndicator1',
+      class: 'sort-indicator',
+    },
+  },
   value: ['{{lastname}}'],
 },
 {
   label: 'Job Title',
+  headingAttributes: {
+    role: 'columnheader',
+    tabindex: '2',
+  },
+  headingInnerTag: {
+    tagName: 'span',
+    htmlAttributes: {
+      id: 'sortIndicator2',
+      class: 'sort-indicator',
+    },
+  },
   value: ['{{jobtitle}}'],
 },
 {
   label: 'Email',
+  headingAttributes: {
+    role: 'columnheader',
+    tabindex: '3',
+  },
+  headingInnerTag: {
+    tagName: 'span',
+    htmlAttributes: {
+      id: 'sortIndicator3',
+      class: 'sort-indicator',
+    },
+  },
   value: ['{{emailaddress1}}'],
 },
 {
