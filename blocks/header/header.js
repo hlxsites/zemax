@@ -84,7 +84,7 @@ function addEventListenersMobile() {
 
   const toggleMenuItem = (item) => {
     const expanded = item.getAttribute('aria-expanded') === 'true';
-    collapseAllSubmenus(item.closest('nav'));
+    collapseAllSubmenus(item.closest('.menu-nav-dropdown, nav'));
     item.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   };
 
@@ -93,6 +93,7 @@ function addEventListenersMobile() {
     .forEach((title) => {
       elementsWithEventListener.push(title);
       title.addEventListener('click', (e) => {
+        console.log('click', e.target, title);
         e.stopPropagation();
         toggleMenuItem(title);
       });
