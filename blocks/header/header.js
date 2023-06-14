@@ -84,7 +84,7 @@ function addEventListenersMobile() {
 
   const toggleMenuItem = (item) => {
     const expanded = item.getAttribute('aria-expanded') === 'true';
-    collapseAllSubmenus(item.closest('nav'));
+    collapseAllSubmenus(item.closest('.menu-nav-dropdown, nav'));
     item.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   };
 
