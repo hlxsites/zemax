@@ -24,7 +24,7 @@ export default async function decorate(block) {
   }
 }
 
-function createButtonAsPerWebroles(webroles, block) {
+function checkAllButtonAccess(webroles) {
   let allButtonAccess = false;
   const allButtonWebroles = [
     'Supported Users ZOS',
@@ -40,36 +40,40 @@ function createButtonAsPerWebroles(webroles, block) {
       allButtonAccess = true;
     }
   });
+  return allButtonAccess;
+}
+function createButtonAsPerWebroles(webroles, block) {
+  const allButtonAccess = checkAllButtonAccess(webroles);
+  const disabledCLass = allButtonAccess ? '' : 'disabled';
 
   const supportLinkDiv = createTag('div', { class: 'support-links' }, '');
   const { askCommunityButtonText } = getLocaleConfig('en_us', 'userTickets');
-  if (allButtonAccess) {
-    const { openANewTicketButtonText } = getLocaleConfig('en_us', 'userTickets');
-    const { scheduleACallButtonText } = getLocaleConfig('en_us', 'userTickets');
-    supportLinkDiv.appendChild(
-      a(
-        {
-          href: 'https://support.zemax.com/hc/requests/new',
-          'aria-label': openANewTicketButtonText,
-          class: 'open-ticket button primary',
-          target: '_blank',
-        },
-        openANewTicketButtonText,
-      ),
-    );
 
-    supportLinkDiv.appendChild(
-      a(
-        {
-          href: 'https://support.zemax.com/hc/requests/new?scheduled-calls=true',
-          'aria-label': scheduleACallButtonText,
-          class: 'schedule-call button primary',
-          target: '_blank',
-        },
-        scheduleACallButtonText,
-      ),
-    );
-  }
+  const { openANewTicketButtonText } = getLocaleConfig('en_us', 'userTickets');
+  const { scheduleACallButtonText } = getLocaleConfig('en_us', 'userTickets');
+  supportLinkDiv.appendChild(
+    a(
+      {
+        href: allButtonAccess ? 'https://support.zemax.com/hc/requests/new' : '',
+        'aria-label': openANewTicketButtonText,
+        class: `open-ticket button primary ${disabledCLass}`,
+        target: '_blank',
+      },
+      openANewTicketButtonText,
+    ),
+  );
+
+  supportLinkDiv.appendChild(
+    a(
+      {
+        href: allButtonAccess ? 'https://support.zemax.com/hc/requests/new?scheduled-calls=true' : '',
+        'aria-label': scheduleACallButtonText,
+        class: `schedule-call button primary ${disabledCLass}`,
+        target: '_blank',
+      },
+      scheduleACallButtonText,
+    ),
+  );
 
   supportLinkDiv.appendChild(
     a(
