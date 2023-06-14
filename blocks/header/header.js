@@ -93,7 +93,6 @@ function addEventListenersMobile() {
     .forEach((title) => {
       elementsWithEventListener.push(title);
       title.addEventListener('click', (e) => {
-        console.log('click', e.target, title);
         e.stopPropagation();
         toggleMenuItem(title);
       });
