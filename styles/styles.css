@@ -208,6 +208,10 @@ button.primary {
   background-color: var(--background-color);
   border: solid 2.5px var(--primary-button-color);
   border-radius: 8px;
+  padding: 7px 16px;
+  font-size: 16px;
+  line-height: 1.2rem;
+  letter-spacing: 0.8px;
 }
 
 main .section.button-hover-orange .button:hover {
@@ -382,12 +386,21 @@ button.action:focus-visible {
   outline: none;
 }
 
-button.disable {
+button.disabled {
   opacity: .4;
 }
 
-button.disable:hover {
+button.disabled:hover {
   background: none;
+  cursor: default;
+}
+
+a.button.primary.disabled,
+a.button.primary.disabled:hover,
+a.button.primary.disabled:focus {
+  color: rgb(153, 153, 153);
+  border: 2.5px solid rgb(153, 153, 153);
+  background-color: #FFF;
   cursor: default;
 }
 
@@ -1127,14 +1140,24 @@ span.loading-icon {
   height: 0;
   border-style: solid;
   border-width: 5px 5px 0;
-  border-color: #888 transparent transparent;
+  border-color: rgba(92 95 98) transparent transparent;
   transition: transform 0.3s ease-in-out;
+  vertical-align: middle;
 }
 
-.sort-asc.sort-indicator {
+.table-container th[role="columnheader"]:hover {
+  color: #0070c0;
+  cursor: pointer;
+}
+
+.table-container th[role="columnheader"]:hover .sort-indicator {
+  border-color: #0070c0 transparent transparent;
+}
+
+.sort-indicator.sort-asc {
   transform: rotate(180deg);
 }
 
-.sort-desc.sort-indicator {
+.sort-indicator.sort-desc {
   transform: rotate(0deg);
 }
