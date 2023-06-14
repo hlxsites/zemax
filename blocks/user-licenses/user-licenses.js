@@ -85,9 +85,6 @@ async function updateAssignLicenseButton(event) {
   const assignLicenseButton = document.querySelector('.action.assign-user-license-action-button');
   assignLicenseButton.setAttribute('data-contact-id', contactId);
   assignLicenseButton.setAttribute('data-license-id', licenseId);
-  assignLicenseButton.addEventListener('click', (eventNew) => {
-    assignLicenseToUser(eventNew, manageUserView);
-  });
 }
 
 async function showAssignUserLicense(event) {
@@ -235,6 +232,10 @@ async function manageUserView(event) {
   assignLicenseButton.addEventListener('click', showAssignUserLicense);
   assignUserLicenseModalCloseButton.addEventListener('click', closeUserActionModal);
   assignLicenseDialog.querySelector('svg').addEventListener('click', closeUserActionModal);
+  const assignLicenseActionButton = assignLicenseDialog.querySelector('.action.assign-user-license-action-button');
+  assignLicenseActionButton.addEventListener('click', (eventNew) => {
+    assignLicenseToUser(eventNew, manageUserView);
+  });
   attachBackDropEventHandle(assignLicenseDialog);
 
   manageUserViewWrapperDiv.append(h3('Licenses (Colleague is End User)'));

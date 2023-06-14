@@ -1131,10 +1131,10 @@ span.loading-icon {
   transition: transform 0.3s ease-in-out;
 }
 
-.sort-asc .sort-indicator {
+.sort-asc.sort-indicator {
   transform: rotate(180deg);
 }
 
-.sort-desc .sort-indicator {
+.sort-desc.sort-indicator {
   transform: rotate(0deg);
 }
