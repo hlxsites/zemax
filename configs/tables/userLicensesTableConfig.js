@@ -67,6 +67,9 @@ const userLicensesTable = [
     html: 'a',
     htmlAttributes: {
       href: '#',
+      class: 'license-detail-view-link',
+      'data-view-access': 'manage',
+      'data-license-id': '{{new_licensesid}}',
     },
   },
   {

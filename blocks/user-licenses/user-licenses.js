@@ -356,7 +356,10 @@ async function createUserView(event) {
   addSortFeatureToTable('activateDeactivateUserTable');
 
   // Add event for add Colleague
-  createUserViewWrapperDiv.querySelector('.add-colleague.primary').addEventListener('click', showAddColleagueModal);
+  const addColleagueSModalButton = createUserViewWrapperDiv.querySelector('.add-colleague.primary');
+  if (addColleagueSModalButton) {
+    addColleagueSModalButton.addEventListener('click', showAddColleagueModal);
+  }
 
   const addColleagueDialog = getAddColleagueDialog();
   createUserViewWrapperDiv.appendChild(addColleagueDialog);
@@ -489,6 +492,7 @@ function clearProfileLandingView() {
 }
 
 async function displayLicenseDetailsView(event) {
+  event.preventDefault();
   clearProfileLandingView();
   window.scrollTo(0, 0);
   const viewAccess = await event.target.getAttribute('data-view-access');
@@ -620,7 +624,7 @@ async function displayLicenseDetailsView(event) {
     } else {
       endUsersDetailsDiv.appendChild(createTag('p', { class: 'no-end-user-license' }, 'This license does not currently have an end user. To add and end user, please click the Add End User button.'));
     }
-    if (licenseType === 'Individual') {
+    if (licenseType === 'Individual' && viewAccess === 'manage') {
       const userDisclaimerDiv = div({ class: 'user-disclaimer' }, '');
       userDisclaimerDiv.innerHTML = `
         <span class="user-disclaimer-icon">
@@ -741,10 +745,18 @@ function createTableHeaderMapping(data) {
   return tableHeaderMapping;
 }
 
-function createLicencesTable(rows) {
+function createLicencesTable(rows, tabHeading) {
+  console.log('abc', tabHeading);
   const tableContainer = createTag('div', { class: 'table-container' }, '');
   const tableElement = createGenericDataTable(userLicensesTable, rows, { role: 'table', 'data-table-type': 'userLicensesTable' });
   tableContainer.appendChild(tableElement);
+  if (tabHeading === 'Academic Licenses') {
+    const manageButtons = tableElement.querySelectorAll('.manage-view-license.action');
+    manageButtons.forEach((manageButton) => {
+      const tableCell = manageButton.closest('td');
+      tableCell.style.display = 'none';
+    });
+  }
   return tableContainer;
 }
 
@@ -789,16 +801,27 @@ async function loadData(block) {
   licenseTableHeadingMapping.forEach((heading, index) => {
     if (index === 0) {
       tabDiv.append(
-        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
+        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, false, createLicencesTable(data[heading.split('|')[1]], heading.split('|')[0]).outerHTML),
       );
     } else {
       tabDiv.append(
-        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]]).outerHTML),
+        createTabContentDiv(`tab${index + 1}`, `tab${index + 1}`, true, createLicencesTable(data[heading.split('|')[1]], heading.split('|')[0]).outerHTML),
       );
     }
   });
 
   block.append(tabDiv);
+  const licenseDetailViewLinks = block.querySelectorAll('.license-detail-view-link');
+  licenseDetailViewLinks.forEach((licenseDetailViewLink) => {
+    if (viewAccessMatrix === 'manage') {
+      licenseDetailViewLink.addEventListener('click', displayLicenseDetailsView);
+    } else {
+      const licenseText = licenseDetailViewLink.innerHTML;
+      const tableCell = licenseDetailViewLink.closest('td');
+      tableCell.innerHTML = licenseText;
+    }
+  });
+
   addSortFeatureToTable('userLicensesTable');
   addTabFeature();
   addManageLicenseFeature();
