@@ -756,6 +756,11 @@ function createLicencesTable(rows, tabHeading) {
       const tableCell = manageButton.closest('td');
       tableCell.style.display = 'none';
     });
+
+    const manageTableHeading = tableElement.querySelector('table [data-action-type="button-action"]');
+    if (manageTableHeading) {
+      manageTableHeading.style.display = 'none';
+    }
   }
   return tableContainer;
 }
