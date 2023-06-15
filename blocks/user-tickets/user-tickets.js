@@ -42,38 +42,40 @@ function checkAllButtonAccess(webroles) {
   });
   return allButtonAccess;
 }
+
+function noActionOnClick(event) {
+  event.preventDefault();
+}
+
 function createButtonAsPerWebroles(webroles, block) {
   const allButtonAccess = checkAllButtonAccess(webroles);
-  const disabledCLass = allButtonAccess ? '' : 'disabled';
 
   const supportLinkDiv = createTag('div', { class: 'support-links' }, '');
   const { askCommunityButtonText } = getLocaleConfig('en_us', 'userTickets');
 
   const { openANewTicketButtonText } = getLocaleConfig('en_us', 'userTickets');
   const { scheduleACallButtonText } = getLocaleConfig('en_us', 'userTickets');
-  supportLinkDiv.appendChild(
-    a(
-      {
-        href: allButtonAccess ? 'https://support.zemax.com/hc/requests/new' : '',
-        'aria-label': openANewTicketButtonText,
-        class: `open-ticket button primary ${disabledCLass}`,
-        target: '_blank',
-      },
-      openANewTicketButtonText,
-    ),
-  );
 
-  supportLinkDiv.appendChild(
-    a(
-      {
-        href: allButtonAccess ? 'https://support.zemax.com/hc/requests/new?scheduled-calls=true' : '',
-        'aria-label': scheduleACallButtonText,
-        class: `schedule-call button primary ${disabledCLass}`,
-        target: '_blank',
-      },
-      scheduleACallButtonText,
-    ),
-  );
+  // eslint-disable-next-line no-script-url
+  const openANewTicketLink = createTag('a', { href: 'javascript:void(0);', 'aria-label': openANewTicketButtonText, class: 'open-ticket button primary disabled' }, openANewTicketButtonText);
+  // eslint-disable-next-line no-script-url
+  const scheduleACallLink = createTag('a', { href: 'javascript:void(0);', 'aria-label': scheduleACallButtonText, class: 'schedule-call button primary disabled' }, scheduleACallButtonText);
+
+  if (allButtonAccess) {
+    openANewTicketLink.setAttribute('href', 'https://support.zemax.com/hc/requests/new');
+    openANewTicketLink.setAttribute('target', '_blank');
+    openANewTicketLink.classList.remove('disabled');
+    openANewTicketLink.addEventListener('click', noActionOnClick);
+
+    scheduleACallLink.setAttribute('href', 'https://support.zemax.com/hc/requests/new?scheduled-calls=true');
+    scheduleACallLink.setAttribute('target', '_blank');
+    scheduleACallLink.classList.remove('disabled');
+    scheduleACallLink.addEventListener('click', noActionOnClick);
+  }
+
+  supportLinkDiv.appendChild(openANewTicketLink);
+
+  supportLinkDiv.appendChild(scheduleACallLink);
 
   supportLinkDiv.appendChild(
     a(

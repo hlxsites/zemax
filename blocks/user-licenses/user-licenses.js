@@ -746,7 +746,6 @@ function createTableHeaderMapping(data) {
 }
 
 function createLicencesTable(rows, tabHeading) {
-  console.log('abc', tabHeading);
   const tableContainer = createTag('div', { class: 'table-container' }, '');
   const tableElement = createGenericDataTable(userLicensesTable, rows, { role: 'table', 'data-table-type': 'userLicensesTable' });
   tableContainer.appendChild(tableElement);
