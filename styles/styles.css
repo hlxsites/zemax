@@ -398,8 +398,8 @@ button.disabled:hover {
 a.button.primary.disabled,
 a.button.primary.disabled:hover,
 a.button.primary.disabled:focus {
-  color: rgb(153, 153, 153);
-  border: 2.5px solid rgb(153, 153, 153);
+  color: #999;
+  border: 2.5px solid #999;
   background-color: #FFF;
   cursor: default;
 }
