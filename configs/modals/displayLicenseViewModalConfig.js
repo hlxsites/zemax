@@ -79,7 +79,7 @@ export function getChangeUserDialog() {
       </div>
       <div class="modal-footer">
         <button class="action secondary create-user-action-button" data-modal-id="changeUserModal" data-access-view="manage">Create User</button>
-        <button class="action change-user-action-button" data-modal-id="changeUserModal" data-access-view="manage">
+        <button class="action change-user-action-button" data-modal-id="changeUserModal" data-view-access="manage">
           Change User
           <span class="loading-icon change-user"></span>
         </button>

@@ -278,6 +278,103 @@ function deepCopy(obj) {
   return copy;
 }
 
+export function sortTable(event) {
+  let rows; let switching; let i; let x; let y; let
+    shouldSwitch;
+  const clickedHeader = event.target;
+  const currentSortIndicator = clickedHeader.querySelector('span');
+  const currentTable = clickedHeader.closest('table');
+  const columnIndex = clickedHeader.getAttribute('tabindex');
+  const sortOrder = currentSortIndicator.classList.contains('sort-asc') ? -1 : 1;
+  const dataType = currentSortIndicator.getAttribute('data-value-type') ?? '';
+
+  switching = true;
+
+  while (switching) {
+    switching = false;
+    rows = currentTable.rows;
+
+    // Starting with index 1 to skip top header row
+    for (i = 1; i < rows.length - 1;) {
+      shouldSwitch = false;
+      x = rows[i].getElementsByTagName('td')[columnIndex];
+      y = rows[i + 1].getElementsByTagName('td')[columnIndex];
+      const xValue = getValue(x, dataType);
+      const yValue = getValue(y, dataType);
+
+      if (sortOrder === 1) {
+        if (xValue > yValue) {
+          shouldSwitch = true;
+          break;
+        }
+      } else if (xValue < yValue) {
+        shouldSwitch = true;
+        break;
+      }
+      i += 1;
+    }
+
+    if (shouldSwitch) {
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+
+  updateSortIndicator(sortOrder, currentSortIndicator, currentTable);
+}
+
+function getValue(cell, dataType) {
+  if (dataType === 'date') {
+    const dateValue = cell.textContent.trim();
+    const year = dateValue.split(',')[1];
+    const [month, day] = dateValue.split(',')[0].split(' ');
+    const monthIndex = {
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    }[month];
+    return new Date(year, monthIndex, day).getTime();
+  } if (dataType === 'integer') {
+    return parseInt(cell.textContent.trim(), 10);
+  }
+
+  return cell.textContent.toLowerCase();
+}
+
+function updateSortIndicator(sortOrder, currentSortIndicator, currentTable) {
+  const indicators = currentTable.getElementsByClassName('sort-indicator');
+
+  for (let i = 0; i < indicators.length;) {
+    indicators[i].classList.remove('sort-asc');
+    indicators[i].classList.remove('sort-desc');
+    i += 1;
+  }
+
+  const indicator = currentSortIndicator;
+  indicator.classList.add(sortOrder === 1 ? 'sort-asc' : 'sort-desc');
+}
+
+export function addSortFeatureToTable(tableType) {
+  const tables = document.querySelectorAll(`table[data-table-type=${tableType}]`);
+  tables.forEach((table) => {
+    const tableHeadings = table.querySelectorAll('th');
+    tableHeadings.forEach((tableHeading) => {
+      if (tableHeading.getAttribute('data-action-type') !== 'button-action') {
+        tableHeading.addEventListener('click', sortTable);
+      }
+    });
+  });
+}
+
 /**
  * @typedef {Object} tableHeadings
  * @property {string} label - table heading label text.
@@ -286,15 +383,20 @@ function deepCopy(obj) {
  * @property {array} attributes attributes to be added
  */
 
-export function createGenericDataTable(tableHeadings, rowData) {
-  const tableElement = document.createElement('table');
+export function createGenericDataTable(tableHeadings, rowData, tableAttributes) {
+  const tableElement = createTag('table', tableAttributes ?? '', '');
   const thead = document.createElement('thead');
   const tr = document.createElement('tr');
 
-  tableHeadings.forEach((heading) => {
+  tableHeadings.forEach((heading, index) => {
     const { label } = heading;
 
     const tableHeadingElement = createTag('th', heading.headingAttributes ?? '', label);
+    if (heading.headingInnerTag) {
+      const { headingInnerTag } = heading;
+      const innerTag = createTag(headingInnerTag.tagName, headingInnerTag.htmlAttributes ?? '', headingInnerTag.label ?? '');
+      tableHeadingElement.appendChild(innerTag);
+    }
     tr.appendChild(tableHeadingElement);
   });
   thead.appendChild(tr);

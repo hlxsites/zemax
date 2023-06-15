@@ -2,8 +2,39 @@
  * while on inactive user tab "activate user" button is shown
  * To handle this those button config is removed dynamically while consuming this configuration
  */
+
+/**
+ * @typedef {Object} TableField
+ *
+ * @property {string} label - The label of the table heading field.
+ * @property {Object} [headingAttributes] - The attributes for the tables heading of the field,
+ *  if any.
+ * @property {Object} [headingInnerTag] - The inner HTML tag of the heading tag th, if any.
+ * @property {string} [headingInnerTag.tagName] - The tag name of inner HTML tag of the heading.
+ * @property {Object} [headingInnerTag.htmlAttributes] -
+ * The attributes for the inner HTML tag of the heading.
+ * @property {Array.<string>} value - The table division value.
+ * @property {string} [html] - The HTML tag for the table division value, default is td.
+ * @property {Object} [htmlAttributes] - The HTML attributes for table division value tag.
+ * @property {Function} processValueMethod - The method used to process the field's value, if any.
+ */
+
+/**
+ * @type {Array.<TableField>}
+ */
 const activatedDeactivatedColleaguesTable = [{
   label: 'Firstname',
+  headingAttributes: {
+    role: 'columnheader',
+    tabindex: '0',
+  },
+  headingInnerTag: {
+    tagName: 'span',
+    htmlAttributes: {
+      id: 'sortIndicator0',
+      class: 'sort-indicator',
+    },
+  },
   value: ['{{firstname}}'],
   html: 'td',
   htmlAttributes: {
@@ -12,14 +43,47 @@ const activatedDeactivatedColleaguesTable = [{
 },
 {
   label: 'lastname',
+  headingAttributes: {
+    role: 'columnheader',
+    tabindex: '1',
+  },
+  headingInnerTag: {
+    tagName: 'span',
+    htmlAttributes: {
+      id: 'sortIndicator1',
+      class: 'sort-indicator',
+    },
+  },
   value: ['{{lastname}}'],
 },
 {
   label: 'Job Title',
+  headingAttributes: {
+    role: 'columnheader',
+    tabindex: '2',
+  },
+  headingInnerTag: {
+    tagName: 'span',
+    htmlAttributes: {
+      id: 'sortIndicator2',
+      class: 'sort-indicator',
+    },
+  },
   value: ['{{jobtitle}}'],
 },
 {
   label: 'Email',
+  headingAttributes: {
+    role: 'columnheader',
+    tabindex: '3',
+  },
+  headingInnerTag: {
+    tagName: 'span',
+    htmlAttributes: {
+      id: 'sortIndicator3',
+      class: 'sort-indicator',
+    },
+  },
   value: ['{{emailaddress1}}'],
 },
 {

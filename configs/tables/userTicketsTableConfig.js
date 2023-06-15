@@ -1,6 +1,20 @@
+/**
+ * @type {Array.<TableField>}
+ */
 const userTicketsTable = [
   {
     label: 'Case Number',
+    headingAttributes: {
+      role: 'columnheader',
+      tabindex: '0',
+    },
+    headingInnerTag: {
+      tagName: 'span',
+      htmlAttributes: {
+        id: 'sortIndicator0',
+        class: 'sort-indicator',
+      },
+    },
     value: ['{{id}}'],
     html: 'a',
     htmlAttributes: {
@@ -10,10 +24,32 @@ const userTicketsTable = [
   },
   {
     label: 'Case Title',
+    headingAttributes: {
+      role: 'columnheader',
+      tabindex: '1',
+    },
+    headingInnerTag: {
+      tagName: 'span',
+      htmlAttributes: {
+        id: 'sortIndicator1',
+        class: 'sort-indicator',
+      },
+    },
     value: ['{{raw_subject}}'],
   },
   {
     label: 'Status',
+    headingAttributes: {
+      role: 'columnheader',
+      tabindex: '2',
+    },
+    headingInnerTag: {
+      tagName: 'span',
+      htmlAttributes: {
+        id: 'sortIndicator2',
+        class: 'sort-indicator',
+      },
+    },
     value: ['{{status}}'],
     processValueMethod: changeToUpper,
     htmlAttributes: {
@@ -22,11 +58,35 @@ const userTicketsTable = [
   },
   {
     label: 'Created',
+    headingAttributes: {
+      role: 'columnheader',
+      tabindex: '3',
+    },
+    headingInnerTag: {
+      tagName: 'span',
+      htmlAttributes: {
+        id: 'sortIndicator3',
+        class: 'sort-indicator',
+        'data-value-type': 'date',
+      },
+    },
     value: ['{{created_at}}'],
     processValueMethod: formatDateProfilePage,
   },
   {
     label: 'Last Updated',
+    headingAttributes: {
+      role: 'columnheader',
+      tabindex: '4',
+    },
+    headingInnerTag: {
+      tagName: 'span',
+      htmlAttributes: {
+        id: 'sortIndicator4',
+        class: 'sort-indicator',
+        'data-value-type': 'date',
+      },
+    },
     value: ['{{updated_at}}'],
     processValueMethod: formatDateProfilePage,
   },
