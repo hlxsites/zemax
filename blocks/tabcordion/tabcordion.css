@@ -161,7 +161,6 @@
     flex: 1;
   }
 
-
   .tabcordion .tabpanel > div > div:has(picture) {
     margin: 25px 10px;
   }
@@ -170,11 +169,12 @@
     content: unset;
   }
 
-
+  .tabcordion div[role="tablist"] .tablist-container a[aria-selected="true"],
   .tabcordion div[role="tablist"] .tablist-container > a:hover {
+    color: #898b8e;
     border-bottom: 4px solid #f77f00;
-    border-radius: unset;
-    margin: unset;
+    border-radius: 0;
+    border-spacing: 20px;
   }
 }
 
