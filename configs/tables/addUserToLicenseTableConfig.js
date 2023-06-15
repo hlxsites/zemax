@@ -1,3 +1,6 @@
+/**
+ * @type {Array.<TableField>}
+ */
 export default function getAddUserToLicenseTable(checkboxClass) {
   const addUserToLicenseTable = [
     {

@@ -2,6 +2,26 @@
  * while on inactive user tab "activate user" button is shown
  * To handle this those button config is removed dynamically while consuming this configuration
  */
+
+/**
+ * @typedef {Object} TableField
+ *
+ * @property {string} label - The label of the table heading field.
+ * @property {Object} [headingAttributes] - The attributes for the tables heading of the field,
+ *  if any.
+ * @property {Object} [headingInnerTag] - The inner HTML tag of the heading tag th, if any.
+ * @property {string} [headingInnerTag.tagName] - The tag name of inner HTML tag of the heading.
+ * @property {Object} [headingInnerTag.htmlAttributes] -
+ * The attributes for the inner HTML tag of the heading.
+ * @property {Array.<string>} value - The table division value.
+ * @property {string} [html] - The HTML tag for the table division value, default is td.
+ * @property {Object} [htmlAttributes] - The HTML attributes for table division value tag.
+ * @property {Function} processValueMethod - The method used to process the field's value, if any.
+ */
+
+/**
+ * @type {Array.<TableField>}
+ */
 const activatedDeactivatedColleaguesTable = [{
   label: 'Firstname',
   headingAttributes: {

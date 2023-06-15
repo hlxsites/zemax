@@ -1,3 +1,6 @@
+/**
+ * @type {Array.<TableField>}
+ */
 export default function getLicenseDetailsUsersTable(licenseId) {
   const licenseDetailsUsersTable = [
     {

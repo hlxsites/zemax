@@ -1,3 +1,6 @@
+/**
+ * @type {Array.<TableField>}
+ */
 const manageColleaguesEndUserLicensesTable = [{
   label: 'License #',
   value: ['{{new_licenses1.new_licenseid}}'],

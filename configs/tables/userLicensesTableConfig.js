@@ -1,3 +1,6 @@
+/**
+ * @type {Array.<TableField>}
+ */
 const userLicensesTable = [
   {
     label: '',
