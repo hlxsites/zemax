@@ -523,7 +523,7 @@ a.visit-knowledgebase {
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  padding: 1.2rem 1.2rem 1.2rem;
+  padding: 1.2rem;
   width: auto;
   transition: box-shadow .2s cubic-bezier(.64,0,.35,1);
   transition-delay: .1s;
@@ -557,7 +557,7 @@ a.visit-knowledgebase {
 }
 
 .colleague-details-row.layout-33-33-33 {
-  padding: 0 0 20px 0;
+  padding: 0 0 20px;
 }
 
 .colleague-details-row .element-detail-cell button.important  {
@@ -574,19 +574,15 @@ a.visit-knowledgebase {
   width: 100%;
   min-width: 0;
   min-height: 2.6rem;
-  margin: 0 0 .25rem 0;
+  margin: 0 0 .25rem;
   padding: 0.15rem 1rem;
   background: none;
-  border: 0.1rem solid transparent;
   font-family: inherit;
   font-size: 14px;
   line-height: 1.2rem;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
   caret-color: rgba(32 34 35);
   color: rgba(32 34 35 / 80%);
-  border-radius: 2px;
   border: 1px solid rgba(201 204 207);
   border-top-color: rgba(174 180 185);
   border-radius: 4px;
