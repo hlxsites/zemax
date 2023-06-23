@@ -23,7 +23,7 @@ export default async function decorate(block) {
     block.append(pEmail);
 
     // Link URL for user's community profile
-    const userLink = (data.link === '' || data.link === undefined) ? 'https://community.zemax.com/ssoproxy/setUsernameForm' : data.link;
+    const userLink = (data.link === '' || data.link === undefined) ? 'https://community.zemax.com/ssoproxy/login?ssoType=openidconnect&returnUrl=' : data.link;
 
     const anchor = createTag('a', { class: 'button primary', href: userLink, target: '_blank' }, getLocaleConfig('en_us', 'userInfo').forumProfileActivityButtonText);
     block.append(anchor);
