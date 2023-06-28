@@ -5,7 +5,7 @@ export function getEnvironmentConfig(environment) {
   const envData = {
     dev: {
       profile: {
-        dynamic365domain: 'https://zemaxportalfunctions.azurewebsites.net/api/',
+        dynamic365domain: 'https://zemaxportal.azurewebsites.net/api/',
       },
     },
     prod: {

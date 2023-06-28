@@ -2,9 +2,9 @@ import { decorateIcons, fetchPlaceholders, getMetadata } from '../../scripts/lib
 import { button, domEl, span } from '../../scripts/dom-helpers.js';
 import { createTag, decorateLinkedPictures, loadScriptPromise } from '../../scripts/scripts.js';
 
+let auth0Client;
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
-let webauth;
 
 function collapseAllSubmenus(menu) {
   menu
@@ -180,7 +180,8 @@ function reAttachEventListeners() {
 
 async function login() {
   await initializeAuthLibrary();
-  webauth.authorize();
+  //webauth.authorize();
+  auth0Client.loginWithRedirect();
 }
 
 async function logout(e) {
@@ -289,17 +290,24 @@ async function initializeAuthLibrary() {
   const placeholders = await fetchPlaceholders();
   const domain = placeholders.auth0domain;
   const clientID = placeholders.clientid;
-  const audience = placeholders.audienceuri;
-  const responseType = placeholders.responsetype;
-  const { scope } = placeholders;
+  // const audience = placeholders.audienceuri;
+  // const responseType = placeholders.responsetype;
+  // const { scope } = placeholders;
 
-  await loadScriptPromise('/scripts/auth0.min.js', {
+  await loadScriptPromise('/scripts/auth0-spa-js.production.js', {
     type: 'text/javascript',
     charset: 'UTF-8',
   });
   // eslint-disable-next-line no-undef
-  webauth = new auth0.WebAuth({
-    domain, clientID, redirectUri: getRedirectUri(), audience, responseType, scope,
+
+  // eslint-disable-next-line no-undef
+  auth0Client = await auth0.createAuth0Client({
+    // eslint-disable-next-line object-shorthand
+    domain: domain,
+    clientId: clientID,
+    authorizationParams: {
+      redirect_uri: getRedirectUri(),
+    },
   });
 }
 
