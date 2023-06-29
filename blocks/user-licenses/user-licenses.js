@@ -756,6 +756,13 @@ function createLicencesTable(rows, tabHeading) {
       tableCell.style.display = 'none';
     });
 
+    const manageLinks = tableElement.querySelectorAll('.license-detail-view-link');
+    manageLinks.forEach((manageLink) => {
+      const tableCell = manageLink.closest('td');
+      tableCell.textContent = manageLink.textContent;
+      manageLink.remove();
+    });
+
     const manageTableHeading = tableElement.querySelector('table [data-action-type="button-action"]');
     if (manageTableHeading) {
       manageTableHeading.style.display = 'none';
