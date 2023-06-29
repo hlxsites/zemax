@@ -4,7 +4,101 @@ import { createTag, decorateLinkedPictures, loadScriptPromise } from '../../scri
 
 let elementsWithEventListener = [];
 const mql = window.matchMedia('only screen and (min-width: 1024px)');
-let webauth;
+
+// Login code START
+const placeholders = await fetchPlaceholders();
+const domain = placeholders.auth0domain;
+const clientID = placeholders.clientid;
+const audience = placeholders.audienceuri;
+const { scope } = placeholders;
+
+await loadScriptPromise('/scripts/auth0-spa-js.production.js', {
+  type: 'text/javascript',
+  charset: 'UTF-8',
+});
+
+// eslint-disable-next-line no-undef
+const auth0Client = await auth0.createAuth0Client({
+  // eslint-disable-next-line object-shorthand
+  domain: domain,
+  clientId: clientID,
+  authorizationParams: {
+    redirect_uri: getRedirectUri(),
+    audience,
+    scope,
+  },
+});
+
+async function login() {
+  auth0Client.loginWithRedirect();
+}
+
+async function logout(e) {
+  e.preventDefault();
+  localStorage.clear();
+  if (!auth0Client) {
+    window.location.assign(`${window.location.origin}`);
+  } else {
+    auth0Client.logout({
+      returnTo: `${window.location.origin}`,
+      clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
+    });
+  }
+}
+// utility to attach logout listeners
+function attachLogoutListener(ele) {
+  ele.removeEventListener('click', login);
+  ele.addEventListener('mouseenter', () => {
+    // only do if not on mobile
+    if (isDesktopNavigation()) {
+      ele.setAttribute('aria-expanded', 'true');
+    }
+  });
+  ele.addEventListener('mouseleave', () => {
+    if (isDesktopNavigation()) {
+      ele.setAttribute('aria-expanded', 'false');
+    }
+  });
+  const logoutLink = ele.querySelector('ul > li:nth-of-type(2)');
+  logoutLink.addEventListener('click', logout);
+}
+
+// Parse URL parameters
+function parseHash() {
+  const hash = window.location.hash.substr(1);
+  const result = hash.split('&').reduce((res, item) => {
+    const parts = item.split('=');
+    // eslint-disable-next-line prefer-destructuring
+    res[parts[0]] = parts[1];
+    return res;
+  }, {});
+  return result;
+}
+
+// manage user info in local storage and attach events
+async function handleAuthenticationTokens(loginLinkWrapper) {
+  // remove auth tokens from url, then reload page, so that stored
+  // auth tokes are used in all blocks
+  const { isAuthenticated } = await auth0Client;
+
+  if (isAuthenticated) {
+    const authResult = parseHash();
+    const idToken = authResult.id_token;
+    // Perform any necessary actions with the token
+    console.log('Authenticated:', idToken);
+    window.location.hash = '';
+    window.location.reload();
+    attachLogoutListener(loginLinkWrapper);
+  } else {
+    console.log('Not authenticated');
+  }
+}
+
+function getRedirectUri() {
+  return `${window.location.origin}/pages/profile`;
+}
+
+// Login code END
 
 function collapseAllSubmenus(menu) {
   menu
@@ -178,97 +272,8 @@ function reAttachEventListeners() {
   }
 }
 
-async function login() {
-  await initializeAuthLibrary();
-  webauth.authorize();
-}
-
-async function logout(e) {
-  e.preventDefault();
-  localStorage.clear();
-  await initializeAuthLibrary();
-  if (!webauth) {
-    window.location.assign(`${window.location.origin}`);
-  } else {
-    webauth.logout({
-      returnTo: `${window.location.origin}`,
-      clientID: 'Q5pG8LI2Ej3IMrT3LOr4jv0HPJ4kjIeJ',
-    });
-  }
-}
-
 function isDesktopNavigation() {
   return document.querySelector('nav').getAttribute('aria-expanded') !== 'true';
-}
-
-// utility to attach logout listeners
-function attachLogoutListener(ele) {
-  ele.removeEventListener('click', login);
-  ele.addEventListener('mouseenter', () => {
-    // only do if not on mobile
-    if (isDesktopNavigation()) {
-      ele.setAttribute('aria-expanded', 'true');
-    }
-  });
-  ele.addEventListener('mouseleave', () => {
-    if (isDesktopNavigation()) {
-      ele.setAttribute('aria-expanded', 'false');
-    }
-  });
-  const logoutLink = ele.querySelector('ul > li:nth-of-type(2)');
-  logoutLink.addEventListener('click', logout);
-}
-
-// manage user info in local storage and attach events
-async function handleAuthenticationTokens(loginLinkWrapper) {
-  await initializeAuthLibrary();
-
-  await new Promise((resolve) => {
-    webauth.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        // Successful login, store tokens in localStorage
-        localStorage.setItem('accessToken', authResult.accessToken);
-        localStorage.setItem('idToken', authResult.idToken);
-        const base64Url = authResult.idToken.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(
-          window
-            .atob(base64)
-            .split('')
-            .map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`)
-            .join(''),
-        );
-        const userData = JSON.parse(jsonPayload);
-        localStorage.setItem('displayname', `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`);
-        localStorage.setItem('auth0_id', userData.sub);
-        localStorage.setItem('email', userData.email);
-        localStorage.setItem('fullname', userData.name);
-        attachLogoutListener(loginLinkWrapper);
-
-        // remove auth tokens from url, then reload page, so that stored
-        // auth tokes are used in all blocks
-        window.location.hash = '';
-        window.location.reload();
-
-        resolve();
-      } else if (err) {
-        // eslint-disable-next-line no-console
-        console.warn('Unable to authenticate user:', err);
-
-        // remove auth tokens from url, then reload page,
-        // so that stored auth tokes are used in all blocks
-        window.location.hash = '';
-        window.location.reload();
-
-        // ignoring the error, it might be from a user reloading the page
-        resolve(err);
-      }
-    });
-  });
-}
-
-function getRedirectUri() {
-  return `${window.location.origin}/pages/profile`;
 }
 
 /**
@@ -283,24 +288,6 @@ function makeExpandable(title, content) {
   wrapChildren(title, 'span');
 
   content.classList.add('m-expandable-list');
-}
-
-async function initializeAuthLibrary() {
-  const placeholders = await fetchPlaceholders();
-  const domain = placeholders.auth0domain;
-  const clientID = placeholders.clientid;
-  const audience = placeholders.audienceuri;
-  const responseType = placeholders.responsetype;
-  const { scope } = placeholders;
-
-  await loadScriptPromise('/scripts/auth0.min.js', {
-    type: 'text/javascript',
-    charset: 'UTF-8',
-  });
-  // eslint-disable-next-line no-undef
-  webauth = new auth0.WebAuth({
-    domain, clientID, redirectUri: getRedirectUri(), audience, responseType, scope,
-  });
 }
 
 // authentication related functions
@@ -384,10 +371,12 @@ export default async function decorate(block) {
     // handle login
     const loginLinkWrapper = nav.querySelector(':scope .nav-tools div:nth-of-type(2)');
     loginLinkWrapper.classList.add('login-wrapper', 'menu-expandable');
-    if (window.location.hash.includes('access_token') || window.location.hash.includes('error')) {
-      // noinspection ES6MissingAwait
+
+    const query = window.location.search;
+    if (query.includes('code=') && query.includes('state=')) {
       await handleAuthenticationTokens(loginLinkWrapper);
     }
+
     if (localStorage.getItem('accessToken')) {
       loginLinkWrapper.querySelector('p').innerText = localStorage.getItem('displayname');
       attachLogoutListener(loginLinkWrapper);
