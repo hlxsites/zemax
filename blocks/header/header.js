@@ -240,7 +240,6 @@ async function handleAuthenticationTokens(loginLinkWrapper) {
         );
         const userData = JSON.parse(jsonPayload);
         localStorage.setItem('displayname', `${userData.name.slice(0, userData.name.indexOf(' ') + 2)}.`);
-        localStorage.setItem('auth0_id', userData.sub);
         localStorage.setItem('email', userData.email);
         localStorage.setItem('fullname', userData.name);
         attachLogoutListener(loginLinkWrapper);

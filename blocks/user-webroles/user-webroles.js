@@ -8,11 +8,10 @@ export default async function decorate(block) {
   const webrolesLoadingIcon = div({ class: 'user-webroles loading-icon' }, '');
   block.append(webrolesLoadingIcon);
   const { roleHeadingDescription, moreInformationAboutAccessButtonText } = getLocaleConfig('en_us', 'userWebroles');
-  const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
 
   // eslint-disable-next-line max-len
-  if (userId && accessToken) {
+  if (accessToken) {
     const data = await execute('dynamics_get_webrole', '', 'GET', '.user-webroles.loading-icon');
 
     const { webroles } = data;

@@ -8,12 +8,11 @@ export default async function decorate(block) {
   block.append(userInfoLoadingIcon);
   const mainDiv = document.querySelector('main');
   mainDiv.classList.add('profile-page');
-  const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
   const fullName = localStorage.getItem('fullname');
   const userEmail = localStorage.getItem('email');
 
-  if (userId && accessToken) {
+  if (accessToken) {
     const data = await execute('insided_get_user_link', '', 'GET', '.user-info.loading-icon');
 
     const pName = p({ class: 'users-fullname' }, fullName);
