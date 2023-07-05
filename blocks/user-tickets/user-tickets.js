@@ -6,20 +6,19 @@ import userTicketsTable from '../../configs/tables/userTicketsTableConfig.js';
 
 export default async function decorate(block) {
   block.append(div({ class: 'user-tickets loading-icon' }, ''));
-  const userId = localStorage.getItem('auth0_id');
-  if (!userId) {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
     // eslint-disable-next-line no-console
     console.log('User not logged in, not loading user-tickets module');
     return;
   }
-  const accessToken = localStorage.getItem('accessToken');
 
   const webRolesData = await execute('dynamics_get_webrole', '', 'GET', '.user-tickets.loading-icon');
   const userEmail = localStorage.getItem('email');
   const contactid = localStorage.getItem('contactid');
   createButtonAsPerWebroles(webRolesData.webroles, block);
 
-  if (userId && accessToken) {
+  if (accessToken) {
     renderUserTickets(userEmail, contactid, block);
   }
 }

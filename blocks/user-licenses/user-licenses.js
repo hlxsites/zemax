@@ -497,10 +497,9 @@ async function displayLicenseDetailsView(event) {
   window.scrollTo(0, 0);
   const viewAccess = await event.target.getAttribute('data-view-access');
   const licenseId = event.target.getAttribute('data-license-id');
-  const userId = localStorage.getItem('auth0_id');
   const accessToken = localStorage.getItem('accessToken');
   const mainDiv = document.querySelector('main');
-  if (userId && accessToken) {
+  if (accessToken) {
     // DOM creation
     const licenseDetailsViewWrapperDiv = createTag('div', { class: 'license-details-view-wrapper' }, '');
     const licenseDetailsViewDiv = createTag('div', { class: 'section user-licenses-container license-details-view', 'data-view-id': 'licenseDetailsView' }, licenseDetailsViewWrapperDiv);
@@ -778,8 +777,8 @@ export default async function decorate(block) {
 }
 
 async function loadData(block) {
-  const userId = localStorage.getItem('auth0_id');
-  if (!userId) {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
     // eslint-disable-next-line no-console
     console.log('User not logged in, not loading user-licenses module');
     return;

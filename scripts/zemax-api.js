@@ -8,12 +8,13 @@ export default async function execute(actionName, urlConfig, methodType, loading
     }
     let urlParams = urlConfig ? new URLSearchParams(urlConfig).toString() : '';
     if (urlParams) {
-      urlParams = `&${urlParams}`;
+      urlParams = `?${urlParams}`;
     }
-    const userId = localStorage.getItem('auth0_id');
+
     const accessToken = localStorage.getItem('accessToken');
     const DYNAMIC_365_DOMAIN = getEnvironmentConfig('dev').profile.dynamic365domain;
-    const response = await fetch(`${DYNAMIC_365_DOMAIN}${actionName}?auth0_id=${userId}${urlParams}`, {
+    const fetchURL = `${DYNAMIC_365_DOMAIN}${actionName}${urlParams}`;
+    const response = await fetch(`${fetchURL}`, {
       method: methodType,
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
