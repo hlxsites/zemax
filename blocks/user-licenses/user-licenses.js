@@ -572,16 +572,22 @@ async function displayLicenseDetailsView(event) {
     await addColleaguesToUserActionModal('add-user-container', 'add-user-checkbox', updateAddUserId);
 
     if (licenseType !== 'Individual' || (licenseUsers && licenseUsers.length === 0)) {
+      let disableAddUserButtonClass = '';
+      if (data.licenseid.startsWith('1-')) {
+        disableAddUserButtonClass = 'disabled';
+      }
       if (viewAccess === 'manage') {
         const addUserButton = createTag('button', {
-          class: 'add-user-to-license action',
+          class: `add-user-to-license action ${disableAddUserButtonClass}`,
           type: 'button',
           'data-modal-id': 'addUserModal',
           'data-license-id': licenseId,
           'data-view-access': 'manage',
         }, 'Add End User');
         endUsersDetailsDiv.appendChild(addUserButton);
-        addUserButton.addEventListener('click', showAddUserTable);
+        if (disableAddUserButtonClass !== 'disabled') {
+          addUserButton.addEventListener('click', showAddUserTable);
+        }
       }
     }
 
